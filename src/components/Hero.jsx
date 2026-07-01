@@ -8,6 +8,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
+import heroBg from '../assets/image.png'
 import { colors } from '../constants/colors'
 import { heroFeatures } from '../data/siteData'
 
@@ -67,9 +68,9 @@ export default function Hero() {
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/images/hero-durga.png)',
+          backgroundImage: `url(${heroBg})`,
           backgroundSize: 'cover',
-          backgroundPosition: { xs: 'center 20%', md: 'right center' },
+          backgroundPosition: { xs: 'center', md: 'center right' },
           backgroundRepeat: 'no-repeat',
         }}
       />
@@ -79,8 +80,8 @@ export default function Hero() {
           position: 'absolute',
           inset: 0,
           background: {
-            xs: `linear-gradient(180deg, ${colors.heroCream} 0%, rgba(255,253,245,0.97) 35%, rgba(255,253,245,0.85) 60%, rgba(255,253,245,0.7) 100%)`,
-            md: `linear-gradient(90deg, ${colors.heroCream} 0%, rgba(255,253,245,0.98) 28%, rgba(255,253,245,0.88) 42%, rgba(255,253,245,0.45) 58%, rgba(255,253,245,0.15) 72%, transparent 100%)`,
+            xs: `linear-gradient(180deg, ${colors.heroCream} 0%, rgba(255,253,245,0.92) 40%, rgba(255,253,245,0.55) 70%, rgba(44,31,16,0.15) 100%)`,
+            md: `linear-gradient(90deg, ${colors.heroCream} 0%, rgba(255,253,245,0.96) 26%, rgba(255,253,245,0.72) 42%, rgba(255,253,245,0.25) 58%, transparent 72%)`,
           },
         }}
       />
@@ -124,7 +125,7 @@ export default function Hero() {
             }}
           >
             <Box component="span" sx={{ color: colors.ivory, display: 'block' }}>
-              Nine Nights
+              Ten Nights
             </Box>
             <Box component="span" sx={{ color: colors.gold, display: 'block' }}>
               of Garba

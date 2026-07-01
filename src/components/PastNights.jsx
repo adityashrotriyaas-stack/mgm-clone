@@ -14,7 +14,7 @@ export default function PastNights() {
         <SectionHead
           eyebrow="Throwback"
           title="Past Nights, Forever Memories"
-          description="Highlights from Navratri 2025 — over 25,000 dancers across nine nights."
+          description="Highlights from Navratri 2025 — over 25,000 dancers across ten nights."
         />
       </Container>
 
@@ -105,7 +105,7 @@ export function Footer() {
               MGM Cultural
             </Typography>
             <Typography sx={{ fontSize: '0.85rem', mt: 1.25, maxWidth: 320 }}>
-              Rajkot&apos;s nine-night Garba celebration — devotion, dance and community, since 2018.
+              Rajkot&apos;s ten-night Garba celebration — devotion, dance and community, since 2023.
             </Typography>
             <Stack direction="row" spacing={1.5} sx={{ mt: 1.75 }}>
               {['IG', 'FB', 'YT'].map((label) => (

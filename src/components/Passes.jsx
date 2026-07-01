@@ -137,7 +137,7 @@ export default function Passes() {
         <SectionHead
           eyebrow="Choose Your Pass"
           title="Daily or Seasonal"
-          description="Drop in for one special night, or lock in all nine for the best value."
+          description="Drop in for one special night, or lock in all ten for the best value."
         />
       </Container>
 

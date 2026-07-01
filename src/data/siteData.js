@@ -1,17 +1,17 @@
 export const navLinks = [
   { label: 'Home', href: '#home', active: true },
-  { label: 'About', href: '#upcoming' },
+  { label: 'About', href: '#about' },
   { label: 'Schedule', href: '#upcoming', mobileLabel: 'Schedule' },
   { label: 'Highlights', href: '#past' },
   { label: 'Gallery', href: '#past', mobileLabel: 'Gallery' },
   { label: 'Passes', href: '#passes' },
-  { label: 'Contact', href: '#register', mobileLabel: 'Contact' },
+  { label: 'Contact', href: '#contact', mobileLabel: 'Contact' },
 ]
 
 export const heroFeatures = [
   {
     icon: 'calendar',
-    title: '9 Nights',
+    title: '10 Nights',
     subtitle: 'Non-stop Garba',
   },
   {
@@ -33,7 +33,7 @@ export const heroFeatures = [
 
 export const stats = [
   { value: 25000, label: 'Dancers · 2025' },
-  { value: 9, label: 'Nights' },
+  { value: 10, label: 'Nights' },
   { value: 50, label: 'Artists On Stage' },
 ]
 
@@ -47,6 +47,7 @@ export const nightTracker = [
   { night: 7, status: 'upcoming' },
   { night: 8, status: 'upcoming' },
   { night: 9, status: 'upcoming' },
+  { night: 10, status: 'upcoming' },
 ]
 
 export const upcomingEvents = [
@@ -87,8 +88,8 @@ export const upcomingEvents = [
     id: 4,
     title: 'Maha Aarti & Finale',
     badge: 'Grand Finale',
-    night: 'Night 9',
-    date: '🗓️ Oct 19, Mon',
+    night: 'Night 10',
+    date: '🗓️ Oct 20, Tue',
     time: '🕰️ 7:00 PM',
     price: '₹1299',
     priceUnit: '/ stag',
@@ -113,9 +114,9 @@ export const passOptions = {
   seasonal: {
     title: 'Seasonal Pass',
     price: '₹2,999',
-    priceUnit: '/ person / all 9 nights',
+    priceUnit: '/ person / all 10 nights',
     perks: [
-      'Entry to all nine nights — no rebooking',
+      'Entry to all ten nights — no rebooking',
       'Priority entry lane, every night',
       'Reserved seating zone access',
       'Save ~33% vs booking nightly',
@@ -167,8 +168,39 @@ export const passTypeOptions = [
   'Daily — Night 3, Rangeeli Raat (Oct 13)',
   'Daily — Night 4, Dhoom Dhamaka (Oct 14)',
   'Daily — Night 5, Bollywood Beats (Oct 15)',
-  'Daily — Night 9, Grand Finale (Oct 19)',
-  'Seasonal Pass — All 9 Nights',
+  'Daily — Night 10, Grand Finale (Oct 20)',
+  'Seasonal Pass — All 10 Nights',
+]
+
+export const legacyMoments = [
+  {
+    year: '2023',
+    title: 'The First Grand Gathering',
+    description:
+      'The celebration began with its first vibrant season, bringing together local Garba lovers for four unforgettable nights of music, devotion, and dance.',
+    highlight: 'Where the journey started',
+  },
+  {
+    year: '2024',
+    title: 'Growing with the Community',
+    description:
+      'With bigger crowds, richer decor, and stronger word of mouth, MGM Cultural Navratri became a festive destination families and friends looked forward to every year.',
+    highlight: 'A stronger festive identity',
+  },
+  {
+    year: '2025',
+    title: 'A Bigger Stage, A Bigger Energy',
+    description:
+      'Live performances, premium arrangements, and thousands of dancers made the festival feel more elevated, polished, and truly city-wide in spirit.',
+    highlight: 'Momentum turned into tradition',
+  },
+  {
+    year: '2026',
+    title: 'The Fourth Celebration Season',
+    description:
+      'Now entering its fourth season, MGM Cultural Navratri returns with even more excitement, offering a complete experience of Garba, Dandiya, hospitality, and community.',
+    highlight: 'Four seasons of celebration',
+  },
 ]
 
 export const pastHighlights = [

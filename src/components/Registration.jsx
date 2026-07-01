@@ -194,7 +194,13 @@ export default function Registration() {
           >
             <TextField required placeholder="Full Name" fullWidth />
             <TextField required placeholder="Mobile Number" type="tel" fullWidth />
-            <TextField placeholder="Email Address" type="email" fullWidth />
+            <TextField required placeholder="Email Address" type="email" fullWidth />
+            <TextField
+              required
+              placeholder="Aadhaar Card Number"
+              fullWidth
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 }}
+            />
             <FormControl fullWidth required>
               <Select
                 value={passType}
@@ -230,6 +236,7 @@ export default function Registration() {
               </Select>
             </FormControl>
             <TextField
+              required
               type="number"
               placeholder="Number of Tickets"
               inputProps={{ min: 1, max: 10 }}

@@ -93,7 +93,7 @@ export default function Header() {
                   mt: 0.25,
                 }}
               >
-                Nine Nights of Garba
+                Ten Nights of Garba
               </Typography>
             </Box>
           </Link>
