@@ -1,0 +1,181 @@
+export const navLinks = [
+  { label: 'Home', href: '#home', active: true },
+  { label: 'About', href: '#upcoming' },
+  { label: 'Schedule', href: '#upcoming', mobileLabel: 'Schedule' },
+  { label: 'Highlights', href: '#past' },
+  { label: 'Gallery', href: '#past', mobileLabel: 'Gallery' },
+  { label: 'Passes', href: '#passes' },
+  { label: 'Contact', href: '#register', mobileLabel: 'Contact' },
+]
+
+export const heroFeatures = [
+  {
+    icon: 'calendar',
+    title: '9 Nights',
+    subtitle: 'Non-stop Garba',
+  },
+  {
+    icon: 'location',
+    title: 'Premium Venue',
+    subtitle: 'Spacious & Safe',
+  },
+  {
+    icon: 'people',
+    title: 'Live Performances',
+    subtitle: 'DJ, Singers & More',
+  },
+  {
+    icon: 'food',
+    title: 'Food & Stalls',
+    subtitle: 'Delicious & Handicraft',
+  },
+]
+
+export const stats = [
+  { value: 25000, label: 'Dancers · 2025' },
+  { value: 9, label: 'Nights' },
+  { value: 50, label: 'Artists On Stage' },
+]
+
+export const nightTracker = [
+  { night: 1, status: 'done' },
+  { night: 2, status: 'done' },
+  { night: 3, status: 'today' },
+  { night: 4, status: 'upcoming' },
+  { night: 5, status: 'upcoming' },
+  { night: 6, status: 'upcoming' },
+  { night: 7, status: 'upcoming' },
+  { night: 8, status: 'upcoming' },
+  { night: 9, status: 'upcoming' },
+]
+
+export const upcomingEvents = [
+  {
+    id: 1,
+    title: 'Rangeeli Raat',
+    badge: 'Selling Fast',
+    night: 'Night 3',
+    date: '🗓️ Oct 13, Tue',
+    time: '🕰️ 7:30 PM',
+    price: '₹499',
+    priceUnit: '/ stag',
+    image: 'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=600',
+  },
+  {
+    id: 2,
+    title: 'Dhoom Dhamaka',
+    badge: 'Couple Special',
+    night: 'Night 4',
+    date: '🗓️ Oct 14, Wed',
+    time: '🕰️ 7:30 PM',
+    price: '₹899',
+    priceUnit: '/ couple',
+    image: 'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=600',
+  },
+  {
+    id: 3,
+    title: 'Bollywood Beats',
+    badge: 'Live DJ',
+    night: 'Night 5',
+    date: '🗓️ Oct 15, Thu',
+    time: '🕰️ 7:30 PM',
+    price: '₹599',
+    priceUnit: '/ stag',
+    image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600',
+  },
+  {
+    id: 4,
+    title: 'Maha Aarti & Finale',
+    badge: 'Grand Finale',
+    night: 'Night 9',
+    date: '🗓️ Oct 19, Mon',
+    time: '🕰️ 7:00 PM',
+    price: '₹1299',
+    priceUnit: '/ stag',
+    image: 'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=600',
+  },
+]
+
+export const passOptions = {
+  daily: {
+    title: 'Daily Pass',
+    price: '₹499',
+    priceUnit: '/ person / night',
+    perks: [
+      'Entry to any single night',
+      'Welcome tilak & kalash blessing',
+      'Access to food & handicraft stalls',
+      'Choose your night at checkout',
+    ],
+    cta: 'Book a Single Night',
+    ghost: true,
+  },
+  seasonal: {
+    title: 'Seasonal Pass',
+    price: '₹2,999',
+    priceUnit: '/ person / all 9 nights',
+    perks: [
+      'Entry to all nine nights — no rebooking',
+      'Priority entry lane, every night',
+      'Reserved seating zone access',
+      'Save ~33% vs booking nightly',
+    ],
+    cta: 'Get Seasonal Pass',
+    featured: true,
+    ribbon: 'Best Value',
+  },
+}
+
+export const registrationCategories = {
+  male: {
+    title: 'Male Pass',
+    eyebrow: 'Stag Entry',
+    price: '₹499',
+    priceUnit: '/ night',
+    perks: [
+      'Entry to Rangeeli Raat grounds',
+      'Welcome tilak & kalash blessing',
+      'Access to food & handicraft stalls',
+    ],
+  },
+  female: {
+    title: 'Female Pass',
+    eyebrow: 'Stag Entry',
+    price: '₹399',
+    priceUnit: '/ night',
+    perks: [
+      'Entry to Rangeeli Raat grounds',
+      'Welcome tilak & kalash blessing',
+      'Priority queue at entry gates',
+    ],
+  },
+  couple: {
+    title: 'Couple Pass',
+    eyebrow: 'Couple Entry',
+    price: '₹899',
+    priceUnit: '/ night',
+    perks: [
+      'Entry for 2 guests',
+      'Reserved couple seating zone',
+      'Welcome tilak & kalash blessing',
+      'Complimentary mocktail coupon',
+    ],
+  },
+}
+
+export const passTypeOptions = [
+  'Daily — Night 3, Rangeeli Raat (Oct 13)',
+  'Daily — Night 4, Dhoom Dhamaka (Oct 14)',
+  'Daily — Night 5, Bollywood Beats (Oct 15)',
+  'Daily — Night 9, Grand Finale (Oct 19)',
+  'Seasonal Pass — All 9 Nights',
+]
+
+export const pastHighlights = [
+  { label: 'Opening Night', image: 'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=400' },
+  { label: 'Garba Circle', image: 'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=400' },
+  { label: 'Dandiya Raas', image: 'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=400' },
+  { label: 'Couples Night', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=400' },
+  { label: 'Aarti Ceremony', image: 'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=400' },
+  { label: 'Finale Fireworks', image: 'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=400' },
+]
