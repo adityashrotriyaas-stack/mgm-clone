@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -12,6 +13,7 @@ import { colors } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
 
 function EventCard({ event }) {
+  const navigate = useNavigate()
   return (
     <RevealBox
       sx={{
@@ -96,8 +98,7 @@ function EventCard({ event }) {
             </Box>
           </Typography>
           <Button
-            component="a"
-            href="#register"
+            onClick={() => navigate(`/event/${event.id}`)}
             sx={{
               bgcolor: 'rgba(255,255,255,0.08)',
               color: colors.ivory,

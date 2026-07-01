@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
@@ -14,13 +15,14 @@ import { passTypeOptions, registrationCategories } from '../data/siteData'
 const categoryKeys = ['male', 'female', 'couple']
 
 export default function Registration() {
+  const navigate = useNavigate()
   const [category, setCategory] = useState('male')
   const [passType, setPassType] = useState('')
   const selected = registrationCategories[category]
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    window.alert('Demo form — connect this to your payment gateway (e.g. Razorpay) to go live.')
+    navigate('/event/1')
   }
 
   return (
