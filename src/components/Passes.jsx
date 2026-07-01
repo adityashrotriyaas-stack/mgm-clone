@@ -53,7 +53,8 @@ function PassCard({ type, data, cardRef }) {
           fontFamily: '"Unbounded", sans-serif',
           fontSize: '2rem',
           fontWeight: 700,
-          color: colors.marigoldSoft,
+          color: isFeatured ? colors.regGold : colors.marigoldSoft,
+          textShadow: isFeatured ? '0 1px 0 rgba(255,255,255,0.35)' : 'none',
           my: 1,
         }}
       >
@@ -63,7 +64,7 @@ function PassCard({ type, data, cardRef }) {
           sx={{
             fontSize: '0.85rem',
             fontWeight: 400,
-            color: colors.muted,
+            color: isFeatured ? colors.ivory : colors.muted,
             fontFamily: '"Plus Jakarta Sans", sans-serif',
           }}
         >

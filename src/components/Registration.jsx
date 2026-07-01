@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import FormControl from '@mui/material/FormControl'
 import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -13,6 +15,7 @@ const categoryKeys = ['male', 'female', 'couple']
 
 export default function Registration() {
   const [category, setCategory] = useState('male')
+  const [passType, setPassType] = useState('')
   const selected = registrationCategories[category]
 
   const handleSubmit = (event) => {
@@ -192,20 +195,43 @@ export default function Registration() {
             <TextField required placeholder="Full Name" fullWidth />
             <TextField required placeholder="Mobile Number" type="tel" fullWidth />
             <TextField placeholder="Email Address" type="email" fullWidth />
-            <TextField required select defaultValue="" fullWidth>
-              <MenuItem value="" disabled>
-                Select Pass Type
-              </MenuItem>
-              {passTypeOptions.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
+            <FormControl fullWidth required>
+              <Select
+                value={passType}
+                onChange={(event) => setPassType(event.target.value)}
+                displayEmpty
+                renderValue={(value) =>
+                  value ? value : <Box sx={{ color: colors.regBrown }}>Select Pass Type</Box>
+                }
+                inputProps={{ 'aria-label': 'Select Pass Type' }}
+                sx={{
+                  bgcolor: '#FFF9EA',
+                  color: passType ? colors.ivory : colors.regBrown,
+                  borderRadius: '12px',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(139,107,46,0.25)',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(139,107,46,0.4)',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: colors.teal,
+                  },
+                }}
+              >
+                <MenuItem value="" disabled>
+                  Select Pass Type
                 </MenuItem>
-              ))}
-            </TextField>
+                {passTypeOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               type="number"
               placeholder="Number of Tickets"
-              defaultValue={1}
               inputProps={{ min: 1, max: 10 }}
               fullWidth
             />
