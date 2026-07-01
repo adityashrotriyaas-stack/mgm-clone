@@ -7,7 +7,6 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import UpcomingNights from './components/UpcomingNights'
 import Passes from './components/Passes'
-import Registration from './components/Registration'
 import PastNights, { Footer } from './components/PastNights'
 import StickyCTA from './components/StickyCTA'
 import WhatsAppFloat from './components/WhatsAppFloat'
@@ -22,7 +21,6 @@ function App() {
       <AboutSection />
       <UpcomingNights />
       <Passes />
-      <Registration />
       <LegacySection />
       <PastNights />
       <ContactSection />

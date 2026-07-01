@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
 
 export default function StickyCTA() {
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -32,8 +34,7 @@ export default function StickyCTA() {
         </Typography>
       </Box>
       <Button
-        component="a"
-        href="#register"
+        onClick={() => navigate('/event/1')}
         sx={{
           background: gradients.primary,
           color: colors.bg,

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -16,6 +17,7 @@ import { colors } from '../constants/colors'
 import { navLinks } from '../data/siteData'
 
 export default function Header() {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
 
   const closeMenu = () => setOpen(false)
@@ -135,8 +137,7 @@ export default function Header() {
           </Stack>
 
           <Button
-            component="a"
-            href="#register"
+            onClick={() => navigate('/event/1')}
             startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
@@ -196,9 +197,9 @@ export default function Header() {
                 </Box>
               ))}
               <Box component="li" sx={{ mt: 1.25 }}>
-                <Link
-                  href="#register"
-                  onClick={closeMenu}
+                <Button
+                  onClick={() => { closeMenu(); navigate('/event/1') }}
+                  fullWidth
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -209,11 +210,12 @@ export default function Header() {
                     fontWeight: 700,
                     bgcolor: colors.gold,
                     color: '#fff',
+                    '&:hover': { bgcolor: colors.marigold },
                   }}
                 >
                   <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
                   Get Your Pass
-                </Link>
+                </Button>
               </Box>
             </Stack>
           </Box>
