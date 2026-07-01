@@ -8,7 +8,6 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import heroBg from '../assets/image.png'
 import { colors } from '../constants/colors'
 import { heroFeatures } from '../data/siteData'
 
@@ -68,9 +67,9 @@ export default function Hero() {
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url(${heroBg})`,
+          backgroundImage: 'url(/images/hero-durga.png)',
           backgroundSize: 'cover',
-          backgroundPosition: { xs: 'center', md: 'center right' },
+          backgroundPosition: { xs: 'center 20%', md: 'right center' },
           backgroundRepeat: 'no-repeat',
         }}
       />

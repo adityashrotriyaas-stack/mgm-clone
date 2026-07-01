@@ -4,6 +4,7 @@ import ContactSection from './components/ContactSection'
 import LegacySection from './components/LegacySection'
 import ProgressBar from './components/ProgressBar'
 import Header from './components/Header'
+import PromoBanner from './components/PromoBanner'
 import Hero from './components/Hero'
 import UpcomingNights from './components/UpcomingNights'
 import Passes from './components/Passes'
@@ -18,6 +19,7 @@ function App() {
     <Box sx={{ bgcolor: colors.bg, color: colors.ivory, pb: { xs: 10, lg: 0 } }}>
       <ProgressBar />
       <Header />
+      <PromoBanner />
       <Hero />
       <AboutSection />
       <UpcomingNights />
