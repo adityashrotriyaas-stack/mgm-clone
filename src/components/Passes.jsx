@@ -8,8 +8,7 @@ import { RevealBox, SectionHead } from './shared'
 import { colors, gradients } from '../constants/colors'
 import { passOptions } from '../data/siteData'
 
-function PassCard({ type, data, cardRef }) {
-  const navigate = useNavigate()
+function PassCard({ type, data, cardRef, onBook }) {
   const isFeatured = data.featured
 
   return (
@@ -96,7 +95,7 @@ function PassCard({ type, data, cardRef }) {
         ))}
       </Box>
       <Button
-        onClick={() => navigate(`/event/1`)}
+        onClick={() => onBook()}
         fullWidth
         sx={{
           py: 1.6,
@@ -122,6 +121,7 @@ function PassCard({ type, data, cardRef }) {
 }
 
 export default function Passes() {
+  const navigate = useNavigate()
   const [activePass, setActivePass] = useState('daily')
   const dailyRef = useRef(null)
   const seasonalRef = useRef(null)
@@ -186,8 +186,8 @@ export default function Passes() {
             gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
           }}
         >
-          <PassCard type="daily" data={passOptions.daily} cardRef={dailyRef} />
-          <PassCard type="seasonal" data={passOptions.seasonal} cardRef={seasonalRef} />
+          <PassCard type="daily" data={passOptions.daily} cardRef={dailyRef} onBook={() => navigate('/event/1')} />
+          <PassCard type="seasonal" data={passOptions.seasonal} cardRef={seasonalRef} onBook={() => navigate('/event/1')} />
         </RevealBox>
       </Box>
     </Box>

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -59,6 +60,7 @@ function FeatureItem({ icon, title, subtitle }) {
 }
 
 export default function Hero() {
+  const navigate = useNavigate()
   return (
     <Box
       component="section"
@@ -180,8 +182,7 @@ export default function Hero() {
               alignItems={{ xs: 'stretch', sm: 'center' }}
             >
               <Button
-                component="a"
-                href="#register"
+                onClick={() => navigate('/event/1')}
                 startIcon={<ConfirmationNumberOutlinedIcon />}
                 sx={{
                   background: gradients.primary,

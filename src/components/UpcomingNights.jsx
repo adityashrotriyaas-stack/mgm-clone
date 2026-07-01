@@ -12,8 +12,7 @@ import { RevealBox, SectionHead } from './shared'
 import { colors } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
 
-function EventCard({ event }) {
-  const navigate = useNavigate()
+function EventCard({ event, onBook }) {
   return (
     <RevealBox
       sx={{
@@ -98,7 +97,7 @@ function EventCard({ event }) {
             </Box>
           </Typography>
           <Button
-            onClick={() => navigate(`/event/${event.id}`)}
+            onClick={() => onBook(event.id)}
             sx={{
               bgcolor: 'rgba(255,255,255,0.08)',
               color: colors.ivory,
@@ -123,6 +122,7 @@ function EventCard({ event }) {
 }
 
 export default function UpcomingNights() {
+  const navigate = useNavigate()
   const sliderRef = useRef(null)
 
   const scrollSlider = (direction) => {
@@ -210,7 +210,7 @@ export default function UpcomingNights() {
             }}
           >
             {upcomingEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <EventCard key={event.id} event={event} onBook={(id) => navigate(`/event/${id}`)} />
             ))}
           </Box>
         </Box>
