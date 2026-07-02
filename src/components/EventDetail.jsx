@@ -23,6 +23,9 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded'
+import MicIcon from '@mui/icons-material/Mic'
+import BusinessIcon from '@mui/icons-material/Business'
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
 import PhotoCaptureField from './PhotoCaptureField'
 import { colors, gradients } from '../constants/colors'
 import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
@@ -250,6 +253,73 @@ export default function EventDetail() {
                   </Grid>
                 ))}
               </Grid>
+            </Box>
+
+            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
+
+            <Box sx={{ mb: 4, position: 'relative' }}>
+              <Box sx={{ position: 'absolute', bottom: -20, left: -15, width: 100, height: 100, borderRadius: '50%', background: `radial-gradient(circle, ${colors.coral}06, transparent 70%)`, pointerEvents: 'none' }} />
+              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Artist</Typography>
+              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)' }}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Box sx={{ width: 56, height: 56, borderRadius: '50%', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <MicIcon sx={{ color: '#fff', fontSize: '1.4rem' }} />
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontWeight: 700, fontSize: '1.05rem', color: colors.ivory }}>Raj Gadhvi</Typography>
+                    <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>Live Garba & Folk Vocalist</Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+
+            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
+
+            <Box sx={{ mb: 4, position: 'relative' }}>
+              <Box sx={{ position: 'absolute', top: -15, right: -10, width: 80, height: 80, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
+              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Organized by</Typography>
+              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)' }}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Box sx={{ width: 48, height: 48, borderRadius: '12px', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <BusinessIcon sx={{ color: '#fff', fontSize: '1.2rem' }} />
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontWeight: 700, fontSize: '1rem', color: colors.ivory }}>MGM Event</Typography>
+                    <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>Rajkot, Gujarat</Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+
+            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
+
+            <Box sx={{ mb: 4, position: 'relative' }}>
+              <Box sx={{ position: 'absolute', bottom: -20, right: -15, width: 90, height: 90, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
+              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Event Layout</Typography>
+              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)' }}>
+                <Stack spacing={1.25}>
+                  <Stack direction="row" spacing={1.25} alignItems="center">
+                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', background: gradients.primary, flexShrink: 0 }} />
+                    <Typography sx={{ fontSize: '0.9rem', color: colors.ivory, fontWeight: 600 }}>Main Stage</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1.25} alignItems="center">
+                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', background: colors.gold, flexShrink: 0 }} />
+                    <Typography sx={{ fontSize: '0.9rem', color: colors.ivory, fontWeight: 600 }}>Fanpit Zone</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1.25} alignItems="center">
+                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', background: colors.coral, flexShrink: 0 }} />
+                    <Typography sx={{ fontSize: '0.9rem', color: colors.ivory, fontWeight: 600 }}>VIP Lounge</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1.25} alignItems="center">
+                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', background: colors.teal, flexShrink: 0 }} />
+                    <Typography sx={{ fontSize: '0.9rem', color: colors.ivory, fontWeight: 600 }}>Food Court</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1.25} alignItems="center">
+                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', background: colors.marigoldSoft, flexShrink: 0 }} />
+                    <Typography sx={{ fontSize: '0.9rem', color: colors.ivory, fontWeight: 600 }}>Entry Gate</Typography>
+                  </Stack>
+                </Stack>
+              </Box>
             </Box>
           </Box>
         ) : (
