@@ -11,8 +11,8 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded'
-import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 import ConfirmationNumberRoundedIcon from '@mui/icons-material/ConfirmationNumberRounded'
+import PhotoCaptureField from './PhotoCaptureField'
 import { upcomingEvents, registrationCategories, passOptions } from '../data/siteData'
 import promoBanner from '../assets/image.png'
 
@@ -164,7 +164,7 @@ const fieldSx = {
   '& .MuiInputBase-input::placeholder': { color: '#999', opacity: 1 },
 }
 
-function PersonFields({ title, person, onFieldChange, onSelfieChange }) {
+function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
   return (
     <Box sx={{ display: 'grid', gap: 1.5 }}>
       {title && (
@@ -175,32 +175,7 @@ function PersonFields({ title, person, onFieldChange, onSelfieChange }) {
       <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
       <TextField required placeholder="Mobile Number" type="tel" value={person.mobile} onChange={onFieldChange('mobile')} fullWidth />
       <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
-      <Box
-        sx={{
-          border: '1px dashed #E5E4E9',
-          borderRadius: '8px',
-          p: 2,
-          textAlign: 'center',
-          bgcolor: '#f8f9fa',
-        }}
-      >
-        <CameraAltOutlinedIcon sx={{ color: '#ff9466', fontSize: '2rem', mb: 1 }} />
-        <Typography sx={{ fontSize: '0.88rem', fontWeight: 700, color: '#000', mb: 0.5 }}>
-          Upload Selfie (Mandatory)
-        </Typography>
-        <Button component="label" variant="outlined" sx={{ borderColor: '#ff9466', color: '#ff9466', textTransform: 'none' }}>
-          Choose Photo
-          <input hidden accept="image/*" type="file" onChange={onSelfieChange} />
-        </Button>
-        {person.selfiePreview && (
-          <Box
-            component="img"
-            src={person.selfiePreview}
-            alt="Selfie preview"
-            sx={{ display: 'block', width: 88, height: 88, borderRadius: '8px', objectFit: 'cover', mx: 'auto', mt: 1.5 }}
-          />
-        )}
-      </Box>
+      <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} />
       <TextField
         required
         placeholder="Aadhaar Card Number"
@@ -228,6 +203,8 @@ export default function EventDetail() {
   const [femaleForm, setFemaleForm] = useState(emptyPerson)
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
+  const isSeasonalPass = passMode === 'seasonal'
+  const pricingSource = isSeasonalPass ? selectedPass?.data : selected
 
   const scrollToRegistration = () => {
     setTab('registration')
@@ -241,10 +218,13 @@ export default function EventDetail() {
     setter((prev) => ({ ...prev, [field]: event.target.value }))
   }
 
-  const makeSelfieUpdater = (setter) => (event) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    setter((prev) => ({ ...prev, selfiePreview: URL.createObjectURL(file) }))
+  const makePhotoUpdater = (setter) => (previewUrl) => {
+    setter((prev) => {
+      if (prev.selfiePreview?.startsWith('blob:')) {
+        URL.revokeObjectURL(prev.selfiePreview)
+      }
+      return { ...prev, selfiePreview: previewUrl }
+    })
   }
 
   const isPersonComplete = (person) =>
@@ -268,6 +248,8 @@ export default function EventDetail() {
             category,
             passMode,
             passLabel,
+            passPrice: pricingSource?.price,
+            passPriceUnit: pricingSource?.priceUnit,
             eventId: id,
             male: maleForm,
             female: femaleForm,
@@ -279,6 +261,8 @@ export default function EventDetail() {
             category,
             passMode,
             passLabel,
+            passPrice: pricingSource?.price,
+            passPriceUnit: pricingSource?.priceUnit,
             eventId: id,
             ...personForm,
           }
@@ -603,15 +587,15 @@ export default function EventDetail() {
                   {selected && (
                     <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 2, textAlign: 'center' }}>
                       <Typography sx={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, color: '#777', fontWeight: 600 }}>
-                        {selected.eyebrow}
+                        {isSeasonalPass ? 'Seasonal Entry' : selected.eyebrow}
                       </Typography>
                       <Typography sx={{ fontWeight: 700, fontSize: '1rem', color: '#000', mt: 0.5 }}>{selected.title}</Typography>
                       <Typography sx={{ fontWeight: 700, fontSize: '1.5rem', color: '#000', my: 1 }}>
-                        {selected.price}
-                        <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#777' }}>{selected.priceUnit}</Box>
+                        {pricingSource?.price}
+                        <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#777' }}>{pricingSource?.priceUnit}</Box>
                       </Typography>
                       <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.875rem', color: '#555' }}>
-                        {selected.perks.map((perk) => (
+                        {(pricingSource?.perks || []).map((perk) => (
                           <Box component="li" key={perk} sx={{ py: 0.5, pl: 2.5, position: 'relative', '&::before': { content: '"✦"', position: 'absolute', left: 0, color: '#22c55e', fontSize: '0.75rem' } }}>
                             {perk}
                           </Box>
@@ -655,7 +639,7 @@ export default function EventDetail() {
                     <Typography sx={{ fontSize: '0.82rem', color: '#555' }}>
                       {selectedPass.title} · {selected.title}
                     </Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#000' }}>{selected.price}{selected.priceUnit}</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#000' }}>{pricingSource?.price}{pricingSource?.priceUnit}</Typography>
                   </Box>
 
                   {category === 'couple' ? (
@@ -664,14 +648,14 @@ export default function EventDetail() {
                         title="Male Details"
                         person={maleForm}
                         onFieldChange={makeFieldUpdater(setMaleForm)}
-                        onSelfieChange={makeSelfieUpdater(setMaleForm)}
+                        onPhotoChange={makePhotoUpdater(setMaleForm)}
                       />
                       <Divider />
                       <PersonFields
                         title="Female Details"
                         person={femaleForm}
                         onFieldChange={makeFieldUpdater(setFemaleForm)}
-                        onSelfieChange={makeSelfieUpdater(setFemaleForm)}
+                        onPhotoChange={makePhotoUpdater(setFemaleForm)}
                       />
                     </Stack>
                   ) : (
@@ -679,7 +663,7 @@ export default function EventDetail() {
                       title={category === 'male' ? 'Male Details' : 'Female Details'}
                       person={personForm}
                       onFieldChange={makeFieldUpdater(setPersonForm)}
-                      onSelfieChange={makeSelfieUpdater(setPersonForm)}
+                      onPhotoChange={makePhotoUpdater(setPersonForm)}
                     />
                   )}
 

@@ -163,7 +163,12 @@ export default function BookingFlow() {
                     {registration.category === 'couple' ? ' · 2 persons' : ''}
                   </Typography>
                   <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.2rem', mt: 0.5 }}>
-                    {selectedCategory.price}
+                    {registration.passPrice || selectedCategory.price}
+                    {registration.passPriceUnit ? (
+                      <Box component="span" sx={{ fontSize: '0.82rem', fontWeight: 500, color: colors.muted, ml: 0.5 }}>
+                        {registration.passPriceUnit}
+                      </Box>
+                    ) : null}
                   </Typography>
                   <Typography sx={{ fontSize: '0.78rem', color: colors.muted, mt: 0.5 }}>
                     {registration.name} · {registration.mobile}

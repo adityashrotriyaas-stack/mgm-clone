@@ -11,7 +11,7 @@ const workflowSteps = [
   { step: 1, title: 'Book Now', description: 'Click Book Now to start your booking.' },
   { step: 2, title: 'Select Pass Type', description: 'Choose Season Pass or Daily Pass.' },
   { step: 3, title: 'Choose Category', description: 'Select Male, Female, or Couple.' },
-  { step: 4, title: 'Fill Registration', description: 'Enter details and upload selfie + Aadhaar.' },
+  { step: 4, title: 'Fill Registration', description: 'Enter details and upload pass photo + Aadhaar.' },
   { step: 5, title: 'Complete Payment', description: 'Pay securely via UPI, card, or wallet.' },
   { step: 6, title: 'Receive QR Pass', description: 'Get your QR pass on WhatsApp, email & download.' },
 ]
