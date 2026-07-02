@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import { RevealBox, SectionHead } from './shared'
 import { colors } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
@@ -82,46 +84,63 @@ function EventCard({ event, onBook }) {
             fontSize: { xs: '1rem', sm: '1.05rem' },
             color: colors.ivory,
             fontWeight: 600,
-            mb: 0.75,
+            mb: 1,
             lineHeight: 1.3,
           }}
         >
           {event.title}
         </Typography>
         <Stack
-          direction="column"
-          spacing={0.5}
-          sx={{ mb: 1.75, fontSize: '0.78rem', color: colors.muted }}
+          spacing={0.7}
+          sx={{ mb: 1.5, fontSize: '0.78rem', color: colors.muted }}
         >
-          <span>{event.date}</span>
-          <span>{event.time}</span>
+          <Stack direction="row" spacing={0.8} alignItems="center">
+            <CalendarMonthOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.teal }} />
+            <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{event.date}</Typography>
+          </Stack>
+          <Stack direction="row" spacing={0.8} alignItems="center">
+            <AccessTimeOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.teal }} />
+            <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{event.time}</Typography>
+          </Stack>
         </Stack>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-          <Typography sx={{ fontWeight: 800, color: colors.marigoldSoft, fontSize: '0.95rem', minWidth: 0 }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          alignItems={{ xs: 'stretch', sm: 'center' }}
+          justifyContent="space-between"
+          spacing={1.25}
+        >
+          <Box sx={{ minWidth: 0 }}>
+            <Typography sx={{ fontWeight: 800, color: colors.marigoldSoft, fontSize: '1rem', minWidth: 0 }}>
             {event.price}{' '}
             <Box component="span" sx={{ fontWeight: 500, color: colors.muted, fontSize: '0.72rem' }}>
               {event.priceUnit}
             </Box>
-          </Typography>
+            </Typography>
+            <Typography sx={{ fontSize: '0.72rem', color: colors.muted, mt: 0.25 }}>
+              Limited passes available
+            </Typography>
+          </Box>
           <Button
             onClick={() => onBook(event.id)}
             sx={{
-              bgcolor: 'rgba(255,255,255,0.08)',
-              color: colors.ivory,
+              background: `linear-gradient(135deg, ${colors.marigold}, ${colors.coral})`,
+              color: '#fff',
               fontWeight: 700,
-              fontSize: '0.82rem',
-              px: 2.25,
-              py: 1.25,
-              minHeight: 44,
-              borderRadius: '24px',
+              fontSize: '0.84rem',
+              px: 2.5,
+              py: 1.2,
+              minHeight: 46,
+              minWidth: { xs: '100%', sm: 120 },
+              borderRadius: '999px',
               flexShrink: 0,
+              boxShadow: '0 10px 22px rgba(184,92,58,0.22)',
               '&:hover': {
                 background: `linear-gradient(135deg, ${colors.marigold}, ${colors.coral})`,
-                color: colors.bg,
+                filter: 'brightness(1.04)',
               },
             }}
           >
-            Book
+            Book Pass
           </Button>
         </Stack>
       </Box>
@@ -132,6 +151,7 @@ function EventCard({ event, onBook }) {
 export default function UpcomingNights() {
   const navigate = useNavigate()
   const sliderRef = useRef(null)
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
 
   const scrollSlider = (direction) => {
     const node = sliderRef.current
@@ -143,6 +163,25 @@ export default function UpcomingNights() {
       behavior: 'smooth',
     })
   }
+
+  useEffect(() => {
+    const node = sliderRef.current
+    if (!node || isAutoScrollPaused) return undefined
+
+    const interval = window.setInterval(() => {
+      const maxScrollLeft = node.scrollWidth - node.clientWidth
+      const amount = Math.min(node.clientWidth * 0.85, 340)
+
+      if (node.scrollLeft >= maxScrollLeft - 8) {
+        node.scrollTo({ left: 0, behavior: 'smooth' })
+        return
+      }
+
+      node.scrollBy({ left: amount, behavior: 'smooth' })
+    }, 3200)
+
+    return () => window.clearInterval(interval)
+  }, [isAutoScrollPaused])
 
   return (
     <Box component="section" id="upcoming" sx={{ py: { xs: 4.5, md: 6.25 }, overflow: 'hidden' }}>
@@ -202,6 +241,12 @@ export default function UpcomingNights() {
 
           <Box
             ref={sliderRef}
+            onMouseEnter={() => setIsAutoScrollPaused(true)}
+            onMouseLeave={() => setIsAutoScrollPaused(false)}
+            onTouchStart={() => setIsAutoScrollPaused(true)}
+            onTouchEnd={() => {
+              window.setTimeout(() => setIsAutoScrollPaused(false), 2500)
+            }}
             sx={{
               display: 'flex',
               flexWrap: 'nowrap',
