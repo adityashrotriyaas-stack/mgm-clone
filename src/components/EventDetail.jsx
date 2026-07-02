@@ -50,6 +50,15 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
       'Global Exhibitors & Delegates',
       'Business Matchmaking Sessions',
     ],
+    singer: {
+      name: 'Raj Gadhvi',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Main Stage', 'Fanpit Zone', 'VIP Lounge', 'Food Court', 'Entry Gate'],
     cta: 'Book Stag Pass',
   },
   2: {
@@ -80,6 +89,15 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
       'Fairy-Light Themed Decor',
       'Live Folk & Romantic Beats',
     ],
+    singer: {
+      name: 'Aishwarya Majmudar',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Couple Zone', 'Main Stage', 'Mocktail Bar', 'Photo Booth', 'Entry Gate'],
     cta: 'Book Couple Pass',
   },
   3: {
@@ -108,6 +126,15 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
       'Fusion-Themed Stage Decor',
       'Late-Night Snack Counters Open',
     ],
+    singer: {
+      name: 'Parthiv Gohil',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['LED Dance Floor', 'Main Stage', 'Food Court', 'Lounge Deck', 'Entry Gate'],
     cta: 'Book Your Pass',
   },
   4: {
@@ -136,6 +163,15 @@ Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri be
       'Premium Welcome Gift Pack',
       'Farewell Community Photo',
     ],
+    singer: {
+      name: 'Falguni Pathak Tribute Live',
+      image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Maha Aarti Stage', 'Premium Deck', 'Garba Arena', 'Food Court', 'Entry Gate'],
     cta: 'Book Premium Pass',
   },
 }
@@ -194,6 +230,91 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
         fullWidth
         inputProps={{ inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 }}
       />
+    </Box>
+  )
+}
+
+function DetailInfoCard({ title, children }) {
+  return (
+    <Box sx={{ mb: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>
+        {title}
+      </Typography>
+      <Box
+        sx={{
+          maxWidth: 360,
+          bgcolor: '#fff',
+          border: '1px solid #E5E4E9',
+          borderRadius: '14px',
+          overflow: 'hidden',
+          boxShadow: '0 8px 22px rgba(15, 23, 42, 0.08)',
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  )
+}
+
+function EventLayoutCard({ zones = [] }) {
+  return (
+    <Box sx={{ mb: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>
+        Event Layout
+      </Typography>
+      <Box
+        sx={{
+          maxWidth: 420,
+          bgcolor: '#fff',
+          border: '1px solid #E5E4E9',
+          borderRadius: '14px',
+          p: 1.5,
+          boxShadow: '0 8px 22px rgba(15, 23, 42, 0.08)',
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            minHeight: 190,
+            background: 'linear-gradient(180deg, #F6A7C1 0 10%, #D7ED9A 10% 82%, #4A4F65 82% 100%)',
+            border: '1px solid rgba(0,0,0,0.08)',
+          }}
+        >
+          <Box sx={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', fontWeight: 800, color: '#4B2D18', fontSize: '0.92rem' }}>
+            Main Stage
+          </Box>
+          <Box sx={{ position: 'absolute', top: '28%', left: '50%', transform: 'translateX(-50%)', px: 1.5, py: 0.75, borderRadius: '10px', bgcolor: 'rgba(255,255,255,0.68)', color: '#4B2D18', fontWeight: 700, fontSize: '0.82rem' }}>
+            Fanpit Zone
+          </Box>
+          <Box sx={{ position: 'absolute', left: 12, bottom: 18, px: 1.25, py: 0.65, borderRadius: '10px', bgcolor: 'rgba(0,0,0,0.36)', color: '#fff', fontSize: '0.76rem', fontWeight: 700 }}>
+            Entry Gate
+          </Box>
+          <Box sx={{ position: 'absolute', right: 12, bottom: 18, px: 1.25, py: 0.65, borderRadius: '10px', bgcolor: 'rgba(0,0,0,0.36)', color: '#fff', fontSize: '0.76rem', fontWeight: 700 }}>
+            Food Court
+          </Box>
+        </Box>
+        <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mt: 1.5 }}>
+          {zones.map((zone) => (
+            <Box
+              key={zone}
+              sx={{
+                px: 1.1,
+                py: 0.55,
+                borderRadius: '999px',
+                bgcolor: '#f8f9fa',
+                border: '1px solid #E5E4E9',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                color: '#555',
+              }}
+            >
+              {zone}
+            </Box>
+          ))}
+        </Stack>
+      </Box>
     </Box>
   )
 }
@@ -506,6 +627,68 @@ export default function EventDetail() {
                 ))}
               </Grid>
             </Box>
+
+            <Divider sx={{ mb: 3 }} />
+
+            <DetailInfoCard title="Singer">
+              <Box
+                component="img"
+                src={info.singer.image}
+                alt={info.singer.name}
+                sx={{ width: '100%', height: 150, objectFit: 'cover', display: 'block' }}
+              />
+              <Box sx={{ p: 2, textAlign: 'center' }}>
+                <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '1rem' }}>
+                  {info.singer.name}
+                </Typography>
+              </Box>
+            </DetailInfoCard>
+
+            <Divider sx={{ mb: 3 }} />
+
+            <DetailInfoCard title="Organized by">
+              <Box sx={{ p: 2, textAlign: 'center' }}>
+                <Box
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    mx: 'auto',
+                    mb: 1.5,
+                    borderRadius: '16px',
+                    border: '1px solid #E5E4E9',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: '#fff',
+                    fontFamily: '"Playfair Display", serif',
+                    fontSize: '3rem',
+                    color: '#4B2D18',
+                    position: 'relative',
+                  }}
+                >
+                  {info.organizer.mark}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      width: 44,
+                      height: 44,
+                      borderRadius: '50%',
+                      border: '4px solid #D4AF37',
+                      left: 18,
+                      top: 18,
+                      opacity: 0.9,
+                    }}
+                  />
+                </Box>
+                <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '1rem' }}>
+                  {info.organizer.name}
+                </Typography>
+              </Box>
+            </DetailInfoCard>
+
+            <Divider sx={{ mb: 3 }} />
+
+            <EventLayoutCard zones={info.layoutZones} />
           </Box>
         ) : (
           <Box id="event-registration" sx={{ maxWidth: 600, mx: 'auto', width: '100%' }}>
