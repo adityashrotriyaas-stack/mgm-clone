@@ -10,6 +10,10 @@ import CallOutlinedIcon from '@mui/icons-material/CallOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined'
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
+import InputAdornment from '@mui/material/InputAdornment'
 import { colors, gradients } from '../constants/colors'
 import { contactInfo, getWhatsAppUrl } from '../data/contactInfo'
 import { RevealBox, SectionHead } from './shared'
@@ -104,7 +108,7 @@ function ContactForm() {
         display: 'grid',
         gap: 1.5,
         '& .MuiOutlinedInput-root': {
-          bgcolor: '#fff',
+          bgcolor: colors.bg,
           borderRadius: '12px',
           fontSize: '0.9rem',
           '& fieldset': { borderColor: 'rgba(139,107,46,0.16)' },
@@ -126,8 +130,29 @@ function ContactForm() {
         </Typography>
       </Box>
 
-      <TextField required name="name" placeholder="Full Name" fullWidth />
-      <TextField required name="mobile" placeholder="Mobile Number" type="tel" fullWidth />
+      <TextField
+        required
+        name="name"
+        placeholder="Full Name"
+        fullWidth
+        slotProps={{
+          input: {
+            startAdornment: <InputAdornment position="start"><PersonOutlineOutlinedIcon sx={{ color: colors.gold, fontSize: '1.15rem' }} /></InputAdornment>,
+          },
+        }}
+      />
+      <TextField
+        required
+        name="mobile"
+        placeholder="Mobile Number"
+        type="tel"
+        fullWidth
+        slotProps={{
+          input: {
+            startAdornment: <InputAdornment position="start"><PhoneOutlinedIcon sx={{ color: colors.gold, fontSize: '1.15rem' }} /></InputAdornment>,
+          },
+        }}
+      />
       <TextField
         required
         name="message"
@@ -135,6 +160,11 @@ function ContactForm() {
         multiline
         rows={3}
         fullWidth
+        slotProps={{
+          input: {
+            startAdornment: <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 0.6 }}><HelpOutlineOutlinedIcon sx={{ color: colors.gold, fontSize: '1.15rem' }} /></InputAdornment>,
+          },
+        }}
       />
 
       <Button
@@ -170,6 +200,19 @@ export default function ContactSection() {
       sx={{
         py: { xs: 5, md: 7 },
         bgcolor: colors.bg,
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-20%',
+          left: '-10%',
+          width: 400,
+          height: 400,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2.5, md: 3 } }}>
@@ -184,11 +227,32 @@ export default function ContactSection() {
             sx={{
               maxWidth: 920,
               mx: 'auto',
-              bgcolor: '#fff',
+              bgcolor: colors.bg,
               borderRadius: '24px',
               border: '1px solid rgba(184,134,11,0.12)',
               boxShadow: '0 18px 48px rgba(44,31,16,0.07)',
               overflow: 'hidden',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '3px',
+                background: gradients.primary,
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: '-30%',
+                right: '-8%',
+                width: 200,
+                height: 200,
+                borderRadius: '50%',
+                background: `radial-gradient(circle, ${colors.marigold}08, transparent 70%)`,
+                pointerEvents: 'none',
+              },
             }}
           >
             <Box

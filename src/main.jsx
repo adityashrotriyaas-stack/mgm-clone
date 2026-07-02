@@ -1,49 +1,23 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { useEffect } from 'react'
-import { ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import { Outlet, createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
-import App from './App.jsx'
-import BookingFlow from './components/BookingFlow.jsx'
-import EventDetail from './components/EventDetail.jsx'
-import theme from './theme.js'
-
-function ScrollToTopLayout() {
-  const location = useLocation()
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-  }, [location.pathname, location.search])
-
-  return <Outlet />
-}
-
-const router = createBrowserRouter([
-  {
-    element: <ScrollToTopLayout />,
-    children: [
-      {
-        path: '/',
-        element: <App />,
-      },
-      {
-        path: '/book',
-        element: <BookingFlow />,
-      },
-      {
-        path: '/event/:eventId',
-        element: <EventDetail />,
-      },
-    ],
-  },
-])
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ThemeProvider, CssBaseline } from '@mui/material'
+import theme from './theme'
+import App from './App'
+import EventDetail from './components/EventDetail'
+import BookingFlow from './components/BookingFlow'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RouterProvider router={router} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/event/:eventId" element={<EventDetail />} />
+          <Route path="/book" element={<BookingFlow />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   </StrictMode>,
 )

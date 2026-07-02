@@ -7,10 +7,6 @@ import { upcomingEvents } from '../data/siteData'
 
 const featuredEvent = upcomingEvents[0]
 
-function cleanLabel(value = '') {
-  return value.replace(/^[^\w]+/u, '').trim()
-}
-
 export default function StickyCTA() {
   const navigate = useNavigate()
 
@@ -72,14 +68,14 @@ export default function StickyCTA() {
             mt: 0.25,
           }}
         >
-          {featuredEvent.night} · {cleanLabel(featuredEvent.date)} · {cleanLabel(featuredEvent.time)}
+          {featuredEvent.night} · {featuredEvent.date} · {featuredEvent.time}
         </Typography>
       </Box>
       <Button
         onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
           background: gradients.primary,
-          color: colors.bg,
+          color: '#fff',
           px: { xs: 2.5, sm: 3 },
           py: 1.35,
           minHeight: 48,
@@ -89,7 +85,8 @@ export default function StickyCTA() {
           borderRadius: '50px',
           flexShrink: 0,
           boxShadow: '0 8px 20px rgba(184,134,11,0.28)',
-          '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+          transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+          '&:hover': { background: gradients.primaryReversed, transform: 'translateY(-1px)', boxShadow: '0 10px 24px rgba(184,134,11,0.35)' },
         }}
       >
         Book Now

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { colors } from '../constants/colors'
+import { colors, gradients } from '../constants/colors'
 
 function useRevealRef(threshold = 0.15) {
   const ref = useRef(null)
@@ -108,5 +109,68 @@ export function RevealBox({ children, sx }) {
     >
       {children}
     </Box>
+  )
+}
+
+export function StaggerReveal({ children, sx, staggerMs = 80 }) {
+  const { ref, visible } = useRevealRef()
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        '& > *': {
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(28px)',
+          transition: 'opacity 0.6s ease, transform 0.6s ease',
+          transitionDelay: visible
+            ? (_, i) => `${i * staggerMs}ms`
+            : '0ms',
+        },
+        ...sx,
+      }}
+    >
+      {children}
+    </Box>
+  )
+}
+
+export function HoverGlow({ children, sx }) {
+  return (
+    <Box
+      sx={{
+        transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease',
+        '@media (hover: hover)': {
+          '&:hover': {
+            transform: 'translateY(-6px)',
+            boxShadow: '0 20px 40px rgba(44,31,16,0.10)',
+            borderColor: 'rgba(184,134,11,0.25)',
+          },
+        },
+        ...sx,
+      }}
+    >
+      {children}
+    </Box>
+  )
+}
+
+export function SectionDivider() {
+  return (
+    <Stack
+      direction="row"
+      spacing={1.25}
+      alignItems="center"
+      justifyContent="center"
+      sx={{ py: { xs: 2, md: 2.5 }, px: 2 }}
+    >
+      <Box sx={{ width: 40, height: '1px', background: `linear-gradient(90deg, transparent, ${colors.glassBorder})` }} />
+      <Stack direction="row" spacing={0.5}>
+        <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: colors.gold, opacity: 0.4 }} />
+        <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: colors.gold, opacity: 0.6 }} />
+        <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: colors.gold, opacity: 0.4 }} />
+      </Stack>
+      <Box sx={{ width: 40, height: '1px', background: `linear-gradient(90deg, ${colors.glassBorder}, transparent)` }} />
+    </Stack>
   )
 }

@@ -18,8 +18,8 @@ function App() {
       <ProgressBar />
       <Header />
       <Hero />
-      <AboutSection />
       <UpcomingNights />
+      <AboutSection />
       <BookingWorkflowSection />
       <LegacySection />
       <PastNights />

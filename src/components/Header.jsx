@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
-import { colors } from '../constants/colors'
+import { colors, gradients } from '../constants/colors'
 import { navLinks } from '../data/siteData'
 
 export default function Header() {
@@ -129,20 +129,20 @@ export default function Header() {
                   fontWeight: link.active ? 700 : 500,
                   fontSize: '0.88rem',
                   position: 'relative',
-                  pb: 0.5,
-                  '&:hover': { color: colors.ivory },
-                  ...(link.active && {
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      bottom: 0,
-                      left: '20%',
-                      right: '20%',
-                      height: 2,
-                      bgcolor: colors.gold,
-                      borderRadius: 1,
-                    },
-                  }),
+                  textDecoration: 'none',
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: -2,
+                    left: 0,
+                    right: 0,
+                    height: 2,
+                    bgcolor: colors.gold,
+                    borderRadius: 1,
+                    transform: link.active ? 'scaleX(1)' : 'scaleX(0)',
+                    transition: 'transform 0.25s ease',
+                  },
+                  '&:hover': { color: colors.ivory, '&::after': { transform: 'scaleX(1)' } },
                 }}
               >
                 {link.label}
@@ -155,7 +155,7 @@ export default function Header() {
             startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
-              bgcolor: colors.gold,
+              background: gradients.primary,
               color: '#fff',
               px: 2.5,
               py: 1.2,
@@ -163,9 +163,11 @@ export default function Header() {
               fontWeight: 700,
               borderRadius: '50px',
               boxShadow: '0 6px 20px rgba(184,134,11,0.35)',
+              transition: 'transform 0.25s ease, box-shadow 0.25s ease',
               '&:hover': {
-                bgcolor: colors.marigold,
-                transform: 'translateY(-1px)',
+                background: gradients.primaryReversed,
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 24px rgba(184,134,11,0.45)',
               },
             }}
           >
@@ -227,9 +229,10 @@ export default function Header() {
                     borderRadius: '50px',
                     py: 1.4,
                     fontWeight: 700,
-                    bgcolor: colors.gold,
+                    background: gradients.primary,
                     color: '#fff',
-                    '&:hover': { bgcolor: colors.marigold },
+                    boxShadow: '0 6px 20px rgba(184,134,11,0.35)',
+                    '&:hover': { background: gradients.primaryReversed },
                   }}
                 >
                   <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />

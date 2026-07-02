@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles'
-import { colors } from './constants/colors'
+import { colors, keyframes } from './constants/colors'
 
 const theme = createTheme({
   palette: {
@@ -45,24 +45,57 @@ const theme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: {
-        html: {
-          scrollBehavior: 'smooth',
-          WebkitTextSizeAdjust: '100%',
-        },
-        body: {
-          backgroundColor: colors.bg,
-          color: colors.ivory,
-          lineHeight: 1.55,
-          WebkitFontSmoothing: 'antialiased',
-          overflowX: 'clip',
-          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        },
-        a: {
-          color: 'inherit',
-          textDecoration: 'none',
-        },
-      },
+      styleOverrides: `
+        ${keyframes}
+        html {
+          scroll-behavior: smooth;
+          -webkit-text-size-adjust: 100%;
+        }
+        body {
+          background-color: ${colors.bg};
+          color: ${colors.ivory};
+          line-height: 1.55;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-rendering: optimizeLegibility;
+          overflow-x: clip;
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+        ::selection {
+          background: ${colors.gold};
+          color: #fff;
+        }
+        :focus-visible {
+          outline: 2px solid ${colors.gold};
+          outline-offset: 2px;
+        }
+        *::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        *::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        *::-webkit-scrollbar-thumb {
+          background: ${colors.glassBorder};
+          border-radius: 4px;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+          background: ${colors.glowStrong};
+        }
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
+      `,
     },
     MuiContainer: {
       styleOverrides: {
