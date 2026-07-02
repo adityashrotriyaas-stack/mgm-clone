@@ -20,6 +20,9 @@ import MusicNoteOutlinedIcon from '@mui/icons-material/MusicNoteOutlined'
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
+import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded'
 import PhotoCaptureField from './PhotoCaptureField'
 import { colors, gradients } from '../constants/colors'
 import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
@@ -88,7 +91,7 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
       <TextField required placeholder="Mobile Number" type="tel" value={person.mobile} onChange={onFieldChange('mobile')} fullWidth />
       <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
       <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} />
-      <TextField required placeholder="Aadhaar Card Number" value={person.aadhaar} onChange={onFieldChange('aadhaar')} fullWidth inputProps={{ inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 }} />
+      <TextField required placeholder="Aadhaar Card Number" value={person.aadhaar} onChange={onFieldChange('aadhaar')} fullWidth slotProps={{ htmlInput: { inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 } }} />
     </Box>
   )
 }
@@ -144,7 +147,7 @@ export default function EventDetail() {
   return (
     <Box sx={{ bgcolor: colors.bg, minHeight: '100vh', overflowX: 'clip', position: 'relative' }}>
       <Box sx={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.06, backgroundImage: `radial-gradient(circle at 15% 20%, ${colors.gold} 1px, transparent 1px), radial-gradient(circle at 85% 80%, ${colors.gold} 1px, transparent 1px)`, backgroundSize: '50px 50px, 70px 70px', backgroundPosition: '0 0, 35px 25px' }} />
-      <Box sx={{ borderBottom: '1px solid rgba(184,134,11,0.10)', background: `linear-gradient(135deg, ${colors.heroCream} 0%, ${colors.bg} 100%)`, position: 'sticky', top: 0, zIndex: 10, backdropFilter: 'blur(8px)' }}>
+      <Box sx={{ borderBottom: '1px solid rgba(184,134,11,0.10)', background: `linear-gradient(135deg, ${colors.heroCream} 0%, ${colors.bg} 100%)`, position: 'sticky', top: 0, zIndex: 10, backdropFilter: 'blur(8px)', '&::before': { content: '""', position: 'absolute', bottom: -1, left: 0, right: 0, height: '2px', background: gradients.primary, opacity: 0.6 } }}>
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 0.75 }}>
             <Button onClick={() => navigate('/')} startIcon={<ChevronLeftRoundedIcon />} sx={{ color: colors.ivory, fontWeight: 600, textTransform: 'none', fontSize: '0.85rem', '&:hover': { bgcolor: 'transparent', color: colors.gold }, '& .MuiButton-startIcon': { mr: 0.5 } }}>Back</Button>
@@ -163,9 +166,14 @@ export default function EventDetail() {
               <Typography sx={{ fontWeight: 700, color: colors.ivory, fontFamily: '"Playfair Display", serif', fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.85rem' }, lineHeight: 1.2, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>{event.title}</Typography>
               <ShareRoundedIcon sx={{ color: colors.muted, fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.5, transition: 'color 0.2s', '&:hover': { color: colors.gold } }} />
             </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ gap: 0.75 }}>
               <Chip label={event.night} sx={{ background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
               <Chip icon={<MusicNoteOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.dateRange} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
+              <Chip icon={<AccessTimeOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.time} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
+              <Chip icon={<LocationOnOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={`${info.venue}, ${info.location}`} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
+              {event.badge && (
+                <Chip icon={<LocalFireDepartmentRoundedIcon sx={{ fontSize: '0.85rem !important' }} />} label={event.badge} sx={{ background: 'rgba(184,92,58,0.12)', color: colors.coral, fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
+              )}
             </Stack>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
@@ -206,14 +214,16 @@ export default function EventDetail() {
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 }, position: 'relative', zIndex: 1 }}>
         {tab === 'info' ? (
           <Box sx={{ maxWidth: 720, mx: 'auto' }}>
-            <Box sx={{ mb: 5 }}>
+            <Box sx={{ mb: 5, position: 'relative' }}>
+              <Box sx={{ position: 'absolute', top: -40, right: -20, width: 150, height: 150, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
               <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>About</Typography>
               <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 3 }, border: '1px solid rgba(184,134,11,0.08)' }}>
                 <Typography sx={{ color: colors.muted, lineHeight: 1.85, whiteSpace: 'pre-line', fontSize: '0.95rem' }}>{info.description}</Typography>
               </Box>
             </Box>
             <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-            <Box sx={{ mb: 5 }}>
+            <Box sx={{ mb: 5, position: 'relative' }}>
+              <Box sx={{ position: 'absolute', bottom: -30, left: -20, width: 120, height: 120, borderRadius: '50%', background: `radial-gradient(circle, ${colors.coral}06, transparent 70%)`, pointerEvents: 'none' }} />
               <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Why Attend</Typography>
               <Box component="ul" sx={{ m: 0, p: 0, listStyle: 'none' }}>
                 {info.whyAttend.map((item, i) => (
@@ -227,7 +237,8 @@ export default function EventDetail() {
               </Box>
             </Box>
             <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{ mb: 4, position: 'relative' }}>
+              <Box sx={{ position: 'absolute', top: -20, right: -10, width: 100, height: 100, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
               <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Event Highlights</Typography>
               <Grid container spacing={1.5}>
                 {info.highlights.map((item, i) => (
