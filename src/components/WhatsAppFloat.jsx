@@ -19,8 +19,8 @@ export default function WhatsAppFloat() {
           xs: 'calc(88px + env(safe-area-inset-bottom, 0px))',
           lg: 'calc(24px + env(safe-area-inset-bottom, 0px))',
         },
-        left: { xs: 16, lg: 'auto' },
-        right: { xs: 'auto', lg: 24 },
+        right: 16,
+        left: 'auto',
         zIndex: 65,
       }}
     >

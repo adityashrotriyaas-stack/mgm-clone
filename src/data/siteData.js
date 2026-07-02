@@ -49,6 +49,19 @@ export const nightTracker = [
   { night: 10, status: 'upcoming' },
 ]
 
+export const navratriNights = [
+  { id: 1, label: 'Night 1', date: 'Oct 11, Sat', theme: 'Grand Opening' },
+  { id: 2, label: 'Night 2', date: 'Oct 12, Sun', theme: 'Traditional Raas' },
+  { id: 3, label: 'Night 3', date: 'Oct 13, Tue', theme: 'Rangeeli Raat' },
+  { id: 4, label: 'Night 4', date: 'Oct 14, Wed', theme: 'Dhoom Dhamaka' },
+  { id: 5, label: 'Night 5', date: 'Oct 15, Thu', theme: 'Bollywood Beats' },
+  { id: 6, label: 'Night 6', date: 'Oct 16, Fri', theme: 'Folk Fusion' },
+  { id: 7, label: 'Night 7', date: 'Oct 17, Sat', theme: 'Dandiya Dhamal' },
+  { id: 8, label: 'Night 8', date: 'Oct 18, Sun', theme: 'Celebration Night' },
+  { id: 9, label: 'Night 9', date: 'Oct 19, Mon', theme: 'Rhythm of Raas' },
+  { id: 10, label: 'Night 10', date: 'Oct 20, Tue', theme: 'Maha Aarti & Finale' },
+]
+
 export const upcomingEvents = [
   {
     id: 1,

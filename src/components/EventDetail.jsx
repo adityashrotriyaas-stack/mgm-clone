@@ -5,7 +5,10 @@ import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
+import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -13,7 +16,7 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded'
 import ConfirmationNumberRoundedIcon from '@mui/icons-material/ConfirmationNumberRounded'
 import PhotoCaptureField from './PhotoCaptureField'
-import { upcomingEvents, registrationCategories, passOptions } from '../data/siteData'
+import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
 import promoBanner from '../assets/image.png'
 
 const eventInfo = {
@@ -162,6 +165,13 @@ const fieldSx = {
     '&.Mui-focused fieldset': { borderColor: '#ff9466' },
   },
   '& .MuiInputBase-input::placeholder': { color: '#999', opacity: 1 },
+  '& .MuiSelect-select': { textAlign: 'left' },
+}
+
+function getNightLabel(nightId) {
+  const night = navratriNights.find((item) => String(item.id) === String(nightId))
+  if (!night) return ''
+  return `${night.label} · ${night.date} · ${night.theme}`
 }
 
 function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
@@ -198,6 +208,7 @@ export default function EventDetail() {
   const [regStep, setRegStep] = useState(0)
   const [passMode, setPassMode] = useState('')
   const [category, setCategory] = useState('')
+  const [selectedDay, setSelectedDay] = useState('')
   const [personForm, setPersonForm] = useState(emptyPerson)
   const [maleForm, setMaleForm] = useState(emptyPerson)
   const [femaleForm, setFemaleForm] = useState(emptyPerson)
@@ -231,10 +242,15 @@ export default function EventDetail() {
     person.name && person.mobile && person.email && person.aadhaar.length === 12 && person.selfiePreview
 
   const canSubmitForm = () => {
+    if (!isSeasonalPass && !selectedDay) return false
     if (category === 'couple') {
       return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
     }
     return isPersonComplete(personForm)
+  }
+
+  const goToDetailsStep = () => {
+    setRegStep(2)
   }
 
   const handleSubmit = (e) => {
@@ -242,6 +258,12 @@ export default function EventDetail() {
     if (!canSubmitForm()) return
 
     const passLabel = selectedPass?.data.title || passMode
+    const dayDetails = !isSeasonalPass && selectedDay
+      ? {
+          selectedDay,
+          selectedDayLabel: getNightLabel(selectedDay),
+        }
+      : {}
     const registration =
       category === 'couple'
         ? {
@@ -256,6 +278,7 @@ export default function EventDetail() {
             name: `${maleForm.name} & ${femaleForm.name}`,
             mobile: maleForm.mobile,
             email: maleForm.email,
+            ...dayDetails,
           }
         : {
             category,
@@ -265,6 +288,7 @@ export default function EventDetail() {
             passPriceUnit: pricingSource?.priceUnit,
             eventId: id,
             ...personForm,
+            ...dayDetails,
           }
 
     navigate(`/book?event=${eventId}`, { state: { registration } })
@@ -524,6 +548,7 @@ export default function EventDetail() {
                       key={item.id}
                       onClick={() => {
                         setPassMode(item.id)
+                        if (item.id === 'seasonal') setSelectedDay('')
                         setRegStep(1)
                       }}
                       sx={{
@@ -613,7 +638,7 @@ export default function EventDetail() {
                     </Button>
                     <Button
                       disabled={!category}
-                      onClick={() => setRegStep(2)}
+                      onClick={goToDetailsStep}
                       sx={{
                         flex: { xs: 1, sm: 2 },
                         py: 1.35,
@@ -640,7 +665,43 @@ export default function EventDetail() {
                       {selectedPass.title} · {selected.title}
                     </Typography>
                     <Typography sx={{ fontWeight: 700, color: '#000' }}>{pricingSource?.price}{pricingSource?.priceUnit}</Typography>
+                    {!isSeasonalPass && selectedDay && (
+                      <Typography sx={{ fontSize: '0.78rem', color: '#777', mt: 0.75 }}>
+                        {getNightLabel(selectedDay)}
+                      </Typography>
+                    )}
                   </Box>
+
+                  {!isSeasonalPass && (
+                    <FormControl fullWidth required sx={{ mb: 2 }}>
+                      <Select
+                        value={selectedDay}
+                        onChange={(e) => setSelectedDay(e.target.value)}
+                        displayEmpty
+                        renderValue={(value) =>
+                          value ? getNightLabel(value) : <Box sx={{ color: '#999' }}>Select Day</Box>
+                        }
+                        inputProps={{ 'aria-label': 'Select Day' }}
+                        sx={{
+                          bgcolor: '#fff',
+                          color: selectedDay ? '#000' : '#999',
+                          borderRadius: '8px',
+                          '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E4E9' },
+                          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#ccc' },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#ff9466' },
+                        }}
+                      >
+                        <MenuItem value="" disabled>
+                          Select Day
+                        </MenuItem>
+                        {navratriNights.map((night) => (
+                          <MenuItem key={night.id} value={String(night.id)}>
+                            {night.label} · {night.date} · {night.theme}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
 
                   {category === 'couple' ? (
                     <Stack spacing={3}>

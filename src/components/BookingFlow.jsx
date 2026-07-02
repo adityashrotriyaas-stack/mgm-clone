@@ -162,6 +162,11 @@ export default function BookingFlow() {
                     {selectedCategory.title}
                     {registration.category === 'couple' ? ' · 2 persons' : ''}
                   </Typography>
+                  {registration.selectedDayLabel && (
+                    <Typography sx={{ fontSize: '0.84rem', color: colors.muted, mt: 0.25 }}>
+                      {registration.selectedDayLabel}
+                    </Typography>
+                  )}
                   <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.2rem', mt: 0.5 }}>
                     {registration.passPrice || selectedCategory.price}
                     {registration.passPriceUnit ? (

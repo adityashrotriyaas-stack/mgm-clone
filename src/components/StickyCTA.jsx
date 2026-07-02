@@ -3,9 +3,17 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
+import { upcomingEvents } from '../data/siteData'
+
+const featuredEvent = upcomingEvents[0]
+
+function cleanLabel(value = '') {
+  return value.replace(/^[^\w]+/u, '').trim()
+}
 
 export default function StickyCTA() {
   const navigate = useNavigate()
+
   return (
     <Box
       sx={{
@@ -26,9 +34,31 @@ export default function StickyCTA() {
         borderTop: '1px solid rgba(184,134,11,0.15)',
       }}
     >
-      <Box sx={{ flex: 1, minWidth: 0, pl: { xs: 0, sm: 0 } }}>
-        <Typography sx={{ color: colors.marigoldSoft, fontSize: { xs: '1rem', sm: '1.05rem' }, fontWeight: 800 }}>
-          ₹499
+      <Box sx={{ flex: 1, minWidth: 0, pr: 1 }}>
+        <Typography
+          sx={{
+            color: colors.ivory,
+            fontSize: { xs: '0.72rem', sm: '0.75rem' },
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.6px',
+            mb: 0.25,
+          }}
+        >
+          Upcoming Event
+        </Typography>
+        <Typography
+          sx={{
+            color: colors.marigoldSoft,
+            fontSize: { xs: '0.98rem', sm: '1.05rem' },
+            fontWeight: 800,
+            lineHeight: 1.2,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {featuredEvent.title}
         </Typography>
         <Typography
           component="small"
@@ -39,13 +69,14 @@ export default function StickyCTA() {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            mt: 0.25,
           }}
         >
-          Tonight · Rangeeli Raat
+          {featuredEvent.night} · {cleanLabel(featuredEvent.date)} · {cleanLabel(featuredEvent.time)}
         </Typography>
       </Box>
       <Button
-        onClick={() => navigate('/event/1')}
+        onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
           background: gradients.primary,
           color: colors.bg,
