@@ -52,7 +52,7 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
     ],
     singer: {
       name: 'Raj Gadhvi',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=900&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900&auto=format&fit=crop',
     },
     organizer: {
       name: 'MGM Event',
