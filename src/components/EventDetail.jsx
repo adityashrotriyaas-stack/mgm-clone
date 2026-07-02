@@ -173,7 +173,7 @@ export default function EventDetail() {
               <Chip label={event.night} sx={{ background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
               <Chip icon={<MusicNoteOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.dateRange} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
               <Chip icon={<AccessTimeOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.time} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
-              <Chip icon={<LocationOnOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={`${info.venue}, ${info.location}`} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
+              <Chip component="a" href="https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat" target="_blank" rel="noopener noreferrer" clickable icon={<LocationOnOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={`${info.venue}, ${info.location}`} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none', '&:hover': { bgcolor: colors.bg, borderColor: colors.gold } }} />
               {event.badge && (
                 <Chip icon={<LocalFireDepartmentRoundedIcon sx={{ fontSize: '0.85rem !important' }} />} label={event.badge} sx={{ background: 'rgba(184,92,58,0.12)', color: colors.coral, fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
               )}
@@ -424,7 +424,7 @@ export default function EventDetail() {
         <Box sx={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 120, height: '3px', borderRadius: '0 0 4px 4px', background: gradients.primary }} />
         <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
           <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: '0.95rem', background: gradients.heroText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', mb: 0.5 }}>MGM Cultural Navratri</Typography>
-          <Typography sx={{ color: colors.muted, fontSize: '0.8rem', fontWeight: 500 }}>Seasons Hotel, Rajkot · Ten Nights of Devotion & Dance</Typography>
+          <Typography sx={{ color: colors.muted, fontSize: '0.8rem', fontWeight: 500 }}><Box component="a" href="https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat" target="_blank" rel="noopener noreferrer" sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: colors.gold } }}>Seasons Hotel, Rajkot</Box> · Ten Nights of Devotion & Dance</Typography>
         </Container>
       </Box>
     </Box>

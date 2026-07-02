@@ -200,7 +200,7 @@ const socialLinks = [
 ]
 
 const venueItems = [
-  { icon: LocationOnOutlinedIcon, text: 'Seasons Hotel, Rajkot, Gujarat' },
+  { icon: LocationOnOutlinedIcon, text: 'Seasons Hotel, Rajkot, Gujarat', href: 'https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat' },
   { icon: AccessTimeOutlinedIcon, text: 'Gates open 7:30 PM' },
 ]
 
@@ -346,10 +346,12 @@ export function Footer() {
               Venue
             </Typography>
             <Stack component="ul" spacing={1.25} sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.88rem' }}>
-              {venueItems.map(({ icon: Icon, text }) => (
+              {venueItems.map(({ icon: Icon, text, href }) => (
                 <Box component="li" key={text} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Icon sx={{ fontSize: '1rem', color: colors.teal, flexShrink: 0 }} />
-                  {text}
+                  {href ? (
+                    <Link href={href} target="_blank" rel="noopener noreferrer" sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: colors.gold } }}>{text}</Link>
+                  ) : text}
                 </Box>
               ))}
             </Stack>

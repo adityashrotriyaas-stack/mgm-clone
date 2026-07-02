@@ -5,6 +5,7 @@ export const contactInfo = {
   whatsappMessage: 'Hi, I would like to know more about MGM Cultural Navratri passes and event details.',
   email: 'hello@mgmcultural.in',
   venue: 'Seasons Hotel, Rajkot',
+  venueHref: 'https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat',
   gatesOpen: 'Gates Open 7:30 PM',
 }
 

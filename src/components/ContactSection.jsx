@@ -22,7 +22,7 @@ import WhatsAppIcon from './WhatsAppIcon'
 const infoLines = [
   { icon: CallOutlinedIcon, label: 'Phone', value: contactInfo.phone, href: contactInfo.phoneHref },
   { icon: EmailOutlinedIcon, label: 'Email', value: contactInfo.email, href: `mailto:${contactInfo.email}` },
-  { icon: LocationOnOutlinedIcon, label: 'Venue', value: contactInfo.venue },
+  { icon: LocationOnOutlinedIcon, label: 'Venue', value: contactInfo.venue, href: contactInfo.venueHref },
   { icon: AccessTimeOutlinedIcon, label: 'Event Hours', value: contactInfo.gatesOpen },
 ]
 

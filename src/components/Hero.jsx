@@ -25,7 +25,7 @@ const featureIcons = {
 
 const heroMetaChips = [
   { icon: CalendarMonthOutlinedIcon, label: 'Oct 11 – Oct 20, 2026' },
-  { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot' },
+  { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot', href: 'https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat' },
   { icon: PaymentsOutlinedIcon, label: 'Garba & Dandiya' },
 ]
 
@@ -103,8 +103,8 @@ export default function Hero() {
             </Typography>
 
             <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
-              {heroMetaChips.map(({ icon: Icon, label }) => (
-                <Chip key={label} icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />} label={label} sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.18)', color: colors.ivory, fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.8rem' }, height: 'auto', py: 0.5, maxWidth: '100%', boxShadow: '0 2px 8px rgba(44,31,16,0.04)', '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' } }} />
+              {heroMetaChips.map(({ icon: Icon, label, href }) => (
+                <Chip key={label} component={href ? 'a' : undefined} href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener noreferrer' : undefined} clickable={!!href} icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />} label={label} sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.18)', color: colors.ivory, fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.8rem' }, height: 'auto', py: 0.5, maxWidth: '100%', boxShadow: '0 2px 8px rgba(44,31,16,0.04)', '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' }, '&:hover': href ? { bgcolor: colors.bg, borderColor: colors.gold } : {} }} />
               ))}
             </Stack>
 
