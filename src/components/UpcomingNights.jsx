@@ -17,23 +17,25 @@ function EventCard({ event, onBook }) {
     <RevealBox
       sx={{
         flex: '0 0 auto',
-        width: { xs: 280, sm: 320, md: 340 },
+        width: { xs: 'min(85vw, 300px)', sm: 320, md: 340 },
         scrollSnapAlign: 'start',
         bgcolor: colors.bgSoft,
         borderRadius: '20px',
         overflow: 'hidden',
         border: '1px solid rgba(255,255,255,0.07)',
         transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-        '&:hover': {
-          transform: 'translateY(-6px)',
-          borderColor: 'rgba(255,178,62,0.35)',
-          boxShadow: '0 16px 36px rgba(0,0,0,0.35)',
+        '@media (hover: hover)': {
+          '&:hover': {
+            transform: 'translateY(-6px)',
+            borderColor: 'rgba(255,178,62,0.35)',
+            boxShadow: '0 16px 36px rgba(0,0,0,0.35)',
+          },
         },
       }}
     >
       <Box
         sx={{
-          height: 160,
+          height: { xs: 150, sm: 160 },
           backgroundImage: `url(${event.image})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -74,23 +76,28 @@ function EventCard({ event, onBook }) {
         </Box>
       </Box>
 
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: { xs: 1.75, sm: 2 } }}>
         <Typography
           sx={{
-            fontSize: '1.05rem',
+            fontSize: { xs: '1rem', sm: '1.05rem' },
             color: colors.ivory,
             fontWeight: 600,
             mb: 0.75,
+            lineHeight: 1.3,
           }}
         >
           {event.title}
         </Typography>
-        <Stack direction="row" flexWrap="wrap" spacing={1.5} sx={{ mb: 1.75, fontSize: '0.78rem', color: colors.muted }}>
+        <Stack
+          direction="column"
+          spacing={0.5}
+          sx={{ mb: 1.75, fontSize: '0.78rem', color: colors.muted }}
+        >
           <span>{event.date}</span>
           <span>{event.time}</span>
         </Stack>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography sx={{ fontWeight: 800, color: colors.marigoldSoft, fontSize: '0.95rem' }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+          <Typography sx={{ fontWeight: 800, color: colors.marigoldSoft, fontSize: '0.95rem', minWidth: 0 }}>
             {event.price}{' '}
             <Box component="span" sx={{ fontWeight: 500, color: colors.muted, fontSize: '0.72rem' }}>
               {event.priceUnit}
@@ -102,11 +109,12 @@ function EventCard({ event, onBook }) {
               bgcolor: 'rgba(255,255,255,0.08)',
               color: colors.ivory,
               fontWeight: 700,
-              fontSize: '0.8rem',
-              px: 2,
-              py: 1.1,
+              fontSize: '0.82rem',
+              px: 2.25,
+              py: 1.25,
+              minHeight: 44,
               borderRadius: '24px',
-              minWidth: 'auto',
+              flexShrink: 0,
               '&:hover': {
                 background: `linear-gradient(135deg, ${colors.marigold}, ${colors.coral})`,
                 color: colors.bg,
@@ -129,7 +137,7 @@ export default function UpcomingNights() {
     const node = sliderRef.current
     if (!node) return
 
-    const amount = Math.min(node.clientWidth * 0.9, 360)
+    const amount = Math.min(node.clientWidth * 0.85, 340)
     node.scrollBy({
       left: direction === 'left' ? -amount : amount,
       behavior: 'smooth',
@@ -137,8 +145,8 @@ export default function UpcomingNights() {
   }
 
   return (
-    <Box component="section" id="upcoming" sx={{ py: 6.25 }}>
-      <Container maxWidth="lg">
+    <Box component="section" id="upcoming" sx={{ py: { xs: 4.5, md: 6.25 }, overflow: 'hidden' }}>
+      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
         <SectionHead
           eyebrow="What's Next"
           title="Upcoming Nights"
@@ -146,23 +154,24 @@ export default function UpcomingNights() {
         />
       </Container>
 
-      <Container maxWidth="xl" sx={{ px: { xs: 2, md: 3 } }}>
-        <Box sx={{ position: 'relative', px: { xs: 0, md: 7 } }}>
+      <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2, md: 3 } }}>
+        <Box sx={{ position: 'relative' }}>
           <IconButton
             aria-label="Previous events"
             onClick={() => scrollSlider('left')}
             sx={{
-              position: { xs: 'static', md: 'absolute' },
-              left: 0,
+              display: { xs: 'none', sm: 'inline-flex' },
+              position: 'absolute',
+              left: { sm: 4, md: 0 },
               top: '50%',
-              transform: { md: 'translateY(-50%)' },
-              mb: { xs: 2, md: 0 },
+              transform: 'translateY(-50%)',
               bgcolor: colors.bgSoft,
               border: '1px solid rgba(139,107,46,0.16)',
               color: colors.ivory,
-              width: 52,
-              height: 52,
+              width: 44,
+              height: 44,
               zIndex: 2,
+              boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
               '&:hover': { bgcolor: '#fff7ea' },
             }}
           >
@@ -173,18 +182,18 @@ export default function UpcomingNights() {
             aria-label="Next events"
             onClick={() => scrollSlider('right')}
             sx={{
-              position: { xs: 'static', md: 'absolute' },
-              right: 0,
+              display: { xs: 'none', sm: 'inline-flex' },
+              position: 'absolute',
+              right: { sm: 4, md: 0 },
               top: '50%',
-              transform: { md: 'translateY(-50%)' },
-              mb: { xs: 2, md: 0 },
-              ml: { xs: 1, md: 0 },
+              transform: 'translateY(-50%)',
               bgcolor: colors.bgSoft,
               border: '1px solid rgba(139,107,46,0.16)',
               color: colors.ivory,
-              width: 52,
-              height: 52,
+              width: 44,
+              height: 44,
               zIndex: 2,
+              boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
               '&:hover': { bgcolor: '#fff7ea' },
             }}
           >
@@ -196,23 +205,34 @@ export default function UpcomingNights() {
             sx={{
               display: 'flex',
               flexWrap: 'nowrap',
-              gap: 2,
+              gap: { xs: 1.5, sm: 2 },
               overflowX: 'auto',
-              px: 0.5,
+              px: { xs: 2, sm: 3, md: 7 },
               pb: 2.25,
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch',
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
-              '&::-webkit-scrollbar': {
-                display: 'none',
-              },
+              '&::-webkit-scrollbar': { display: 'none' },
             }}
           >
             {upcomingEvents.map((event) => (
               <EventCard key={event.id} event={event} onBook={(id) => navigate(`/event/${id}`)} />
             ))}
           </Box>
+
+          <Typography
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              textAlign: 'center',
+              fontSize: '0.72rem',
+              color: colors.muted,
+              mt: 0.5,
+              px: 2,
+            }}
+          >
+            Swipe to see more nights →
+          </Typography>
         </Box>
       </Container>
     </Box>

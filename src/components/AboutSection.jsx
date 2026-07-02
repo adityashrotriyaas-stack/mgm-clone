@@ -32,7 +32,7 @@ function HighlightCard({ icon: Icon, title, description }) {
       sx={{
         bgcolor: colors.bgSoft,
         borderRadius: '20px',
-        p: 3,
+        p: { xs: 2.25, md: 3 },
         border: '1px solid rgba(184,134,11,0.12)',
         boxShadow: '0 10px 26px rgba(44,31,16,0.05)',
         height: '100%',
@@ -86,7 +86,7 @@ export default function AboutSection() {
                 variant="h2"
                 sx={{
                   fontFamily: '"Playfair Display", serif',
-                  fontSize: { xs: '2rem', md: '3rem' },
+                  fontSize: { xs: '1.65rem', sm: '2rem', md: '3rem' },
                   lineHeight: 1.15,
                   mb: 2,
                 }}

@@ -72,6 +72,20 @@ export default function Header() {
                 MGM
               </Typography>
             </Box>
+            <Box sx={{ display: { xs: 'block', sm: 'none' }, minWidth: 0 }}>
+              <Typography
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  lineHeight: 1.15,
+                  color: colors.ivory,
+                  letterSpacing: '0.3px',
+                }}
+              >
+                MGM Navratri
+              </Typography>
+            </Box>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               <Typography
                 sx={{
@@ -162,7 +176,12 @@ export default function Header() {
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((prev) => !prev)}
-            sx={{ display: { xs: 'inline-flex', lg: 'none' }, color: colors.ivory }}
+            sx={{
+              display: { xs: 'inline-flex', lg: 'none' },
+              color: colors.ivory,
+              width: 44,
+              height: 44,
+            }}
           >
             {open ? <CloseIcon /> : <MenuIcon />}
           </IconButton>

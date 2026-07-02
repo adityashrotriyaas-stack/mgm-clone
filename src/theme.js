@@ -48,17 +48,31 @@ const theme = createTheme({
       styleOverrides: {
         html: {
           scrollBehavior: 'smooth',
+          WebkitTextSizeAdjust: '100%',
         },
         body: {
           backgroundColor: colors.bg,
           color: colors.ivory,
           lineHeight: 1.55,
           WebkitFontSmoothing: 'antialiased',
-          overflowX: 'hidden',
+          overflowX: 'clip',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         },
         a: {
           color: 'inherit',
           textDecoration: 'none',
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          paddingLeft: 16,
+          paddingRight: 16,
+          '@media (min-width: 600px)': {
+            paddingLeft: 24,
+            paddingRight: 24,
+          },
         },
       },
     },

@@ -9,8 +9,8 @@ import { navLinks, pastHighlights } from '../data/siteData'
 
 export default function PastNights() {
   return (
-    <Box component="section" id="past" sx={{ py: 6.25 }}>
-      <Container maxWidth="lg">
+    <Box component="section" id="past" sx={{ py: { xs: 4.5, md: 6.25 }, overflow: 'hidden' }}>
+      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
         <SectionHead
           eyebrow="Throwback"
           title="Past Nights, Forever Memories"
@@ -23,11 +23,14 @@ export default function PastNights() {
           display: 'grid',
           gridTemplateColumns: {
             xs: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
             md: 'repeat(4, 1fr)',
             lg: 'repeat(6, 1fr)',
           },
-          gap: 1.25,
-          px: 2.25,
+          gap: { xs: 1.5, md: 1.25 },
+          px: { xs: 2, sm: 2.5, md: 3 },
+          maxWidth: 'lg',
+          mx: 'auto',
         }}
       >
         {pastHighlights.map((item) => (
@@ -56,10 +59,12 @@ export default function PastNights() {
                 position: 'absolute',
                 bottom: 8,
                 left: 10,
+                right: 10,
                 color: '#fff',
-                fontSize: '0.75rem',
+                fontSize: { xs: '0.7rem', sm: '0.75rem' },
                 fontWeight: 700,
                 zIndex: 1,
+                lineHeight: 1.3,
               }}
             >
               {item.label}
@@ -78,19 +83,18 @@ export function Footer() {
       sx={{
         bgcolor: colors.bgSoft,
         color: colors.muted,
-        pt: 5.25,
-        pb: 3,
-        mt: 4.25,
+        pt: { xs: 4, md: 5.25 },
+        pb: { xs: 'calc(24px + env(safe-area-inset-bottom, 0px))', md: 3 },
+        mt: { xs: 2, md: 4.25 },
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
         <Box
           sx={{
             display: 'grid',
-            gap: 3.25,
-            gridTemplateColumns: { xs: '1fr', md: '1.4fr 1fr 1fr 1fr' },
-            px: 2.25,
+            gap: { xs: 2.5, md: 3.25 },
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1.4fr 1fr 1fr 1fr' },
           }}
         >
           <Box>
@@ -114,8 +118,8 @@ export function Footer() {
                   href="#"
                   aria-label={label}
                   sx={{
-                    width: 38,
-                    height: 38,
+                    width: 44,
+                    height: 44,
                     borderRadius: '12px',
                     bgcolor: 'rgba(255,255,255,0.06)',
                     display: 'flex',

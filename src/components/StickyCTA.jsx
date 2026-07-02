@@ -14,22 +14,33 @@ export default function StickyCTA() {
         left: 0,
         right: 0,
         zIndex: 60,
-        bgcolor: 'rgba(255,247,230,0.94)',
+        bgcolor: 'rgba(255,247,230,0.96)',
         backdropFilter: 'blur(12px)',
-        px: 2.25,
-        py: 1.5,
+        px: 2,
+        py: 1.25,
+        pb: 'calc(12px + env(safe-area-inset-bottom, 0px))',
         display: { xs: 'flex', lg: 'none' },
         gap: 1.25,
         alignItems: 'center',
-        boxShadow: '0 -6px 22px rgba(0,0,0,0.4)',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 -4px 20px rgba(44,31,16,0.12)',
+        borderTop: '1px solid rgba(184,134,11,0.15)',
       }}
     >
-      <Box sx={{ flex: 1 }}>
-        <Typography sx={{ color: colors.marigoldSoft, fontSize: '1.05rem', fontWeight: 800 }}>
+      <Box sx={{ flex: 1, minWidth: 0, pl: { xs: 0, sm: 0 } }}>
+        <Typography sx={{ color: colors.marigoldSoft, fontSize: { xs: '1rem', sm: '1.05rem' }, fontWeight: 800 }}>
           ₹499
         </Typography>
-        <Typography component="small" sx={{ display: 'block', fontSize: '0.66rem', color: colors.muted }}>
+        <Typography
+          component="small"
+          sx={{
+            display: 'block',
+            fontSize: '0.68rem',
+            color: colors.muted,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
           Tonight · Rangeeli Raat
         </Typography>
       </Box>
@@ -38,10 +49,16 @@ export default function StickyCTA() {
         sx={{
           background: gradients.primary,
           color: colors.bg,
-          px: 3,
-          py: 1.6,
-          boxShadow: '0 10px 28px rgba(255,94,126,0.32)',
-          '&:hover': { background: gradients.primary },
+          px: { xs: 2.5, sm: 3 },
+          py: 1.35,
+          minHeight: 48,
+          minWidth: 120,
+          fontSize: '0.9rem',
+          fontWeight: 700,
+          borderRadius: '50px',
+          flexShrink: 0,
+          boxShadow: '0 8px 20px rgba(184,134,11,0.28)',
+          '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
         }}
       >
         Book Now

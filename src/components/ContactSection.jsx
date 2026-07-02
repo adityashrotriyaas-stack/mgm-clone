@@ -197,11 +197,11 @@ export default function ContactSection() {
                 gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
               }}
             >
-              <Box sx={{ p: { xs: 3, md: 4 } }}>
+              <Box sx={{ p: { xs: 2.25, sm: 3, md: 4 } }}>
                 <Typography
                   sx={{
                     fontFamily: '"Playfair Display", serif',
-                    fontSize: '1.35rem',
+                    fontSize: { xs: '1.15rem', md: '1.35rem' },
                     fontWeight: 700,
                     color: colors.ivory,
                     mb: 1,
@@ -230,7 +230,7 @@ export default function ContactSection() {
 
               <Box
                 sx={{
-                  p: { xs: 3, md: 4 },
+                  p: { xs: 2.25, sm: 3, md: 4 },
                   bgcolor: colors.heroCream,
                   borderLeft: { md: '1px solid rgba(184,134,11,0.1)' },
                   borderTop: { xs: '1px solid rgba(184,134,11,0.1)', md: 'none' },

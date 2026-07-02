@@ -32,7 +32,7 @@ function FeatureItem({ icon, title, subtitle }) {
   const Icon = featureIcons[icon]
 
   return (
-    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: { xs: '45%', sm: 200 } }}>
+    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ width: '100%', minWidth: 0 }}>
       <Box
         sx={{
           width: 44,
@@ -47,11 +47,11 @@ function FeatureItem({ icon, title, subtitle }) {
       >
         <Icon sx={{ color: colors.gold, fontSize: '1.35rem' }} />
       </Box>
-      <Box>
-        <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: colors.ivory, lineHeight: 1.2 }}>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography sx={{ fontWeight: 700, fontSize: { xs: '0.85rem', md: '0.9rem' }, color: colors.ivory, lineHeight: 1.2 }}>
           {title}
         </Typography>
-        <Typography sx={{ fontSize: '0.75rem', color: colors.muted, lineHeight: 1.3 }}>
+        <Typography sx={{ fontSize: { xs: '0.72rem', md: '0.75rem' }, color: colors.muted, lineHeight: 1.3 }}>
           {subtitle}
         </Typography>
       </Box>
@@ -69,30 +69,31 @@ export default function Hero() {
         display: 'flex',
         flexDirection: 'column',
         bgcolor: colors.heroCream,
+        overflow: 'hidden',
       }}
     >
       <Container
         maxWidth="xl"
         sx={{
           flex: 1,
-          px: { xs: 2.5, md: 4 },
-          py: { xs: 4, md: 6 },
+          px: { xs: 2, sm: 2.5, md: 4 },
+          py: { xs: 3, sm: 4, md: 6 },
         }}
       >
         <Box
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
-            gap: { xs: 3.5, lg: 5 },
+            gap: { xs: 2.5, sm: 3.5, lg: 5 },
             alignItems: 'center',
           }}
         >
-          <Box>
+          <Box sx={{ order: { xs: 1, lg: 0 }, minWidth: 0 }}>
             <Box
               sx={{
                 bgcolor: '#fff',
-                borderRadius: '20px',
-                p: { xs: 1, md: 1.25 },
+                borderRadius: { xs: '16px', md: '20px' },
+                p: { xs: 0.75, md: 1.25 },
                 boxShadow: '0 20px 50px rgba(44,31,16,0.12)',
                 border: '1px solid rgba(184,134,11,0.12)',
               }}
@@ -105,26 +106,26 @@ export default function Hero() {
                   width: '100%',
                   height: 'auto',
                   display: 'block',
-                  borderRadius: '14px',
+                  borderRadius: { xs: '12px', md: '14px' },
                 }}
               />
             </Box>
           </Box>
 
-          <Box>
+          <Box sx={{ order: { xs: 2, lg: 0 }, minWidth: 0 }}>
             <Box
               sx={{
                 display: 'inline-block',
                 background: gradients.primary,
                 color: '#fff',
-                fontSize: '0.68rem',
+                fontSize: { xs: '0.62rem', sm: '0.68rem' },
                 fontWeight: 700,
                 letterSpacing: '1px',
                 textTransform: 'uppercase',
-                px: 1.75,
+                px: 1.5,
                 py: 0.6,
                 borderRadius: '50px',
-                mb: 2,
+                mb: { xs: 1.5, md: 2 },
               }}
             >
               MGM Cultural · Exclusive Event
@@ -135,10 +136,10 @@ export default function Hero() {
               sx={{
                 fontFamily: '"Playfair Display", serif',
                 fontWeight: 700,
-                fontSize: { xs: '2.2rem', sm: '2.8rem', md: '3.2rem', lg: '3.6rem' },
+                fontSize: { xs: '1.85rem', sm: '2.4rem', md: '3.2rem', lg: '3.6rem' },
                 lineHeight: 1.12,
                 color: colors.ivory,
-                mb: 1.5,
+                mb: { xs: 1.25, md: 1.5 },
               }}
             >
               Ten Nights of Garba
@@ -146,31 +147,33 @@ export default function Hero() {
 
             <Typography
               sx={{
-                fontSize: { xs: '0.95rem', md: '1.02rem' },
+                fontSize: { xs: '0.9rem', md: '1.02rem' },
                 color: colors.muted,
                 lineHeight: 1.7,
                 maxWidth: 500,
-                mb: 2.5,
+                mb: { xs: 2, md: 2.5 },
               }}
             >
               Devotion. Dance. Dandiya. Experience the joy of Navratri like never before at
               Rajkot&apos;s grand ten-night celebration.
             </Typography>
 
-            <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: 3 }}>
+            <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
               {heroMetaChips.map(({ icon: Icon, label }) => (
                 <Chip
                   key={label}
-                  icon={<Icon sx={{ fontSize: '1rem !important', color: `${colors.gold} !important` }} />}
+                  icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />}
                   label={label}
                   sx={{
                     bgcolor: '#fff',
                     border: '1px solid rgba(184,134,11,0.18)',
                     color: colors.ivory,
                     fontWeight: 600,
-                    fontSize: '0.8rem',
-                    height: 36,
-                    '& .MuiChip-label': { px: 0.5 },
+                    fontSize: { xs: '0.72rem', sm: '0.8rem' },
+                    height: 'auto',
+                    py: 0.5,
+                    maxWidth: '100%',
+                    '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' },
                   }}
                 />
               ))}
@@ -188,15 +191,15 @@ export default function Hero() {
                   background: gradients.primary,
                   color: '#fff',
                   px: 3,
-                  py: 1.5,
-                  fontSize: '0.95rem',
+                  py: { xs: 1.35, md: 1.5 },
+                  minHeight: 48,
+                  fontSize: { xs: '0.9rem', md: '0.95rem' },
                   fontWeight: 700,
                   borderRadius: '50px',
                   boxShadow: '0 8px 24px rgba(184,134,11,0.3)',
                   '&:hover': {
                     background: gradients.primary,
                     filter: 'brightness(1.05)',
-                    transform: 'translateY(-2px)',
                   },
                 }}
               >
@@ -211,14 +214,14 @@ export default function Hero() {
                   color: colors.ivory,
                   border: `1.5px solid rgba(184,134,11,0.35)`,
                   px: 3,
-                  py: 1.5,
-                  fontSize: '0.95rem',
+                  py: { xs: 1.35, md: 1.5 },
+                  minHeight: 48,
+                  fontSize: { xs: '0.9rem', md: '0.95rem' },
                   fontWeight: 700,
                   borderRadius: '50px',
                   '&:hover': {
                     bgcolor: '#fff',
                     borderColor: colors.gold,
-                    transform: 'translateY(-2px)',
                   },
                 }}
               >
@@ -233,22 +236,21 @@ export default function Hero() {
         sx={{
           borderTop: '1px solid rgba(184,134,11,0.15)',
           bgcolor: colors.heroCream,
-          py: { xs: 2.5, md: 3 },
+          py: { xs: 2, md: 3 },
         }}
       >
-        <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4 } }}>
-          <Stack
-            direction="row"
-            flexWrap="wrap"
-            useFlexGap
-            spacing={{ xs: 2.5, md: 4 }}
-            justifyContent={{ xs: 'flex-start', md: 'space-between' }}
-            sx={{ rowGap: 2.5 }}
+        <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 2.5, md: 4 } }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+              gap: { xs: 2, md: 3 },
+            }}
           >
             {heroFeatures.map((feature) => (
               <FeatureItem key={feature.title} {...feature} />
             ))}
-          </Stack>
+          </Box>
         </Container>
       </Box>
     </Box>

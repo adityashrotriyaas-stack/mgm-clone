@@ -5,17 +5,15 @@ import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
-import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded'
+import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 import ConfirmationNumberRoundedIcon from '@mui/icons-material/ConfirmationNumberRounded'
-import { upcomingEvents, registrationCategories, passTypeOptions } from '../data/siteData'
+import { upcomingEvents, registrationCategories, passOptions } from '../data/siteData'
 import promoBanner from '../assets/image.png'
 
 const eventInfo = {
@@ -141,6 +139,80 @@ Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri be
 
 const categoryKeys = ['male', 'female', 'couple']
 
+const passModes = [
+  { id: 'seasonal', title: 'Seasonal Pass', subtitle: '10 Nights Garba', data: passOptions.seasonal },
+  { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
+]
+
+const emptyPerson = () => ({
+  name: '',
+  mobile: '',
+  email: '',
+  aadhaar: '',
+  selfiePreview: '',
+})
+
+const fieldSx = {
+  '& .MuiOutlinedInput-root': {
+    bgcolor: '#fff',
+    color: '#000',
+    borderRadius: '8px',
+    '& fieldset': { borderColor: '#E5E4E9' },
+    '&:hover fieldset': { borderColor: '#ccc' },
+    '&.Mui-focused fieldset': { borderColor: '#ff9466' },
+  },
+  '& .MuiInputBase-input::placeholder': { color: '#999', opacity: 1 },
+}
+
+function PersonFields({ title, person, onFieldChange, onSelfieChange }) {
+  return (
+    <Box sx={{ display: 'grid', gap: 1.5 }}>
+      {title && (
+        <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '0.95rem', mb: 0.25 }}>
+          {title}
+        </Typography>
+      )}
+      <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
+      <TextField required placeholder="Mobile Number" type="tel" value={person.mobile} onChange={onFieldChange('mobile')} fullWidth />
+      <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
+      <Box
+        sx={{
+          border: '1px dashed #E5E4E9',
+          borderRadius: '8px',
+          p: 2,
+          textAlign: 'center',
+          bgcolor: '#f8f9fa',
+        }}
+      >
+        <CameraAltOutlinedIcon sx={{ color: '#ff9466', fontSize: '2rem', mb: 1 }} />
+        <Typography sx={{ fontSize: '0.88rem', fontWeight: 700, color: '#000', mb: 0.5 }}>
+          Upload Selfie (Mandatory)
+        </Typography>
+        <Button component="label" variant="outlined" sx={{ borderColor: '#ff9466', color: '#ff9466', textTransform: 'none' }}>
+          Choose Photo
+          <input hidden accept="image/*" type="file" onChange={onSelfieChange} />
+        </Button>
+        {person.selfiePreview && (
+          <Box
+            component="img"
+            src={person.selfiePreview}
+            alt="Selfie preview"
+            sx={{ display: 'block', width: 88, height: 88, borderRadius: '8px', objectFit: 'cover', mx: 'auto', mt: 1.5 }}
+          />
+        )}
+      </Box>
+      <TextField
+        required
+        placeholder="Aadhaar Card Number"
+        value={person.aadhaar}
+        onChange={onFieldChange('aadhaar')}
+        fullWidth
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 }}
+      />
+    </Box>
+  )
+}
+
 export default function EventDetail() {
   const { eventId } = useParams()
   const navigate = useNavigate()
@@ -148,13 +220,70 @@ export default function EventDetail() {
   const event = upcomingEvents.find(e => e.id === id)
   const info = eventInfo[id]
   const [tab, setTab] = useState('info')
-  const [category, setCategory] = useState('male')
-  const [passType, setPassType] = useState('')
-  const selected = registrationCategories[category]
+  const [regStep, setRegStep] = useState(0)
+  const [passMode, setPassMode] = useState('')
+  const [category, setCategory] = useState('')
+  const [personForm, setPersonForm] = useState(emptyPerson)
+  const [maleForm, setMaleForm] = useState(emptyPerson)
+  const [femaleForm, setFemaleForm] = useState(emptyPerson)
+  const selected = category ? registrationCategories[category] : null
+  const selectedPass = passModes.find((item) => item.id === passMode)
+
+  const scrollToRegistration = () => {
+    setTab('registration')
+    setRegStep(0)
+    setTimeout(() => {
+      document.getElementById('event-registration')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
+  }
+
+  const makeFieldUpdater = (setter) => (field) => (event) => {
+    setter((prev) => ({ ...prev, [field]: event.target.value }))
+  }
+
+  const makeSelfieUpdater = (setter) => (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    setter((prev) => ({ ...prev, selfiePreview: URL.createObjectURL(file) }))
+  }
+
+  const isPersonComplete = (person) =>
+    person.name && person.mobile && person.email && person.aadhaar.length === 12 && person.selfiePreview
+
+  const canSubmitForm = () => {
+    if (category === 'couple') {
+      return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
+    }
+    return isPersonComplete(personForm)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate('/')
+    if (!canSubmitForm()) return
+
+    const passLabel = selectedPass?.data.title || passMode
+    const registration =
+      category === 'couple'
+        ? {
+            category,
+            passMode,
+            passLabel,
+            eventId: id,
+            male: maleForm,
+            female: femaleForm,
+            name: `${maleForm.name} & ${femaleForm.name}`,
+            mobile: maleForm.mobile,
+            email: maleForm.email,
+          }
+        : {
+            category,
+            passMode,
+            passLabel,
+            eventId: id,
+            ...personForm,
+          }
+
+    navigate(`/book?event=${eventId}`, { state: { registration } })
   }
 
   if (!event || !info) {
@@ -167,7 +296,7 @@ export default function EventDetail() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FFFDF8', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: '#FFFDF8', minHeight: '100vh', overflowX: 'clip' }}>
       {/* Top Bar */}
       <Box sx={{ borderBottom: '1px solid #E5E4E9' }}>
         <Container maxWidth="lg">
@@ -183,15 +312,15 @@ export default function EventDetail() {
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 } }}>
-        <Grid container spacing={2}>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
+        <Grid container spacing={{ xs: 2, md: 2 }}>
           {/* Left — Event Image & Title */}
           <Grid size={{ xs: 12, md: 8 }}>
             <Box sx={{
               position: 'relative',
               width: '100%',
               aspectRatio: '18/10',
-              borderRadius: '20px',
+              borderRadius: { xs: '14px', md: '20px' },
               overflow: 'hidden',
               bgcolor: '#f5f5f5',
             }}>
@@ -206,11 +335,11 @@ export default function EventDetail() {
               />
             </Box>
 
-            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt: 2, mb: 1 }}>
-              <Typography sx={{ fontWeight: 700, color: '#000', fontSize: { xs: '1.25rem', md: '1.625rem' }, lineHeight: 1.2 }}>
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={1} sx={{ mt: 2, mb: 1 }}>
+              <Typography sx={{ fontWeight: 700, color: '#000', fontSize: { xs: '1.15rem', sm: '1.25rem', md: '1.625rem' }, lineHeight: 1.25, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>
                 {event.title}
               </Typography>
-              <ShareRoundedIcon sx={{ color: '#000', fontSize: '1.25rem', cursor: 'pointer' }} />
+              <ShareRoundedIcon sx={{ color: '#000', fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.25 }} />
             </Stack>
 
             <Stack direction="row" spacing={1}>
@@ -224,26 +353,27 @@ export default function EventDetail() {
               border: '1px solid #E5E4E9',
               borderRadius: { xs: '10px', md: '12px' },
               p: { xs: 2, md: 2.5 },
-              position: 'sticky',
-              top: 24,
+              position: { xs: 'static', md: 'sticky' },
+              top: { md: 24 },
             }}>
               <Stack spacing={2}>
                 <Box>
-                  <Typography sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#000' }}>
+                  <Typography sx={{ fontSize: { xs: '1.35rem', md: '1.5rem' }, fontWeight: 700, color: '#000' }}>
                     {info.price}
                     <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#777', ml: 0.5 }}>onwards</Box>
                   </Typography>
-                  <Typography sx={{ fontSize: '0.8125rem', color: '#555', mt: 0.5 }}>
+                  <Typography sx={{ fontSize: { xs: '0.75rem', md: '0.8125rem' }, color: '#555', mt: 0.5, lineHeight: 1.55, wordBreak: 'break-word' }}>
                     {info.ticketInfo}
                   </Typography>
                 </Box>
 
                 <Button
-                  onClick={() => setTab('registration')}
+                  onClick={scrollToRegistration}
                   fullWidth
                   size="large"
                   sx={{
                     py: 1.5,
+                    minHeight: 48,
                     borderRadius: '8px',
                     background: '#1F1F1F',
                     color: '#fff',
@@ -290,7 +420,10 @@ export default function EventDetail() {
               onClick={() => setTab('info')}
               sx={{
                 py: 1.5,
-                px: 3,
+                px: { xs: 2.5, sm: 3 },
+                flex: 1,
+                maxWidth: 200,
+                minHeight: 48,
                 borderRadius: 0,
                 fontWeight: tab === 'info' ? 600 : 400,
                 fontSize: '1rem',
@@ -306,7 +439,10 @@ export default function EventDetail() {
               onClick={() => setTab('registration')}
               sx={{
                 py: 1.5,
-                px: 3,
+                px: { xs: 2.5, sm: 3 },
+                flex: 1,
+                maxWidth: 200,
+                minHeight: 48,
                 borderRadius: 0,
                 fontWeight: tab === 'registration' ? 600 : 400,
                 fontSize: '1rem',
@@ -323,7 +459,7 @@ export default function EventDetail() {
       </Box>
 
       {/* Tab Content */}
-      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 } }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
         {tab === 'info' ? (
           <Box>
             <Box sx={{ mb: 4 }}>
@@ -364,101 +500,219 @@ export default function EventDetail() {
             </Box>
           </Box>
         ) : (
-          <Box sx={{ maxWidth: 600, mx: 'auto' }}>
-            <Box sx={{ border: '1px solid #E5E4E9', borderRadius: '12px', p: { xs: 2, md: 3 } }}>
-              <Box sx={{ textAlign: 'center', mb: 3 }}>
-                <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 0.5 }}>Reserve Your Spot</Typography>
-                <Typography sx={{ fontSize: '0.875rem', color: '#777' }}>Pick a category — pricing and perks update instantly.</Typography>
+          <Box id="event-registration" sx={{ maxWidth: 600, mx: 'auto', width: '100%' }}>
+            <Box sx={{ border: '1px solid #E5E4E9', borderRadius: { xs: '10px', md: '12px' }, p: { xs: 1.75, sm: 2, md: 3 } }}>
+              <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 3 } }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 0.5, fontSize: { xs: '1.15rem', md: '1.5rem' } }}>
+                  Reserve Your Spot
+                </Typography>
+                <Typography sx={{ fontSize: '0.875rem', color: '#777' }}>
+                  {regStep === 0 && 'Step 1 — Choose your pass type'}
+                  {regStep === 1 && 'Step 2 — Choose your category'}
+                  {regStep === 2 && 'Step 3 — Fill registration details'}
+                </Typography>
               </Box>
 
-              <Stack direction="row" spacing={1} sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', p: 0.5, mb: 2 }}>
-                {categoryKeys.map((key) => (
-                  <Button
-                    key={key}
-                    role="tab"
-                    aria-selected={category === key}
-                    onClick={() => setCategory(key)}
+              <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: { xs: 2, md: 3 } }}>
+                {['Pass Type', 'Category', 'Details'].map((label, index) => (
+                  <Box
+                    key={label}
                     sx={{
-                      flex: 1,
-                      py: 1,
-                      borderRadius: '6px',
-                      color: category === key ? '#fff' : '#555',
-                      bgcolor: category === key ? '#1F1F1F' : 'transparent',
-                      fontWeight: 600,
-                      fontSize: '0.875rem',
-                      textTransform: 'capitalize',
-                      '&:hover': { bgcolor: category === key ? '#1F1F1F' : '#eaeaea' },
+                      px: { xs: 1, sm: 1.25 },
+                      py: 0.5,
+                      borderRadius: '50px',
+                      fontSize: { xs: '0.65rem', sm: '0.72rem' },
+                      fontWeight: 700,
+                      bgcolor: regStep >= index ? '#1F1F1F' : '#f0f0f0',
+                      color: regStep >= index ? '#fff' : '#777',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    {key}
-                  </Button>
+                    {index + 1}. {label}
+                  </Box>
                 ))}
               </Stack>
 
-              <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 2, mb: 3, textAlign: 'center' }}>
-                <Typography sx={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, color: '#777', fontWeight: 600 }}>
-                  {selected.eyebrow}
-                </Typography>
-                <Typography sx={{ fontWeight: 700, fontSize: '1rem', color: '#000', mt: 0.5 }}>{selected.title}</Typography>
-                <Typography sx={{ fontWeight: 700, fontSize: '1.5rem', color: '#000', my: 1 }}>
-                  {selected.price}
-                  <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#777' }}>{selected.priceUnit}</Box>
-                </Typography>
-                <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.875rem', color: '#555' }}>
-                  {selected.perks.map((perk) => (
-                    <Box component="li" key={perk} sx={{ py: 0.5, pl: 2.5, position: 'relative', '&::before': { content: '"✦"', position: 'absolute', left: 0, color: '#22c55e', fontSize: '0.75rem' } }}>
-                      {perk}
-                    </Box>
+              {regStep === 0 && (
+                <Stack spacing={1.5}>
+                  {passModes.map((item) => (
+                    <Button
+                      key={item.id}
+                      onClick={() => {
+                        setPassMode(item.id)
+                        setRegStep(1)
+                      }}
+                      sx={{
+                        justifyContent: 'space-between',
+                        alignItems: { xs: 'flex-start', sm: 'center' },
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        gap: { xs: 0.75, sm: 0 },
+                        textAlign: 'left',
+                        px: 2,
+                        py: 1.75,
+                        minHeight: 48,
+                        borderRadius: '10px',
+                        border: '1px solid #E5E4E9',
+                        bgcolor: '#fff',
+                        color: '#000',
+                        textTransform: 'none',
+                        '&:hover': { bgcolor: '#f8f9fa', borderColor: '#ff9466' },
+                      }}
+                    >
+                      <Box>
+                        <Typography sx={{ fontWeight: 700 }}>{item.title}</Typography>
+                        <Typography sx={{ fontSize: '0.82rem', color: '#777' }}>{item.subtitle}</Typography>
+                      </Box>
+                      <Typography sx={{ fontWeight: 800, color: '#000', alignSelf: { xs: 'flex-start', sm: 'center' } }}>{item.data.price}</Typography>
+                    </Button>
                   ))}
-                </Box>
-              </Box>
+                </Stack>
+              )}
 
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                  display: 'grid',
-                  gap: 1.5,
-                  '& .MuiOutlinedInput-root': {
-                    bgcolor: '#fff', color: '#000', borderRadius: '8px',
-                    '& fieldset': { borderColor: '#E5E4E9' },
-                    '&:hover fieldset': { borderColor: '#ccc' },
-                    '&.Mui-focused fieldset': { borderColor: '#ff9466' },
-                  },
-                  '& .MuiInputBase-input::placeholder': { color: '#999', opacity: 1 },
-                }}
-              >
-                <TextField required placeholder="Full Name" fullWidth />
-                <TextField required placeholder="Mobile Number" type="tel" fullWidth />
-                <TextField required placeholder="Email Address" type="email" fullWidth />
-                <TextField required placeholder="Aadhaar Card Number" fullWidth inputProps={{ inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 }} />
-                <FormControl fullWidth required>
-                  <Select
-                    value={passType}
-                    onChange={(e) => setPassType(e.target.value)}
-                    displayEmpty
-                    renderValue={(v) => v ? v : <Box sx={{ color: '#999' }}>Select Pass Type</Box>}
-                    inputProps={{ 'aria-label': 'Select Pass Type' }}
-                    sx={{
-                      bgcolor: '#fff', color: passType ? '#000' : '#999', borderRadius: '8px',
-                      '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E4E9' },
-                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#ccc' },
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#ff9466' },
-                    }}
-                  >
-                    <MenuItem value="" disabled>Select Pass Type</MenuItem>
-                    {passTypeOptions.map((opt) => (<MenuItem key={opt} value={opt}>{opt}</MenuItem>))}
-                  </Select>
-                </FormControl>
-                <TextField required type="number" placeholder="Number of Tickets" inputProps={{ min: 1, max: 10 }} fullWidth />
-                <Button type="submit" fullWidth sx={{
-                  mt: 1, py: 1.5, borderRadius: '8px', background: '#1F1F1F', color: '#fff',
-                  fontWeight: 600, fontSize: '0.9375rem', textTransform: 'none',
-                  '&:hover': { background: '#333' },
-                }}>
-                  Proceed to Payment
-                </Button>
-              </Box>
+              {regStep === 1 && selectedPass && (
+                <Stack spacing={2}>
+                  <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 1.5, textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: '0.75rem', color: '#777', fontWeight: 600 }}>
+                      Selected: {selectedPass.title}
+                    </Typography>
+                  </Box>
+
+                  <Stack direction="row" spacing={1} sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', p: 0.5 }}>
+                    {categoryKeys.map((key) => (
+                      <Button
+                        key={key}
+                        onClick={() => setCategory(key)}
+                        sx={{
+                          flex: 1,
+                          py: { xs: 1.1, sm: 1 },
+                          minHeight: 44,
+                          borderRadius: '6px',
+                          color: category === key ? '#fff' : '#555',
+                          bgcolor: category === key ? '#1F1F1F' : 'transparent',
+                          fontWeight: 600,
+                          fontSize: '0.875rem',
+                          textTransform: 'capitalize',
+                          '&:hover': { bgcolor: category === key ? '#1F1F1F' : '#eaeaea' },
+                        }}
+                      >
+                        {key}
+                      </Button>
+                    ))}
+                  </Stack>
+
+                  {selected && (
+                    <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 2, textAlign: 'center' }}>
+                      <Typography sx={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, color: '#777', fontWeight: 600 }}>
+                        {selected.eyebrow}
+                      </Typography>
+                      <Typography sx={{ fontWeight: 700, fontSize: '1rem', color: '#000', mt: 0.5 }}>{selected.title}</Typography>
+                      <Typography sx={{ fontWeight: 700, fontSize: '1.5rem', color: '#000', my: 1 }}>
+                        {selected.price}
+                        <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#777' }}>{selected.priceUnit}</Box>
+                      </Typography>
+                      <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.875rem', color: '#555' }}>
+                        {selected.perks.map((perk) => (
+                          <Box component="li" key={perk} sx={{ py: 0.5, pl: 2.5, position: 'relative', '&::before': { content: '"✦"', position: 'absolute', left: 0, color: '#22c55e', fontSize: '0.75rem' } }}>
+                            {perk}
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  )}
+
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+                    <Button
+                      onClick={() => setRegStep(0)}
+                      sx={{ flex: 1, py: 1.35, minHeight: 48, borderRadius: '8px', border: '1px solid #E5E4E9', color: '#555', textTransform: 'none' }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      disabled={!category}
+                      onClick={() => setRegStep(2)}
+                      sx={{
+                        flex: { xs: 1, sm: 2 },
+                        py: 1.35,
+                        minHeight: 48,
+                        borderRadius: '8px',
+                        background: '#1F1F1F',
+                        color: '#fff',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        '&:hover': { background: '#333' },
+                        '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
+                      }}
+                    >
+                      Continue
+                    </Button>
+                  </Stack>
+                </Stack>
+              )}
+
+              {regStep === 2 && selected && selectedPass && (
+                <Box component="form" onSubmit={handleSubmit} sx={fieldSx}>
+                  <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 1.5, mb: 2.5, textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: '0.82rem', color: '#555' }}>
+                      {selectedPass.title} · {selected.title}
+                    </Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#000' }}>{selected.price}{selected.priceUnit}</Typography>
+                  </Box>
+
+                  {category === 'couple' ? (
+                    <Stack spacing={3}>
+                      <PersonFields
+                        title="Male Details"
+                        person={maleForm}
+                        onFieldChange={makeFieldUpdater(setMaleForm)}
+                        onSelfieChange={makeSelfieUpdater(setMaleForm)}
+                      />
+                      <Divider />
+                      <PersonFields
+                        title="Female Details"
+                        person={femaleForm}
+                        onFieldChange={makeFieldUpdater(setFemaleForm)}
+                        onSelfieChange={makeSelfieUpdater(setFemaleForm)}
+                      />
+                    </Stack>
+                  ) : (
+                    <PersonFields
+                      title={category === 'male' ? 'Male Details' : 'Female Details'}
+                      person={personForm}
+                      onFieldChange={makeFieldUpdater(setPersonForm)}
+                      onSelfieChange={makeSelfieUpdater(setPersonForm)}
+                    />
+                  )}
+
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5 }}>
+                    <Button
+                      type="button"
+                      onClick={() => setRegStep(1)}
+                      sx={{ flex: 1, py: 1.5, minHeight: 48, borderRadius: '8px', border: '1px solid #E5E4E9', color: '#555', textTransform: 'none' }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={!canSubmitForm()}
+                      sx={{
+                        flex: { xs: 1, sm: 2 },
+                        py: 1.5,
+                        minHeight: 48,
+                        borderRadius: '8px',
+                        background: '#1F1F1F',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '0.9375rem',
+                        textTransform: 'none',
+                        '&:hover': { background: '#333' },
+                        '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
+                      }}
+                    >
+                      Proceed to Payment
+                    </Button>
+                  </Stack>
+                </Box>
+              )}
             </Box>
           </Box>
         )}

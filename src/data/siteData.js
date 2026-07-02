@@ -4,7 +4,6 @@ export const navLinks = [
   { label: 'Schedule', href: '#upcoming', mobileLabel: 'Schedule' },
   { label: 'Highlights', href: '#past' },
   { label: 'Gallery', href: '#past', mobileLabel: 'Gallery' },
-  { label: 'Passes', href: '#passes' },
   { label: 'Contact', href: '#contact', mobileLabel: 'Contact' },
 ]
 

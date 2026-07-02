@@ -66,8 +66,10 @@ export function SectionHead({ eyebrow, title, description }) {
       <Typography
         variant="h2"
         sx={{
-          fontSize: { xs: '1.6rem', sm: '2.2rem' },
+          fontSize: { xs: '1.45rem', sm: '1.85rem', md: '2.2rem' },
           color: colors.ivory,
+          lineHeight: 1.25,
+          px: { xs: 0.5, sm: 0 },
         }}
       >
         {title}
@@ -79,7 +81,9 @@ export function SectionHead({ eyebrow, title, description }) {
             maxWidth: 480,
             mx: 'auto',
             mt: 1,
-            fontSize: '0.95rem',
+            fontSize: { xs: '0.88rem', md: '0.95rem' },
+            lineHeight: 1.65,
+            px: { xs: 0.5, sm: 0 },
           }}
         >
           {description}

@@ -15,9 +15,13 @@ export default function WhatsAppFloat() {
     <Box
       sx={{
         position: 'fixed',
-        bottom: { xs: 88, lg: 24 },
-        right: { xs: 18, lg: 24 },
-        zIndex: 70,
+        bottom: {
+          xs: 'calc(88px + env(safe-area-inset-bottom, 0px))',
+          lg: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+        },
+        left: { xs: 16, lg: 'auto' },
+        right: { xs: 'auto', lg: 24 },
+        zIndex: 65,
       }}
     >
       <IconButton

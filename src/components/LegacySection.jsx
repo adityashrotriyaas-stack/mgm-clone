@@ -25,7 +25,7 @@ function LegacyCard({ item, index }) {
         position: 'relative',
         bgcolor: colors.bgSoft,
         borderRadius: '22px',
-        p: 3,
+        p: { xs: 2.25, md: 3 },
         border: '1px solid rgba(184,134,11,0.14)',
         boxShadow: '0 12px 28px rgba(44,31,16,0.05)',
         overflow: 'hidden',
