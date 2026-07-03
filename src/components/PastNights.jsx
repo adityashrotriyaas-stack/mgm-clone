@@ -195,9 +195,9 @@ export default function PastNights() {
 }
 
 const socialLinks = [
-  { icon: InstagramIcon, label: 'Instagram', href: '#' },
-  { icon: FacebookRoundedIcon, label: 'Facebook', href: '#' },
-  { icon: YouTubeIcon, label: 'YouTube', href: '#' },
+  { icon: InstagramIcon, label: 'Instagram', href: 'https://instagram.com/mgmcultural' },
+  { icon: FacebookRoundedIcon, label: 'Facebook', href: 'https://facebook.com/mgmcultural' },
+  { icon: YouTubeIcon, label: 'YouTube', href: 'https://youtube.com/@mgmcultural' },
 ]
 
 const venueItems = [

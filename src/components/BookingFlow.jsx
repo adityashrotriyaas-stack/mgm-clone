@@ -66,7 +66,15 @@ export default function BookingFlow() {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const eventId = searchParams.get('event') || '1'
-  const registration = location.state?.registration
+  const [registration, setRegistration] = useState(() => {
+    const fromState = location.state?.registration
+    if (fromState) return fromState
+    try {
+      const saved = localStorage.getItem('mgm_registration')
+      if (saved) return JSON.parse(saved)
+    } catch {}
+    return null
+  })
   const [activeStep, setActiveStep] = useState(4)
   const [paymentMethod, setPaymentMethod] = useState('upi')
   const selectedCategory = registrationCategories[registration?.category || 'male']

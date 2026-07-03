@@ -56,7 +56,6 @@ const theme = createTheme({
           color: ${colors.ivory};
           line-height: 1.55;
           -moz-osx-font-smoothing: grayscale;
-          overflow-x: clip;
           padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         a {

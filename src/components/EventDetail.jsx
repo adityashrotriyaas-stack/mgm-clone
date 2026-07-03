@@ -169,6 +169,7 @@ export default function EventDetail() {
     const registration = category === 'couple'
       ? { category, passMode, passLabel, passPrice: pricingSource?.price, passPriceUnit: pricingSource?.priceUnit, eventId: id, male: maleForm, female: femaleForm, name: `${maleForm.name} & ${femaleForm.name}`, mobile: maleForm.mobile, email: maleForm.email, ...dayDetails }
       : { category, passMode, passLabel, passPrice: pricingSource?.price, passPriceUnit: pricingSource?.priceUnit, eventId: id, ...personForm, ...dayDetails }
+    try { localStorage.setItem('mgm_registration', JSON.stringify(registration)) } catch {}
     navigate(`/book?event=${eventId}`, { state: { registration } })
   }
 

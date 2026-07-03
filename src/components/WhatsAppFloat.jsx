@@ -16,7 +16,7 @@ export default function WhatsAppFloat() {
       sx={{
         position: 'fixed',
         bottom: {
-          xs: 'calc(88px + env(safe-area-inset-bottom, 0px))',
+          xs: 'calc(120px + env(safe-area-inset-bottom, 0px))',
           lg: 'calc(24px + env(safe-area-inset-bottom, 0px))',
         },
         right: 16,
