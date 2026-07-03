@@ -16,6 +16,7 @@ import QrCode2RoundedIcon from '@mui/icons-material/QrCode2Rounded'
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
 import { colors, gradients } from '../constants/colors'
 import { registrationCategories } from '../data/siteData'
+import NonRefundableCheckbox from './NonRefundableCheckbox'
 
 const steps = [
   'Book Now',
@@ -68,6 +69,7 @@ export default function BookingFlow() {
 
   const [activeStep, setActiveStep] = useState(4)
   const [paymentMethod, setPaymentMethod] = useState('upi')
+  const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
 
   const selectedCategory = registrationCategories[registration?.category || 'male']
 
@@ -202,6 +204,10 @@ export default function BookingFlow() {
                     </Box>
                   </Button>
                 ))}
+                <NonRefundableCheckbox
+                  checked={acceptedNonRefundable}
+                  onChange={setAcceptedNonRefundable}
+                />
               </Stack>
             )}
 
@@ -251,6 +257,7 @@ export default function BookingFlow() {
               {activeStep < 5 && (
                 <Button
                   onClick={handleNext}
+                  disabled={activeStep === 4 && !acceptedNonRefundable}
                   endIcon={<ArrowForwardRoundedIcon />}
                   fullWidth
                   sx={{
@@ -261,6 +268,7 @@ export default function BookingFlow() {
                     color: '#fff',
                     fontWeight: 700,
                     '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+                    '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
                   }}
                 >
                   Pay Securely

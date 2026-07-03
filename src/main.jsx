@@ -7,6 +7,7 @@ import { Outlet, createBrowserRouter, RouterProvider, useLocation } from 'react-
 import App from './App.jsx'
 import BookingFlow from './components/BookingFlow.jsx'
 import EventDetail from './components/EventDetail.jsx'
+import WhatsAppFloat from './components/WhatsAppFloat.jsx'
 import theme from './theme.js'
 
 function ScrollToTopLayout() {
@@ -16,7 +17,12 @@ function ScrollToTopLayout() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [location.pathname, location.search])
 
-  return <Outlet />
+  return (
+    <>
+      <Outlet />
+      <WhatsAppFloat />
+    </>
+  )
 }
 
 const router = createBrowserRouter([

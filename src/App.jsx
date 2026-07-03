@@ -9,7 +9,6 @@ import Hero from './components/Hero'
 import UpcomingNights from './components/UpcomingNights'
 import PastNights, { Footer } from './components/PastNights'
 import StickyCTA from './components/StickyCTA'
-import WhatsAppFloat from './components/WhatsAppFloat'
 import { colors } from './constants/colors'
 
 function App() {
@@ -18,15 +17,14 @@ function App() {
       <ProgressBar />
       <Header />
       <Hero />
-      <AboutSection />
       <UpcomingNights />
+      <AboutSection />
       <BookingWorkflowSection />
       <LegacySection />
       <PastNights />
       <ContactSection />
       <Footer />
       <StickyCTA />
-      <WhatsAppFloat />
     </Box>
   )
 }

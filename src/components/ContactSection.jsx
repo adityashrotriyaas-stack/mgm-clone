@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -14,6 +15,7 @@ import { colors, gradients } from '../constants/colors'
 import { contactInfo, getWhatsAppUrl } from '../data/contactInfo'
 import { RevealBox, SectionHead } from './shared'
 import WhatsAppIcon from './WhatsAppIcon'
+import MobileNumberField from './MobileNumberField'
 
 const infoLines = [
   { icon: CallOutlinedIcon, label: 'Phone', value: contactInfo.phone, href: contactInfo.phoneHref },
@@ -77,6 +79,8 @@ function InfoRow({ icon: Icon, label, value, href }) {
 }
 
 function ContactForm() {
+  const [mobile, setMobile] = useState('')
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -88,12 +92,13 @@ function ContactForm() {
       'Hi MGM Cultural Navratri,',
       '',
       `Name: ${name}`,
-      `Mobile: ${mobile}`,
+      `Mobile: +91 ${mobile}`,
       `Message: ${message}`,
     ].join('\n')
 
     window.open(getWhatsAppUrl(text), '_blank', 'noopener,noreferrer')
     event.currentTarget.reset()
+    setMobile('')
   }
 
   return (
@@ -115,6 +120,7 @@ function ContactForm() {
           color: colors.muted,
           opacity: 0.85,
         },
+        '& .MuiInputAdornment-root': { mr: 0.5 },
       }}
     >
       <Box sx={{ mb: 0.5 }}>
@@ -127,7 +133,11 @@ function ContactForm() {
       </Box>
 
       <TextField required name="name" placeholder="Full Name" fullWidth />
-      <TextField required name="mobile" placeholder="Mobile Number" type="tel" fullWidth />
+      <MobileNumberField
+        name="mobile"
+        value={mobile}
+        onChange={(event) => setMobile(event.target.value)}
+      />
       <TextField
         required
         name="message"

@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import { keyframes } from '@mui/material/styles'
+import { useLocation } from 'react-router-dom'
 import WhatsAppIcon from './WhatsAppIcon'
 import { getWhatsAppUrl } from '../data/contactInfo'
 
@@ -11,12 +12,17 @@ const pulse = keyframes`
 `
 
 export default function WhatsAppFloat() {
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
+
   return (
     <Box
       sx={{
         position: 'fixed',
         bottom: {
-          xs: 'calc(88px + env(safe-area-inset-bottom, 0px))',
+          xs: isHome
+            ? 'calc(88px + env(safe-area-inset-bottom, 0px))'
+            : 'calc(24px + env(safe-area-inset-bottom, 0px))',
           lg: 'calc(24px + env(safe-area-inset-bottom, 0px))',
         },
         right: 16,

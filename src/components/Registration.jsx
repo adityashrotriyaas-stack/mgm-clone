@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography'
 import { Eyebrow, RevealBox } from './shared'
 import { colors, gradients } from '../constants/colors'
 import { passTypeOptions, registrationCategories } from '../data/siteData'
+import MobileNumberField from './MobileNumberField'
+import AadhaarNumberField from './AadhaarNumberField'
 
 const categoryKeys = ['male', 'female', 'couple']
 
@@ -18,6 +20,8 @@ export default function Registration() {
   const navigate = useNavigate()
   const [category, setCategory] = useState('male')
   const [passType, setPassType] = useState('')
+  const [mobile, setMobile] = useState('')
+  const [aadhaar, setAadhaar] = useState('')
   const selected = registrationCategories[category]
 
   const handleSubmit = (event) => {
@@ -192,17 +196,13 @@ export default function Registration() {
                 color: colors.regBrown,
                 opacity: 1,
               },
+              '& .MuiInputAdornment-root': { mr: 0.5 },
             }}
           >
             <TextField required placeholder="Full Name" fullWidth />
-            <TextField required placeholder="Mobile Number" type="tel" fullWidth />
+            <MobileNumberField value={mobile} onChange={(event) => setMobile(event.target.value)} />
             <TextField required placeholder="Email Address" type="email" fullWidth />
-            <TextField
-              required
-              placeholder="Aadhaar Card Number"
-              fullWidth
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 }}
-            />
+            <AadhaarNumberField value={aadhaar} onChange={(event) => setAadhaar(event.target.value)} />
             <FormControl fullWidth required>
               <Select
                 value={passType}
