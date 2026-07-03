@@ -164,6 +164,11 @@ export default function BookingFlow() {
                     {selectedCategory.title}
                     {registration.category === 'couple' ? ' · 2 persons' : ''}
                   </Typography>
+                  {registration.ticketCount ? (
+                    <Typography sx={{ fontSize: '0.82rem', color: colors.muted, mt: 0.25 }}>
+                      Tickets: {registration.ticketCount}
+                    </Typography>
+                  ) : null}
                   {registration.selectedDayLabel && (
                     <Typography sx={{ fontSize: '0.84rem', color: colors.muted, mt: 0.25 }}>
                       {registration.selectedDayLabel}

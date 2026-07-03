@@ -194,6 +194,15 @@ const emptyPerson = () => ({
   selfiePreview: '',
 })
 
+function formatRupees(amount) {
+  return `₹${new Intl.NumberFormat('en-IN').format(amount)}`
+}
+
+function getPriceAmount(price) {
+  const digits = Number(String(price || '').replace(/[^\d]/g, ''))
+  return Number.isFinite(digits) ? digits : 0
+}
+
 const fieldSx = {
   '& .MuiOutlinedInput-root': {
     bgcolor: '#fff',
@@ -328,13 +337,19 @@ export default function EventDetail() {
   const [category, setCategory] = useState('')
   const [selectedDay, setSelectedDay] = useState('')
   const [personForm, setPersonForm] = useState(emptyPerson)
+  const [secondPersonForm, setSecondPersonForm] = useState(emptyPerson)
   const [maleForm, setMaleForm] = useState(emptyPerson)
   const [femaleForm, setFemaleForm] = useState(emptyPerson)
+  const [ticketCount, setTicketCount] = useState('1')
   const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
   const isSeasonalPass = passMode === 'seasonal'
   const pricingSource = isSeasonalPass ? selectedPass?.data : selected
+  const isCoupleCategory = category === 'couple'
+  const pricingMultiplier = isCoupleCategory ? 1 : Number(ticketCount || 1)
+  const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
+  const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
 
   const scrollToRegistration = () => {
     setTab('registration')
@@ -374,14 +389,18 @@ export default function EventDetail() {
   const canSubmitForm = () => {
     if (!acceptedNonRefundable) return false
     if (!isSeasonalPass && !selectedDay) return false
-    if (category === 'couple') {
+    if (isCoupleCategory) {
       return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
+    }
+    if (ticketCount === '2') {
+      return isPersonComplete(personForm) && isPersonComplete(secondPersonForm)
     }
     return isPersonComplete(personForm)
   }
 
   const selectCategory = (key) => {
     setCategory(key)
+    setTicketCount(key === 'couple' ? '2' : '1')
     setRegStep(2)
   }
 
@@ -397,13 +416,14 @@ export default function EventDetail() {
         }
       : {}
     const registration =
-      category === 'couple'
+      isCoupleCategory
         ? {
             category,
             passMode,
             passLabel,
-            passPrice: pricingSource?.price,
+            passPrice: totalPrice,
             passPriceUnit: pricingSource?.priceUnit,
+            ticketCount: totalTickets,
             eventId: id,
             male: maleForm,
             female: femaleForm,
@@ -416,10 +436,12 @@ export default function EventDetail() {
             category,
             passMode,
             passLabel,
-            passPrice: pricingSource?.price,
+            passPrice: totalPrice,
             passPriceUnit: pricingSource?.priceUnit,
+            ticketCount: totalTickets,
             eventId: id,
             ...personForm,
+            secondGuest: ticketCount === '2' ? secondPersonForm : null,
             ...dayDetails,
           }
 
@@ -854,7 +876,10 @@ export default function EventDetail() {
                     <Typography sx={{ fontSize: '0.82rem', color: '#555' }}>
                       {selectedPass.title} · {selected.title}
                     </Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#000' }}>{pricingSource?.price}{pricingSource?.priceUnit}</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#000' }}>{totalPrice}{pricingSource?.priceUnit}</Typography>
+                    <Typography sx={{ fontSize: '0.78rem', color: '#777', mt: 0.5 }}>
+                      {totalTickets} ticket{totalTickets > 1 ? 's' : ''}
+                    </Typography>
                     {!isSeasonalPass && selectedDay && (
                       <Typography sx={{ fontSize: '0.78rem', color: '#777', mt: 0.75 }}>
                         {getNightLabel(selectedDay)}
@@ -893,7 +918,32 @@ export default function EventDetail() {
                     </FormControl>
                   )}
 
-                  {category === 'couple' ? (
+                  <FormControl fullWidth required sx={{ mb: 2 }}>
+                    <Select
+                      value={ticketCount}
+                      onChange={(e) => setTicketCount(e.target.value)}
+                      disabled={isCoupleCategory}
+                      inputProps={{ 'aria-label': 'Number of Tickets' }}
+                      sx={{
+                        bgcolor: '#fff',
+                        color: '#000',
+                        borderRadius: '8px',
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E4E9' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#ccc' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#ff9466' },
+                      }}
+                    >
+                      {!isCoupleCategory && <MenuItem value="1">1 Ticket</MenuItem>}
+                      <MenuItem value="2">2 Tickets</MenuItem>
+                    </Select>
+                  </FormControl>
+                  {isCoupleCategory && (
+                    <Typography sx={{ fontSize: '0.78rem', color: '#777', mb: 2 }}>
+                      Couple pass includes 2 tickets.
+                    </Typography>
+                  )}
+
+                  {isCoupleCategory ? (
                     <Stack spacing={3}>
                       <PersonFields
                         title="Male Details"
@@ -910,12 +960,25 @@ export default function EventDetail() {
                       />
                     </Stack>
                   ) : (
-                    <PersonFields
-                      title={category === 'male' ? 'Male Details' : 'Female Details'}
-                      person={personForm}
-                      onFieldChange={makeFieldUpdater(setPersonForm)}
-                      onPhotoChange={makePhotoUpdater(setPersonForm)}
-                    />
+                    <Stack spacing={3}>
+                      <PersonFields
+                        title={ticketCount === '2' ? 'Ticket 1 Details' : category === 'male' ? 'Male Details' : 'Female Details'}
+                        person={personForm}
+                        onFieldChange={makeFieldUpdater(setPersonForm)}
+                        onPhotoChange={makePhotoUpdater(setPersonForm)}
+                      />
+                      {ticketCount === '2' && (
+                        <>
+                          <Divider />
+                          <PersonFields
+                            title="Ticket 2 Details"
+                            person={secondPersonForm}
+                            onFieldChange={makeFieldUpdater(setSecondPersonForm)}
+                            onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
+                          />
+                        </>
+                      )}
+                    </Stack>
                   )}
 
                   <Box sx={{ mt: 2.5 }}>
