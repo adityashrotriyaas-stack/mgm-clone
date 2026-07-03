@@ -15,6 +15,11 @@ import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded'
 import ConfirmationNumberRoundedIcon from '@mui/icons-material/ConfirmationNumberRounded'
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import ManOutlinedIcon from '@mui/icons-material/ManOutlined'
+import WomanOutlinedIcon from '@mui/icons-material/WomanOutlined'
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined'
 import PhotoCaptureField from './PhotoCaptureField'
 import NonRefundableCheckbox from './NonRefundableCheckbox'
 import MobileNumberField from './MobileNumberField'
@@ -185,6 +190,243 @@ const passModes = [
   { id: 'seasonal', title: 'Seasonal Pass', subtitle: '10 Nights Garba', data: passOptions.seasonal },
   { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
+
+const accentOrange = '#ff9466'
+
+const categoryMeta = {
+  male: { Icon: ManOutlinedIcon, bg: '#E8F1FF', color: '#3B82F6' },
+  female: { Icon: WomanOutlinedIcon, bg: '#FEECEC', color: '#EF4444' },
+  couple: { Icon: PeopleOutlinedIcon, bg: '#E8F8EE', color: '#22C55E' },
+}
+
+function RegistrationStepPills({ activeStep }) {
+  return (
+    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: { xs: 2, md: 3 } }}>
+      {['Pass Type', 'Category', 'Details'].map((label, index) => {
+        const isCompleted = index < activeStep
+        const isActive = index === activeStep
+
+        return (
+          <Box
+            key={label}
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.75,
+              px: { xs: 1.15, sm: 1.4 },
+              py: 0.55,
+              borderRadius: '50px',
+              fontSize: { xs: '0.68rem', sm: '0.75rem' },
+              fontWeight: 700,
+              bgcolor: isActive ? accentOrange : '#f0f0f0',
+              color: isActive ? '#fff' : '#666',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {isCompleted ? (
+              <CheckRoundedIcon sx={{ fontSize: '1rem', color: '#666' }} />
+            ) : (
+              <Box
+                sx={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  bgcolor: isActive ? '#fff' : 'transparent',
+                  border: isActive ? 'none' : '2px solid #ccc',
+                  color: isActive ? accentOrange : '#666',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.65rem',
+                  fontWeight: 800,
+                  lineHeight: 1,
+                }}
+              >
+                {index + 1}
+              </Box>
+            )}
+            {!isCompleted && label}
+          </Box>
+        )
+      })}
+    </Stack>
+  )
+}
+
+function SelectedPassBanner({ title }) {
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1.5}
+      sx={{
+        bgcolor: '#FFF8F3',
+        border: `1px solid ${accentOrange}55`,
+        borderRadius: '12px',
+        p: 1.5,
+      }}
+    >
+      <Box
+        sx={{
+          width: 42,
+          height: 42,
+          borderRadius: '10px',
+          bgcolor: 'rgba(255, 148, 102, 0.14)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <ConfirmationNumberRoundedIcon sx={{ color: accentOrange, fontSize: '1.3rem' }} />
+      </Box>
+      <Typography sx={{ fontSize: '0.9rem', color: '#555' }}>
+        Selected:{' '}
+        <Box component="span" sx={{ fontWeight: 700, color: accentOrange }}>
+          {title}
+        </Box>
+      </Typography>
+    </Stack>
+  )
+}
+
+function PassTypeOption({ item, selected, onSelect }) {
+  return (
+    <Button
+      onClick={onSelect}
+      sx={{
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 1.5,
+        textAlign: 'left',
+        px: 1.75,
+        py: 1.75,
+        width: '100%',
+        borderRadius: '12px',
+        border: selected ? `2px solid ${accentOrange}` : '1px solid #E5E4E9',
+        bgcolor: selected ? 'rgba(255, 148, 102, 0.08)' : '#fff',
+        color: '#000',
+        textTransform: 'none',
+        boxShadow: selected ? 'none' : '0 1px 3px rgba(15, 23, 42, 0.04)',
+        '&:hover': {
+          bgcolor: selected ? 'rgba(255, 148, 102, 0.12)' : '#fafafa',
+          borderColor: selected ? accentOrange : '#ddd',
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: 44,
+          height: 44,
+          borderRadius: '10px',
+          bgcolor: selected ? 'rgba(255, 148, 102, 0.16)' : '#f5f5f5',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <ConfirmationNumberRoundedIcon sx={{ color: selected ? accentOrange : '#999', fontSize: '1.35rem' }} />
+      </Box>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem' }}>{item.title}</Typography>
+        <Typography sx={{ fontSize: '0.8rem', color: '#777' }}>{item.subtitle}</Typography>
+      </Box>
+      <Stack direction="row" alignItems="center" spacing={1.25} sx={{ flexShrink: 0 }}>
+        <Typography sx={{ fontWeight: 800, color: selected ? accentOrange : '#000', fontSize: '1rem' }}>
+          {item.data.price}
+        </Typography>
+        <Box
+          sx={{
+            width: 24,
+            height: 24,
+            borderRadius: '50%',
+            border: selected ? 'none' : '2px solid #ddd',
+            bgcolor: selected ? accentOrange : 'transparent',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {selected && <CheckRoundedIcon sx={{ color: '#fff', fontSize: '1rem' }} />}
+        </Box>
+      </Stack>
+    </Button>
+  )
+}
+
+function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, selected, onSelect }) {
+  const { Icon, bg, color } = categoryMeta[categoryKey] || categoryMeta.male
+
+  return (
+    <Button
+      onClick={onSelect}
+      sx={{
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 1.5,
+        textAlign: 'left',
+        px: 1.75,
+        py: 1.75,
+        width: '100%',
+        borderRadius: '12px',
+        border: selected ? `2px solid ${accentOrange}` : '1px solid #E5E4E9',
+        bgcolor: '#fff',
+        color: '#000',
+        textTransform: 'none',
+        boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
+        '&:hover': {
+          bgcolor: '#fafafa',
+          borderColor: selected ? accentOrange : '#ddd',
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: 44,
+          height: 44,
+          borderRadius: '10px',
+          bgcolor: bg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <Icon sx={{ color, fontSize: '1.35rem' }} />
+      </Box>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', textTransform: 'capitalize' }}>{label}</Typography>
+        <Typography sx={{ fontSize: '0.8rem', color: '#777' }}>{subtitle}</Typography>
+      </Box>
+      <Stack direction="row" alignItems="center" spacing={1.5} sx={{ flexShrink: 0 }}>
+        <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
+          {price}
+          {priceUnit ? (
+            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: '#777', ml: 0.35 }}>
+              {priceUnit}
+            </Box>
+          ) : null}
+        </Typography>
+        <Box
+          sx={{
+            width: 22,
+            height: 22,
+            borderRadius: '50%',
+            border: selected ? 'none' : '2px solid #ddd',
+            bgcolor: selected ? accentOrange : 'transparent',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          {selected && <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#fff' }} />}
+        </Box>
+      </Stack>
+    </Button>
+  )
+}
 
 const emptyPerson = () => ({
   name: '',
@@ -725,8 +967,16 @@ export default function EventDetail() {
           </Box>
         ) : (
           <Box id="event-registration" sx={{ maxWidth: 600, mx: 'auto', width: '100%' }}>
-            <Box sx={{ border: '1px solid #E5E4E9', borderRadius: { xs: '10px', md: '12px' }, p: { xs: 1.75, sm: 2, md: 3 } }}>
-              <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 3 } }}>
+            <Box
+              sx={{
+                border: '1px solid #ECECEC',
+                borderRadius: '16px',
+                p: { xs: 2, sm: 2.25, md: 3 },
+                bgcolor: '#fff',
+                boxShadow: '0 10px 36px rgba(15, 23, 42, 0.06)',
+              }}
+            >
+              <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 2.5 } }}>
                 <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 0.5, fontSize: { xs: '1.15rem', md: '1.5rem' } }}>
                   Reserve Your Spot
                 </Typography>
@@ -737,125 +987,51 @@ export default function EventDetail() {
                 </Typography>
               </Box>
 
-              <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: { xs: 2, md: 3 } }}>
-                {['Pass Type', 'Category', 'Details'].map((label, index) => (
-                  <Box
-                    key={label}
-                    sx={{
-                      px: { xs: 1, sm: 1.25 },
-                      py: 0.5,
-                      borderRadius: '50px',
-                      fontSize: { xs: '0.65rem', sm: '0.72rem' },
-                      fontWeight: 700,
-                      bgcolor: regStep >= index ? '#1F1F1F' : '#f0f0f0',
-                      color: regStep >= index ? '#fff' : '#777',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {index + 1}. {label}
-                  </Box>
-                ))}
-              </Stack>
+              <RegistrationStepPills activeStep={regStep} />
 
               {regStep === 0 && (
                 <Stack spacing={1.5}>
                   {passModes.map((item) => (
-                    <Button
+                    <PassTypeOption
                       key={item.id}
-                      onClick={() => {
+                      item={item}
+                      selected={passMode === item.id}
+                      onSelect={() => {
                         setPassMode(item.id)
                         if (item.id === 'seasonal') setSelectedDay('')
                         setRegStep(1)
                       }}
-                      sx={{
-                        justifyContent: 'space-between',
-                        alignItems: { xs: 'flex-start', sm: 'center' },
-                        flexDirection: { xs: 'column', sm: 'row' },
-                        gap: { xs: 0.75, sm: 0 },
-                        textAlign: 'left',
-                        px: 2,
-                        py: 1.75,
-                        minHeight: 48,
-                        borderRadius: '10px',
-                        border: '1px solid #E5E4E9',
-                        bgcolor: '#fff',
-                        color: '#000',
-                        textTransform: 'none',
-                        '&:hover': { bgcolor: '#f8f9fa', borderColor: '#ff9466' },
-                      }}
-                    >
-                      <Box>
-                        <Typography sx={{ fontWeight: 700 }}>{item.title}</Typography>
-                        <Typography sx={{ fontSize: '0.82rem', color: '#777' }}>{item.subtitle}</Typography>
-                      </Box>
-                      <Typography sx={{ fontWeight: 800, color: '#000', alignSelf: { xs: 'flex-start', sm: 'center' } }}>{item.data.price}</Typography>
-                    </Button>
+                    />
                   ))}
+
+                  <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ pt: 0.5 }}>
+                    <InfoOutlinedIcon sx={{ color: accentOrange, fontSize: '1rem', mt: 0.15 }} />
+                    <Typography sx={{ fontSize: '0.78rem', color: '#888', lineHeight: 1.55 }}>
+                      Pass once selected cannot be changed later.
+                    </Typography>
+                  </Stack>
                 </Stack>
               )}
 
               {regStep === 1 && selectedPass && (
                 <Stack spacing={2}>
-                  <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 1.5, textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '0.75rem', color: '#777', fontWeight: 600 }}>
-                      Selected: {selectedPass.title}
-                    </Typography>
-                  </Box>
+                  <SelectedPassBanner title={selectedPass.title} />
 
-                  <Stack spacing={1}>
+                  <Stack spacing={1.25}>
                     {categoryKeys.map((key) => {
                       const cat = registrationCategories[key]
                       const optionPrice = isSeasonalPass ? selectedPass.data : cat
                       return (
-                        <Button
+                        <CategoryOption
                           key={key}
-                          onClick={() => selectCategory(key)}
-                          sx={{
-                            justifyContent: 'space-between',
-                            alignItems: { xs: 'flex-start', sm: 'center' },
-                            flexDirection: { xs: 'column', sm: 'row' },
-                            gap: { xs: 0.5, sm: 0 },
-                            textAlign: 'left',
-                            px: 2,
-                            py: 1.5,
-                            minHeight: 48,
-                            borderRadius: '10px',
-                            border: category === key ? '2px solid #1F1F1F' : '1px solid #E5E4E9',
-                            bgcolor: category === key ? '#1F1F1F' : '#fff',
-                            color: category === key ? '#fff' : '#000',
-                            textTransform: 'none',
-                            '&:hover': {
-                              bgcolor: category === key ? '#333' : '#f8f9fa',
-                              borderColor: category === key ? '#1F1F1F' : '#ff9466',
-                            },
-                          }}
-                        >
-                          <Box>
-                            <Typography sx={{ fontWeight: 700, textTransform: 'capitalize' }}>{key}</Typography>
-                            <Typography
-                              sx={{
-                                fontSize: '0.78rem',
-                                color: category === key ? 'rgba(255,255,255,0.75)' : '#777',
-                              }}
-                            >
-                              {cat.title}
-                            </Typography>
-                          </Box>
-                          <Typography sx={{ fontWeight: 800, alignSelf: { xs: 'flex-start', sm: 'center' } }}>
-                            {optionPrice.price}
-                            <Box
-                              component="span"
-                              sx={{
-                                fontSize: '0.78rem',
-                                fontWeight: 500,
-                                ml: 0.25,
-                                color: category === key ? 'rgba(255,255,255,0.75)' : '#777',
-                              }}
-                            >
-                              {optionPrice.priceUnit}
-                            </Box>
-                          </Typography>
-                        </Button>
+                          categoryKey={key}
+                          label={key}
+                          subtitle={cat.title}
+                          price={optionPrice.price}
+                          priceUnit={optionPrice.priceUnit}
+                          selected={category === key}
+                          onSelect={() => selectCategory(key)}
+                        />
                       )
                     })}
                   </Stack>
@@ -863,7 +1039,17 @@ export default function EventDetail() {
                   <Button
                     onClick={() => setRegStep(0)}
                     fullWidth
-                    sx={{ py: 1.35, minHeight: 48, borderRadius: '8px', border: '1px solid #E5E4E9', color: '#555', textTransform: 'none' }}
+                    startIcon={<ChevronLeftRoundedIcon />}
+                    sx={{
+                      py: 1.35,
+                      minHeight: 48,
+                      borderRadius: '10px',
+                      bgcolor: '#f5f5f5',
+                      border: '1px solid #E5E4E9',
+                      color: '#555',
+                      textTransform: 'none',
+                      '&:hover': { bgcolor: '#ececec' },
+                    }}
                   >
                     Back
                   </Button>
