@@ -21,21 +21,21 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Plus Jakarta Sans", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Plus Jakarta Sans", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontFamily: '"Unbounded", sans-serif',
+      fontFamily: '"Sora", "Unbounded", sans-serif',
       fontWeight: 700,
       lineHeight: 1.18,
       letterSpacing: '-0.3px',
     },
     h2: {
-      fontFamily: '"Unbounded", sans-serif',
+      fontFamily: '"Sora", "Unbounded", sans-serif',
       fontWeight: 700,
       lineHeight: 1.18,
       letterSpacing: '-0.3px',
     },
     h3: {
-      fontFamily: '"Unbounded", sans-serif',
+      fontFamily: '"Sora", "Unbounded", sans-serif',
       fontWeight: 700,
       lineHeight: 1.18,
     },
@@ -55,9 +55,7 @@ const theme = createTheme({
           background-color: ${colors.bg};
           color: ${colors.ivory};
           line-height: 1.55;
-          -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          text-rendering: optimizeLegibility;
           overflow-x: clip;
           padding-bottom: env(safe-area-inset-bottom, 0px);
         }

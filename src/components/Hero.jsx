@@ -169,7 +169,7 @@ export default function Hero() {
           <Box sx={{ order: { xs: 1, lg: 0 }, minWidth: 0 }}>
             <Box sx={{ bgcolor: colors.bg, borderRadius: { xs: '16px', md: '20px' }, p: { xs: 0.75, md: 1.25 }, boxShadow: '0 20px 50px rgba(44,31,16,0.12)', border: '1px solid rgba(184,134,11,0.12)', transition: 'transform 0.4s ease, box-shadow 0.4s ease', '@media (hover: hover)': { '&:hover': { transform: 'scale(1.01)', boxShadow: '0 28px 60px rgba(44,31,16,0.18)' } } }}>
               <Box sx={{ position: 'relative', '&::after': { content: '""', position: 'absolute', inset: '-3px', borderRadius: { xs: '15px', md: '17px' }, border: '1px solid rgba(184,134,11,0.12)', pointerEvents: 'none' } }}>
-                <Box component="img" src={promoBanner} alt="MGM Cultural Navratri 2026 — Rajkot event poster" sx={{ width: '100%', height: 'auto', display: 'block', borderRadius: { xs: '12px', md: '14px' } }} />
+                <Box component="img" src={promoBanner} alt="MGM Cultural Navratri 2026 — Rajkot event poster" loading="lazy" sx={{ width: '100%', height: 'auto', display: 'block', borderRadius: { xs: '12px', md: '14px' } }} />
               </Box>
             </Box>
           </Box>

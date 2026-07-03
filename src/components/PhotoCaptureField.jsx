@@ -101,7 +101,7 @@ export default function PhotoCaptureField({ preview, onChange }) {
       </Stack>
       {preview ? (
         <Stack spacing={1.5} sx={{ alignItems: 'center' }}>
-          <Box component="img" src={preview} alt="Pass photo preview" sx={{ width: 120, height: 120, borderRadius: '12px', objectFit: 'cover', border: `2px solid ${colors.bg}`, boxShadow: `0 8px 20px ${colors.shadow}` }} />
+          <Box component="img" src={preview} alt="Pass photo preview" loading="lazy" sx={{ width: 120, height: 120, borderRadius: '12px', objectFit: 'cover', border: `2px solid ${colors.bg}`, boxShadow: `0 8px 20px ${colors.shadow}` }} />
           <Typography sx={{ fontSize: '0.78rem', color: colors.success, fontWeight: 600 }}>Photo added successfully</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ width: '100%' }}>
             <Button fullWidth variant="outlined" startIcon={<RefreshRoundedIcon />} onClick={startCamera} sx={{ borderColor: colors.glassBorder, color: colors.muted, textTransform: 'none', minHeight: 44, '&:hover': { borderColor: colors.gold } }}>Retake with Camera</Button>
