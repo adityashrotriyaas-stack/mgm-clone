@@ -6,6 +6,7 @@ import theme from './theme'
 import App from './App'
 import EventDetail from './components/EventDetail'
 import BookingFlow from './components/BookingFlow'
+import PageTransition from './components/PageTransition'
 import { ToastProvider } from './components/Toast'
 
 createRoot(document.getElementById('root')).render(
@@ -15,9 +16,9 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <ToastProvider>
           <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/event/:eventId" element={<EventDetail />} />
-            <Route path="/book" element={<BookingFlow />} />
+            <Route path="/" element={<PageTransition><App /></PageTransition>} />
+            <Route path="/event/:eventId" element={<PageTransition><EventDetail /></PageTransition>} />
+            <Route path="/book" element={<PageTransition><BookingFlow /></PageTransition>} />
           </Routes>
         </ToastProvider>
       </BrowserRouter>

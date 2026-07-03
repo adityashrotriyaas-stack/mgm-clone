@@ -5,7 +5,7 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded'
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded'
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
-import { colors, gradients } from '../constants/colors'
+import { colors } from '../constants/colors'
 
 const ToastContext = createContext(null)
 

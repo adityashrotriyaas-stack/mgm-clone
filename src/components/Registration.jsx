@@ -200,7 +200,7 @@ export default function Registration() {
               </Box>
               <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.85rem', color: colors.regBrown }}>
                 {selected.perks.map((perk) => (
-                  <Stack key={perk} direction="row" spacing={0.75} alignItems="center" sx={{ py: 0.65 }}>
+                  <Stack key={perk} direction="row" spacing={0.75} sx={{ py: 0.65, alignItems: 'center' }}>
                     <StarRoundedIcon sx={{ fontSize: '0.8rem', color: colors.gold, flexShrink: 0 }} />
                     <Box component="li">{perk}</Box>
                   </Stack>

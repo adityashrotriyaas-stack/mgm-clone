@@ -90,7 +90,7 @@ export default function PhotoCaptureField({ preview, onChange }) {
 
   return (
     <Box sx={{ border: preview ? `1px solid ${colors.glassBorder}` : `1px dashed ${colors.glassBorder}`, borderRadius: '12px', p: 2, bgcolor: colors.bgSoft }}>
-      <Stack direction="row" spacing={1.5} alignItems="flex-start" sx={{ mb: preview ? 1.5 : 2 }}>
+      <Stack direction="row" spacing={1.5} sx={{ mb: preview ? 1.5 : 2, alignItems: 'flex-start' }}>
         <Box sx={{ width: 44, height: 44, borderRadius: '10px', bgcolor: 'rgba(212,175,55,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <CameraAltOutlinedIcon sx={{ color: colors.gold }} />
         </Box>
@@ -100,7 +100,7 @@ export default function PhotoCaptureField({ preview, onChange }) {
         </Box>
       </Stack>
       {preview ? (
-        <Stack alignItems="center" spacing={1.5}>
+        <Stack spacing={1.5} sx={{ alignItems: 'center' }}>
           <Box component="img" src={preview} alt="Pass photo preview" sx={{ width: 120, height: 120, borderRadius: '12px', objectFit: 'cover', border: `2px solid ${colors.bg}`, boxShadow: `0 8px 20px ${colors.shadow}` }} />
           <Typography sx={{ fontSize: '0.78rem', color: colors.success, fontWeight: 600 }}>Photo added successfully</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ width: '100%' }}>
@@ -135,8 +135,9 @@ export default function PhotoCaptureField({ preview, onChange }) {
   muted
   sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               {isStartingCamera && (
-                <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(44,31,16,0.45)' }}>
-                  <Typography sx={{ color: '#fff', fontSize: '0.9rem' }}>Starting camera...</Typography>
+                <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1.5, bgcolor: 'rgba(44,31,16,0.45)' }}>
+                  <Box sx={{ width: 28, height: 28, borderRadius: '50%', border: '2.5px solid rgba(255,255,255,0.2)', borderTopColor: '#fff', animation: 'spin 0.7s linear infinite' }} />
+                  <Typography sx={{ color: '#fff', fontSize: '0.85rem', fontWeight: 500 }}>Starting camera...</Typography>
                 </Box>
               )}
             </Box>

@@ -130,6 +130,7 @@ export default function PastNights() {
                   background: `linear-gradient(135deg, ${colors.gold}, ${colors.coralLight}, ${colors.gold}) border-box`,
                   WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
                   WebkitMaskComposite: 'xor',
+                  mask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
                   maskComposite: 'exclude',
                   opacity: 0,
                   transition: 'opacity 0.5s ease',

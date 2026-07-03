@@ -25,7 +25,7 @@ function LegacyCard({ item, index }) {
     <HoverGlow sx={{ position: 'relative', bgcolor: colors.bgSoft, borderRadius: '22px', p: { xs: 2.25, md: 3 }, border: '1px solid rgba(184,134,11,0.14)', boxShadow: '0 12px 28px rgba(44,31,16,0.05)', overflow: 'hidden', height: '100%' }}>
       <Box sx={{ position: 'absolute', top: 0, right: 0, width: 120, height: 120, borderRadius: '0 0 0 100%', background: `radial-gradient(circle at top right, ${yearAccent}22, transparent 68%)` }} />
       <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 4, height: '60%', borderRadius: '0 4px 4px 0', background: `linear-gradient(180deg, transparent, ${yearAccent}55)` }} />
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+      <Stack direction="row" sx={{ mb: 2, justifyContent: 'space-between', alignItems: 'center' }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 74, px: 1.75, py: 0.85, borderRadius: '999px', background: gradients.primary, color: '#fff', fontWeight: 800, fontSize: '0.92rem', transition: 'transform 0.3s ease', '@media (hover: hover)': { '&:hover': { transform: 'scale(1.05)' } } }}>
           {item.year}
         </Box>

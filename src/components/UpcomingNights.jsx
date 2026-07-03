@@ -61,16 +61,16 @@ function EventCard({ event, onBook }) {
       <Box sx={{ p: { xs: 1.75, sm: 2 } }}>
         <Typography sx={{ fontSize: { xs: '1rem', sm: '1.05rem' }, color: colors.ivory, fontWeight: 600, mb: 1, lineHeight: 1.3 }}>{event.title}</Typography>
         <Stack spacing={0.7} sx={{ mb: 1.5, fontSize: '0.78rem', color: colors.muted }}>
-          <Stack direction="row" spacing={0.8} alignItems="center">
+          <Stack direction="row" spacing={0.8} sx={{ alignItems: 'center' }}>
             <CalendarMonthOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.teal }} />
             <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{event.date}</Typography>
           </Stack>
-          <Stack direction="row" spacing={0.8} alignItems="center">
+          <Stack direction="row" spacing={0.8} sx={{ alignItems: 'center' }}>
             <AccessTimeOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.teal }} />
             <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{event.time}</Typography>
           </Stack>
         </Stack>
-        <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'stretch', sm: 'center' }} justifyContent="space-between" spacing={1.25}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} sx={{ alignItems: { xs: 'stretch', sm: 'center' }, justifyContent: 'space-between' }}>
           <Box sx={{ minWidth: 0 }}>
             <Typography sx={{ fontWeight: 800, color: colors.marigoldSoft, fontSize: '1rem', minWidth: 0 }}>{event.price} <Box component="span" sx={{ fontWeight: 500, color: colors.muted, fontSize: '0.72rem' }}>{event.priceUnit}</Box></Typography>
             <Typography sx={{ fontSize: '0.72rem', color: colors.muted, mt: 0.25 }}>Limited passes available</Typography>
@@ -180,7 +180,7 @@ export default function UpcomingNights() {
               <EventCard key={event.id} event={event} onBook={(id) => navigate(`/event/${id}`)} />
             ))}
           </Box>
-          <Stack direction="row" spacing={1} justifyContent="center" sx={{ mb: 2, display: { xs: 'flex', sm: 'none' } }}>
+          <Stack direction="row" spacing={1} sx={{ mb: 2, display: { xs: 'flex', sm: 'none' }, justifyContent: 'center' }}>
             {upcomingEvents.map((_, index) => (
               <Box key={index} onClick={() => { const node = sliderRef.current; if (!node) return; const card = node.children[index]; if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }) }} sx={{ width: activeIndex === index ? 20 : 8, height: 8, borderRadius: '4px', bgcolor: activeIndex === index ? colors.marigold : colors.glassBorder, cursor: 'pointer', transition: 'all 0.3s ease' }} />
             ))}

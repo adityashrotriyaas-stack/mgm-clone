@@ -28,7 +28,7 @@ const infoLines = [
 
 function InfoRow({ icon: Icon, label, value, href }) {
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
       <Box
         sx={{
           width: 44,

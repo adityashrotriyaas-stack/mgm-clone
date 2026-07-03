@@ -25,7 +25,7 @@ function PassCard({ data, cardRef, onBook }) {
       </Typography>
       <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, my: 1.75, fontSize: '0.85rem', color: colors.muted }}>
         {data.perks.map((perk) => (
-          <Stack key={perk} direction="row" spacing={0.75} alignItems="center" sx={{ py: 0.5 }}>
+          <Stack key={perk} direction="row" spacing={0.75} sx={{ py: 0.5, alignItems: 'center' }}>
             <CheckRoundedIcon sx={{ fontSize: '0.85rem', color: colors.teal, flexShrink: 0 }} />
             <Box component="li">{perk}</Box>
           </Stack>
@@ -50,13 +50,13 @@ export default function Passes() {
   const featuredRef = useRef(null)
   const [activeTab, setActiveTab] = useState('daily')
   const passData = passOptions[activeTab] || passOptions.daily
-  const passes = passData.tiers || []
+  const passes = [passData]
 
   return (
     <Box component="section" id="passes" sx={{ py: { xs: 5, md: 6.25 }, background: `linear-gradient(180deg, ${colors.heroCream} 0%, ${colors.bg} 100%)` }}>
       <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4 } }}>
         <SectionHead eyebrow="Choose Your Pass" title="Plans & Pricing" description="Pick the pass that fits your Navratri plans — daily entry or the full 10-night experience." />
-        <Stack direction="row" spacing={0.75} justifyContent="center" sx={{ mb: 3 }}>
+        <Stack direction="row" spacing={0.75} sx={{ mb: 3, justifyContent: 'center' }}>
           {Object.keys(passOptions).map((key) => (
             <Button key={key} onClick={() => setActiveTab(key)} sx={{
               px: 2.5, py: 0.9, borderRadius: '50px', fontSize: '0.85rem', fontWeight: 700, textTransform: 'capitalize',

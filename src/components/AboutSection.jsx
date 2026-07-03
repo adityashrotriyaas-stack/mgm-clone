@@ -30,7 +30,7 @@ export default function AboutSection() {
   return (
     <Box component="section" id="about" sx={{ py: { xs: 6, md: 9 }, background: `linear-gradient(180deg, ${colors.heroCream} 0%, ${colors.bg} 100%)`, position: 'relative', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: `linear-gradient(90deg, transparent, ${colors.glassBorder}, transparent)`, opacity: 0.5 } }}>
       <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4 }, position: 'relative', zIndex: 1 }}>
-        <Stack direction={{ xs: 'column', lg: 'row' }} spacing={{ xs: 4, lg: 6 }} alignItems="stretch">
+        <Stack direction={{ xs: 'column', lg: 'row' }} spacing={{ xs: 4, lg: 6 }} sx={{ alignItems: 'stretch' }}>
           <Box sx={{ flex: 1, maxWidth: { lg: '48%' } }}>
             <Eyebrow>About The Celebration</Eyebrow>
             <Typography sx={{ fontSize: { xs: '0.92rem', sm: '1rem' }, color: colors.mutedLight, mb: 2.5, fontStyle: 'italic', maxWidth: 480, lineHeight: 1.6 }}>

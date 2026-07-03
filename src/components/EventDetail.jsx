@@ -28,9 +28,10 @@ import BusinessIcon from '@mui/icons-material/Business'
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
 import PhotoCaptureField from './PhotoCaptureField'
 import ShareSheet from './ShareSheet'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { colors, gradients } from '../constants/colors'
-import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
 import promoBanner from '../assets/image.png'
+import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
 
 const eventInfo = {
   1: {
@@ -73,12 +74,23 @@ const passModes = [
   { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
 
-const emptyPerson = () => ({ name: '', mobile: '', email: '', aadhaar: '', selfiePreview: '' })
+const emptyPerson = () => ({ name: '', mobile: '', email: '', aadhaar: '', selfiePreview: '', errors: {} })
+
+const validateField = (field, value, allValues) => {
+  switch (field) {
+    case 'name': return value.trim().length < 2 ? 'Enter full name' : ''
+    case 'mobile': return /^[6-9]\d{9}$/.test(value.trim()) ? '' : 'Enter valid 10-digit mobile'
+    case 'email': return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) ? '' : 'Enter valid email address'
+    case 'aadhaar': return /^\d{12}$/.test(value.replace(/\D/g, '')) ? '' : 'Enter valid 12-digit Aadhaar'
+    default: return ''
+  }
+}
 
 const fieldSx = {
-  '& .MuiOutlinedInput-root': { bgcolor: colors.bg, color: colors.ivory, borderRadius: '10px', transition: 'box-shadow 0.2s, border-color 0.2s', '& fieldset': { borderColor: 'rgba(184,134,11,0.12)' }, '&:hover fieldset': { borderColor: 'rgba(184,134,11,0.25)' }, '&.Mui-focused fieldset': { borderColor: colors.gold }, '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(184,134,11,0.08)' } },
+  '& .MuiOutlinedInput-root': { bgcolor: colors.bg, color: colors.ivory, borderRadius: '10px', transition: 'box-shadow 0.2s, border-color 0.2s', '& fieldset': { borderColor: 'rgba(184,134,11,0.12)' }, '&:hover fieldset': { borderColor: 'rgba(184,134,11,0.25)' }, '&.Mui-focused fieldset': { borderColor: colors.gold }, '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(184,134,11,0.08)' }, '&.Mui-error fieldset': { borderColor: '#d32f2f' } },
   '& .MuiInputBase-input::placeholder': { color: colors.muted, opacity: 1 },
   '& .MuiSelect-select': { textAlign: 'left' },
+  '& .MuiFormHelperText-root': { color: '#d32f2f', fontSize: '0.72rem', mx: 0 },
 }
 
 function getNightLabel(nightId) {
@@ -87,15 +99,16 @@ function getNightLabel(nightId) {
   return `${night.label} · ${night.date} · ${night.theme}`
 }
 
-function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
+function PersonFields({ title, person, onFieldChange, onPhotoChange, onBlur }) {
+  const getError = (field) => person.errors?.[field] || ''
   return (
     <Box sx={{ display: 'grid', gap: 1.5 }}>
       {title && <Typography sx={{ fontWeight: 700, color: colors.ivory, fontSize: '0.92rem', mb: 0.15, letterSpacing: '0.3px' }}>{title}</Typography>}
-      <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
-      <TextField required placeholder="Mobile Number" type="tel" value={person.mobile} onChange={onFieldChange('mobile')} fullWidth />
-      <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
+      <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} onBlur={onBlur?.('name')} error={!!getError('name')} helperText={getError('name')} fullWidth slotProps={{ formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
+      <TextField required placeholder="Mobile Number" type="tel" value={person.mobile} onChange={onFieldChange('mobile')} onBlur={onBlur?.('mobile')} error={!!getError('mobile')} helperText={getError('mobile')} fullWidth slotProps={{ htmlInput: { inputMode: 'numeric' }, formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
+      <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} onBlur={onBlur?.('email')} error={!!getError('email')} helperText={getError('email')} fullWidth slotProps={{ formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
       <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} />
-      <TextField required placeholder="Aadhaar Card Number" value={person.aadhaar} onChange={onFieldChange('aadhaar')} fullWidth slotProps={{ htmlInput: { inputMode: 'numeric', pattern: '[0-9]{12}', maxLength: 12 } }} />
+      <TextField required placeholder="Aadhaar Card Number" value={person.aadhaar} onChange={onFieldChange('aadhaar')} onBlur={onBlur?.('aadhaar')} error={!!getError('aadhaar')} helperText={getError('aadhaar')} fullWidth slotProps={{ htmlInput: { inputMode: 'numeric', maxLength: 12 }, formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
     </Box>
   )
 }
@@ -121,6 +134,8 @@ export default function EventDetail() {
   const isSeasonalPass = passMode === 'seasonal'
   const pricingSource = isSeasonalPass ? selectedPass?.data : selected
 
+  usePageMeta(event?.title || 'Event', `${event?.title} — ${info?.dateRange}. ${info?.ticketInfo}. Book your pass for MGM Cultural Navratri 2026.`)
+
   useEffect(() => {
     const handleScroll = () => setHeaderScrolled(window.scrollY > 120)
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -129,10 +144,20 @@ export default function EventDetail() {
 
   const scrollToRegistration = () => { setTab('registration'); setRegStep(0); setTimeout(() => { document.getElementById('event-registration')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }, 100) }
 
-  const makeFieldUpdater = (setter) => (field) => (event) => setter((prev) => ({ ...prev, [field]: event.target.value }))
-  const makePhotoUpdater = (setter) => (previewUrl) => setter((prev) => { if (prev.selfiePreview?.startsWith('blob:')) { URL.revokeObjectURL(prev.selfiePreview) }; return { ...prev, selfiePreview: previewUrl } })
-  const isPersonComplete = (person) => person.name && person.mobile && person.email && person.aadhaar.length === 12 && person.selfiePreview
-  const canSubmitForm = () => { if (!isSeasonalPass && !selectedDay) return false; if (category === 'couple') return isPersonComplete(maleForm) && isPersonComplete(femaleForm); return isPersonComplete(personForm) }
+  const makeFieldUpdater = (setter) => (field) => (event) => setter((prev) => ({ ...prev, [field]: event.target.value, errors: { ...prev.errors, [field]: '' } }))
+  const makePhotoUpdater = (setter) => (previewUrl) => setter((prev) => { if (prev.selfiePreview?.startsWith('blob:')) { URL.revokeObjectURL(prev.selfiePreview) }; return { ...prev, selfiePreview: previewUrl, errors: { ...prev.errors, selfiePreview: '' } } })
+  const makeFieldBlur = (setter) => (field) => () => setter((prev) => {
+    const error = validateField(field, prev[field], prev)
+    if (!error) return prev
+    return { ...prev, errors: { ...prev.errors, [field]: error } }
+  })
+  const isPersonComplete = (person) => person.name && person.mobile && person.email && person.aadhaar.replace(/\D/g, '').length === 12 && person.selfiePreview
+  const hasErrors = (person) => Object.values(person.errors || {}).some(Boolean)
+  const canSubmitForm = () => {
+    if (!isSeasonalPass && !selectedDay) return false
+    if (category === 'couple') return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && !hasErrors(maleForm) && !hasErrors(femaleForm)
+    return isPersonComplete(personForm) && !hasErrors(personForm)
+  }
 
   const goToDetailsStep = () => setRegStep(2)
 
@@ -161,7 +186,7 @@ export default function EventDetail() {
       <Box sx={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.06, backgroundImage: `radial-gradient(circle at 15% 20%, ${colors.gold} 1px, transparent 1px), radial-gradient(circle at 85% 80%, ${colors.gold} 1px, transparent 1px)`, backgroundSize: '50px 50px, 70px 70px', backgroundPosition: '0 0, 35px 25px' }} />
       <Box sx={{ borderBottom: headerScrolled ? '1px solid rgba(184,134,11,0.06)' : '1px solid rgba(184,134,11,0.10)', background: `linear-gradient(135deg, ${colors.heroCream} 0%, ${colors.bg} 100%)`, position: 'sticky', top: 0, zIndex: 10, backdropFilter: 'blur(8px)', transition: 'box-shadow 0.3s ease, border-color 0.3s ease', boxShadow: headerScrolled ? '0 4px 20px rgba(44,31,16,0.08)' : 'none', '&::before': { content: '""', position: 'absolute', bottom: -1, left: 0, right: 0, height: '2px', background: gradients.primary, opacity: headerScrolled ? 0.8 : 0.6, transition: 'opacity 0.3s ease' } }}>
         <Container maxWidth="lg">
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: headerScrolled ? 0.5 : 0.75, transition: 'padding 0.3s ease' }}>
+          <Stack direction="row" sx={{ py: headerScrolled ? 0.5 : 0.75, transition: 'padding 0.3s ease', alignItems: 'center', justifyContent: 'space-between' }}>
             <Button onClick={() => navigate('/')} startIcon={<ChevronLeftRoundedIcon />} sx={{ color: colors.ivory, fontWeight: 600, textTransform: 'none', fontSize: '0.85rem', '&:hover': { bgcolor: 'transparent', color: colors.gold }, '& .MuiButton-startIcon': { mr: 0.5 } }}>Back</Button>
             <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: '0.9rem', background: gradients.heroText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', opacity: headerScrolled ? 1 : 0, transition: 'opacity 0.3s ease' }}>MGM Navratri</Typography>
           </Stack>
@@ -174,11 +199,11 @@ export default function EventDetail() {
               <Box sx={{ width: '100%', height: '100%', backgroundImage: `url(${promoBanner})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.4s ease', '@media (hover: hover)': { '&:hover': { transform: 'scale(1.03)' } } }} />
               <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(0deg, rgba(44,31,16,0.15) 0%, transparent 100%)' }} />
             </Box>
-            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={1} sx={{ mt: { xs: 1.5, md: 2 }, mb: 0.75 }}>
+            <Stack direction="row" spacing={1} sx={{ mt: { xs: 1.5, md: 2 }, mb: 0.75, alignItems: 'flex-start', justifyContent: 'space-between' }}>
               <Typography sx={{ fontWeight: 700, color: colors.ivory, fontFamily: '"Playfair Display", serif', fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.85rem' }, lineHeight: 1.2, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>{event.title}</Typography>
               <ShareRoundedIcon onClick={() => setShareOpen(true)} sx={{ color: colors.muted, fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.5, transition: 'color 0.2s', '&:hover': { color: colors.gold } }} />
             </Stack>
-            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" sx={{ gap: 0.75 }}>
+            <Stack direction="row" spacing={1} sx={{ gap: 0.75, alignItems: 'center', flexWrap: 'wrap' }}>
               <Chip label={event.night} sx={{ background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
               <Chip icon={<MusicNoteOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.dateRange} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
               <Chip icon={<AccessTimeOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.time} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
@@ -255,7 +280,7 @@ export default function EventDetail() {
               <Grid container spacing={1.5}>
                 {info.highlights.map((item, i) => (
                   <Grid key={i} size={{ xs: 12, sm: 6 }}>
-                    <Stack direction="row" spacing={1.25} alignItems="center" sx={{ p: { xs: 1.5, md: 1.75 }, bgcolor: colors.bgSoft, borderRadius: '12px', border: '1px solid rgba(184,134,11,0.08)', height: '100%', transition: 'border-color 0.2s, box-shadow 0.2s', '@media (hover: hover)': { '&:hover': { borderColor: 'rgba(184,134,11,0.20)', boxShadow: '0 4px 12px rgba(44,31,16,0.05)' } } }}>
+                    <Stack direction="row" spacing={1.25} sx={{ p: { xs: 1.5, md: 1.75 }, bgcolor: colors.bgSoft, borderRadius: '12px', border: '1px solid rgba(184,134,11,0.08)', height: '100%', transition: 'border-color 0.2s, box-shadow 0.2s', alignItems: 'center', '@media (hover: hover)': { '&:hover': { borderColor: 'rgba(184,134,11,0.20)', boxShadow: '0 4px 12px rgba(44,31,16,0.05)' } } }}>
                       <CelebrationOutlinedIcon sx={{ fontSize: '1rem', color: colors.gold, flexShrink: 0 }} />
                       <Typography sx={{ color: colors.muted, fontSize: '0.9rem', lineHeight: 1.4 }}>{item}</Typography>
                     </Stack>
@@ -273,7 +298,7 @@ export default function EventDetail() {
                 Artist
               </Typography>
               <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)', transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease', '@media (hover: hover)': { '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 12px 32px rgba(44,31,16,0.10)', borderColor: colors.glassBorder } } }}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', sm: 'center' }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: { xs: 'flex-start', sm: 'center' } }}>
                   <Box sx={{ width: 64, height: 64, borderRadius: '50%', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 6px 16px rgba(184,92,58,0.2)', position: 'relative', '&::after': { content: '""', position: 'absolute', inset: -3, borderRadius: '50%', border: '2px solid rgba(184,134,11,0.12)' } }}>
                     <MicIcon sx={{ color: '#fff', fontSize: '1.6rem' }} />
                   </Box>
@@ -297,7 +322,7 @@ export default function EventDetail() {
                 Organized by
               </Typography>
               <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)', transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease', '@media (hover: hover)': { '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 12px 32px rgba(44,31,16,0.10)', borderColor: colors.glassBorder } } }}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', sm: 'center' }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: { xs: 'flex-start', sm: 'center' } }}>
                   <Box sx={{ width: 56, height: 56, borderRadius: '16px', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 6px 16px rgba(184,134,11,0.2)' }}>
                     <BusinessIcon sx={{ color: '#fff', fontSize: '1.4rem' }} />
                   </Box>
@@ -361,7 +386,7 @@ export default function EventDetail() {
                 <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, mb: 0.5, fontSize: { xs: '1.25rem', md: '1.55rem' } }}>Reserve Your Spot</Typography>
                 <Typography sx={{ fontSize: '0.85rem', color: colors.mutedLight }}>{regStep === 0 && 'Step 1 — Choose your pass type'}{regStep === 1 && 'Step 2 — Choose your category'}{regStep === 2 && 'Step 3 — Fill registration details'}</Typography>
               </Box>
-              <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" sx={{ mb: { xs: 2, md: 3 }, position: 'relative', zIndex: 1 }}>
+              <Stack direction="row" spacing={0.75} sx={{ mb: { xs: 2, md: 3 }, position: 'relative', zIndex: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
                 {['Pass Type', 'Category', 'Details'].map((label, index) => (
                   <Box key={label} sx={{ px: { xs: 1, sm: 1.25 }, py: 0.5, borderRadius: '50px', fontSize: { xs: '0.65rem', sm: '0.72rem' }, fontWeight: 700, background: regStep >= index ? gradients.primary : colors.bgSoft, color: regStep >= index ? '#fff' : colors.muted, whiteSpace: 'nowrap', boxShadow: regStep >= index ? '0 4px 10px rgba(184,134,11,0.18)' : 'none' }}>{index + 1}. {label}</Box>
                 ))}
@@ -378,6 +403,7 @@ export default function EventDetail() {
                       <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.05rem', alignSelf: { xs: 'flex-start', sm: 'center' } }}>{item.data.price}</Typography>
                     </Button>
                   ))}
+                  <Button onClick={() => setTab('info')} sx={{ py: 1.35, minHeight: 48, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.12)', color: colors.muted, textTransform: 'none', fontWeight: 600, '&:hover': { borderColor: colors.gold, color: colors.ivory } }}>Cancel</Button>
                 </Stack>
               )}
 
@@ -398,7 +424,7 @@ export default function EventDetail() {
                       <Typography sx={{ fontWeight: 800, fontSize: '1.65rem', color: colors.ivory, my: 1, fontFamily: '"Unbounded", sans-serif' }}>{pricingSource?.price}<Box component="span" sx={{ fontSize: '0.85rem', fontWeight: 500, color: colors.muted }}>{pricingSource?.priceUnit}</Box></Typography>
                       <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.85rem', color: colors.muted }}>
                         {(pricingSource?.perks || []).map((perk) => (
-                          <Stack key={perk} direction="row" spacing={0.75} alignItems="center" sx={{ py: 0.5, justifyContent: 'center' }}>
+                          <Stack key={perk} direction="row" spacing={0.75} sx={{ py: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                             <StarRoundedIcon sx={{ fontSize: '0.75rem', color: colors.gold, flexShrink: 0 }} />
                             <Box component="li">{perk}</Box>
                           </Stack>
@@ -432,13 +458,13 @@ export default function EventDetail() {
                   )}
                   {category === 'couple' ? (
                     <Stack spacing={2.5} sx={{ position: 'relative', zIndex: 1 }}>
-                      <PersonFields title="Male Details" person={maleForm} onFieldChange={makeFieldUpdater(setMaleForm)} onPhotoChange={makePhotoUpdater(setMaleForm)} />
+                      <PersonFields title="Male Details" person={maleForm} onFieldChange={makeFieldUpdater(setMaleForm)} onPhotoChange={makePhotoUpdater(setMaleForm)} onBlur={makeFieldBlur(setMaleForm)} />
                       <Divider sx={{ borderColor: 'rgba(184,134,11,0.08)' }} />
-                      <PersonFields title="Female Details" person={femaleForm} onFieldChange={makeFieldUpdater(setFemaleForm)} onPhotoChange={makePhotoUpdater(setFemaleForm)} />
+                      <PersonFields title="Female Details" person={femaleForm} onFieldChange={makeFieldUpdater(setFemaleForm)} onPhotoChange={makePhotoUpdater(setFemaleForm)} onBlur={makeFieldBlur(setFemaleForm)} />
                     </Stack>
                   ) : (
                     <Box sx={{ position: 'relative', zIndex: 1 }}>
-                      <PersonFields title={category === 'male' ? 'Male Details' : 'Female Details'} person={personForm} onFieldChange={makeFieldUpdater(setPersonForm)} onPhotoChange={makePhotoUpdater(setPersonForm)} />
+                      <PersonFields title={category === 'male' ? 'Male Details' : 'Female Details'} person={personForm} onFieldChange={makeFieldUpdater(setPersonForm)} onPhotoChange={makePhotoUpdater(setPersonForm)} onBlur={makeFieldBlur(setPersonForm)} />
                     </Box>
                   )}
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5, position: 'relative', zIndex: 1 }}>

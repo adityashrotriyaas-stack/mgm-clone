@@ -13,8 +13,8 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
-import promoBanner from '../assets/image.png'
 import { colors, gradients } from '../constants/colors'
+import promoBanner from '../assets/image.png'
 import { heroFeatures, stats } from '../data/siteData'
 import { useRevealRef } from './shared'
 
@@ -34,7 +34,7 @@ const heroMetaChips = [
 function FeatureItem({ icon, title, subtitle }) {
   const Icon = featureIcons[icon]
   return (
-    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ width: '100%', minWidth: 0 }}>
+    <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', width: '100%', minWidth: 0 }}>
       <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: 'rgba(184,134,11,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <Icon sx={{ color: colors.gold, fontSize: '1.35rem' }} />
       </Box>
@@ -175,7 +175,7 @@ export default function Hero() {
           </Box>
 
           <Box sx={{ order: { xs: 2, lg: 0 }, minWidth: 0 }}>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: { xs: 1.5, md: 2 } }}>
+            <Stack direction="row" spacing={1} sx={{ mb: { xs: 1.5, md: 2 }, alignItems: 'center' }}>
               <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, background: gradients.primary, color: '#fff', fontSize: { xs: '0.62rem', sm: '0.68rem' }, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', px: 1.5, py: 0.6, borderRadius: '50px' }}>
                 <AutoAwesomeIcon sx={{ fontSize: '0.75rem' }} />
                 MGM Cultural · Exclusive Event
@@ -193,13 +193,13 @@ export default function Hero() {
               Devotion. Dance. Dandiya. Experience the joy of Navratri like never before at Rajkot&apos;s grand ten-night celebration.
             </Typography>
 
-            <Stack direction="row" flexWrap="wrap" spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
+            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: { xs: 2.5, md: 3 } }}>
               {heroMetaChips.map(({ icon: Icon, label, href }) => (
                 <Chip key={label} component={href ? 'a' : undefined} href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener noreferrer' : undefined} clickable={!!href} icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />} label={label} sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.18)', color: colors.ivory, fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.8rem' }, height: 'auto', py: 0.5, maxWidth: '100%', boxShadow: '0 2px 8px rgba(44,31,16,0.04)', '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' }, '&:hover': href ? { bgcolor: colors.bg, borderColor: colors.gold } : {} }} />
               ))}
             </Stack>
 
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ xs: 'stretch', sm: 'center' }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ alignItems: { xs: 'stretch', sm: 'center' } }}>
               <Button onClick={() => navigate('/event/1')} startIcon={<ConfirmationNumberOutlinedIcon />} sx={{
                 background: gradients.primary, color: '#fff', px: 3, py: { xs: 1.35, md: 1.5 }, minHeight: 48, fontSize: { xs: '0.9rem', md: '0.95rem' }, fontWeight: 700, borderRadius: '50px',
                 boxShadow: '0 8px 24px rgba(184,134,11,0.3)', transition: 'transform 0.25s ease, box-shadow 0.25s ease',

@@ -12,10 +12,13 @@ import FAQSection from './components/FAQSection'
 import Testimonials from './components/Testimonials'
 import StickyCTA from './components/StickyCTA'
 import WhatsAppFloat from './components/WhatsAppFloat'
-import MusicToggle from './components/MusicToggle'
+
+import ScrollToTop from './components/ScrollToTop'
+import { usePageMeta } from './hooks/usePageMeta'
 import { colors } from './constants/colors'
 
 function App() {
+  usePageMeta('', 'MGM Cultural Navratri 2026 — Ten nights of Garba, Dandiya and devotion at Seasons Hotel, Rajkot.')
   return (
     <Box sx={{ bgcolor: colors.bg, color: colors.ivory, pb: { xs: 'calc(96px + env(safe-area-inset-bottom, 0px))', lg: 0 } }}>
       <ProgressBar />
@@ -32,7 +35,8 @@ function App() {
       <Footer />
       <StickyCTA />
       <WhatsAppFloat />
-      <MusicToggle />
+      <ScrollToTop />
+
     </Box>
   )
 }

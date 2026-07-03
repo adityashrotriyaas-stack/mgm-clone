@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, Children, cloneElement } from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { colors, gradients } from '../constants/colors'
+import { colors } from '../constants/colors'
 
 export function useRevealRef(threshold = 0.15) {
   const ref = useRef(null)
@@ -157,9 +157,7 @@ export function SectionDivider() {
     <Stack
       direction="row"
       spacing={1.25}
-      alignItems="center"
-      justifyContent="center"
-      sx={{ py: { xs: 2, md: 2.5 }, px: 2 }}
+      sx={{ py: { xs: 2, md: 2.5 }, px: 2, alignItems: 'center', justifyContent: 'center' }}
     >
       <Box sx={{ width: 40, height: '1px', background: `linear-gradient(90deg, transparent, ${colors.glassBorder})` }} />
       <Stack direction="row" spacing={0.5}>

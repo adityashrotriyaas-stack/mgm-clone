@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -12,15 +12,17 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined'
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
-import QrCode2RoundedIcon from '@mui/icons-material/QrCode2Rounded'
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import SmartphoneOutlinedIcon from '@mui/icons-material/SmartphoneOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { QRCodeSVG } from 'qrcode.react'
+import { toPng } from 'html-to-image'
 import Confetti from './Confetti'
 import { useToast } from './Toast'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { colors, gradients } from '../constants/colors'
 import { registrationCategories } from '../data/siteData'
 
@@ -35,7 +37,7 @@ const stepShortLabels = ['Book', 'Pass', 'Category', 'Details', 'Pay', 'QR']
 
 function StepDots({ activeStep }) {
   return (
-    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" sx={{ mb: 3, gap: 0.75 }}>
+    <Stack direction="row" spacing={0.75} sx={{ mb: 3, gap: 0.75, justifyContent: 'center', flexWrap: 'wrap' }}>
       {steps.map((label, index) => (
         <Box key={label} sx={{ px: { xs: 0.9, sm: 1.25 }, py: 0.5, borderRadius: '50px', fontSize: { xs: '0.62rem', sm: '0.68rem' }, fontWeight: 700, background: index <= activeStep ? gradients.primary : 'rgba(184,134,11,0.10)', color: index <= activeStep ? '#fff' : colors.muted, whiteSpace: 'nowrap', boxShadow: index <= activeStep ? '0 4px 12px rgba(184,134,11,0.18)' : 'none', transition: 'all 0.3s ease' }}>
           {index + 1}. {stepShortLabels[index]}
@@ -68,7 +70,10 @@ export default function BookingFlow() {
   const [activeStep, setActiveStep] = useState(4)
   const [paymentMethod, setPaymentMethod] = useState('upi')
   const selectedCategory = registrationCategories[registration?.category || 'male']
+  const passRef = useRef(null)
   const toast = useToast()
+
+  usePageMeta('Booking', 'Complete your booking for MGM Cultural Navratri 2026. Secure payment and instant QR pass generation.')
 
   useEffect(() => {
     if (activeStep === 5) {
@@ -77,6 +82,20 @@ export default function BookingFlow() {
   }, [activeStep])
 
   useEffect(() => { if (!registration) { navigate(`/event/${eventId}`, { replace: true }) } }, [registration, eventId, navigate])
+
+  const handleDownloadPass = async () => {
+    if (!passRef.current) return
+    try {
+      const dataUrl = await toPng(passRef.current, { backgroundColor: '#fff', pixelRatio: 2 })
+      const link = document.createElement('a')
+      link.download = `MGM-Pass-${registration.mobile?.slice(-6) || '000000'}.png`
+      link.href = dataUrl
+      link.click()
+      toast('Pass downloaded!', 'success')
+    } catch {
+      toast('Failed to download pass. Please try again.', 'error')
+    }
+  }
 
   const progress = useMemo(() => ((activeStep + 1) / steps.length) * 100, [activeStep])
 
@@ -111,30 +130,30 @@ export default function BookingFlow() {
                 <Box sx={{ bgcolor: colors.heroCream, borderRadius: '14px', border: '1px solid rgba(184,134,11,0.08)', p: { xs: 1.5, md: 1.75 } }}>
                   <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: colors.mutedLight, textTransform: 'uppercase', letterSpacing: '1px', mb: 1.25 }}>Order Summary</Typography>
                   <Stack spacing={1.25}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+                    <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
                         <ShoppingBagOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.gold, flexShrink: 0 }} />
                         <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: colors.ivory, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{registration.passLabel || registration.passMode}</Typography>
                       </Stack>
                       <Typography sx={{ fontSize: '0.82rem', color: colors.muted, flexShrink: 0, ml: 1 }}>{registration.category === 'couple' ? '× 2' : '× 1'}</Typography>
                     </Stack>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+                    <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
                         <PersonOutlineOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.gold, flexShrink: 0 }} />
                         <Typography sx={{ fontSize: '0.82rem', color: colors.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedCategory.title}</Typography>
                       </Stack>
                       <Typography sx={{ fontSize: '0.82rem', color: colors.muted, flexShrink: 0, ml: 1 }}>{registration.name}</Typography>
                     </Stack>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+                    <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
                         <SmartphoneOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.gold, flexShrink: 0 }} />
                         <Typography sx={{ fontSize: '0.82rem', color: colors.muted }}>Contact</Typography>
                       </Stack>
                       <Typography sx={{ fontSize: '0.82rem', color: colors.muted, flexShrink: 0, ml: 1 }}>{registration.mobile}</Typography>
                     </Stack>
                     {registration.selectedDayLabel && (
-                      <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <Stack direction="row" spacing={0.75} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+                      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
                           <LocationOnOutlinedIcon sx={{ fontSize: '0.9rem', color: colors.gold, flexShrink: 0 }} />
                           <Typography sx={{ fontSize: '0.82rem', color: colors.mutedLight, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Venue</Typography>
                         </Stack>
@@ -142,9 +161,9 @@ export default function BookingFlow() {
                       </Stack>
                     )}
                     <Box sx={{ borderTop: '1px solid rgba(184,134,11,0.08)', pt: 1.25 }}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography sx={{ fontWeight: 600, fontSize: '0.9rem', color: colors.ivory }}>Total</Typography>
-                        <Stack direction="row" spacing={0.25} alignItems="baseline">
+                        <Stack direction="row" spacing={0.25} sx={{ alignItems: 'baseline' }}>
                           <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.25rem', fontFamily: '"Unbounded", sans-serif' }}>
                             ₹{(registration.passPrice || selectedCategory?.price || '').replace(/[^0-9,]/g, '')}
                           </Typography>
@@ -168,20 +187,27 @@ export default function BookingFlow() {
               </Stack>
             )}
             {activeStep === 5 && (
-              <Stack spacing={2} alignItems="center" textAlign="center" sx={{ py: 1 }}>
+              <Stack spacing={2} sx={{ py: 1, alignItems: 'center', textAlign: 'center' }}>
                 <AnimatedCheckmark />
                 <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: colors.ivory }}>Booking Confirmed!</Typography>
-                <Box sx={{ width: 200, background: '#fff', borderRadius: '16px', border: '1px solid rgba(184,134,11,0.18)', boxShadow: '0 8px 24px rgba(44,31,16,0.06)', p: 2, position: 'relative', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: gradients.primary } }}>
+                <Box ref={passRef} sx={{ width: 200, background: '#fff', borderRadius: '16px', border: '1px solid rgba(184,134,11,0.18)', boxShadow: '0 8px 24px rgba(44,31,16,0.06)', p: 2, position: 'relative', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: gradients.primary } }}>
                   <Typography sx={{ fontSize: '0.6rem', fontWeight: 700, color: colors.gold, letterSpacing: '1px', mb: 0.75 }}>MGM NAVRATRI</Typography>
-                  <QrCode2RoundedIcon sx={{ fontSize: '6rem', color: colors.ivory }} />
+                  <Box sx={{ borderRadius: '8px', overflow: 'hidden', lineHeight: 0, display: 'inline-flex' }}>
+                    <QRCodeSVG
+                      value={`MGM NAVRATRI 2026\nName: ${registration.name}\nMobile: ${registration.mobile}\nPass: ${registration.passLabel || registration.passMode}\nCategory: ${registration.category}\nRef: MGM-${(registration.mobile || '').slice(-6)}`}
+                      size={160}
+                      level="M"
+                      style={{ width: 160, height: 160, display: 'block' }}
+                    />
+                  </Box>
                   <Typography sx={{ fontSize: '0.6rem', color: colors.mutedLight, mt: 0.75, fontFamily: 'monospace' }}>#{registration.mobile?.slice(-6) || '000000'}</Typography>
                 </Box>
                 <Typography sx={{ color: colors.muted, fontSize: '0.88rem', lineHeight: 1.7, maxWidth: 320 }}>Your QR pass has been sent to your WhatsApp and Email. Show this QR at the entry gate for a seamless check-in.</Typography>
-                <Stack direction="row" spacing={0.75} alignItems="center" sx={{ bgcolor: colors.heroCream, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.08)', px: 2, py: 1.25 }}>
+                <Stack direction="row" spacing={0.75} sx={{ bgcolor: colors.heroCream, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.08)', px: 2, py: 1.25, alignItems: 'center' }}>
                   <PersonOutlineOutlinedIcon sx={{ fontSize: '0.9rem', color: colors.gold }} />
                   <Typography sx={{ fontSize: '0.82rem', color: colors.muted }}>{registration.name} · {registration.mobile}</Typography>
                 </Stack>
-                <Button startIcon={<DownloadRoundedIcon />} fullWidth sx={{ borderRadius: '12px', border: `2px solid ${colors.gold}`, color: colors.gold, fontWeight: 700, py: 1.25, background: 'transparent', transition: 'all 0.2s', '&:hover': { background: 'rgba(184,134,11,0.06)', transform: 'translateY(-1px)' } }}>Download Pass</Button>
+                <Button onClick={handleDownloadPass} startIcon={<DownloadRoundedIcon />} fullWidth sx={{ borderRadius: '12px', border: `2px solid ${colors.gold}`, color: colors.gold, fontWeight: 700, py: 1.25, background: 'transparent', transition: 'all 0.2s', '&:hover': { background: 'rgba(184,134,11,0.06)', transform: 'translateY(-1px)' } }}>Download Pass</Button>
               </Stack>
             )}
             <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
