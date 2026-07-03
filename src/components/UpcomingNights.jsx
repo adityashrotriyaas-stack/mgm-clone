@@ -19,8 +19,41 @@ import { colors, gradients } from '../constants/colors'
 import { navratriNights, nightTracker, upcomingEvents } from '../data/siteData'
 
 function EventCard({ event, onBook }) {
+  const cardRef = useRef(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+
+  const handleMouseMove = (e) => {
+    const rect = cardRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    setTilt({ x: x * 6, y: y * -6 })
+  }
+
+  const handleMouseLeave = () => setTilt({ x: 0, y: 0 })
+
   return (
-    <Box sx={{ flex: '0 0 auto', width: { xs: 'min(85vw, 300px)', sm: 320, md: 340 }, scrollSnapAlign: 'start', bgcolor: colors.bgSoft, borderRadius: '20px', overflow: 'hidden', border: '1px solid rgba(184,134,11,0.10)', transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease', boxShadow: '0 8px 24px rgba(44,31,16,0.05)', '@media (hover: hover)': { '&:hover': { transform: 'translateY(-6px)', borderColor: 'rgba(184,134,11,0.25)', boxShadow: '0 20px 40px rgba(44,31,16,0.12)' } } }}>
+    <Box
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      sx={{
+        flex: '0 0 auto',
+        width: { xs: 'min(85vw, 300px)', sm: 320, md: 340 },
+        scrollSnapAlign: 'start',
+        bgcolor: colors.bgSoft,
+        borderRadius: '20px',
+        overflow: 'hidden',
+        border: '1px solid rgba(184,134,11,0.10)',
+        transition: 'border-color 0.35s ease, box-shadow 0.35s ease',
+        transform: `perspective(800px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) translateY(${tilt.x || tilt.y ? -4 : 0}px)`,
+        boxShadow: tilt.x || tilt.y ? '0 24px 48px rgba(44,31,16,0.14)' : '0 8px 24px rgba(44,31,16,0.05)',
+        '@media (hover: hover)': {
+          '&:hover': {
+            borderColor: 'rgba(184,134,11,0.25)',
+          },
+        },
+      }}>
       <Box sx={{ height: { xs: 150, sm: 160 }, backgroundImage: `url(${event.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', '&::after': { content: '""', position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, rgba(44,31,16,0.15) 100%)' } }}>
         <Box sx={{ position: 'absolute', top: 12, left: 12, background: gradients.primary, color: '#fff', fontSize: '0.66rem', fontWeight: 700, px: 1.5, py: 0.6, borderRadius: '20px', zIndex: 1 }}>{event.badge}</Box>
         <Box sx={{ position: 'absolute', top: 12, right: 12, bgcolor: 'rgba(255,255,255,0.90)', color: colors.teal, fontSize: '0.68rem', fontWeight: 700, px: 1.25, py: 0.6, borderRadius: '20px', zIndex: 1, backdropFilter: 'blur(4px)' }}>{event.night}</Box>
@@ -78,6 +111,7 @@ function NightProgressTracker() {
 export default function UpcomingNights() {
   const navigate = useNavigate()
   const sliderRef = useRef(null)
+  const scrollTimerRef = useRef(null)
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -113,6 +147,12 @@ export default function UpcomingNights() {
     return () => window.clearInterval(interval)
   }, [isAutoScrollPaused])
 
+  useEffect(() => {
+    return () => {
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+    }
+  }, [])
+
   return (
     <Box component="section" id="upcoming" sx={{ py: { xs: 4.5, md: 6.25 }, overflow: 'hidden' }}>
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
@@ -135,7 +175,7 @@ export default function UpcomingNights() {
           }}>
             <ChevronRightRoundedIcon />
           </IconButton>
-          <Box ref={sliderRef} onMouseEnter={() => setIsAutoScrollPaused(true)} onMouseLeave={() => setIsAutoScrollPaused(false)} onTouchStart={() => setIsAutoScrollPaused(true)} onTouchEnd={() => { window.setTimeout(() => setIsAutoScrollPaused(false), 2500) }} onScroll={updateActiveIndex} sx={{ display: 'flex', flexWrap: 'nowrap', gap: { xs: 1.5, sm: 2 }, overflowX: 'auto', px: { xs: 2, sm: 3, md: 7 }, pb: 2.25, scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', '&::-webkit-scrollbar': { display: 'none' } }}>
+          <Box ref={sliderRef} onMouseEnter={() => setIsAutoScrollPaused(true)} onMouseLeave={() => setIsAutoScrollPaused(false)} onTouchStart={() => setIsAutoScrollPaused(true)} onTouchEnd={() => { const t = setTimeout(() => setIsAutoScrollPaused(false), 2500); scrollTimerRef.current = t }} onScroll={updateActiveIndex} sx={{ display: 'flex', flexWrap: 'nowrap', gap: { xs: 1.5, sm: 2 }, overflowX: 'auto', px: { xs: 2, sm: 3, md: 7 }, pb: 2.25, scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', '&::-webkit-scrollbar': { display: 'none' } }}>
             {upcomingEvents.map((event) => (
               <EventCard key={event.id} event={event} onBook={(id) => navigate(`/event/${id}`)} />
             ))}

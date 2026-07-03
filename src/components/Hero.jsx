@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -14,7 +15,8 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import promoBanner from '../assets/image.png'
 import { colors, gradients } from '../constants/colors'
-import { heroFeatures } from '../data/siteData'
+import { heroFeatures, stats } from '../data/siteData'
+import { useRevealRef } from './shared'
 
 const featureIcons = {
   calendar: CalendarMonthOutlinedIcon,
@@ -53,6 +55,95 @@ function DecorativeOrb({ size, top, left, right, bottom, delay = 0, duration = 8
 function RangoliDot({ top, left, right, size = 6, delay = 0 }) {
   return (
     <Box sx={{ position: 'absolute', width: size, height: size, borderRadius: '50%', top, left, right, background: colors.glow, animation: `pulseGlow 3s ease-in-out infinite`, animationDelay: `${delay}s`, pointerEvents: 'none', zIndex: 0 }} />
+  )
+}
+
+function useCountUp(target, enabled) {
+  const [value, setValue] = useState(0)
+  const started = useRef(false)
+
+  useEffect(() => {
+    if (!enabled || started.current) return
+    started.current = true
+    let current = 0
+    const step = Math.max(1, Math.ceil(target / 60))
+    const tick = () => {
+      current += step
+      if (current >= target) { setValue(target); return }
+      setValue(current)
+      requestAnimationFrame(tick)
+    }
+    tick()
+  }, [enabled, target])
+
+  return value
+}
+
+function StatItem({ value, label, visible, index }) {
+  const count = useCountUp(value, visible)
+  return (
+    <Box
+      sx={{
+        textAlign: 'center',
+        py: { xs: 1.5, md: 2 },
+        px: 1,
+        borderRadius: '16px',
+        bgcolor: 'rgba(255,255,255,0.35)',
+        border: '1px solid rgba(184,134,11,0.08)',
+        backdropFilter: 'blur(4px)',
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(16px)',
+        transition: `opacity 0.5s ease, transform 0.5s ease`,
+        transitionDelay: `${index * 0.12}s`,
+      }}
+    >
+      <Typography
+        sx={{
+          fontFamily: '"Unbounded", sans-serif',
+          fontWeight: 800,
+          fontSize: { xs: '1.3rem', sm: '1.6rem', md: '2rem' },
+          background: gradients.heroText,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          lineHeight: 1.1,
+        }}
+      >
+        {count.toLocaleString()}+
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: { xs: '0.65rem', sm: '0.72rem', md: '0.78rem' },
+          color: colors.muted,
+          fontWeight: 600,
+          mt: 0.25,
+          letterSpacing: '0.3px',
+        }}
+      >
+        {label}
+      </Typography>
+    </Box>
+  )
+}
+
+function StatsRow() {
+  const { ref, visible } = useRevealRef(0.3)
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: 'repeat(3, 1fr)' },
+        gap: { xs: 1.5, md: 3 },
+        mb: { xs: 2.5, md: 3 },
+        px: { xs: 0.5, md: 0 },
+      }}
+    >
+      {stats.map((stat, index) => (
+        <StatItem key={stat.label} value={stat.value} label={stat.label} visible={visible} index={index} />
+      ))}
+    </Box>
   )
 }
 
@@ -102,7 +193,7 @@ export default function Hero() {
               Devotion. Dance. Dandiya. Experience the joy of Navratri like never before at Rajkot&apos;s grand ten-night celebration.
             </Typography>
 
-            <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
+            <Stack direction="row" flexWrap="wrap" spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
               {heroMetaChips.map(({ icon: Icon, label, href }) => (
                 <Chip key={label} component={href ? 'a' : undefined} href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener noreferrer' : undefined} clickable={!!href} icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />} label={label} sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.18)', color: colors.ivory, fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.8rem' }, height: 'auto', py: 0.5, maxWidth: '100%', boxShadow: '0 2px 8px rgba(44,31,16,0.04)', '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' }, '&:hover': href ? { bgcolor: colors.bg, borderColor: colors.gold } : {} }} />
               ))}
@@ -125,6 +216,8 @@ export default function Hero() {
                 Explore Events
               </Button>
             </Stack>
+
+            <StatsRow />
           </Box>
         </Box>
       </Container>

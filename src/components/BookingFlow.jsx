@@ -19,6 +19,8 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import SmartphoneOutlinedIcon from '@mui/icons-material/SmartphoneOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Confetti from './Confetti'
+import { useToast } from './Toast'
 import { colors, gradients } from '../constants/colors'
 import { registrationCategories } from '../data/siteData'
 
@@ -33,7 +35,7 @@ const stepShortLabels = ['Book', 'Pass', 'Category', 'Details', 'Pay', 'QR']
 
 function StepDots({ activeStep }) {
   return (
-    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: 3, gap: 0.75 }}>
+    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" sx={{ mb: 3, gap: 0.75 }}>
       {steps.map((label, index) => (
         <Box key={label} sx={{ px: { xs: 0.9, sm: 1.25 }, py: 0.5, borderRadius: '50px', fontSize: { xs: '0.62rem', sm: '0.68rem' }, fontWeight: 700, background: index <= activeStep ? gradients.primary : 'rgba(184,134,11,0.10)', color: index <= activeStep ? '#fff' : colors.muted, whiteSpace: 'nowrap', boxShadow: index <= activeStep ? '0 4px 12px rgba(184,134,11,0.18)' : 'none', transition: 'all 0.3s ease' }}>
           {index + 1}. {stepShortLabels[index]}
@@ -66,6 +68,13 @@ export default function BookingFlow() {
   const [activeStep, setActiveStep] = useState(4)
   const [paymentMethod, setPaymentMethod] = useState('upi')
   const selectedCategory = registrationCategories[registration?.category || 'male']
+  const toast = useToast()
+
+  useEffect(() => {
+    if (activeStep === 5) {
+      toast('Booking confirmed! Your QR pass has been generated.', 'success')
+    }
+  }, [activeStep])
 
   useEffect(() => { if (!registration) { navigate(`/event/${eventId}`, { replace: true }) } }, [registration, eventId, navigate])
 
@@ -78,6 +87,7 @@ export default function BookingFlow() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: colors.heroCream, py: { xs: 2, md: 4 }, px: { xs: 0, sm: 0 }, position: 'relative', overflow: 'hidden' }}>
+      <Confetti active={activeStep === 5} />
       <DecorativeOrb size={350} top="-100px" right="-80px" />
       <DecorativeOrb size={250} bottom="-60px" left="-60px" />
       <Box sx={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.05, backgroundImage: `radial-gradient(circle at 20% 40%, ${colors.gold} 1px, transparent 1px), radial-gradient(circle at 70% 60%, ${colors.gold} 1px, transparent 1px)`, backgroundSize: '60px 60px, 80px 80px', backgroundPosition: '0 0, 40px 20px' }} />
@@ -136,7 +146,7 @@ export default function BookingFlow() {
                         <Typography sx={{ fontWeight: 600, fontSize: '0.9rem', color: colors.ivory }}>Total</Typography>
                         <Stack direction="row" spacing={0.25} alignItems="baseline">
                           <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.25rem', fontFamily: '"Unbounded", sans-serif' }}>
-                            ₹{(registration.passPrice || selectedCategory.price + '').replace(/[^0-9,]/g, '')}
+                            ₹{(registration.passPrice || selectedCategory?.price || '').replace(/[^0-9,]/g, '')}
                           </Typography>
                         </Stack>
                       </Stack>

@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Children, cloneElement } from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
 
-function useRevealRef(threshold = 0.15) {
+export function useRevealRef(threshold = 0.15) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
 
@@ -116,21 +116,18 @@ export function StaggerReveal({ children, sx, staggerMs = 80 }) {
   const { ref, visible } = useRevealRef()
 
   return (
-    <Box
-      ref={ref}
-      sx={{
-        '& > *': {
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(28px)',
-          transition: 'opacity 0.6s ease, transform 0.6s ease',
-          transitionDelay: visible
-            ? (_, i) => `${i * staggerMs}ms`
-            : '0ms',
-        },
-        ...sx,
-      }}
-    >
-      {children}
+    <Box ref={ref} sx={sx}>
+      {Children.map(children, (child, i) =>
+        child ? cloneElement(child, {
+          style: {
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(28px)',
+            transition: 'opacity 0.6s ease, transform 0.6s ease',
+            transitionDelay: visible ? `${i * staggerMs}ms` : '0ms',
+            ...(child.props.style || {}),
+          },
+        }) : child,
+      )}
     </Box>
   )
 }

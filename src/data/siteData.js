@@ -3,6 +3,7 @@ export const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Schedule', href: '#upcoming', mobileLabel: 'Schedule' },
   { label: 'Gallery', href: '#past' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ]
 

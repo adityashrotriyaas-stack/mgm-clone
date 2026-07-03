@@ -127,7 +127,13 @@ export default function PhotoCaptureField({ preview, onChange }) {
             </Box>
           ) : (
             <Box sx={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', bgcolor: colors.ivory, aspectRatio: '4 / 5' }}>
-              <Box component="video" ref={videoRef} autoPlay playsInline muted sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <Box
+  component="video"
+  ref={videoRef}
+  autoPlay
+  playsInline
+  muted
+  sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               {isStartingCamera && (
                 <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(44,31,16,0.45)' }}>
                   <Typography sx={{ color: '#fff', fontSize: '0.9rem' }}>Starting camera...</Typography>

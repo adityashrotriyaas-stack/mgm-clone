@@ -8,8 +8,11 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import UpcomingNights from './components/UpcomingNights'
 import PastNights, { Footer } from './components/PastNights'
+import FAQSection from './components/FAQSection'
+import Testimonials from './components/Testimonials'
 import StickyCTA from './components/StickyCTA'
 import WhatsAppFloat from './components/WhatsAppFloat'
+import MusicToggle from './components/MusicToggle'
 import { colors } from './constants/colors'
 
 function App() {
@@ -22,11 +25,14 @@ function App() {
       <AboutSection />
       <BookingWorkflowSection />
       <LegacySection />
+      <Testimonials />
       <PastNights />
+      <FAQSection />
       <ContactSection />
       <Footer />
       <StickyCTA />
       <WhatsAppFloat />
+      <MusicToggle />
     </Box>
   )
 }

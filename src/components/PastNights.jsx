@@ -310,7 +310,7 @@ export function Footer() {
               Explore
             </Typography>
             <Stack component="ul" spacing={1.1} sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.88rem' }}>
-              {navLinks.slice(0, 3).map((link) => (
+              {navLinks.filter(l => l.label !== 'Gallery').map((link) => (
                 <Box component="li" key={link.href}>
                   <Link
                     href={link.href}
@@ -325,7 +325,7 @@ export function Footer() {
                       },
                     }}
                   >
-                    {link.label === 'Past Nights' ? 'Past Highlights' : link.label}
+                    {link.label}
                   </Link>
                 </Box>
               ))}
