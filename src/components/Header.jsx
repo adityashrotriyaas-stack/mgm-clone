@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -20,26 +20,48 @@ import { patternNight } from '../constants/navratriTheme'
 export default function Header() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   const closeMenu = () => setOpen(false)
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 18)
+    }
+
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <AppBar
       position="sticky"
       elevation={0}
       sx={{
-        position: 'relative',
-        bgcolor: colors.night,
-        borderBottom: '1px solid rgba(232, 184, 74, 0.15)',
-        boxShadow: '0 4px 24px rgba(26, 10, 18, 0.4)',
+        top: 0,
+        zIndex: 1200,
+        bgcolor: scrolled ? 'rgba(26, 10, 18, 0.62)' : colors.night,
+        borderBottom: scrolled
+          ? '1px solid rgba(232, 184, 74, 0.22)'
+          : '1px solid rgba(232, 184, 74, 0.15)',
+        boxShadow: scrolled
+          ? '0 8px 28px rgba(10, 4, 8, 0.28)'
+          : '0 4px 24px rgba(26, 10, 18, 0.4)',
         color: colors.textLight,
         overflow: 'hidden',
+        backdropFilter: scrolled ? 'blur(14px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        transition:
+          'background-color 0.28s ease, backdrop-filter 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease',
         '&::before': {
           content: '""',
           position: 'absolute',
           inset: 0,
           backgroundImage: patternNight,
+          opacity: scrolled ? 0.35 : 0.7,
           pointerEvents: 'none',
+          transition: 'opacity 0.28s ease',
         },
       }}
     >
@@ -48,9 +70,10 @@ export default function Header() {
           sx={{
             justifyContent: 'space-between',
             px: { xs: 2, md: 3 },
-            py: { xs: 1.5, md: 2 },
+            py: scrolled ? { xs: 1.1, md: 1.35 } : { xs: 1.5, md: 2 },
             minHeight: 'auto',
             gap: 2,
+            transition: 'padding 0.28s ease',
           }}
         >
           <Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none' }}>
@@ -201,7 +224,9 @@ export default function Header() {
         <Collapse in={open} sx={{ display: { xs: 'block', lg: 'none' } }}>
           <Box
             sx={{
-              bgcolor: 'rgba(45, 16, 24, 0.95)',
+              bgcolor: scrolled ? 'rgba(26, 10, 18, 0.72)' : 'rgba(45, 16, 24, 0.95)',
+              backdropFilter: scrolled ? 'blur(14px)' : 'none',
+              WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
               px: 2,
               pb: 2,
               borderTop: '1px solid rgba(255, 220, 150, 0.1)',

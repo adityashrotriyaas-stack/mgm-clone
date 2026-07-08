@@ -27,11 +27,11 @@ function App() {
       <Hero />
       <UpcomingNights />
       <UpcomingNightsTimeline />
+      <ArtistsPerformers />
       <AboutSection />
       <BookingWorkflowSection />
       <LegacySection />
       <PastNights />
-      <ArtistsPerformers />
       <ContactSection />
       <Footer />
       <StickyCTA />

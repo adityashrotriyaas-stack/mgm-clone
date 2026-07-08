@@ -50,9 +50,10 @@ function getCircularOffset(index, activeIndex, total) {
   return offset
 }
 
-function getCardTransform(offset) {
+function getCardTransform(offset, compact = false) {
   const abs = Math.abs(offset)
-  if (abs > VISIBLE_RANGE) {
+  const maxVisible = compact ? 1 : VISIBLE_RANGE
+  if (abs > maxVisible) {
     return {
       opacity: 0,
       pointerEvents: 'none',
@@ -60,16 +61,17 @@ function getCardTransform(offset) {
     }
   }
 
-  const x = offset * (offset === 0 ? 0 : offset > 0 ? 132 : -132)
-  const rotateY = offset * -26
-  const scale = offset === 0 ? 1 : 0.82 - abs * 0.05
-  const translateZ = offset === 0 ? 60 : -abs * 35
+  const step = compact ? 78 : 132
+  const x = offset * (offset === 0 ? 0 : offset > 0 ? step : -step)
+  const rotateY = compact ? offset * -10 : offset * -26
+  const scale = offset === 0 ? 1 : compact ? 0.86 - abs * 0.04 : 0.82 - abs * 0.05
+  const translateZ = offset === 0 ? (compact ? 28 : 60) : -abs * (compact ? 18 : 35)
 
   return {
-    opacity: 1 - abs * 0.14,
+    opacity: compact ? 1 - abs * 0.22 : 1 - abs * 0.14,
     zIndex: 30 - abs,
     transform: `translateX(${x}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
-    pointerEvents: abs <= 2 ? 'auto' : 'none',
+    pointerEvents: abs <= (compact ? 1 : 2) ? 'auto' : 'none',
   }
 }
 
@@ -92,8 +94,8 @@ const arrowBtnSx = {
   },
 }
 
-function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPlay, isTransitioning }) {
-  const { opacity, zIndex, transform, pointerEvents } = getCardTransform(offset)
+function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPlay, isTransitioning, compact = false }) {
+  const { opacity, zIndex, transform, pointerEvents } = getCardTransform(offset, compact)
 
   return (
     <Box
@@ -102,10 +104,10 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
         position: 'absolute',
         left: '50%',
         top: '50%',
-        width: { xs: 200, sm: 230, md: 260 },
-        height: { xs: 340, sm: 390, md: 430 },
-        ml: { xs: '-100px', sm: '-115px', md: '-130px' },
-        mt: { xs: '-170px', sm: '-195px', md: '-215px' },
+        width: { xs: 210, sm: 230, md: 260 },
+        height: { xs: 320, sm: 390, md: 430 },
+        ml: { xs: '-105px', sm: '-115px', md: '-130px' },
+        mt: { xs: '-160px', sm: '-195px', md: '-215px' },
         borderRadius: '22px',
         overflow: 'hidden',
         cursor: 'pointer',
@@ -319,8 +321,16 @@ export default function UpcomingNightsTimeline() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
   const carouselRef = useRef(null)
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 900)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   const nights = useMemo(
     () =>
@@ -553,13 +563,13 @@ export default function UpcomingNightsTimeline() {
           alignItems="center"
           sx={{
             width: '100%',
-            height: { xs: 380, sm: 440, md: 500 },
+            height: { xs: 360, sm: 420, md: 500 },
             mx: 'auto',
           }}
         >
           <Box
             sx={{
-              width: { xs: 48, sm: 56, md: 64 },
+              width: { xs: 40, sm: 52, md: 64 },
               flexShrink: 0,
               display: 'flex',
               alignItems: 'center',
@@ -567,7 +577,7 @@ export default function UpcomingNightsTimeline() {
             }}
           >
             <IconButton onClick={goPrev} aria-label="Previous night" sx={arrowBtnSx}>
-              <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.2rem', md: '1.4rem' } }} />
+              <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.15rem', md: '1.4rem' } }} />
             </IconButton>
           </Box>
 
@@ -577,6 +587,7 @@ export default function UpcomingNightsTimeline() {
               flex: 1,
               minWidth: 0,
               height: '100%',
+              overflow: 'hidden',
             }}
           >
             <Box
@@ -588,15 +599,16 @@ export default function UpcomingNightsTimeline() {
                 position: 'relative',
                 width: '100%',
                 height: '100%',
-                perspective: '1600px',
+                perspective: { xs: '900px', md: '1600px' },
                 perspectiveOrigin: '50% 50%',
                 outline: 'none',
                 zIndex: 2,
+                touchAction: 'pan-y',
               }}
             >
               {nights.map((night, index) => {
                 const offset = getCircularOffset(index, activeIndex, TOTAL)
-                if (Math.abs(offset) > VISIBLE_RANGE) return null
+                if (Math.abs(offset) > (isMobile ? 1 : VISIBLE_RANGE)) return null
                 return (
                   <NightStoryCard
                     key={night.id}
@@ -606,6 +618,7 @@ export default function UpcomingNightsTimeline() {
                     offset={offset}
                     isActive={index === activeIndex}
                     isTransitioning={isTransitioning}
+                    compact={isMobile}
                     onSelect={() => goTo(index)}
                     onPlay={() => navigate(`/event/${night.id}`)}
                   />
@@ -638,7 +651,7 @@ export default function UpcomingNightsTimeline() {
 
           <Box
             sx={{
-              width: { xs: 48, sm: 56, md: 64 },
+              width: { xs: 40, sm: 52, md: 64 },
               flexShrink: 0,
               display: 'flex',
               alignItems: 'center',
@@ -646,7 +659,7 @@ export default function UpcomingNightsTimeline() {
             }}
           >
             <IconButton onClick={goNext} aria-label="Next night" sx={arrowBtnSx}>
-              <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.2rem', md: '1.4rem' } }} />
+              <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.15rem', md: '1.4rem' } }} />
             </IconButton>
           </Box>
         </Stack>

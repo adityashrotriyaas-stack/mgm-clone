@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -95,8 +95,10 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
       onClick={onSelect}
       sx={{
         position: 'relative',
-        width: active ? { xs: 200, sm: 230, md: 268 } : { xs: 148, sm: 168, md: 190 },
-        height: active ? { xs: 320, sm: 360, md: 420 } : { xs: 255, sm: 290, md: 335 },
+        width: active
+          ? { xs: 'min(72vw, 240px)', sm: 230, md: 268 }
+          : { xs: 'min(52vw, 160px)', sm: 168, md: 190 },
+        height: active ? { xs: 305, sm: 360, md: 420 } : { xs: 245, sm: 290, md: 335 },
         flexShrink: 0,
         cursor: 'pointer',
         alignSelf: 'flex-end',
@@ -104,7 +106,10 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
         zIndex: active ? 5 : 4 - absOffset,
         opacity: active ? 1 : absOffset === 1 ? 0.94 : 0.82,
         filter: active ? 'none' : 'saturate(0.9) brightness(0.9)',
-        transform: active ? 'translateY(0)' : 'translateY(0)',
+        transform: {
+          xs: `scale(${active ? 1 : absOffset === 1 ? 0.94 : 0.88})`,
+          md: 'none',
+        },
       }}
     >
       <Box
@@ -226,23 +231,45 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
 export default function ArtistsPerformers() {
   const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(2)
+  const [isMobile, setIsMobile] = useState(false)
+  const touchStartX = useRef(null)
 
-  const slides = useMemo(
-    () =>
-      [-2, -1, 0, 1, 2].map((offset) => {
-        const originalIndex = (activeIndex + offset + artists.length) % artists.length
-        return {
-          artist: artists[originalIndex],
-          originalIndex,
-          offset,
-          isActive: offset === 0,
-        }
-      }),
-    [activeIndex],
-  )
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 900)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  const slides = useMemo(() => {
+    const offsets = isMobile ? [-1, 0, 1] : [-2, -1, 0, 1, 2]
+    return offsets.map((offset) => {
+      const originalIndex = (activeIndex + offset + artists.length) % artists.length
+      return {
+        artist: artists[originalIndex],
+        originalIndex,
+        offset,
+        isActive: offset === 0,
+      }
+    })
+  }, [activeIndex, isMobile])
 
   const goPrev = () => setActiveIndex((current) => (current - 1 + artists.length) % artists.length)
   const goNext = () => setActiveIndex((current) => (current + 1) % artists.length)
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+    touchStartX.current = null
+  }
 
   return (
     <Box
@@ -324,9 +351,9 @@ export default function ArtistsPerformers() {
         <RevealBox
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: '64px minmax(0, 1fr) 64px' },
+            gridTemplateColumns: { xs: '40px minmax(0, 1fr) 40px', lg: '64px minmax(0, 1fr) 64px' },
             alignItems: 'center',
-            gap: { xs: 2, lg: 1.5 },
+            gap: { xs: 0.75, lg: 1.5 },
             mb: { xs: 3.5, md: 4.5 },
           }}
         >
@@ -334,29 +361,32 @@ export default function ArtistsPerformers() {
             aria-label="Previous artist"
             onClick={goPrev}
             sx={{
-              display: { xs: 'none', lg: 'inline-flex' },
-              width: 52,
-              height: 52,
+              width: { xs: 40, lg: 52 },
+              height: { xs: 40, lg: 52 },
               border: '1px solid rgba(232,184,74,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
               '&:hover': { borderColor: 'rgba(255,216,122,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
             }}
           >
-            <ArrowBackRoundedIcon />
+            <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.35rem' } }} />
           </IconButton>
 
           <Box
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             sx={{
               display: 'flex',
               alignItems: 'flex-end',
-              justifyContent: { xs: 'flex-start', md: 'center' },
-              gap: { xs: 1, md: 1.15 },
-              overflowX: 'auto',
+              justifyContent: 'center',
+              gap: { xs: 0.8, md: 1.15 },
+              overflow: { xs: 'hidden', md: 'visible' },
               pt: 1,
               pb: 1.5,
-              px: { xs: 0.5, md: 1 },
-              minHeight: { xs: 340, md: 430 },
+              px: { xs: 0.25, md: 1 },
+              minHeight: { xs: 320, md: 430 },
+              touchAction: 'pan-y',
+              width: '100%',
               '&::-webkit-scrollbar': { height: 5 },
               '&::-webkit-scrollbar-thumb': {
                 background: 'rgba(232,184,74,0.28)',
@@ -379,16 +409,15 @@ export default function ArtistsPerformers() {
             aria-label="Next artist"
             onClick={goNext}
             sx={{
-              display: { xs: 'none', lg: 'inline-flex' },
-              width: 52,
-              height: 52,
+              width: { xs: 40, lg: 52 },
+              height: { xs: 40, lg: 52 },
               border: '1px solid rgba(232,184,74,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
               '&:hover': { borderColor: 'rgba(255,216,122,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
             }}
           >
-            <ArrowForwardRoundedIcon />
+            <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.35rem' } }} />
           </IconButton>
         </RevealBox>
 

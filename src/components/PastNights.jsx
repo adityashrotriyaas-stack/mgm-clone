@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
@@ -57,7 +57,7 @@ function ThrowbackHeader() {
         component="h2"
         sx={{
           fontFamily: '"Playfair Display", serif',
-          fontSize: { xs: '2.15rem', sm: '2.9rem', md: '4.2rem' },
+          fontSize: { xs: '1.75rem', sm: '2.5rem', md: '4.2rem' },
           lineHeight: 1.02,
           fontWeight: 700,
           letterSpacing: '-0.03em',
@@ -124,8 +124,10 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
     <Box
       sx={{
         position: 'relative',
-        width: active ? { xs: 205, md: 235 } : { xs: 150, md: 172 },
-        height: active ? { xs: 300, md: 345 } : { xs: 258, md: 300 },
+        width: active
+          ? { xs: 'min(78vw, 260px)', sm: 220, md: 235 }
+          : { xs: 'min(58vw, 176px)', sm: 160, md: 172 },
+        height: active ? { xs: 300, sm: 330, md: 345 } : { xs: 248, sm: 280, md: 300 },
         borderRadius: '22px',
         overflow: 'hidden',
         flexShrink: 0,
@@ -135,7 +137,10 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
           : absOffset === 1
             ? '0 12px 28px rgba(0,0,0,0.24)'
             : '0 10px 22px rgba(0,0,0,0.18)',
-        transform: `perspective(1200px) translateY(${translateY}px) rotateY(${rotateY}deg) scale(${scale})`,
+        transform: {
+          xs: `translateY(${translateY}px) scale(${active ? 1 : absOffset === 1 ? 0.94 : 0.88})`,
+          md: `perspective(1200px) translateY(${translateY}px) rotateY(${rotateY}deg) scale(${scale})`,
+        },
         transformStyle: 'preserve-3d',
         transformOrigin: offset < 0 ? 'right center' : offset > 0 ? 'left center' : 'center center',
         opacity,
@@ -246,21 +251,29 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
 export default function PastNights() {
   const showcase = pastHighlights.slice(0, 5)
   const [activeIndex, setActiveIndex] = useState(3)
+  const [isMobile, setIsMobile] = useState(false)
+  const touchStartX = useRef(null)
 
-  const slides = useMemo(
-    () =>
-      [-2, -1, 0, 1, 2].map((offset) => {
-        const originalIndex = (activeIndex + offset + showcase.length) % showcase.length
-        return {
-          item: showcase[originalIndex],
-          meta: cardMeta[originalIndex],
-          originalIndex,
-          offset,
-          isActive: offset === 0,
-        }
-      }),
-    [activeIndex, showcase],
-  )
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 900)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  const slides = useMemo(() => {
+    const offsets = isMobile ? [-1, 0, 1] : [-2, -1, 0, 1, 2]
+    return offsets.map((offset) => {
+      const originalIndex = (activeIndex + offset + showcase.length) % showcase.length
+      return {
+        item: showcase[originalIndex],
+        meta: cardMeta[originalIndex],
+        originalIndex,
+        offset,
+        isActive: offset === 0,
+      }
+    })
+  }, [activeIndex, showcase, isMobile])
 
   const goPrev = () => {
     setActiveIndex((current) => (current - 1 + showcase.length) % showcase.length)
@@ -268,6 +281,20 @@ export default function PastNights() {
 
   const goNext = () => {
     setActiveIndex((current) => (current + 1) % showcase.length)
+  }
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+    touchStartX.current = null
   }
 
   return (
@@ -338,18 +365,17 @@ export default function PastNights() {
         <RevealBox
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: '72px minmax(0, 1fr) 72px' },
+            gridTemplateColumns: { xs: '40px minmax(0, 1fr) 40px', lg: '72px minmax(0, 1fr) 72px' },
             alignItems: 'center',
-            gap: { xs: 2.5, lg: 2 },
+            gap: { xs: 0.75, lg: 2 },
           }}
         >
           <IconButton
             aria-label="Previous highlights"
             onClick={goPrev}
             sx={{
-              display: { xs: 'none', lg: 'inline-flex' },
-              width: 56,
-              height: 56,
+              width: { xs: 40, lg: 56 },
+              height: { xs: 40, lg: 56 },
               border: '1px solid rgba(232, 184, 74, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -360,21 +386,25 @@ export default function PastNights() {
               },
             }}
           >
-            <ArrowBackRoundedIcon />
+            <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.4rem' } }} />
           </IconButton>
 
           <Box
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             sx={{
               display: 'flex',
               alignItems: 'end',
-              justifyContent: { xs: 'flex-start', lg: 'center' },
-              gap: { xs: 1.1, md: 1.45 },
-              overflowX: 'auto',
+              justifyContent: 'center',
+              gap: { xs: 0.9, md: 1.45 },
+              overflow: { xs: 'hidden', lg: 'visible' },
               pb: 1,
               px: { xs: 0.25, md: 1 },
-              perspective: '1600px',
+              perspective: { xs: 'none', md: '1600px' },
               perspectiveOrigin: '50% 50%',
               scrollBehavior: 'smooth',
+              touchAction: 'pan-y',
+              width: '100%',
               '&::-webkit-scrollbar': { height: 6 },
               '&::-webkit-scrollbar-thumb': {
                 background: 'rgba(232, 184, 74, 0.25)',
@@ -384,12 +414,13 @@ export default function PastNights() {
           >
             {slides.map(({ item, meta, isActive, originalIndex, offset }) => (
               <Box
-                key={item.label}
+                key={`${item.label}-${offset}`}
                 onClick={() => setActiveIndex(originalIndex)}
                 sx={{
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'flex-end',
+                  flexShrink: 0,
                 }}
               >
                 <HighlightCard item={item} meta={meta} active={isActive} offset={offset} />
@@ -401,9 +432,8 @@ export default function PastNights() {
             aria-label="Next highlights"
             onClick={goNext}
             sx={{
-              display: { xs: 'none', lg: 'inline-flex' },
-              width: 56,
-              height: 56,
+              width: { xs: 40, lg: 56 },
+              height: { xs: 40, lg: 56 },
               border: '1px solid rgba(232, 184, 74, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -414,7 +444,7 @@ export default function PastNights() {
               },
             }}
           >
-            <ArrowForwardRoundedIcon />
+            <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.4rem' } }} />
           </IconButton>
         </RevealBox>
 
