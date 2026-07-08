@@ -18,6 +18,7 @@ import { RevealBox, SectionHead } from './shared'
 import FestiveSection from './FestiveSection'
 import WhatsAppIcon from './WhatsAppIcon'
 import MobileNumberField from './MobileNumberField'
+import helpBg from '../assets/help-bg.png'
 
 const infoLines = [
   { icon: CallOutlinedIcon, label: 'Phone', value: contactInfo.phone, href: contactInfo.phoneHref },
@@ -165,7 +166,23 @@ function ContactForm() {
 
 export default function ContactSection() {
   return (
-    <FestiveSection id="contact" variant="warm" sx={{ py: { xs: 5, md: 7 } }}>
+    <FestiveSection
+      id="contact"
+      variant="warm"
+      showAccent={false}
+      sx={{
+        py: { xs: 5, md: 7 },
+        backgroundColor: '#1A0A12',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(18,7,10,0.62) 0%, rgba(18,7,10,0.42) 40%, rgba(18,7,10,0.58) 100%),
+          url(${helpBg})
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        '&::before': { display: 'none' },
+      }}
+    >
       <Container maxWidth="lg" sx={{ px: { xs: 2.5, md: 3 } }}>
         <SectionHead
           eyebrow="Contact"

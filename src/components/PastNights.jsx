@@ -1,78 +1,456 @@
+import { useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
 import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { RevealBox, SectionHead } from './shared'
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
+import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
+import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined'
+import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
+import SelfImprovementOutlinedIcon from '@mui/icons-material/SelfImprovementOutlined'
+import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
 import { colors, gradients } from '../constants/colors'
+import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 import { navLinks, pastHighlights } from '../data/siteData'
+import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 
-export default function PastNights() {
-  return (
-    <FestiveSection id="past" variant="cream" showAccent={false} sx={{ py: { xs: 4.5, md: 6.25 } }}>
-      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
-        <SectionHead
-          eyebrow="Throwback"
-          title="Past Nights, Forever Memories"
-          description="Highlights from Navratri 2025 — over 25,000 dancers across ten nights."
-        />
-      </Container>
+const cardMeta = [
+  { date: 'Oct 15, 2025', icon: SelfImprovementOutlinedIcon },
+  { date: 'Oct 16, 2025', icon: CelebrationOutlinedIcon },
+  { date: 'Oct 17, 2025', icon: FavoriteBorderRoundedIcon, highlight: true },
+  { date: 'Oct 18, 2025', icon: MilitaryTechOutlinedIcon },
+  { date: 'Oct 19, 2025', icon: LocalFireDepartmentOutlinedIcon },
+]
 
-      <RevealBox
+function ThrowbackHeader() {
+  return (
+    <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 5 } }}>
+      <Box
         sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: 'repeat(2, 1fr)',
-            sm: 'repeat(3, 1fr)',
-            md: 'repeat(4, 1fr)',
-            lg: 'repeat(6, 1fr)',
-          },
-          gap: { xs: 1.5, md: 1.25 },
-          px: { xs: 2, sm: 2.5, md: 3 },
-          maxWidth: 'lg',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 1,
+          color: colors.gold,
+          mb: 1,
+        }}
+      >
+        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Typography
+          sx={{
+            fontSize: { xs: '0.7rem', md: '0.8rem' },
+            textTransform: 'uppercase',
+            letterSpacing: { xs: '3px', md: '4px' },
+            fontWeight: 700,
+          }}
+        >
+          Throwback
+        </Typography>
+        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+      </Box>
+
+      <Typography
+        component="h2"
+        sx={{
+          fontFamily: '"Playfair Display", serif',
+          fontSize: { xs: '2.15rem', sm: '2.9rem', md: '4.2rem' },
+          lineHeight: 1.02,
+          fontWeight: 700,
+          letterSpacing: '-0.03em',
+          mb: 1.5,
+        }}
+      >
+        <Box component="span" sx={{ color: '#FFF8EE', display: 'block' }}>
+          Past Nights,
+        </Box>
+        <Box
+          component="span"
+          sx={{
+            display: 'block',
+            background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Forever Memories
+        </Box>
+      </Typography>
+
+      <Typography
+        sx={{
+          maxWidth: 560,
+          mx: 'auto',
+          color: 'rgba(255, 245, 230, 0.84)',
+          fontSize: { xs: '0.95rem', md: '1.02rem' },
+          lineHeight: 1.7,
+          mb: 2,
+        }}
+      >
+        Highlights from Navratri 2025 — over 25,000 dancers across ten nights.
+      </Typography>
+
+      <Box
+        aria-hidden
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1.1,
+          maxWidth: 280,
           mx: 'auto',
         }}
       >
-        {pastHighlights.map((item) => (
-          <Box
-            key={item.label}
-            sx={{
-              aspectRatio: '1 / 1',
-              borderRadius: '14px',
-              backgroundImage: `url(${item.image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'transform 0.3s',
-              '&:hover': { transform: 'scale(1.03)' },
-              '&::after': {
-                content: '""',
+        <Box sx={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${colors.gold})` }} />
+        <Box sx={{ color: colors.gold, fontSize: { xs: '1rem', md: '1.15rem' } }}>❀</Box>
+        <Box sx={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${colors.gold}, transparent)` }} />
+      </Box>
+    </Box>
+  )
+}
+
+function HighlightCard({ item, meta, active = false, offset = 0 }) {
+  const Icon = meta.icon
+  const absOffset = Math.abs(offset)
+  const scale = active ? 0.95 : absOffset === 1 ? 0.9 : 0.82
+  const rotateY = active ? 0 : offset < 0 ? 14 : -14
+  const translateY = active ? -4 : absOffset === 1 ? -14 : -6
+  const opacity = active ? 1 : absOffset === 1 ? 0.96 : 0.8
+
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        width: active ? { xs: 205, md: 235 } : { xs: 150, md: 172 },
+        height: active ? { xs: 300, md: 345 } : { xs: 258, md: 300 },
+        borderRadius: '22px',
+        overflow: 'hidden',
+        flexShrink: 0,
+        border: active ? '1px solid rgba(255, 216, 122, 0.88)' : '1px solid rgba(232, 184, 74, 0.45)',
+        boxShadow: active
+          ? '0 0 0 1px rgba(232, 184, 74, 0.16), 0 18px 44px rgba(0,0,0,0.34), 0 0 24px rgba(232,184,74,0.18)'
+          : absOffset === 1
+            ? '0 12px 28px rgba(0,0,0,0.24)'
+            : '0 10px 22px rgba(0,0,0,0.18)',
+        transform: `perspective(1200px) translateY(${translateY}px) rotateY(${rotateY}deg) scale(${scale})`,
+        transformStyle: 'preserve-3d',
+        transformOrigin: offset < 0 ? 'right center' : offset > 0 ? 'left center' : 'center center',
+        opacity,
+        filter: active ? 'none' : absOffset === 1 ? 'saturate(0.92)' : 'saturate(0.78) brightness(0.9)',
+        transition: 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, opacity 0.35s ease, filter 0.35s ease',
+        zIndex: active ? 4 : 3 - absOffset,
+        backgroundImage: `url(${item.image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: active ? 'center center' : 'center top',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: active
+            ? 'linear-gradient(180deg, rgba(20,10,12,0.03) 0%, rgba(20,10,12,0.12) 26%, rgba(20,10,12,0.64) 100%)'
+            : 'linear-gradient(180deg, rgba(20,10,12,0.28) 0%, rgba(20,10,12,0.42) 36%, rgba(20,10,12,0.88) 100%)',
+        },
+        '&::after': active
+          ? {
+              content: '""',
+              position: 'absolute',
+              inset: 0,
+              boxShadow: 'inset 0 0 0 1px rgba(255, 216, 122, 0.25)',
+              borderRadius: '22px',
+            }
+          : undefined,
+      }}
+    >
+      {active && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 14,
+            left: 14,
+            zIndex: 2,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 0.6,
+            px: 1.2,
+            py: 0.7,
+            borderRadius: '999px',
+            bgcolor: 'rgba(36, 21, 16, 0.86)',
+            border: '1px solid rgba(255, 216, 122, 0.18)',
+            color: '#FFD76A',
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            letterSpacing: '0.4px',
+          }}
+        >
+          <StarsRoundedIcon sx={{ fontSize: '0.9rem' }} />
+          Highlight
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          bottom: active ? 82 : 70,
+          transform: 'translateX(-50%)',
+          width: active ? 58 : 52,
+          height: active ? 58 : 52,
+          borderRadius: '50%',
+          border: '1px solid rgba(255, 216, 122, 0.72)',
+          bgcolor: 'rgba(28, 12, 16, 0.38)',
+          backdropFilter: 'blur(6px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: colors.gold,
+          zIndex: 2,
+          boxShadow: active ? '0 0 18px rgba(232, 184, 74, 0.16)' : 'none',
+        }}
+      >
+        <Icon sx={{ fontSize: active ? '1.7rem' : '1.55rem' }} />
+      </Box>
+
+      <Box
+        sx={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 2,
+          px: active ? 2 : 1.6,
+          pb: active ? 1.8 : 1.5,
+          textAlign: 'center',
+        }}
+      >
+        <Typography
+          sx={{
+            color: '#FFF8EE',
+            fontWeight: 700,
+            fontSize: active ? { xs: '1rem', md: '1.16rem' } : { xs: '0.92rem', md: '1rem' },
+            mb: 0.55,
+          }}
+        >
+          {item.label}
+        </Typography>
+        <Typography sx={{ color: 'rgba(255, 245, 230, 0.72)', fontSize: active ? '0.85rem' : '0.78rem' }}>
+          {meta.date}
+        </Typography>
+      </Box>
+    </Box>
+  )
+}
+
+export default function PastNights() {
+  const showcase = pastHighlights.slice(0, 5)
+  const [activeIndex, setActiveIndex] = useState(3)
+
+  const slides = useMemo(
+    () =>
+      [-2, -1, 0, 1, 2].map((offset) => {
+        const originalIndex = (activeIndex + offset + showcase.length) % showcase.length
+        return {
+          item: showcase[originalIndex],
+          meta: cardMeta[originalIndex],
+          originalIndex,
+          offset,
+          isActive: offset === 0,
+        }
+      }),
+    [activeIndex, showcase],
+  )
+
+  const goPrev = () => {
+    setActiveIndex((current) => (current - 1 + showcase.length) % showcase.length)
+  }
+
+  const goNext = () => {
+    setActiveIndex((current) => (current + 1) % showcase.length)
+  }
+
+  return (
+    <FestiveSection
+      id="past"
+      variant="night"
+      showAccent={false}
+      sx={{
+        py: { xs: 5.5, md: 7.5 },
+        backgroundImage: `
+          radial-gradient(circle at 50% 16%, rgba(232,184,74,0.1), transparent 20%),
+          radial-gradient(circle at 20% 22%, rgba(168,50,72,0.14), transparent 18%),
+          radial-gradient(circle at 80% 20%, rgba(168,50,72,0.14), transparent 18%),
+          linear-gradient(180deg, ${colors.night} 0%, #15070D 100%),
+          ${patternDiya},
+          ${patternMandala},
+          ${patternGarland}
+        `,
+      }}
+    >
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          top: 10,
+          left: 0,
+          right: 0,
+          height: 90,
+          pointerEvents: 'none',
+          '&::before, &::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            width: '36%',
+            height: 54,
+            borderTop: '3px solid rgba(232, 184, 74, 0.16)',
+          },
+          '&::before': { left: 0, borderTopRightRadius: 120 },
+          '&::after': { right: 0, borderTopLeftRadius: 120 },
+        }}
+      >
+        {Array.from({ length: 12 }).map((_, index) => {
+          const left = `${index * 8.5}%`
+          const top = index < 6 ? 18 + index * 4 : 38 - (index - 6) * 4
+          return (
+            <Box
+              key={left}
+              sx={{
                 position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(transparent 50%, rgba(80,55,20,0.35))',
+                left,
+                top,
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                bgcolor: '#FFD76A',
+                boxShadow: '0 0 8px rgba(255, 215, 106, 0.95), 0 0 18px rgba(255, 176, 74, 0.45)',
+              }}
+            />
+          )
+        })}
+      </Box>
+
+      <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 2.5, md: 4 } }}>
+        <RevealBox>
+          <ThrowbackHeader />
+        </RevealBox>
+
+        <RevealBox
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', lg: '72px minmax(0, 1fr) 72px' },
+            alignItems: 'center',
+            gap: { xs: 2.5, lg: 2 },
+          }}
+        >
+          <IconButton
+            aria-label="Previous highlights"
+            onClick={goPrev}
+            sx={{
+              display: { xs: 'none', lg: 'inline-flex' },
+              width: 56,
+              height: 56,
+              border: '1px solid rgba(232, 184, 74, 0.5)',
+              color: '#FFF8EE',
+              justifySelf: 'center',
+              transition: 'transform 0.25s ease, border-color 0.25s ease',
+              '&:hover': {
+                borderColor: 'rgba(255, 216, 122, 0.9)',
+                transform: 'translateX(-2px)',
               },
             }}
           >
-            <Typography
-              sx={{
-                position: 'absolute',
-                bottom: 8,
-                left: 10,
-                right: 10,
-                color: '#fff',
-                fontSize: { xs: '0.7rem', sm: '0.75rem' },
-                fontWeight: 700,
-                zIndex: 1,
-                lineHeight: 1.3,
-              }}
-            >
-              {item.label}
-            </Typography>
+            <ArrowBackRoundedIcon />
+          </IconButton>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'end',
+              justifyContent: { xs: 'flex-start', lg: 'center' },
+              gap: { xs: 1.1, md: 1.45 },
+              overflowX: 'auto',
+              pb: 1,
+              px: { xs: 0.25, md: 1 },
+              perspective: '1600px',
+              perspectiveOrigin: '50% 50%',
+              scrollBehavior: 'smooth',
+              '&::-webkit-scrollbar': { height: 6 },
+              '&::-webkit-scrollbar-thumb': {
+                background: 'rgba(232, 184, 74, 0.25)',
+                borderRadius: 999,
+              },
+            }}
+          >
+            {slides.map(({ item, meta, isActive, originalIndex, offset }) => (
+              <Box
+                key={item.label}
+                onClick={() => setActiveIndex(originalIndex)}
+                sx={{
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <HighlightCard item={item} meta={meta} active={isActive} offset={offset} />
+              </Box>
+            ))}
           </Box>
-        ))}
-      </RevealBox>
+
+          <IconButton
+            aria-label="Next highlights"
+            onClick={goNext}
+            sx={{
+              display: { xs: 'none', lg: 'inline-flex' },
+              width: 56,
+              height: 56,
+              border: '1px solid rgba(232, 184, 74, 0.5)',
+              color: '#FFF8EE',
+              justifySelf: 'center',
+              transition: 'transform 0.25s ease, border-color 0.25s ease',
+              '&:hover': {
+                borderColor: 'rgba(255, 216, 122, 0.9)',
+                transform: 'translateX(2px)',
+              },
+            }}
+          >
+            <ArrowForwardRoundedIcon />
+          </IconButton>
+        </RevealBox>
+
+        <RevealBox>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={1.6}
+            sx={{
+              mt: 2.5,
+              color: colors.gold,
+              width: 'fit-content',
+              mx: 'auto',
+            }}
+          >
+            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(232, 184, 74, 0.42)' }} />
+            <Typography sx={{ fontSize: '0.95rem', lineHeight: 1 }}>❀</Typography>
+            {showcase.map((_, dot) => (
+              <Box
+                key={dot}
+                sx={{
+                  width: dot === activeIndex ? 28 : 7,
+                  height: 7,
+                  borderRadius: 999,
+                  bgcolor: dot === activeIndex ? colors.gold : 'rgba(232, 184, 74, 0.55)',
+                  boxShadow: dot === activeIndex ? '0 0 12px rgba(232, 184, 74, 0.4)' : 'none',
+                  transition: 'all 0.25s ease',
+                }}
+              />
+            ))}
+            <Typography sx={{ fontSize: '0.95rem', lineHeight: 1 }}>❀</Typography>
+            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(232, 184, 74, 0.42)' }} />
+          </Stack>
+        </RevealBox>
+      </Container>
     </FestiveSection>
   )
 }

@@ -10,6 +10,7 @@ import { Eyebrow } from './shared'
 import FestiveSection from './FestiveSection'
 import AboutDeviArt from './AboutDeviArt'
 import { useEffect, useRef, useState } from 'react'
+import aboutBg from '../assets/about-bg.png'
 
 const highlights = [
   { icon: AutoAwesomeOutlinedIcon, label: '10 Nights of Garba' },
@@ -147,7 +148,23 @@ export default function AboutSection() {
   const { ref, visible } = useAboutReveal()
 
   return (
-    <FestiveSection id="about" variant="cream" sx={{ py: { xs: 6, md: 9 } }}>
+    <FestiveSection
+      id="about"
+      variant="cream"
+      showAccent={false}
+      sx={{
+        py: { xs: 6, md: 9 },
+        backgroundColor: '#1A0A12',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(18,7,10,0.58) 0%, rgba(18,7,10,0.38) 45%, rgba(18,7,10,0.55) 100%),
+          url(${aboutBg})
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        '&::before': { display: 'none' },
+      }}
+    >
       <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4 } }}>
         <Stack
           ref={ref}

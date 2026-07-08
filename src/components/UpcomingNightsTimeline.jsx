@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded'
 import { useNavigate } from 'react-router-dom'
 import dandiyaDeco from '../assets/dandiya-deco.png'
@@ -384,7 +385,8 @@ export default function UpcomingNightsTimeline() {
       id="upcoming"
       sx={{
         position: 'relative',
-        py: { xs: 5, md: 6 },
+        pt: { xs: 2, md: 2.5 },
+        pb: { xs: 5, md: 6 },
         bgcolor: colors.night,
         backgroundImage: `
           radial-gradient(circle at 50% 20%, rgba(255,180,60,0.08), transparent 40%),
@@ -411,43 +413,139 @@ export default function UpcomingNightsTimeline() {
       />
 
       <Container maxWidth="xl" sx={{ px: { xs: 1.5, sm: 2.5, md: 4 } }}>
-        <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 4 } }}>
-          <Typography
+        <Box sx={{ textAlign: 'center', mb: { xs: 2.25, md: 2.75 } }}>
+          <Box
             sx={{
-              fontSize: { xs: '0.82rem', md: '0.95rem' },
-              textTransform: 'uppercase',
-              letterSpacing: '4px',
-              fontWeight: 700,
-              color: colors.gold,
-              mb: 1.2,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: { xs: 0.8, md: 1.2 },
+              mb: 1,
             }}
           >
-            What&apos;s Next
-          </Typography>
+            <Box
+              sx={{
+                width: { xs: 28, md: 44 },
+                height: 1,
+                background: `linear-gradient(90deg, transparent, ${colors.gold})`,
+              }}
+            />
+            <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
+            <Typography
+              sx={{
+                fontSize: { xs: '0.66rem', md: '0.76rem' },
+                textTransform: 'uppercase',
+                letterSpacing: { xs: '2.5px', md: '4px' },
+                fontWeight: 600,
+                color: colors.gold,
+              }}
+            >
+              What&apos;s Next
+            </Typography>
+            <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
+            <Box
+              sx={{
+                width: { xs: 28, md: 44 },
+                height: 1,
+                background: `linear-gradient(90deg, ${colors.gold}, transparent)`,
+              }}
+            />
+          </Box>
+
           <Typography
+            component="h2"
             sx={{
-              fontFamily: '"Unbounded", sans-serif',
-              fontSize: { xs: '2rem', sm: '2.8rem', md: '3.5rem' },
-              lineHeight: 1.05,
+              fontFamily: '"Playfair Display", serif',
+              fontSize: { xs: '1.95rem', sm: '2.55rem', md: '3.15rem' },
+              lineHeight: 1.06,
               fontWeight: 700,
-              color: colors.textLight,
-              letterSpacing: '-0.04em',
-              mb: 1.25,
+              letterSpacing: '-0.02em',
+              mb: 0.9,
             }}
           >
-            Upcoming Nights
+            <Box component="span" sx={{ color: '#FFFFFF' }}>
+              Upcoming{' '}
+            </Box>
+            <Box
+              component="span"
+              sx={{
+                background: 'linear-gradient(180deg, #FFD87A 0%, #E8B04A 55%, #C98B2E 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Nights
+            </Box>
           </Typography>
+
           <Typography
             sx={{
-              maxWidth: 560,
+              maxWidth: 520,
               mx: 'auto',
-              fontSize: { xs: '0.95rem', md: '1.05rem' },
-              color: colors.muted,
-              lineHeight: 1.7,
+              fontSize: { xs: '0.86rem', md: '0.96rem' },
+              color: 'rgba(255, 255, 255, 0.88)',
+              lineHeight: 1.6,
+              mb: 1.5,
             }}
           >
             Each night brings a new theme — book early, ground passes are limited.
           </Typography>
+
+          <Box
+            aria-hidden
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1,
+              maxWidth: 260,
+              mx: 'auto',
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                height: 1,
+                background: `linear-gradient(90deg, transparent, ${colors.gold})`,
+                position: 'relative',
+                '&::after': {
+                  content: '"◆"',
+                  position: 'absolute',
+                  right: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '0.35rem',
+                  color: colors.gold,
+                },
+              }}
+            />
+            <Box
+              sx={{
+                color: colors.gold,
+                fontSize: { xs: '1rem', md: '1.15rem' },
+                lineHeight: 1,
+                opacity: 0.95,
+              }}
+            >
+              ❀
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                height: 1,
+                background: `linear-gradient(90deg, ${colors.gold}, transparent)`,
+                position: 'relative',
+                '&::before': {
+                  content: '"◆"',
+                  position: 'absolute',
+                  left: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '0.35rem',
+                  color: colors.gold,
+                },
+              }}
+            />
+          </Box>
         </Box>
 
         <Stack
@@ -578,18 +676,30 @@ export default function UpcomingNightsTimeline() {
             </Stack>
           </Box>
 
-          <Stack alignItems="center" sx={{ mt: 2.5 }}>
+          <Stack alignItems="center" sx={{ mt: 2.5, width: '100%' }}>
             <Button
               onClick={() => navigate(`/event/${activeNight.id}`)}
+              startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.05rem' }} />}
               sx={{
                 background: gradients.primary,
                 color: colors.night,
-                px: 3.5,
-                py: 1.35,
+                px: { xs: 2.5, md: 3 },
+                py: 1.1,
                 borderRadius: '999px',
                 fontWeight: 700,
+                fontSize: { xs: '0.92rem', md: '0.98rem' },
+                minWidth: 'auto',
+                width: 'fit-content',
+                maxWidth: 'calc(100vw - 48px)',
+                whiteSpace: 'nowrap',
+                alignSelf: 'center',
+                mx: 'auto',
+                display: 'inline-flex',
                 boxShadow: '0 10px 28px rgba(201, 139, 46, 0.3)',
                 transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                '& .MuiButton-startIcon': {
+                  mr: 0.7,
+                },
                 '&:hover': {
                   background: gradients.primary,
                   filter: 'brightness(1.05)',
