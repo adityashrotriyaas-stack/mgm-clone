@@ -25,8 +25,8 @@ function App() {
       <Header />
       <Hero />
       <UpcomingNights />
-      <AboutSection />
       <UpcomingNightsTimeline />
+      <AboutSection />
       <BookingWorkflowSection />
       <LegacySection />
       <PastNights />
