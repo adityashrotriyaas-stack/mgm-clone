@@ -3,20 +3,20 @@ import { colors } from './constants/colors'
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
-      main: colors.marigold,
-      dark: colors.coral,
+      main: colors.gold,
+      dark: colors.goldDeep,
     },
     secondary: {
-      main: colors.teal,
+      main: colors.saffron,
     },
     background: {
       default: colors.bg,
       paper: colors.bgSoft,
     },
     text: {
-      primary: colors.ivory,
+      primary: colors.textLight,
       secondary: colors.muted,
     },
   },
@@ -52,7 +52,7 @@ const theme = createTheme({
         },
         body: {
           backgroundColor: colors.bg,
-          color: colors.ivory,
+          color: colors.textLight,
           lineHeight: 1.55,
           WebkitFontSmoothing: 'antialiased',
           overflowX: 'clip',

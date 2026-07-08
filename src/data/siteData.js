@@ -21,12 +21,12 @@ export const heroFeatures = [
   {
     icon: 'people',
     title: 'Live Performances',
-    subtitle: 'DJ, Singers & More',
+    subtitle: 'Top Artists',
   },
   {
     icon: 'food',
     title: 'Food & Stalls',
-    subtitle: 'Delicious & Handicraft',
+    subtitle: 'Delicious Bites',
   },
 ]
 

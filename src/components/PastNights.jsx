@@ -6,10 +6,11 @@ import Typography from '@mui/material/Typography'
 import { RevealBox, SectionHead } from './shared'
 import { colors, gradients } from '../constants/colors'
 import { navLinks, pastHighlights } from '../data/siteData'
+import FestiveSection from './FestiveSection'
 
 export default function PastNights() {
   return (
-    <Box component="section" id="past" sx={{ py: { xs: 4.5, md: 6.25 }, overflow: 'hidden' }}>
+    <FestiveSection id="past" variant="cream" showAccent={false} sx={{ py: { xs: 4.5, md: 6.25 } }}>
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
         <SectionHead
           eyebrow="Throwback"
@@ -72,21 +73,21 @@ export default function PastNights() {
           </Box>
         ))}
       </RevealBox>
-    </Box>
+    </FestiveSection>
   )
 }
 
 export function Footer() {
   return (
-    <Box
+    <FestiveSection
       component="footer"
+      variant="night"
+      showAccent={false}
       sx={{
-        bgcolor: colors.bgSoft,
-        color: colors.muted,
         pt: { xs: 4, md: 5.25 },
         pb: { xs: 'calc(24px + env(safe-area-inset-bottom, 0px))', md: 3 },
-        mt: { xs: 2, md: 4.25 },
-        borderTop: '1px solid rgba(255,255,255,0.06)',
+        mt: 0,
+        color: 'rgba(255, 245, 230, 0.72)',
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
@@ -101,7 +102,7 @@ export function Footer() {
             <Typography
               sx={{
                 fontFamily: '"Unbounded", sans-serif',
-                color: colors.ivory,
+                color: colors.textLight,
                 fontSize: '1.2rem',
                 fontWeight: 700,
               }}
@@ -144,7 +145,7 @@ export function Footer() {
                 fontSize: '0.74rem',
                 textTransform: 'uppercase',
                 letterSpacing: '1.8px',
-                color: colors.teal,
+                color: colors.gold,
                 mb: 1.5,
                 fontWeight: 700,
               }}
@@ -154,7 +155,7 @@ export function Footer() {
             <Stack component="ul" spacing={1.1} sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.88rem' }}>
               {navLinks.slice(0, 3).map((link) => (
                 <Box component="li" key={link.href}>
-                  <Link href={link.href} sx={{ color: 'inherit', '&:hover': { color: colors.ivory } }}>
+                  <Link href={link.href} sx={{ color: 'inherit', '&:hover': { color: colors.textLight } }}>
                     {link.label === 'Past Nights' ? 'Past Highlights' : link.label}
                   </Link>
                 </Box>
@@ -168,7 +169,7 @@ export function Footer() {
                 fontSize: '0.74rem',
                 textTransform: 'uppercase',
                 letterSpacing: '1.8px',
-                color: colors.teal,
+                color: colors.gold,
                 mb: 1.5,
                 fontWeight: 700,
               }}
@@ -188,7 +189,7 @@ export function Footer() {
                 fontSize: '0.74rem',
                 textTransform: 'uppercase',
                 letterSpacing: '1.8px',
-                color: colors.teal,
+                color: colors.gold,
                 mb: 1.5,
                 fontWeight: 700,
               }}
@@ -216,6 +217,6 @@ export function Footer() {
           © 2026 MGM Cultural Navratri. All rights reserved.
         </Typography>
       </Container>
-    </Box>
+    </FestiveSection>
   )
 }

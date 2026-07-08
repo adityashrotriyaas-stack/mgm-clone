@@ -15,6 +15,8 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import QrCode2RoundedIcon from '@mui/icons-material/QrCode2Rounded'
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
 import { colors, gradients } from '../constants/colors'
+import { festiveCardSx } from '../constants/navratriTheme'
+import FestiveSection from './FestiveSection'
 import { registrationCategories } from '../data/siteData'
 import NonRefundableCheckbox from './NonRefundableCheckbox'
 
@@ -100,7 +102,7 @@ export default function BookingFlow() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: colors.heroCream, py: { xs: 2, md: 4 }, px: { xs: 0, sm: 0 } }}>
+    <FestiveSection variant="night" showAccent={false} sx={{ minHeight: '100vh', py: { xs: 2, md: 4 } }}>
       <Container maxWidth="sm" sx={{ px: { xs: 2, sm: 3 } }}>
         <Button
           onClick={handleBack}
@@ -112,10 +114,8 @@ export default function BookingFlow() {
 
         <Box
           sx={{
-            bgcolor: '#fff',
+            ...festiveCardSx,
             borderRadius: { xs: '18px', md: '24px' },
-            border: '1px solid rgba(184,134,11,0.14)',
-            boxShadow: '0 18px 48px rgba(44,31,16,0.08)',
             overflow: 'hidden',
           }}
         >
@@ -155,7 +155,7 @@ export default function BookingFlow() {
                 <Typography sx={{ fontWeight: 700, fontSize: '1.05rem', color: colors.ivory, mb: 0.5 }}>
                   Complete Payment
                 </Typography>
-                <Box sx={{ bgcolor: '#FFF9EA', borderRadius: '12px', p: 1.5, mb: 0.5 }}>
+                <Box sx={{ bgcolor: colors.bgWarm, borderRadius: '12px', p: 1.5, mb: 0.5 }}>
                   <Typography sx={{ fontSize: '0.82rem', color: colors.muted }}>Order Summary</Typography>
                   <Typography sx={{ fontWeight: 700, color: colors.ivory }}>
                     {registration.passLabel || registration.passMode}
@@ -197,7 +197,7 @@ export default function BookingFlow() {
                       py: 1.5,
                       borderRadius: '14px',
                       border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(184,134,11,0.18)',
-                      bgcolor: paymentMethod === id ? 'rgba(184,134,11,0.08)' : '#fff',
+                      bgcolor: paymentMethod === id ? 'rgba(201, 139, 46, 0.12)' : colors.bgWarm,
                       color: colors.ivory,
                       textTransform: 'none',
                     }}
@@ -231,7 +231,7 @@ export default function BookingFlow() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    bgcolor: '#fff',
+                    bgcolor: colors.bgWarm,
                   }}
                 >
                   <QrCode2RoundedIcon sx={{ fontSize: '7rem', color: colors.ivory }} />
@@ -303,6 +303,6 @@ export default function BookingFlow() {
           Safe · Secure · Seamless · Enjoy 10 Nights of Divine Celebration
         </Typography>
       </Container>
-    </Box>
+    </FestiveSection>
   )
 }

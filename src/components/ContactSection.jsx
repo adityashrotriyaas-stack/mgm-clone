@@ -13,7 +13,9 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import { colors, gradients } from '../constants/colors'
 import { contactInfo, getWhatsAppUrl } from '../data/contactInfo'
+import { darkFieldSx, festiveCardSx } from '../constants/navratriTheme'
 import { RevealBox, SectionHead } from './shared'
+import FestiveSection from './FestiveSection'
 import WhatsAppIcon from './WhatsAppIcon'
 import MobileNumberField from './MobileNumberField'
 
@@ -32,8 +34,8 @@ function InfoRow({ icon: Icon, label, value, href }) {
           width: 44,
           height: 44,
           borderRadius: '12px',
-          bgcolor: 'rgba(184,134,11,0.08)',
-          border: '1px solid rgba(184,134,11,0.14)',
+          bgcolor: colors.bgWarm,
+          border: `1px solid ${colors.border}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -108,18 +110,7 @@ function ContactForm() {
       sx={{
         display: 'grid',
         gap: 1.5,
-        '& .MuiOutlinedInput-root': {
-          bgcolor: '#fff',
-          borderRadius: '12px',
-          fontSize: '0.9rem',
-          '& fieldset': { borderColor: 'rgba(139,107,46,0.16)' },
-          '&:hover fieldset': { borderColor: 'rgba(139,107,46,0.32)' },
-          '&.Mui-focused fieldset': { borderColor: colors.gold, borderWidth: '1.5px' },
-        },
-        '& .MuiInputBase-input::placeholder': {
-          color: colors.muted,
-          opacity: 0.85,
-        },
+        ...darkFieldSx,
         '& .MuiInputAdornment-root': { mr: 0.5 },
       }}
     >
@@ -156,7 +147,7 @@ function ContactForm() {
           py: 1.35,
           borderRadius: '12px',
           background: gradients.primary,
-          color: '#fff',
+          color: colors.night,
           fontWeight: 700,
           fontSize: '0.9rem',
           boxShadow: '0 8px 20px rgba(184,134,11,0.22)',
@@ -174,14 +165,7 @@ function ContactForm() {
 
 export default function ContactSection() {
   return (
-    <Box
-      component="section"
-      id="contact"
-      sx={{
-        py: { xs: 5, md: 7 },
-        bgcolor: colors.bg,
-      }}
-    >
+    <FestiveSection id="contact" variant="warm" sx={{ py: { xs: 5, md: 7 } }}>
       <Container maxWidth="lg" sx={{ px: { xs: 2.5, md: 3 } }}>
         <SectionHead
           eyebrow="Contact"
@@ -194,10 +178,8 @@ export default function ContactSection() {
             sx={{
               maxWidth: 920,
               mx: 'auto',
-              bgcolor: '#fff',
+              ...festiveCardSx,
               borderRadius: '24px',
-              border: '1px solid rgba(184,134,11,0.12)',
-              boxShadow: '0 18px 48px rgba(44,31,16,0.07)',
               overflow: 'hidden',
             }}
           >
@@ -231,7 +213,7 @@ export default function ContactSection() {
                   the WhatsApp button for the fastest reply.
                 </Typography>
 
-                <Stack spacing={2.25} divider={<Divider sx={{ borderColor: 'rgba(184,134,11,0.1)' }} />}>
+                <Stack spacing={2.25} divider={<Divider sx={{ borderColor: colors.border }} />}>
                   {infoLines.map((item) => (
                     <InfoRow key={item.label} {...item} />
                   ))}
@@ -241,9 +223,9 @@ export default function ContactSection() {
               <Box
                 sx={{
                   p: { xs: 2.25, sm: 3, md: 4 },
-                  bgcolor: colors.heroCream,
-                  borderLeft: { md: '1px solid rgba(184,134,11,0.1)' },
-                  borderTop: { xs: '1px solid rgba(184,134,11,0.1)', md: 'none' },
+                  bgcolor: colors.bgWarm,
+                  borderLeft: { md: `1px solid ${colors.border}` },
+                  borderTop: { xs: `1px solid ${colors.border}`, md: 'none' },
                 }}
               >
                 <ContactForm />
@@ -252,6 +234,6 @@ export default function ContactSection() {
           </Box>
         </RevealBox>
       </Container>
-    </Box>
+    </FestiveSection>
   )
 }

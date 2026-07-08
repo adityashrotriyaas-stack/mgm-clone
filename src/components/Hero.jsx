@@ -1,258 +1,236 @@
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import promoBanner from '../assets/image.png'
-import { colors, gradients } from '../constants/colors'
+import heroVideo from '../assets/navratri video.mp4'
+import { colors } from '../constants/colors'
+import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
 
-const featureIcons = {
+const heroVideoSrc = heroVideo
+
+const iconMap = {
   calendar: CalendarMonthOutlinedIcon,
   location: LocationOnOutlinedIcon,
   people: GroupsOutlinedIcon,
   food: RestaurantOutlinedIcon,
 }
 
-const heroMetaChips = [
-  { icon: CalendarMonthOutlinedIcon, label: 'Oct 11 – Oct 20, 2026' },
-  { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot' },
-  { icon: PaymentsOutlinedIcon, label: 'Garba & Dandiya' },
-]
+const barTheme = {
+  bg: 'rgba(30, 18, 16, 0.72)',
+  iconBg: 'rgba(53, 36, 24, 0.85)',
+  title: '#FFF5E6',
+  subtitle: 'rgba(255, 235, 210, 0.72)',
+  icon: '#E8B84A',
+  border: 'rgba(232, 184, 74, 0.22)',
+}
 
-function FeatureItem({ icon, title, subtitle }) {
-  const Icon = featureIcons[icon]
-
+function HeroFeatureBar() {
   return (
-    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ width: '100%', minWidth: 0 }}>
+    <Box
+      sx={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        px: { xs: 1.25, sm: 2, md: 3 },
+        py: { xs: 1.15, sm: 1.35, md: 1.6 },
+        bgcolor: barTheme.bg,
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderTop: `1px solid ${barTheme.border}`,
+      }}
+    >
       <Box
         sx={{
-          width: 44,
-          height: 44,
-          borderRadius: '12px',
-          bgcolor: 'rgba(184,134,11,0.12)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+          gap: { xs: 1.25, sm: 1.5, md: 2 },
         }}
       >
-        <Icon sx={{ color: colors.gold, fontSize: '1.35rem' }} />
+        {heroFeatures.map(({ icon, title, subtitle }) => {
+          const Icon = iconMap[icon]
+
+          return (
+            <Stack key={title} direction="row" alignItems="center" spacing={1.25} sx={{ minWidth: 0 }}>
+              <Box
+                sx={{
+                  width: { xs: 38, sm: 42, md: 46 },
+                  height: { xs: 38, sm: 42, md: 46 },
+                  borderRadius: '12px',
+                  bgcolor: barTheme.iconBg,
+                  border: `1px solid ${barTheme.border}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: barTheme.icon }} />
+              </Box>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: '0.78rem', sm: '0.85rem', md: '0.92rem' },
+                    color: barTheme.title,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {title}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: { xs: '0.68rem', sm: '0.72rem', md: '0.78rem' },
+                    color: barTheme.subtitle,
+                    lineHeight: 1.35,
+                    mt: 0.15,
+                  }}
+                >
+                  {subtitle}
+                </Typography>
+              </Box>
+            </Stack>
+          )
+        })}
       </Box>
-      <Box sx={{ minWidth: 0 }}>
-        <Typography sx={{ fontWeight: 700, fontSize: { xs: '0.85rem', md: '0.9rem' }, color: colors.ivory, lineHeight: 1.2 }}>
-          {title}
-        </Typography>
-        <Typography sx={{ fontSize: { xs: '0.72rem', md: '0.75rem' }, color: colors.muted, lineHeight: 1.3 }}>
-          {subtitle}
-        </Typography>
-      </Box>
-    </Stack>
+    </Box>
   )
 }
 
 export default function Hero() {
-  const navigate = useNavigate()
+  const videoRef = useRef(null)
+  const frameRef = useRef(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    const frame = frameRef.current
+    if (!video || !frame) return undefined
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.35 },
+    )
+
+    observer.observe(frame)
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        video.pause()
+        return
+      }
+      const rect = frame.getBoundingClientRect()
+      const inView = rect.top < window.innerHeight && rect.bottom > 0
+      if (inView) {
+        video.play().catch(() => {})
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [])
+
   return (
     <Box
       component="section"
       id="home"
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        bgcolor: colors.heroCream,
+        position: 'relative',
+        bgcolor: colors.night,
         overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: patternNight,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container
         maxWidth="xl"
         sx={{
-          flex: 1,
+          position: 'relative',
+          zIndex: 1,
           px: { xs: 2, sm: 2.5, md: 4 },
-          py: { xs: 3, sm: 4, md: 6 },
+          pt: { xs: 1.5, sm: 2, md: 2.5 },
+          pb: { xs: 2, sm: 2.5, md: 3 },
         }}
       >
         <Box
+          ref={frameRef}
           sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
-            gap: { xs: 2.5, sm: 3.5, lg: 5 },
-            alignItems: 'center',
+            position: 'relative',
+            borderRadius: { xs: '20px', md: '28px' },
+            overflow: 'hidden',
+            border: '1px solid rgba(232, 184, 74, 0.22)',
+            boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
+            aspectRatio: { xs: '9 / 14', sm: '16 / 10', lg: '16 / 7.4' },
+            bgcolor: colors.nightMid,
           }}
         >
-          <Box sx={{ order: { xs: 1, lg: 0 }, minWidth: 0 }}>
+          {heroVideoSrc ? (
             <Box
+              ref={videoRef}
+              component="video"
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={promoBanner}
               sx={{
-                bgcolor: '#fff',
-                borderRadius: { xs: '16px', md: '20px' },
-                p: { xs: 0.75, md: 1.25 },
-                boxShadow: '0 20px 50px rgba(44,31,16,0.12)',
-                border: '1px solid rgba(184,134,11,0.12)',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
               }}
             >
-              <Box
-                component="img"
-                src={promoBanner}
-                alt="MGM Cultural Navratri 2025 — Rajkot event poster"
-                sx={{
-                  width: '100%',
-                  height: 'auto',
-                  display: 'block',
-                  borderRadius: { xs: '12px', md: '14px' },
-                }}
-              />
+              <source src={heroVideoSrc} type="video/mp4" />
             </Box>
-          </Box>
-
-          <Box sx={{ order: { xs: 2, lg: 0 }, minWidth: 0 }}>
+          ) : (
             <Box
+              component="img"
+              src={promoBanner}
+              alt="MGM Cultural Navratri hero poster"
               sx={{
-                display: 'inline-block',
-                background: gradients.primary,
-                color: '#fff',
-                fontSize: { xs: '0.62rem', sm: '0.68rem' },
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                px: 1.5,
-                py: 0.6,
-                borderRadius: '50px',
-                mb: { xs: 1.5, md: 2 },
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
               }}
-            >
-              MGM Cultural · Exclusive Event
-            </Box>
-
-            <Typography
-              component="h1"
-              sx={{
-                fontFamily: '"Playfair Display", serif',
-                fontWeight: 700,
-                fontSize: { xs: '1.85rem', sm: '2.4rem', md: '3.2rem', lg: '3.6rem' },
-                lineHeight: 1.12,
-                color: colors.ivory,
-                mb: { xs: 1.25, md: 1.5 },
-              }}
-            >
-              Ten Nights of Garba
-            </Typography>
-
-            <Typography
-              sx={{
-                fontSize: { xs: '0.9rem', md: '1.02rem' },
-                color: colors.muted,
-                lineHeight: 1.7,
-                maxWidth: 500,
-                mb: { xs: 2, md: 2.5 },
-              }}
-            >
-              Devotion. Dance. Dandiya. Experience the joy of Navratri like never before at
-              Rajkot&apos;s grand ten-night celebration.
-            </Typography>
-
-            <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
-              {heroMetaChips.map(({ icon: Icon, label }) => (
-                <Chip
-                  key={label}
-                  icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />}
-                  label={label}
-                  sx={{
-                    bgcolor: '#fff',
-                    border: '1px solid rgba(184,134,11,0.18)',
-                    color: colors.ivory,
-                    fontWeight: 600,
-                    fontSize: { xs: '0.72rem', sm: '0.8rem' },
-                    height: 'auto',
-                    py: 0.5,
-                    maxWidth: '100%',
-                    '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' },
-                  }}
-                />
-              ))}
-            </Stack>
-
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={1.5}
-              alignItems={{ xs: 'stretch', sm: 'center' }}
-            >
-              <Button
-                onClick={() => navigate('/event/1')}
-                startIcon={<ConfirmationNumberOutlinedIcon />}
-                sx={{
-                  background: gradients.primary,
-                  color: '#fff',
-                  px: 3,
-                  py: { xs: 1.35, md: 1.5 },
-                  minHeight: 48,
-                  fontSize: { xs: '0.9rem', md: '0.95rem' },
-                  fontWeight: 700,
-                  borderRadius: '50px',
-                  boxShadow: '0 8px 24px rgba(184,134,11,0.3)',
-                  '&:hover': {
-                    background: gradients.primary,
-                    filter: 'brightness(1.05)',
-                  },
-                }}
-              >
-                Book Tickets
-              </Button>
-              <Button
-                component="a"
-                href="#upcoming"
-                startIcon={<CalendarMonthOutlinedIcon />}
-                sx={{
-                  bgcolor: '#fff',
-                  color: colors.ivory,
-                  border: `1.5px solid rgba(184,134,11,0.35)`,
-                  px: 3,
-                  py: { xs: 1.35, md: 1.5 },
-                  minHeight: 48,
-                  fontSize: { xs: '0.9rem', md: '0.95rem' },
-                  fontWeight: 700,
-                  borderRadius: '50px',
-                  '&:hover': {
-                    bgcolor: '#fff',
-                    borderColor: colors.gold,
-                  },
-                }}
-              >
-                Explore Events
-              </Button>
-            </Stack>
-          </Box>
-        </Box>
-      </Container>
-
-      <Box
-        sx={{
-          borderTop: '1px solid rgba(184,134,11,0.15)',
-          bgcolor: colors.heroCream,
-          py: { xs: 2, md: 3 },
-        }}
-      >
-        <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 2.5, md: 4 } }}>
+            />
+          )}
           <Box
             sx={{
-              display: 'grid',
-              gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-              gap: { xs: 2, md: 3 },
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(180deg, rgba(26,10,18,0.04) 0%, rgba(26,10,18,0.12) 50%, rgba(26,10,18,0.55) 100%)',
+              pointerEvents: 'none',
+              zIndex: 1,
             }}
-          >
-            {heroFeatures.map((feature) => (
-              <FeatureItem key={feature.title} {...feature} />
-            ))}
-          </Box>
-        </Container>
-      </Box>
+          />
+          <HeroFeatureBar />
+        </Box>
+      </Container>
     </Box>
   )
 }

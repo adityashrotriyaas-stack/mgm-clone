@@ -36,7 +36,7 @@ export function Eyebrow({ children, sx }) {
         fontSize: '0.7rem',
         textTransform: 'uppercase',
         letterSpacing: '2.5px',
-        color: colors.teal,
+        color: colors.gold,
         fontWeight: 700,
         mb: 1,
         display: 'inline-block',

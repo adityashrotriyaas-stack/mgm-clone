@@ -22,7 +22,7 @@ export default function StickyCTA() {
         left: 0,
         right: 0,
         zIndex: 60,
-        bgcolor: 'rgba(255,247,230,0.96)',
+        bgcolor: colors.bgSoft,
         backdropFilter: 'blur(12px)',
         px: 2,
         py: 1.25,
@@ -30,8 +30,8 @@ export default function StickyCTA() {
         display: { xs: 'flex', lg: 'none' },
         gap: 1.25,
         alignItems: 'center',
-        boxShadow: '0 -4px 20px rgba(44,31,16,0.12)',
-        borderTop: '1px solid rgba(184,134,11,0.15)',
+        boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.35)',
+        borderTop: `1px solid ${colors.border}`,
       }}
     >
       <Box sx={{ flex: 1, minWidth: 0, pr: 1 }}>
@@ -49,7 +49,7 @@ export default function StickyCTA() {
         </Typography>
         <Typography
           sx={{
-            color: colors.marigoldSoft,
+            color: colors.gold,
             fontSize: { xs: '0.98rem', sm: '1.05rem' },
             fontWeight: 800,
             lineHeight: 1.2,
@@ -79,7 +79,7 @@ export default function StickyCTA() {
         onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
           background: gradients.primary,
-          color: colors.bg,
+          color: colors.night,
           px: { xs: 2.5, sm: 3 },
           py: 1.35,
           minHeight: 48,

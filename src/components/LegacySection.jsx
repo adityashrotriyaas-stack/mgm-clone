@@ -7,7 +7,9 @@ import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
 import { colors, gradients } from '../constants/colors'
 import { legacyMoments } from '../data/siteData'
+import { festiveCardSoftSx } from '../constants/navratriTheme'
 import { RevealBox, SectionHead } from './shared'
+import FestiveSection from './FestiveSection'
 
 const icons = [
   AccessTimeOutlinedIcon,
@@ -23,11 +25,8 @@ function LegacyCard({ item, index }) {
     <Box
       sx={{
         position: 'relative',
-        bgcolor: colors.bgSoft,
-        borderRadius: '22px',
+        ...festiveCardSoftSx,
         p: { xs: 2.25, md: 3 },
-        border: '1px solid rgba(184,134,11,0.14)',
-        boxShadow: '0 12px 28px rgba(44,31,16,0.05)',
         overflow: 'hidden',
         height: '100%',
       }}
@@ -54,7 +53,7 @@ function LegacyCard({ item, index }) {
             py: 0.85,
             borderRadius: '999px',
             background: gradients.primary,
-            color: '#fff',
+            color: colors.night,
             fontWeight: 800,
             fontSize: '0.92rem',
           }}
@@ -92,14 +91,7 @@ function LegacyCard({ item, index }) {
 
 export default function LegacySection() {
   return (
-    <Box
-      component="section"
-      id="legacy"
-      sx={{
-        py: { xs: 6, md: 8 },
-        background: `linear-gradient(180deg, ${colors.bg} 0%, ${colors.heroCream} 100%)`,
-      }}
-    >
+    <FestiveSection id="legacy" variant="saffron" sx={{ py: { xs: 6, md: 8 } }}>
       <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4 } }}>
         <SectionHead
           eyebrow="Our Journey"
@@ -119,6 +111,6 @@ export default function LegacySection() {
           ))}
         </RevealBox>
       </Container>
-    </Box>
+    </FestiveSection>
   )
 }

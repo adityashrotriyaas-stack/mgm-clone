@@ -13,8 +13,9 @@ import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
-import { colors } from '../constants/colors'
 import { navLinks } from '../data/siteData'
+import { colors, gradients } from '../constants/colors'
+import { patternNight } from '../constants/navratriTheme'
 
 export default function Header() {
   const navigate = useNavigate()
@@ -27,13 +28,22 @@ export default function Header() {
       position="sticky"
       elevation={0}
       sx={{
-        bgcolor: colors.heroCream,
-        borderBottom: '1px solid rgba(184,134,11,0.18)',
-        boxShadow: '0 2px 12px rgba(44,31,16,0.06)',
-        color: colors.ivory,
+        position: 'relative',
+        bgcolor: colors.night,
+        borderBottom: '1px solid rgba(232, 184, 74, 0.15)',
+        boxShadow: '0 4px 24px rgba(26, 10, 18, 0.4)',
+        color: colors.textLight,
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: patternNight,
+          pointerEvents: 'none',
+        },
       }}
     >
-      <Container maxWidth="xl" disableGutters>
+      <Container maxWidth="xl" disableGutters sx={{ position: 'relative', zIndex: 1 }}>
         <Toolbar
           sx={{
             justifyContent: 'space-between',
@@ -49,13 +59,13 @@ export default function Header() {
                 width: { xs: 52, md: 60 },
                 height: { xs: 52, md: 60 },
                 borderRadius: '50%',
-                border: `2px solid ${colors.marigold}`,
-                background: `radial-gradient(circle at 30% 30%, #F5E6B8, ${colors.marigoldSoft})`,
+                border: '2px solid #F7C76B',
+                background: 'radial-gradient(circle at 30% 30%, #F5E6B8, #D4AF37)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                boxShadow: '0 4px 14px rgba(184,134,11,0.25)',
+                boxShadow: '0 4px 14px rgba(247, 199, 107, 0.35)',
               }}
             >
               <Typography
@@ -63,7 +73,7 @@ export default function Header() {
                   fontFamily: '"Playfair Display", serif',
                   fontSize: { xs: '0.55rem', md: '0.62rem' },
                   fontWeight: 700,
-                  color: colors.ivory,
+                  color: '#2C1F10',
                   textAlign: 'center',
                   lineHeight: 1.15,
                   px: 0.5,
@@ -79,7 +89,7 @@ export default function Header() {
                   fontSize: '0.82rem',
                   fontWeight: 700,
                   lineHeight: 1.15,
-                  color: colors.ivory,
+                  color: '#FFF8E7',
                   letterSpacing: '0.3px',
                 }}
               >
@@ -93,7 +103,7 @@ export default function Header() {
                   fontSize: { sm: '0.95rem', md: '1.05rem' },
                   fontWeight: 700,
                   lineHeight: 1.15,
-                  color: colors.ivory,
+                  color: '#FFF8E7',
                   letterSpacing: '0.5px',
                 }}
               >
@@ -104,7 +114,7 @@ export default function Header() {
                   fontSize: '0.58rem',
                   letterSpacing: '2px',
                   textTransform: 'uppercase',
-                  color: colors.gold,
+                  color: '#F7C76B',
                   fontWeight: 600,
                   mt: 0.25,
                 }}
@@ -125,12 +135,13 @@ export default function Header() {
                 key={link.label}
                 href={link.href}
                 sx={{
-                  color: link.active ? colors.ivory : colors.muted,
+                  color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.72)',
                   fontWeight: link.active ? 700 : 500,
                   fontSize: '0.88rem',
                   position: 'relative',
                   pb: 0.5,
-                  '&:hover': { color: colors.ivory },
+                  textDecoration: 'none',
+                  '&:hover': { color: '#FFF8E7' },
                   ...(link.active && {
                     '&::after': {
                       content: '""',
@@ -139,7 +150,7 @@ export default function Header() {
                       left: '20%',
                       right: '20%',
                       height: 2,
-                      bgcolor: colors.gold,
+                      bgcolor: '#F7C76B',
                       borderRadius: 1,
                     },
                   }),
@@ -155,17 +166,17 @@ export default function Header() {
             startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
-              bgcolor: colors.gold,
-              color: '#fff',
+              background: gradients.primary,
+              color: '#231509',
               px: 2.5,
               py: 1.2,
               fontSize: '0.86rem',
               fontWeight: 700,
               borderRadius: '50px',
-              boxShadow: '0 6px 20px rgba(184,134,11,0.35)',
+              boxShadow: '0 8px 22px rgba(230, 149, 75, 0.32)',
               '&:hover': {
-                bgcolor: colors.marigold,
-                transform: 'translateY(-1px)',
+                background: gradients.primary,
+                filter: 'brightness(1.05)',
               },
             }}
           >
@@ -178,7 +189,7 @@ export default function Header() {
             onClick={() => setOpen((prev) => !prev)}
             sx={{
               display: { xs: 'inline-flex', lg: 'none' },
-              color: colors.ivory,
+              color: '#FFF8E7',
               width: 44,
               height: 44,
             }}
@@ -190,10 +201,10 @@ export default function Header() {
         <Collapse in={open} sx={{ display: { xs: 'block', lg: 'none' } }}>
           <Box
             sx={{
-              bgcolor: colors.heroCream,
+              bgcolor: 'rgba(45, 16, 24, 0.95)',
               px: 2,
               pb: 2,
-              borderTop: '1px solid rgba(184,134,11,0.12)',
+              borderTop: '1px solid rgba(255, 220, 150, 0.1)',
             }}
           >
             <Stack component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
@@ -205,10 +216,11 @@ export default function Header() {
                     sx={{
                       display: 'block',
                       py: 1.4,
-                      color: colors.ivory,
+                      color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.82)',
                       fontWeight: link.active ? 700 : 600,
                       fontSize: '0.95rem',
-                      borderBottom: '1px solid rgba(139,107,46,0.08)',
+                      borderBottom: '1px solid rgba(255,255,255,0.06)',
+                      textDecoration: 'none',
                     }}
                   >
                     {link.mobileLabel || link.label}
@@ -217,7 +229,10 @@ export default function Header() {
               ))}
               <Box component="li" sx={{ mt: 1.25 }}>
                 <Button
-                  onClick={() => { closeMenu(); navigate('/event/1') }}
+                  onClick={() => {
+                    closeMenu()
+                    navigate('/event/1')
+                  }}
                   fullWidth
                   sx={{
                     display: 'flex',
@@ -227,9 +242,12 @@ export default function Header() {
                     borderRadius: '50px',
                     py: 1.4,
                     fontWeight: 700,
-                    bgcolor: colors.gold,
-                    color: '#fff',
-                    '&:hover': { bgcolor: colors.marigold },
+                    background: gradients.primary,
+                    color: '#231509',
+                    '&:hover': {
+                      background: gradients.primary,
+                      filter: 'brightness(1.04)',
+                    },
                   }}
                 >
                   <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />

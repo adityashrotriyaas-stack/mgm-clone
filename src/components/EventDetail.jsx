@@ -26,6 +26,9 @@ import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
 import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
 import promoBanner from '../assets/image.png'
+import FestiveSection from './FestiveSection'
+import { colors } from '../constants/colors'
+import { festiveCardSoftSx } from '../constants/navratriTheme'
 
 const eventInfo = {
   1: {
@@ -191,7 +194,15 @@ const passModes = [
   { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
 
-const accentOrange = '#ff9466'
+const accentFestive = '#C98B2E'
+const ui = {
+  card: colors.bgCard,
+  surface: colors.bgSoft,
+  surfaceMuted: colors.bgWarm,
+  text: colors.textLight,
+  muted: colors.muted,
+  border: colors.border,
+}
 
 const categoryMeta = {
   male: { Icon: ManOutlinedIcon, bg: '#E8F1FF', color: '#3B82F6' },
@@ -218,22 +229,22 @@ function RegistrationStepPills({ activeStep }) {
               borderRadius: '50px',
               fontSize: { xs: '0.68rem', sm: '0.75rem' },
               fontWeight: 700,
-              bgcolor: isActive ? accentOrange : '#f0f0f0',
-              color: isActive ? '#fff' : '#666',
+              bgcolor: isActive ? accentFestive : ui.surfaceMuted,
+              color: isActive ? colors.night : ui.muted,
               whiteSpace: 'nowrap',
             }}
           >
             {isCompleted ? (
-              <CheckRoundedIcon sx={{ fontSize: '1rem', color: '#666' }} />
+              <CheckRoundedIcon sx={{ fontSize: '1rem', color: ui.muted }} />
             ) : (
               <Box
                 sx={{
                   width: 20,
                   height: 20,
                   borderRadius: '50%',
-                  bgcolor: isActive ? '#fff' : 'transparent',
-                  border: isActive ? 'none' : '2px solid #ccc',
-                  color: isActive ? accentOrange : '#666',
+                  bgcolor: isActive ? colors.night : 'transparent',
+                  border: isActive ? 'none' : `2px solid ${colors.border}`,
+                  color: isActive ? accentFestive : ui.muted,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -260,8 +271,8 @@ function SelectedPassBanner({ title }) {
       alignItems="center"
       spacing={1.5}
       sx={{
-        bgcolor: '#FFF8F3',
-        border: `1px solid ${accentOrange}55`,
+        bgcolor: ui.surfaceMuted,
+        border: `1px solid ${accentFestive}55`,
         borderRadius: '12px',
         p: 1.5,
       }}
@@ -271,18 +282,18 @@ function SelectedPassBanner({ title }) {
           width: 42,
           height: 42,
           borderRadius: '10px',
-          bgcolor: 'rgba(255, 148, 102, 0.14)',
+          bgcolor: 'rgba(201, 139, 46, 0.16)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
         }}
       >
-        <ConfirmationNumberRoundedIcon sx={{ color: accentOrange, fontSize: '1.3rem' }} />
+        <ConfirmationNumberRoundedIcon sx={{ color: accentFestive, fontSize: '1.3rem' }} />
       </Box>
-      <Typography sx={{ fontSize: '0.9rem', color: '#555' }}>
+      <Typography sx={{ fontSize: '0.9rem', color: ui.muted }}>
         Selected:{' '}
-        <Box component="span" sx={{ fontWeight: 700, color: accentOrange }}>
+        <Box component="span" sx={{ fontWeight: 700, color: accentFestive }}>
           {title}
         </Box>
       </Typography>
@@ -303,14 +314,14 @@ function PassTypeOption({ item, selected, onSelect }) {
         py: 1.75,
         width: '100%',
         borderRadius: '12px',
-        border: selected ? `2px solid ${accentOrange}` : '1px solid #E5E4E9',
-        bgcolor: selected ? 'rgba(255, 148, 102, 0.08)' : '#fff',
-        color: '#000',
+        border: selected ? `2px solid ${accentFestive}` : `1px solid ${ui.border}`,
+        bgcolor: selected ? 'rgba(201, 139, 46, 0.12)' : ui.card,
+        color: ui.text,
         textTransform: 'none',
-        boxShadow: selected ? 'none' : '0 1px 3px rgba(15, 23, 42, 0.04)',
+        boxShadow: selected ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.2)',
         '&:hover': {
-          bgcolor: selected ? 'rgba(255, 148, 102, 0.12)' : '#fafafa',
-          borderColor: selected ? accentOrange : '#ddd',
+          bgcolor: selected ? 'rgba(201, 139, 46, 0.16)' : ui.surfaceMuted,
+          borderColor: selected ? accentFestive : colors.border,
         },
       }}
     >
@@ -319,21 +330,21 @@ function PassTypeOption({ item, selected, onSelect }) {
           width: 44,
           height: 44,
           borderRadius: '10px',
-          bgcolor: selected ? 'rgba(255, 148, 102, 0.16)' : '#f5f5f5',
+          bgcolor: selected ? 'rgba(201, 139, 46, 0.2)' : ui.surfaceMuted,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
         }}
       >
-        <ConfirmationNumberRoundedIcon sx={{ color: selected ? accentOrange : '#999', fontSize: '1.35rem' }} />
+        <ConfirmationNumberRoundedIcon sx={{ color: selected ? accentFestive : ui.muted, fontSize: '1.35rem' }} />
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography sx={{ fontWeight: 700, fontSize: '0.95rem' }}>{item.title}</Typography>
-        <Typography sx={{ fontSize: '0.8rem', color: '#777' }}>{item.subtitle}</Typography>
+        <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{item.subtitle}</Typography>
       </Box>
       <Stack direction="row" alignItems="center" spacing={1.25} sx={{ flexShrink: 0 }}>
-        <Typography sx={{ fontWeight: 800, color: selected ? accentOrange : '#000', fontSize: '1rem' }}>
+        <Typography sx={{ fontWeight: 800, color: selected ? accentFestive : ui.text, fontSize: '1rem' }}>
           {item.data.price}
         </Typography>
         <Box
@@ -341,14 +352,14 @@ function PassTypeOption({ item, selected, onSelect }) {
             width: 24,
             height: 24,
             borderRadius: '50%',
-            border: selected ? 'none' : '2px solid #ddd',
-            bgcolor: selected ? accentOrange : 'transparent',
+            border: selected ? 'none' : `2px solid ${colors.border}`,
+            bgcolor: selected ? accentFestive : 'transparent',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          {selected && <CheckRoundedIcon sx={{ color: '#fff', fontSize: '1rem' }} />}
+          {selected && <CheckRoundedIcon sx={{ color: colors.night, fontSize: '1rem' }} />}
         </Box>
       </Stack>
     </Button>
@@ -370,14 +381,14 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
         py: 1.75,
         width: '100%',
         borderRadius: '12px',
-        border: selected ? `2px solid ${accentOrange}` : '1px solid #E5E4E9',
-        bgcolor: '#fff',
-        color: '#000',
+        border: selected ? `2px solid ${accentFestive}` : `1px solid ${ui.border}`,
+        bgcolor: ui.card,
+        color: ui.text,
         textTransform: 'none',
-        boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
         '&:hover': {
-          bgcolor: '#fafafa',
-          borderColor: selected ? accentOrange : '#ddd',
+          bgcolor: ui.surfaceMuted,
+          borderColor: selected ? accentFestive : colors.border,
         },
       }}
     >
@@ -397,13 +408,13 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', textTransform: 'capitalize' }}>{label}</Typography>
-        <Typography sx={{ fontSize: '0.8rem', color: '#777' }}>{subtitle}</Typography>
+        <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{subtitle}</Typography>
       </Box>
       <Stack direction="row" alignItems="center" spacing={1.5} sx={{ flexShrink: 0 }}>
-        <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
+        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
           {price}
           {priceUnit ? (
-            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: '#777', ml: 0.35 }}>
+            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: ui.muted, ml: 0.35 }}>
               {priceUnit}
             </Box>
           ) : null}
@@ -413,15 +424,15 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
             width: 22,
             height: 22,
             borderRadius: '50%',
-            border: selected ? 'none' : '2px solid #ddd',
-            bgcolor: selected ? accentOrange : 'transparent',
+            border: selected ? 'none' : `2px solid ${colors.border}`,
+            bgcolor: selected ? accentFestive : 'transparent',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
           }}
         >
-          {selected && <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#fff' }} />}
+          {selected && <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: colors.night }} />}
         </Box>
       </Stack>
     </Button>
@@ -447,14 +458,14 @@ function getPriceAmount(price) {
 
 const fieldSx = {
   '& .MuiOutlinedInput-root': {
-    bgcolor: '#fff',
-    color: '#000',
+    bgcolor: ui.card,
+    color: ui.text,
     borderRadius: '8px',
-    '& fieldset': { borderColor: '#E5E4E9' },
-    '&:hover fieldset': { borderColor: '#ccc' },
-    '&.Mui-focused fieldset': { borderColor: '#ff9466' },
+    '& fieldset': { borderColor: ui.border },
+    '&:hover fieldset': { borderColor: colors.gold },
+    '&.Mui-focused fieldset': { borderColor: accentFestive },
   },
-  '& .MuiInputBase-input::placeholder': { color: '#999', opacity: 1 },
+  '& .MuiInputBase-input::placeholder': { color: ui.muted, opacity: 1 },
   '& .MuiInputAdornment-root': { mr: 0.5 },
   '& .MuiSelect-select': { textAlign: 'left' },
 }
@@ -469,7 +480,7 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
   return (
     <Box sx={{ display: 'grid', gap: 1.5 }}>
       {title && (
-        <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '0.95rem', mb: 0.25 }}>
+        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.95rem', mb: 0.25 }}>
           {title}
         </Typography>
       )}
@@ -485,14 +496,14 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
 function DetailInfoCard({ title, children }) {
   return (
     <Box sx={{ mb: 4 }}>
-      <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>
         {title}
       </Typography>
       <Box
         sx={{
           maxWidth: 360,
-          bgcolor: '#fff',
-          border: '1px solid #E5E4E9',
+          bgcolor: ui.card,
+          border: `1px solid ${ui.border}`,
           borderRadius: '14px',
           overflow: 'hidden',
           boxShadow: '0 8px 22px rgba(15, 23, 42, 0.08)',
@@ -507,14 +518,14 @@ function DetailInfoCard({ title, children }) {
 function EventLayoutCard({ zones = [] }) {
   return (
     <Box sx={{ mb: 4 }}>
-      <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>
         Event Layout
       </Typography>
       <Box
         sx={{
           maxWidth: 420,
-          bgcolor: '#fff',
-          border: '1px solid #E5E4E9',
+          bgcolor: ui.card,
+          border: `1px solid ${ui.border}`,
           borderRadius: '14px',
           p: 1.5,
           boxShadow: '0 8px 22px rgba(15, 23, 42, 0.08)',
@@ -551,11 +562,11 @@ function EventLayoutCard({ zones = [] }) {
                 px: 1.1,
                 py: 0.55,
                 borderRadius: '999px',
-                bgcolor: '#f8f9fa',
-                border: '1px solid #E5E4E9',
+                bgcolor: ui.surfaceMuted,
+                border: `1px solid ${ui.border}`,
                 fontSize: '0.76rem',
                 fontWeight: 600,
-                color: '#555',
+                color: ui.muted,
               }}
             >
               {zone}
@@ -700,15 +711,14 @@ export default function EventDetail() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FFFDF8', minHeight: '100vh', overflowX: 'clip' }}>
-      {/* Top Bar */}
-      <Box sx={{ borderBottom: '1px solid #E5E4E9' }}>
+    <FestiveSection variant="night" showAccent={false} sx={{ minHeight: '100vh', overflowX: 'clip' }}>
+      <Box sx={{ borderBottom: `1px solid ${colors.border}` }}>
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center" sx={{ py: 1 }}>
             <Button
               onClick={() => navigate('/')}
               startIcon={<ChevronLeftRoundedIcon />}
-              sx={{ color: '#000', fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
+              sx={{ color: ui.text, fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
             >
               Back
             </Button>
@@ -726,7 +736,7 @@ export default function EventDetail() {
               aspectRatio: '18/10',
               borderRadius: { xs: '14px', md: '20px' },
               overflow: 'hidden',
-              bgcolor: '#f5f5f5',
+              bgcolor: ui.surfaceMuted,
             }}>
               <Box
                 sx={{
@@ -740,10 +750,10 @@ export default function EventDetail() {
             </Box>
 
             <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={1} sx={{ mt: 2, mb: 1 }}>
-              <Typography sx={{ fontWeight: 700, color: '#000', fontSize: { xs: '1.15rem', sm: '1.25rem', md: '1.625rem' }, lineHeight: 1.25, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>
+              <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: { xs: '1.15rem', sm: '1.25rem', md: '1.625rem' }, lineHeight: 1.25, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>
                 {event.title}
               </Typography>
-              <ShareRoundedIcon sx={{ color: '#000', fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.25 }} />
+              <ShareRoundedIcon sx={{ color: ui.text, fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.25 }} />
             </Stack>
 
             <Stack direction="row" spacing={1}>
@@ -754,7 +764,7 @@ export default function EventDetail() {
           {/* Right — Booking Card */}
           <Grid size={{ xs: 12, md: 4 }}>
             <Box sx={{
-              border: '1px solid #E5E4E9',
+              border: `1px solid ${ui.border}`,
               borderRadius: { xs: '10px', md: '12px' },
               p: { xs: 2, md: 2.5 },
               position: { xs: 'static', md: 'sticky' },
@@ -762,11 +772,11 @@ export default function EventDetail() {
             }}>
               <Stack spacing={2}>
                 <Box>
-                  <Typography sx={{ fontSize: { xs: '1.35rem', md: '1.5rem' }, fontWeight: 700, color: '#000' }}>
+                  <Typography sx={{ fontSize: { xs: '1.35rem', md: '1.5rem' }, fontWeight: 700, color: ui.text }}>
                     {info.price}
-                    <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#777', ml: 0.5 }}>onwards</Box>
+                    <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: ui.muted, ml: 0.5 }}>onwards</Box>
                   </Typography>
-                  <Typography sx={{ fontSize: { xs: '0.75rem', md: '0.8125rem' }, color: '#555', mt: 0.5, lineHeight: 1.55, wordBreak: 'break-word' }}>
+                  <Typography sx={{ fontSize: { xs: '0.75rem', md: '0.8125rem' }, color: ui.muted, mt: 0.5, lineHeight: 1.55, wordBreak: 'break-word' }}>
                     {info.ticketInfo}
                   </Typography>
                 </Box>
@@ -793,7 +803,7 @@ export default function EventDetail() {
 
                 <Divider />
 
-                <Typography sx={{ fontWeight: 600, color: '#000', fontSize: '0.875rem' }}>
+                <Typography sx={{ fontWeight: 600, color: ui.text, fontSize: '0.875rem' }}>
                   What's Included
                 </Typography>
                 <Box component="ul" sx={{ m: 0, p: 0, listStyle: 'none' }}>
@@ -805,8 +815,8 @@ export default function EventDetail() {
                     '24/7 customer support',
                   ].map((item, i) => (
                     <Stack key={i} direction="row" spacing={1} sx={{ mb: 0.5 }}>
-                      <Box component="span" sx={{ color: '#000', fontWeight: 600, fontSize: '0.8125rem' }}>✓</Box>
-                      <Typography sx={{ fontSize: '0.8125rem', color: '#555' }}>{item}</Typography>
+                      <Box component="span" sx={{ color: ui.text, fontWeight: 600, fontSize: '0.8125rem' }}>✓</Box>
+                      <Typography sx={{ fontSize: '0.8125rem', color: ui.muted }}>{item}</Typography>
                     </Stack>
                   ))}
                 </Box>
@@ -817,7 +827,7 @@ export default function EventDetail() {
       </Container>
 
       {/* Tabs */}
-      <Box sx={{ borderBottom: '1px solid #E5E4E9' }}>
+      <Box sx={{ borderBottom: `1px solid ${ui.border}` }}>
         <Container maxWidth="lg">
           <Stack direction="row" spacing={0} sx={{ justifyContent: 'center' }}>
             <Button
@@ -832,8 +842,8 @@ export default function EventDetail() {
                 fontWeight: tab === 'registration' ? 600 : 400,
                 fontSize: '1rem',
                 textTransform: 'none',
-                color: tab === 'registration' ? '#ff9466' : '#777',
-                borderBottom: tab === 'registration' ? '3px solid #ff9466' : '3px solid transparent',
+                color: tab === 'registration' ? accentFestive : ui.muted,
+                borderBottom: tab === 'registration' ? '3px solid accentFestive' : '3px solid transparent',
                 '&:hover': { bgcolor: 'transparent' },
               }}
             >
@@ -851,8 +861,8 @@ export default function EventDetail() {
                 fontWeight: tab === 'info' ? 600 : 400,
                 fontSize: '1rem',
                 textTransform: 'none',
-                color: tab === 'info' ? '#ff9466' : '#777',
-                borderBottom: tab === 'info' ? '3px solid #ff9466' : '3px solid transparent',
+                color: tab === 'info' ? accentFestive : ui.muted,
+                borderBottom: tab === 'info' ? '3px solid accentFestive' : '3px solid transparent',
                 '&:hover': { bgcolor: 'transparent' },
               }}
             >
@@ -867,8 +877,8 @@ export default function EventDetail() {
         {tab === 'info' ? (
           <Box>
             <Box sx={{ mb: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>About</Typography>
-              <Typography sx={{ color: '#555', lineHeight: 1.8, whiteSpace: 'pre-line', fontSize: '0.9375rem' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>About</Typography>
+              <Typography sx={{ color: ui.muted, lineHeight: 1.8, whiteSpace: 'pre-line', fontSize: '0.9375rem' }}>
                 {info.description}
               </Typography>
             </Box>
@@ -876,12 +886,12 @@ export default function EventDetail() {
             <Divider sx={{ mb: 3 }} />
 
             <Box sx={{ mb: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>Why Attend</Typography>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>Why Attend</Typography>
               <Box component="ul" sx={{ m: 0, p: 0, listStyle: 'none' }}>
                 {info.whyAttend.map((item, i) => (
                   <Stack key={i} direction="row" spacing={1.5} sx={{ mb: 1.5 }}>
                     <Box component="span" sx={{ color: '#22c55e', fontWeight: 600, fontSize: '1rem' }}>✅</Box>
-                    <Typography sx={{ color: '#555', lineHeight: 1.6, fontSize: '0.9375rem' }}>{item}</Typography>
+                    <Typography sx={{ color: ui.muted, lineHeight: 1.6, fontSize: '0.9375rem' }}>{item}</Typography>
                   </Stack>
                 ))}
               </Box>
@@ -890,13 +900,13 @@ export default function EventDetail() {
             <Divider sx={{ mb: 3 }} />
 
             <Box sx={{ mb: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 2, fontSize: '1.25rem' }}>Event Highlights</Typography>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>Event Highlights</Typography>
               <Grid container spacing={1.5}>
                 {info.highlights.map((item, i) => (
                   <Grid key={i} size={{ xs: 12, sm: 6 }}>
-                    <Stack direction="row" spacing={1} sx={{ p: 1.5, bgcolor: '#f8f9fa', borderRadius: '8px' }}>
-                      <Box component="span" sx={{ color: '#ff9466', fontWeight: 700, fontSize: '1rem' }}>📌</Box>
-                      <Typography sx={{ color: '#555', fontSize: '0.9375rem' }}>{item}</Typography>
+                    <Stack direction="row" spacing={1} sx={{ p: 1.5, bgcolor: ui.surfaceMuted, borderRadius: '8px' }}>
+                      <Box component="span" sx={{ color: accentFestive, fontWeight: 700, fontSize: '1rem' }}>📌</Box>
+                      <Typography sx={{ color: ui.muted, fontSize: '0.9375rem' }}>{item}</Typography>
                     </Stack>
                   </Grid>
                 ))}
@@ -913,7 +923,7 @@ export default function EventDetail() {
                 sx={{ width: '100%', height: 150, objectFit: 'cover', display: 'block' }}
               />
               <Box sx={{ p: 2, textAlign: 'center' }}>
-                <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '1rem' }}>
+                <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '1rem' }}>
                   {info.singer.name}
                 </Typography>
               </Box>
@@ -930,11 +940,11 @@ export default function EventDetail() {
                     mx: 'auto',
                     mb: 1.5,
                     borderRadius: '16px',
-                    border: '1px solid #E5E4E9',
+                    border: `1px solid ${ui.border}`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    bgcolor: '#fff',
+                    bgcolor: ui.card,
                     fontFamily: '"Playfair Display", serif',
                     fontSize: '3rem',
                     color: '#4B2D18',
@@ -955,7 +965,7 @@ export default function EventDetail() {
                     }}
                   />
                 </Box>
-                <Typography sx={{ fontWeight: 700, color: '#000', fontSize: '1rem' }}>
+                <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '1rem' }}>
                   {info.organizer.name}
                 </Typography>
               </Box>
@@ -972,15 +982,15 @@ export default function EventDetail() {
                 border: '1px solid #ECECEC',
                 borderRadius: '16px',
                 p: { xs: 2, sm: 2.25, md: 3 },
-                bgcolor: '#fff',
+                bgcolor: ui.card,
                 boxShadow: '0 10px 36px rgba(15, 23, 42, 0.06)',
               }}
             >
               <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 2.5 } }}>
-                <Typography variant="h5" sx={{ fontWeight: 700, color: '#000', mb: 0.5, fontSize: { xs: '1.15rem', md: '1.5rem' } }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 0.5, fontSize: { xs: '1.15rem', md: '1.5rem' } }}>
                   Reserve Your Spot
                 </Typography>
-                <Typography sx={{ fontSize: '0.875rem', color: '#777' }}>
+                <Typography sx={{ fontSize: '0.875rem', color: ui.muted }}>
                   {regStep === 0 && 'Step 1 — Choose your pass type'}
                   {regStep === 1 && 'Step 2 — Choose your category'}
                   {regStep === 2 && 'Step 3 — Fill registration details'}
@@ -1005,7 +1015,7 @@ export default function EventDetail() {
                   ))}
 
                   <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ pt: 0.5 }}>
-                    <InfoOutlinedIcon sx={{ color: accentOrange, fontSize: '1rem', mt: 0.15 }} />
+                    <InfoOutlinedIcon sx={{ color: accentFestive, fontSize: '1rem', mt: 0.15 }} />
                     <Typography sx={{ fontSize: '0.78rem', color: '#888', lineHeight: 1.55 }}>
                       Pass once selected cannot be changed later.
                     </Typography>
@@ -1044,9 +1054,9 @@ export default function EventDetail() {
                       py: 1.35,
                       minHeight: 48,
                       borderRadius: '10px',
-                      bgcolor: '#f5f5f5',
-                      border: '1px solid #E5E4E9',
-                      color: '#555',
+                      bgcolor: ui.surfaceMuted,
+                      border: `1px solid ${ui.border}`,
+                      color: ui.muted,
                       textTransform: 'none',
                       '&:hover': { bgcolor: '#ececec' },
                     }}
@@ -1058,16 +1068,16 @@ export default function EventDetail() {
 
               {regStep === 2 && selected && selectedPass && (
                 <Box component="form" onSubmit={handleSubmit} sx={fieldSx}>
-                  <Box sx={{ bgcolor: '#f8f9fa', border: '1px solid #E5E4E9', borderRadius: '8px', p: 1.5, mb: 2.5, textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '0.82rem', color: '#555' }}>
+                  <Box sx={{ bgcolor: ui.surfaceMuted, border: `1px solid ${ui.border}`, borderRadius: '8px', p: 1.5, mb: 2.5, textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: '0.82rem', color: ui.muted }}>
                       {selectedPass.title} · {selected.title}
                     </Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#000' }}>{totalPrice}{pricingSource?.priceUnit}</Typography>
-                    <Typography sx={{ fontSize: '0.78rem', color: '#777', mt: 0.5 }}>
+                    <Typography sx={{ fontWeight: 700, color: ui.text }}>{totalPrice}{pricingSource?.priceUnit}</Typography>
+                    <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.5 }}>
                       {totalTickets} ticket{totalTickets > 1 ? 's' : ''}
                     </Typography>
                     {!isSeasonalPass && selectedDay && (
-                      <Typography sx={{ fontSize: '0.78rem', color: '#777', mt: 0.75 }}>
+                      <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.75 }}>
                         {getNightLabel(selectedDay)}
                       </Typography>
                     )}
@@ -1080,16 +1090,16 @@ export default function EventDetail() {
                         onChange={(e) => setSelectedDay(e.target.value)}
                         displayEmpty
                         renderValue={(value) =>
-                          value ? getNightLabel(value) : <Box sx={{ color: '#999' }}>Select Day</Box>
+                          value ? getNightLabel(value) : <Box sx={{ color: ui.muted }}>Select Day</Box>
                         }
                         inputProps={{ 'aria-label': 'Select Day' }}
                         sx={{
-                          bgcolor: '#fff',
-                          color: selectedDay ? '#000' : '#999',
+                          bgcolor: ui.card,
+                          color: selectedDay ? ui.text : ui.muted,
                           borderRadius: '8px',
-                          '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E4E9' },
-                          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#ccc' },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#ff9466' },
+                          '& .MuiOutlinedInput-notchedOutline': { borderColor: ui.border },
+                          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: accentFestive },
                         }}
                       >
                         <MenuItem value="" disabled>
@@ -1111,12 +1121,12 @@ export default function EventDetail() {
                       disabled={isCoupleCategory}
                       inputProps={{ 'aria-label': 'Number of Tickets' }}
                       sx={{
-                        bgcolor: '#fff',
-                        color: '#000',
+                        bgcolor: ui.card,
+                        color: ui.text,
                         borderRadius: '8px',
-                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E4E9' },
-                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#ccc' },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#ff9466' },
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: ui.border },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: accentFestive },
                       }}
                     >
                       {!isCoupleCategory && <MenuItem value="1">1 Ticket</MenuItem>}
@@ -1124,7 +1134,7 @@ export default function EventDetail() {
                     </Select>
                   </FormControl>
                   {isCoupleCategory && (
-                    <Typography sx={{ fontSize: '0.78rem', color: '#777', mb: 2 }}>
+                    <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mb: 2 }}>
                       Couple pass includes 2 tickets.
                     </Typography>
                   )}
@@ -1178,7 +1188,7 @@ export default function EventDetail() {
                     <Button
                       type="button"
                       onClick={() => setRegStep(1)}
-                      sx={{ flex: 1, py: 1.5, minHeight: 48, borderRadius: '8px', border: '1px solid #E5E4E9', color: '#555', textTransform: 'none' }}
+                      sx={{ flex: 1, py: 1.5, minHeight: 48, borderRadius: '8px', border: `1px solid ${ui.border}`, color: ui.muted, textTransform: 'none' }}
                     >
                       Back
                     </Button>
@@ -1210,11 +1220,11 @@ export default function EventDetail() {
       </Container>
 
       {/* Footer */}
-      <Box sx={{ borderTop: '1px solid #E5E4E9', bgcolor: '#f8f9fa', py: 3, textAlign: 'center' }}>
-        <Typography sx={{ color: '#6F738B', fontSize: '0.9rem', fontWeight: 500 }}>
+      <Box sx={{ borderTop: `1px solid ${colors.border}`, bgcolor: colors.bgSoft, py: 3, textAlign: 'center' }}>
+        <Typography sx={{ color: colors.muted, fontSize: '0.9rem', fontWeight: 500 }}>
           Powered by MGM Cultural Navratri
         </Typography>
       </Box>
-    </Box>
+    </FestiveSection>
   )
 }
