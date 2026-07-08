@@ -7,7 +7,6 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import promoBanner from '../assets/image.png'
 import heroVideo from '../assets/navratri video.mp4'
 import { colors } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
@@ -115,10 +114,19 @@ export default function Hero() {
     const frame = frameRef.current
     if (!video || !frame) return undefined
 
+    const tryPlay = () => {
+      video.play().catch(() => {})
+    }
+
+    // Start video immediately on first load
+    tryPlay()
+    video.addEventListener('loadeddata', tryPlay)
+    video.addEventListener('canplay', tryPlay)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.play().catch(() => {})
+          tryPlay()
         } else {
           video.pause()
         }
@@ -136,7 +144,7 @@ export default function Hero() {
       const rect = frame.getBoundingClientRect()
       const inView = rect.top < window.innerHeight && rect.bottom > 0
       if (inView) {
-        video.play().catch(() => {})
+        tryPlay()
       }
     }
 
@@ -144,6 +152,8 @@ export default function Hero() {
 
     return () => {
       observer.disconnect()
+      video.removeEventListener('loadeddata', tryPlay)
+      video.removeEventListener('canplay', tryPlay)
       document.removeEventListener('visibilitychange', handleVisibility)
     }
   }, [])
@@ -187,37 +197,23 @@ export default function Hero() {
             bgcolor: colors.nightMid,
           }}
         >
-          {heroVideoSrc ? (
-            <Box
-              ref={videoRef}
-              component="video"
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={promoBanner}
-              sx={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            >
-              <source src={heroVideoSrc} type="video/mp4" />
-            </Box>
-          ) : (
-            <Box
-              component="img"
-              src={promoBanner}
-              alt="MGM Cultural Navratri hero poster"
-              sx={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
-          )}
+          <Box
+            ref={videoRef}
+            component="video"
+            src={heroVideoSrc}
+            muted
+            autoPlay
+            loop
+            playsInline
+            preload="auto"
+            sx={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              backgroundColor: colors.nightMid,
+            }}
+          />
           <Box
             sx={{
               position: 'absolute',
