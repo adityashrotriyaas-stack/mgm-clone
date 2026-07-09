@@ -508,7 +508,7 @@ export default function ArtistsPerformers() {
           </Box>
         </RevealBox>
 
-        <RevealBox>
+        <RevealBox sx={{ width: '100%' }}>
           <Stack alignItems="center" justifyContent="center" spacing={1.4} sx={{ width: '100%' }}>
             <Button
               onClick={() => navigate('/#featured-event')}
@@ -541,7 +541,21 @@ export default function ArtistsPerformers() {
             >
               Book Your Pass Now
             </Button>
-            <LotusDivider maxWidth={220} />
+            <Box
+              aria-hidden
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1,
+                width: '100%',
+                color: colors.gold,
+              }}
+            >
+              <Box sx={{ fontSize: '0.55rem', lineHeight: 1, opacity: 0.9 }}>◈</Box>
+              <Box sx={{ fontSize: { xs: '1rem', md: '1.15rem' }, lineHeight: 1 }}>❀</Box>
+              <Box sx={{ fontSize: '0.55rem', lineHeight: 1, opacity: 0.9 }}>◈</Box>
+            </Box>
           </Stack>
         </RevealBox>
       </Container>
