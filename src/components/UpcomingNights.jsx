@@ -36,7 +36,7 @@ const section = {
 }
 
 const metaChips = [
-  { icon: CalendarMonthOutlinedIcon, label: 'Oct 11 – Oct 20, 2026' },
+  { icon: CalendarMonthOutlinedIcon, label: 'Oct 10 – Oct 19, 2026' },
   { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot' },
   { icon: AccessTimeOutlinedIcon, label: 'From 9:00 PM Daily' },
 ]

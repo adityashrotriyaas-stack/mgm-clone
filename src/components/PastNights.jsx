@@ -245,9 +245,6 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
         >
           {item.label}
         </Typography>
-        <Typography sx={{ color: 'rgba(255, 245, 230, 0.72)', fontSize: active ? '0.85rem' : '0.78rem' }}>
-          {item.date || meta.date}
-        </Typography>
       </Box>
     </Box>
   )
@@ -356,9 +353,6 @@ function MemoryLightbox({ item, onClose }) {
             }}
           >
             {item.label}
-          </Typography>
-          <Typography sx={{ color: 'rgba(255, 245, 230, 0.78)', fontSize: { xs: '0.76rem', md: '0.86rem' } }}>
-            {item.date}
           </Typography>
         </Box>
       </Box>
