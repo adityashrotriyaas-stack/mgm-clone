@@ -20,6 +20,7 @@ import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
 import { contactInfo } from '../data/contactInfo'
 import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
+import wowslyLogo from '../assets/wowsly-logo.png'
 
 const highlightIcons = [
   SelfImprovementOutlinedIcon,
@@ -261,13 +262,16 @@ function MemoryLightbox({ item, onClose }) {
       sx={{
         position: 'fixed',
         inset: 0,
-        zIndex: 1400,
+        zIndex: 2000,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        p: { xs: 2, md: 4 },
-        bgcolor: 'rgba(10, 4, 8, 0.84)',
+        p: { xs: 1.5, sm: 2, md: 4 },
+        bgcolor: 'rgba(10, 4, 8, 0.9)',
         backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        overscrollBehavior: 'contain',
+        touchAction: 'none',
       }}
     >
       <Box
@@ -281,6 +285,7 @@ function MemoryLightbox({ item, onClose }) {
           border: '1px solid rgba(255, 216, 122, 0.42)',
           boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(232, 184, 74, 0.14)',
           bgcolor: '#12070D',
+          maxHeight: 'calc(100vh - 24px)',
         }}
       >
         <IconButton
@@ -305,11 +310,31 @@ function MemoryLightbox({ item, onClose }) {
 
         <Box
           sx={{
-            aspectRatio: { xs: '4 / 5', md: '16 / 10' },
-            backgroundImage: `linear-gradient(180deg, rgba(18,7,10,0.06) 0%, rgba(18,7,10,0.2) 45%, rgba(18,7,10,0.84) 100%), url(${item.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: item.imagePosition || 'center center',
+            position: 'relative',
+            bgcolor: '#12070D',
+            maxHeight: 'calc(100vh - 24px)',
           }}
+        >
+          <Box
+            component="img"
+            src={item.image}
+            alt={item.label}
+            sx={{
+              width: '100%',
+              maxHeight: 'calc(100vh - 24px)',
+              display: 'block',
+              objectFit: 'contain',
+              objectPosition: item.imagePosition || 'center center',
+              bgcolor: '#12070D',
+            }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg, rgba(18,7,10,0.04) 0%, rgba(18,7,10,0.18) 48%, rgba(18,7,10,0.82) 100%)',
+              pointerEvents: 'none',
+            }}
         />
 
         <Box
@@ -337,6 +362,7 @@ function MemoryLightbox({ item, onClose }) {
           </Typography>
         </Box>
       </Box>
+      </Box>
     </Box>
   )
 }
@@ -358,6 +384,16 @@ export default function PastNights() {
   useEffect(() => {
     if (!selectedMemory) return undefined
 
+    const originalBodyOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    const originalOverscrollBehavior = document.documentElement.style.overscrollBehavior
+    const originalTouchAction = document.body.style.touchAction
+
+    document.documentElement.style.overflow = 'hidden'
+    document.documentElement.style.overscrollBehavior = 'none'
+    document.body.style.overflow = 'hidden'
+    document.body.style.touchAction = 'none'
+
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         setSelectedMemory(null)
@@ -365,7 +401,13 @@ export default function PastNights() {
     }
 
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.documentElement.style.overflow = originalHtmlOverflow
+      document.documentElement.style.overscrollBehavior = originalOverscrollBehavior
+      document.body.style.overflow = originalBodyOverflow
+      document.body.style.touchAction = originalTouchAction
+    }
   }, [selectedMemory])
 
   const slides = useMemo(() => {
@@ -729,18 +771,35 @@ export function Footer() {
           </Box>
         </Box>
 
-        <Typography
+        <Box
           sx={{
-            textAlign: 'center',
-            fontSize: '0.78rem',
-            opacity: 0.6,
             mt: 3.75,
             pt: 2.25,
             borderTop: '1px solid rgba(255,255,255,0.06)',
+            textAlign: 'center',
           }}
         >
-          Powered by Wowsly
-        </Typography>
+          <Box
+            component="img"
+            src={wowslyLogo}
+            alt="Wowsly"
+            sx={{
+              width: { xs: 82, md: 94 },
+              height: 'auto',
+              display: 'block',
+              mx: 'auto',
+              mb: 0.9,
+            }}
+          />
+          <Typography
+            sx={{
+              fontSize: '0.78rem',
+              opacity: 0.72,
+            }}
+          >
+            Powered by Wowsly
+          </Typography>
+        </Box>
       </Container>
     </FestiveSection>
   )

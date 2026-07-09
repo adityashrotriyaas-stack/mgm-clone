@@ -26,6 +26,7 @@ import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
 import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
 import promoBanner from '../assets/image.png'
+import wowslyLogo from '../assets/wowsly-logo.png'
 import FestiveSection from './FestiveSection'
 import { colors } from '../constants/colors'
 import { festiveCardSoftSx } from '../constants/navratriTheme'
@@ -584,7 +585,6 @@ export default function EventDetail() {
   const id = Number(eventId)
   const event = upcomingEvents.find(e => e.id === id)
   const info = eventInfo[id]
-  const [tab, setTab] = useState('registration')
   const [regStep, setRegStep] = useState(0)
   const [passMode, setPassMode] = useState('')
   const [category, setCategory] = useState('')
@@ -605,7 +605,6 @@ export default function EventDetail() {
   const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
 
   const scrollToRegistration = () => {
-    setTab('registration')
     setRegStep(0)
     setTimeout(() => {
       document.getElementById('event-registration')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -789,12 +788,15 @@ export default function EventDetail() {
                     py: 1.5,
                     minHeight: 48,
                     borderRadius: '8px',
-                    background: '#1F1F1F',
-                    color: '#fff',
-                    fontWeight: 600,
+                    background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 58%, #C98B2E 100%)',
+                    color: '#26140C',
+                    fontWeight: 700,
                     fontSize: '0.9375rem',
                     textTransform: 'none',
-                    '&:hover': { background: '#333' },
+                    boxShadow: '0 12px 24px rgba(201, 139, 46, 0.22)',
+                    '&:hover': {
+                      background: 'linear-gradient(180deg, #FFE299 0%, #F0C15D 58%, #D89A37 100%)',
+                    },
                   }}
                 >
                   <ConfirmationNumberRoundedIcon sx={{ mr: 1, fontSize: '1.25rem' }} />
@@ -826,156 +828,7 @@ export default function EventDetail() {
         </Grid>
       </Container>
 
-      {/* Tabs */}
-      <Box sx={{ borderBottom: `1px solid ${ui.border}` }}>
-        <Container maxWidth="lg">
-          <Stack direction="row" spacing={0} sx={{ justifyContent: 'center' }}>
-            <Button
-              onClick={() => setTab('registration')}
-              sx={{
-                py: 1.5,
-                px: { xs: 2.5, sm: 3 },
-                flex: 1,
-                maxWidth: 200,
-                minHeight: 48,
-                borderRadius: 0,
-                fontWeight: tab === 'registration' ? 600 : 400,
-                fontSize: '1rem',
-                textTransform: 'none',
-                color: tab === 'registration' ? accentFestive : ui.muted,
-                borderBottom: tab === 'registration' ? '3px solid accentFestive' : '3px solid transparent',
-                '&:hover': { bgcolor: 'transparent' },
-              }}
-            >
-              Registration
-            </Button>
-            <Button
-              onClick={() => setTab('info')}
-              sx={{
-                py: 1.5,
-                px: { xs: 2.5, sm: 3 },
-                flex: 1,
-                maxWidth: 200,
-                minHeight: 48,
-                borderRadius: 0,
-                fontWeight: tab === 'info' ? 600 : 400,
-                fontSize: '1rem',
-                textTransform: 'none',
-                color: tab === 'info' ? accentFestive : ui.muted,
-                borderBottom: tab === 'info' ? '3px solid accentFestive' : '3px solid transparent',
-                '&:hover': { bgcolor: 'transparent' },
-              }}
-            >
-              Info
-            </Button>
-          </Stack>
-        </Container>
-      </Box>
-
-      {/* Tab Content */}
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
-        {tab === 'info' ? (
-          <Box>
-            <Box sx={{ mb: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>About</Typography>
-              <Typography sx={{ color: ui.muted, lineHeight: 1.8, whiteSpace: 'pre-line', fontSize: '0.9375rem' }}>
-                {info.description}
-              </Typography>
-            </Box>
-
-            <Divider sx={{ mb: 3 }} />
-
-            <Box sx={{ mb: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>Why Attend</Typography>
-              <Box component="ul" sx={{ m: 0, p: 0, listStyle: 'none' }}>
-                {info.whyAttend.map((item, i) => (
-                  <Stack key={i} direction="row" spacing={1.5} sx={{ mb: 1.5 }}>
-                    <Box component="span" sx={{ color: '#22c55e', fontWeight: 600, fontSize: '1rem' }}>✅</Box>
-                    <Typography sx={{ color: ui.muted, lineHeight: 1.6, fontSize: '0.9375rem' }}>{item}</Typography>
-                  </Stack>
-                ))}
-              </Box>
-            </Box>
-
-            <Divider sx={{ mb: 3 }} />
-
-            <Box sx={{ mb: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>Event Highlights</Typography>
-              <Grid container spacing={1.5}>
-                {info.highlights.map((item, i) => (
-                  <Grid key={i} size={{ xs: 12, sm: 6 }}>
-                    <Stack direction="row" spacing={1} sx={{ p: 1.5, bgcolor: ui.surfaceMuted, borderRadius: '8px' }}>
-                      <Box component="span" sx={{ color: accentFestive, fontWeight: 700, fontSize: '1rem' }}>📌</Box>
-                      <Typography sx={{ color: ui.muted, fontSize: '0.9375rem' }}>{item}</Typography>
-                    </Stack>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-
-            <Divider sx={{ mb: 3 }} />
-
-            <DetailInfoCard title="Singer">
-              <Box
-                component="img"
-                src={info.singer.image}
-                alt={info.singer.name}
-                sx={{ width: '100%', height: 150, objectFit: 'cover', display: 'block' }}
-              />
-              <Box sx={{ p: 2, textAlign: 'center' }}>
-                <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '1rem' }}>
-                  {info.singer.name}
-                </Typography>
-              </Box>
-            </DetailInfoCard>
-
-            <Divider sx={{ mb: 3 }} />
-
-            <DetailInfoCard title="Organized by">
-              <Box sx={{ p: 2, textAlign: 'center' }}>
-                <Box
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    mx: 'auto',
-                    mb: 1.5,
-                    borderRadius: '16px',
-                    border: `1px solid ${ui.border}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: ui.card,
-                    fontFamily: '"Playfair Display", serif',
-                    fontSize: '3rem',
-                    color: '#4B2D18',
-                    position: 'relative',
-                  }}
-                >
-                  {info.organizer.mark}
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      width: 44,
-                      height: 44,
-                      borderRadius: '50%',
-                      border: '4px solid #D4AF37',
-                      left: 18,
-                      top: 18,
-                      opacity: 0.9,
-                    }}
-                  />
-                </Box>
-                <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '1rem' }}>
-                  {info.organizer.name}
-                </Typography>
-              </Box>
-            </DetailInfoCard>
-
-            <Divider sx={{ mb: 3 }} />
-
-            <EventLayoutCard zones={info.layoutZones} />
-          </Box>
-        ) : (
           <Box id="event-registration" sx={{ maxWidth: 600, mx: 'auto', width: '100%' }}>
             <Box
               sx={{
@@ -1216,11 +1069,22 @@ export default function EventDetail() {
               )}
             </Box>
           </Box>
-        )}
       </Container>
 
       {/* Footer */}
       <Box sx={{ borderTop: `1px solid ${colors.border}`, bgcolor: colors.bgSoft, py: 3, textAlign: 'center' }}>
+        <Box
+          component="img"
+          src={wowslyLogo}
+          alt="Wowsly"
+          sx={{
+            width: 92,
+            height: 'auto',
+            display: 'block',
+            mx: 'auto',
+            mb: 0.9,
+          }}
+        />
         <Typography sx={{ color: colors.muted, fontSize: '0.9rem', fontWeight: 500 }}>
           Powered by Wowsly
         </Typography>
