@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import MusicNoteOutlinedIcon from '@mui/icons-material/MusicNoteOutlined'
 import { colors, gradients } from '../constants/colors'
 import { Eyebrow } from './shared'
@@ -11,12 +12,19 @@ import FestiveSection from './FestiveSection'
 import AboutDeviArt from './AboutDeviArt'
 import { useEffect, useRef, useState } from 'react'
 import aboutBg from '../assets/about-bg.png'
+import { aboutContent } from '../data/siteData'
 
-const highlights = [
-  { icon: AutoAwesomeOutlinedIcon, label: '10 Nights of Garba' },
-  { icon: MusicNoteOutlinedIcon, label: 'Live Music & Dhol' },
-  { icon: FavoriteBorderOutlinedIcon, label: 'Premium Experience' },
+const highlightIcons = [
+  AutoAwesomeOutlinedIcon,
+  MusicNoteOutlinedIcon,
+  GroupsOutlinedIcon,
+  FavoriteBorderOutlinedIcon,
 ]
+
+const highlights = aboutContent.highlights.map((label, index) => ({
+  icon: highlightIcons[index % highlightIcons.length],
+  label,
+}))
 
 function useAboutReveal() {
   const ref = useRef(null)
@@ -44,11 +52,7 @@ function useAboutReveal() {
 }
 
 function AboutCopy({ visible }) {
-  const blocks = [
-    "Lights, dhol beats and a thousand swirling chaniya cholis — Rajkot's biggest Garba celebration returns to Seasons Hotel for ten unforgettable nights.",
-    'Rooted in devotion and elevated with premium hospitality, MGM Cultural Navratri brings together families, friends, dancers, and music lovers for a festive experience that feels grand, warm, and deeply traditional.',
-    'Expect vibrant decor, energetic performances, curated food stalls, and the kind of atmosphere where every evening feels like a celebration of culture, connection, and joy.',
-  ]
+  const blocks = aboutContent.paragraphs
 
   return (
     <Box sx={{ flex: 1, maxWidth: { lg: '48%' } }}>
@@ -59,21 +63,33 @@ function AboutCopy({ visible }) {
           transition: 'opacity 0.8s ease, transform 0.8s ease',
         }}
       >
-        <Eyebrow>About The Celebration</Eyebrow>
+        <Eyebrow>{aboutContent.eyebrow}</Eyebrow>
         <Typography
           variant="h2"
           sx={{
             fontFamily: '"Playfair Display", serif',
             fontSize: { xs: '1.65rem', sm: '2rem', md: '3rem' },
             lineHeight: 1.15,
-            mb: 2,
+            mb: 1,
             color: colors.textLight,
           }}
         >
-          MGM CULTURAL
+          {aboutContent.titleLine1}
           <Box component="span" sx={{ display: 'block', color: colors.gold }}>
-            Navratri 2026
+            {aboutContent.titleLine2}
           </Box>
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: '"Playfair Display", serif',
+            fontSize: { xs: '1rem', sm: '1.15rem', md: '1.35rem' },
+            fontStyle: 'italic',
+            color: 'rgba(255, 245, 230, 0.88)',
+            mb: 2,
+            lineHeight: 1.4,
+          }}
+        >
+          {aboutContent.subtitle}
         </Typography>
       </Box>
 

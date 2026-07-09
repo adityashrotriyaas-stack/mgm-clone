@@ -101,7 +101,7 @@ function JourneyHeader() {
         }}
       >
         From the first season in 2023 to the fourth celebration in 2026, MGM Cultural Navratri has grown into a
-        festive tradition people wait for every year.
+        grand cultural festival—where tradition, music, devotion, and India&apos;s finest artistic talent come together.
       </Typography>
     </Box>
   )

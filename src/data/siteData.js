@@ -1,3 +1,11 @@
+import pastNight01 from '../assets/past-nights/past-night-01.png'
+import pastNight02 from '../assets/past-nights/past-night-02.png'
+import pastNight03 from '../assets/past-nights/past-night-03.png'
+import pastNight04 from '../assets/past-nights/past-night-04.png'
+import pastNight05 from '../assets/past-nights/past-night-05.png'
+import pastNight06 from '../assets/past-nights/past-night-06.png'
+import pastNight07 from '../assets/past-nights/past-night-07.png'
+
 export const navLinks = [
   { label: 'Home', href: '#home', active: true },
   { label: 'About', href: '#about' },
@@ -7,32 +15,55 @@ export const navLinks = [
   { label: 'Contact', href: '#contact', mobileLabel: 'Contact' },
 ]
 
+export const aboutContent = {
+  eyebrow: 'About The Celebration',
+  titleLine1: 'MGM CULTURAL',
+  titleLine2: 'Navratri 2026',
+  subtitle: 'A Grand Celebration Beyond Navratri',
+  paragraphs: [
+    'This year, MGM Cultural Navratri 2026 presents a spectacular 10-day cultural festival led by Amit Dhorda, celebrating the true essence of Gujarat through music, devotion, and tradition.',
+    'Every evening from 9:00 PM onwards, the festival will begin with a grand cultural presentation and authentic live Garba performed by Amit Dhorda & Team. Following the Garba session, audiences will enjoy special performances by renowned artists from across India, with a different featured artist each day, creating a unique experience throughout the festival.',
+    'As the night progresses, the celebration continues with the energetic and traditional Mandli Garba, keeping the festive spirit alive late into the night.',
+    'MGM Cultural Navratri 2026 is more than a Garba festival—it is a celebration of Indian culture, bringing together Amit Dhorda’s signature folk music, renowned artists from across the country, devotion to Maa Ambe, and an unforgettable cultural experience in the heart of Rajkot.',
+  ],
+  highlights: [
+    '10-Day Cultural Festival',
+    'Amit Dhorda & Team',
+    'Renowned Artists Daily',
+    'Mandli Garba Nights',
+  ],
+  footerTagline:
+    'A 10-day cultural festival in Rajkot — Garba, devotion, and India’s finest artists, led by Amit Dhorda.',
+  featuredSummary:
+    'A spectacular 10-day cultural festival celebrating Gujarat through music, devotion, and tradition—with live Garba from 9:00 PM, star performers each evening, and Mandli Garba late into the night.',
+}
+
 export const heroFeatures = [
   {
     icon: 'calendar',
-    title: '10 Nights',
-    subtitle: 'Non-stop Garba',
+    title: '10 Days',
+    subtitle: 'Cultural Festival',
   },
   {
     icon: 'location',
-    title: 'Premium Venue',
-    subtitle: 'Spacious & Safe',
+    title: 'Seasons Hotel',
+    subtitle: 'Rajkot, Gujarat',
   },
   {
     icon: 'people',
-    title: 'Live Performances',
-    subtitle: 'Top Artists',
+    title: 'Amit Dhorda & Team',
+    subtitle: 'Live Garba from 9 PM',
   },
   {
     icon: 'food',
-    title: 'Food & Stalls',
-    subtitle: 'Delicious Bites',
+    title: 'Star Artists',
+    subtitle: 'A new performer each night',
   },
 ]
 
 export const stats = [
   { value: 25000, label: 'Dancers · 2025' },
-  { value: 10, label: 'Nights' },
+  { value: 10, label: 'Days' },
   { value: 50, label: 'Artists On Stage' },
 ]
 
@@ -208,18 +239,19 @@ export const legacyMoments = [
   },
   {
     year: '2026',
-    title: 'The Fourth Celebration Season',
+    title: 'A Grand Celebration Beyond Navratri',
     description:
-      'Now entering its fourth season, MGM Cultural Navratri returns with even more excitement, offering a complete experience of Garba, Dandiya, hospitality, and community.',
-    highlight: 'Four seasons of celebration',
+      'Led by Amit Dhorda, this fourth season brings 10 days of live Garba, renowned artists, and Mandli nights to Rajkot.',
+    highlight: 'Culture, devotion & artistry united',
   },
 ]
 
 export const pastHighlights = [
-  { label: 'Opening Night', image: 'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=400' },
-  { label: 'Garba Circle', image: 'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=400' },
-  { label: 'Dandiya Raas', image: 'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=400' },
-  { label: 'Couples Night', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=400' },
-  { label: 'Aarti Ceremony', image: 'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=400' },
-  { label: 'Finale Fireworks', image: 'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=400' },
+  { label: 'Live Performance', date: 'Oct 14, 2025', image: pastNight01, imagePosition: 'center 30%' },
+  { label: 'Garba Ground', date: 'Oct 15, 2025', image: pastNight02, imagePosition: 'center center' },
+  { label: 'Grand Stage', date: 'Oct 16, 2025', image: pastNight03, imagePosition: 'center center' },
+  { label: 'Mandli Night', date: 'Oct 17, 2025', image: pastNight04, imagePosition: 'center 20%' },
+  { label: 'Crowd Energy', date: 'Oct 18, 2025', image: pastNight05, imagePosition: 'center 35%' },
+  { label: 'Devotional Night', date: 'Oct 19, 2025', image: pastNight06, imagePosition: 'center 25%' },
+  { label: 'Traditional Evening', date: 'Oct 20, 2025', image: pastNight07, imagePosition: 'center top' },
 ]

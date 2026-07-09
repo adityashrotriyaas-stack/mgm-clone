@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import TheaterComedyOutlinedIcon from '@mui/icons-material/TheaterComedyOutlined'
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
@@ -19,6 +19,7 @@ import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOu
 import promoBanner from '../assets/image.png'
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
+import { aboutContent } from '../data/siteData'
 
 const section = {
   bg: '#180A0F',
@@ -37,7 +38,7 @@ const section = {
 const metaChips = [
   { icon: CalendarMonthOutlinedIcon, label: 'Oct 11 – Oct 20, 2026' },
   { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot' },
-  { icon: TheaterComedyOutlinedIcon, label: 'Garba & Dandiya' },
+  { icon: AccessTimeOutlinedIcon, label: 'From 9:00 PM Daily' },
 ]
 
 const trustPoints = [
@@ -49,23 +50,23 @@ const trustPoints = [
 const features = [
   {
     icon: CelebrationOutlinedIcon,
-    title: 'Amazing Artists',
-    subtitle: 'Live acts and energetic performances',
+    title: 'Amit Dhorda & Team',
+    subtitle: 'Authentic live Garba every evening',
   },
   {
     icon: NightsStayOutlinedIcon,
-    title: '10 Grand Nights',
-    subtitle: 'Ten themed evenings of celebration',
+    title: '10 Grand Days',
+    subtitle: 'A unique cultural experience each night',
   },
   {
     icon: VerifiedUserOutlinedIcon,
-    title: 'Safe & Secure',
-    subtitle: 'Smooth entry and reliable booking flow',
+    title: 'Renowned Artists',
+    subtitle: 'A different featured performer daily',
   },
   {
     icon: WorkspacePremiumOutlinedIcon,
-    title: 'Premium Experience',
-    subtitle: 'High-end venue ambience with festive luxury',
+    title: 'Mandli Garba',
+    subtitle: 'Traditional celebration late into the night',
   },
 ]
 
@@ -262,7 +263,7 @@ export default function UpcomingNights() {
                 mb: { xs: 1.25, md: 1.2 },
               }}
             >
-              Ten Nights of{' '}
+              Ten Days of{' '}
               <Box
                 component="span"
                 sx={{
@@ -271,7 +272,7 @@ export default function UpcomingNights() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Garba
+                Culture
               </Box>
             </Typography>
             <Box
@@ -304,8 +305,7 @@ export default function UpcomingNights() {
                 mb: { xs: 2.2, md: 2.7 },
               }}
             >
-              Devotion. Dance. Dandiya. Experience the joy of Navratri like never before at
-              Rajkot&apos;s grand ten-night celebration.
+              {aboutContent.featuredSummary}
             </Typography>
 
             <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>

@@ -15,16 +15,19 @@ import SelfImprovementOutlinedIcon from '@mui/icons-material/SelfImprovementOutl
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
-import { navLinks, pastHighlights } from '../data/siteData'
+import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
+import { contactInfo } from '../data/contactInfo'
 import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 
-const cardMeta = [
-  { date: 'Oct 15, 2025', icon: SelfImprovementOutlinedIcon },
-  { date: 'Oct 16, 2025', icon: CelebrationOutlinedIcon },
-  { date: 'Oct 17, 2025', icon: FavoriteBorderRoundedIcon, highlight: true },
-  { date: 'Oct 18, 2025', icon: MilitaryTechOutlinedIcon },
-  { date: 'Oct 19, 2025', icon: LocalFireDepartmentOutlinedIcon },
+const highlightIcons = [
+  SelfImprovementOutlinedIcon,
+  CelebrationOutlinedIcon,
+  FavoriteBorderRoundedIcon,
+  MilitaryTechOutlinedIcon,
+  LocalFireDepartmentOutlinedIcon,
+  CelebrationOutlinedIcon,
+  StarsRoundedIcon,
 ]
 
 function ThrowbackHeader() {
@@ -149,7 +152,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
         zIndex: active ? 4 : 3 - absOffset,
         backgroundImage: `url(${item.image})`,
         backgroundSize: 'cover',
-        backgroundPosition: active ? 'center center' : 'center top',
+        backgroundPosition: item.imagePosition || (active ? 'center center' : 'center top'),
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -241,7 +244,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
           {item.label}
         </Typography>
         <Typography sx={{ color: 'rgba(255, 245, 230, 0.72)', fontSize: active ? '0.85rem' : '0.78rem' }}>
-          {meta.date}
+          {item.date || meta.date}
         </Typography>
       </Box>
     </Box>
@@ -249,7 +252,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
 }
 
 export default function PastNights() {
-  const showcase = pastHighlights.slice(0, 5)
+  const showcase = pastHighlights
   const [activeIndex, setActiveIndex] = useState(3)
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
@@ -265,9 +268,14 @@ export default function PastNights() {
     const offsets = isMobile ? [-1, 0, 1] : [-2, -1, 0, 1, 2]
     return offsets.map((offset) => {
       const originalIndex = (activeIndex + offset + showcase.length) % showcase.length
+      const item = showcase[originalIndex]
       return {
-        item: showcase[originalIndex],
-        meta: cardMeta[originalIndex],
+        item,
+        meta: {
+          icon: highlightIcons[originalIndex % highlightIcons.length],
+          date: item.date,
+          highlight: originalIndex === Math.floor(showcase.length / 2),
+        },
         originalIndex,
         offset,
         isActive: offset === 0,
@@ -518,7 +526,7 @@ export function Footer() {
               MGM Cultural
             </Typography>
             <Typography sx={{ fontSize: '0.85rem', mt: 1.25, maxWidth: 320 }}>
-              Rajkot&apos;s ten-night Garba celebration — devotion, dance and community, since 2023.
+              {aboutContent.footerTagline}
             </Typography>
             <Stack direction="row" spacing={1.5} sx={{ mt: 1.75 }}>
               {['IG', 'FB', 'YT'].map((label) => (
@@ -605,8 +613,8 @@ export function Footer() {
               Support
             </Typography>
             <Stack component="ul" spacing={1.1} sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.88rem' }}>
-              <Box component="li">+91 98765 43210</Box>
-              <Box component="li">hello@mgmcultural.in</Box>
+              <Box component="li">{contactInfo.phone}</Box>
+              <Box component="li">{contactInfo.email}</Box>
               <Box component="li">Organiser Login</Box>
             </Stack>
           </Box>

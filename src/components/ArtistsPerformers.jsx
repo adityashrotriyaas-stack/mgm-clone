@@ -15,10 +15,19 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import { useNavigate } from 'react-router-dom'
 import artistsBg from '../assets/artists-bg.png'
+import amitDhorda from '../assets/amit-dhorda.png'
 import { colors } from '../constants/colors'
 import { RevealBox } from './shared'
 
 const artists = [
+  {
+    id: 'amit',
+    name: 'Amit Dhorda',
+    role: 'Main Singer · Garba',
+    tag: 'Lead Artist',
+    image: amitDhorda,
+    imagePosition: 'center 12%',
+  },
   {
     id: 'kinjal',
     name: 'Kinjal Dave',
@@ -125,7 +134,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             : '0 10px 24px rgba(0,0,0,0.26)',
           backgroundImage: `linear-gradient(180deg, rgba(20,8,10,0.02) 8%, rgba(20,8,10,0.35) 48%, rgba(14,5,8,0.94) 100%), url(${artist.image})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center top',
+          backgroundPosition: artist.imagePosition || 'center top',
         }}
       />
 
@@ -230,7 +239,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
 
 export default function ArtistsPerformers() {
   const navigate = useNavigate()
-  const [activeIndex, setActiveIndex] = useState(2)
+  const [activeIndex, setActiveIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
 
@@ -341,7 +350,7 @@ export default function ArtistsPerformers() {
                 mb: 1.4,
               }}
             >
-              Bringing energy, music and tradition together to create magical nights
+              Led by Amit Dhorda with renowned artists — bringing energy, music and tradition together
             </Typography>
 
             <LotusDivider maxWidth={240} />
