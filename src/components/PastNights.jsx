@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined'
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
@@ -251,10 +252,100 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
   )
 }
 
+function MemoryLightbox({ item, onClose }) {
+  if (!item) return null
+
+  return (
+    <Box
+      onClick={onClose}
+      sx={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 1400,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        p: { xs: 2, md: 4 },
+        bgcolor: 'rgba(10, 4, 8, 0.84)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      <Box
+        onClick={(event) => event.stopPropagation()}
+        sx={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: 760,
+          borderRadius: { xs: '18px', md: '22px' },
+          overflow: 'hidden',
+          border: '1px solid rgba(255, 216, 122, 0.42)',
+          boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(232, 184, 74, 0.14)',
+          bgcolor: '#12070D',
+        }}
+      >
+        <IconButton
+          aria-label="Close memory preview"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            top: { xs: 8, md: 12 },
+            right: { xs: 8, md: 12 },
+            zIndex: 2,
+            color: '#FFF8EE',
+            width: { xs: 38, md: 42 },
+            height: { xs: 38, md: 42 },
+            bgcolor: 'rgba(20, 10, 12, 0.82)',
+            border: '1px solid rgba(255, 216, 122, 0.5)',
+            boxShadow: '0 8px 22px rgba(0, 0, 0, 0.3)',
+            '&:hover': { bgcolor: 'rgba(20, 10, 12, 0.95)' },
+          }}
+        >
+          <CloseRoundedIcon sx={{ fontSize: '1.15rem' }} />
+        </IconButton>
+
+        <Box
+          sx={{
+            aspectRatio: { xs: '4 / 5', md: '16 / 10' },
+            backgroundImage: `linear-gradient(180deg, rgba(18,7,10,0.06) 0%, rgba(18,7,10,0.2) 45%, rgba(18,7,10,0.84) 100%), url(${item.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: item.imagePosition || 'center center',
+          }}
+        />
+
+        <Box
+          sx={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            p: { xs: 1.5, md: 2 },
+            background: 'linear-gradient(180deg, rgba(18,7,10,0) 0%, rgba(18,7,10,0.92) 100%)',
+          }}
+        >
+          <Typography
+            sx={{
+              color: '#FFF8EE',
+              fontWeight: 700,
+              fontSize: { xs: '0.96rem', md: '1.18rem' },
+              mb: 0.3,
+            }}
+          >
+            {item.label}
+          </Typography>
+          <Typography sx={{ color: 'rgba(255, 245, 230, 0.78)', fontSize: { xs: '0.76rem', md: '0.86rem' } }}>
+            {item.date}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  )
+}
+
 export default function PastNights() {
   const showcase = pastHighlights
   const [activeIndex, setActiveIndex] = useState(3)
   const [isMobile, setIsMobile] = useState(false)
+  const [selectedMemory, setSelectedMemory] = useState(null)
   const touchStartX = useRef(null)
 
   useEffect(() => {
@@ -263,6 +354,19 @@ export default function PastNights() {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
+
+  useEffect(() => {
+    if (!selectedMemory) return undefined
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedMemory(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedMemory])
 
   const slides = useMemo(() => {
     const offsets = isMobile ? [-1, 0, 1] : [-2, -1, 0, 1, 2]
@@ -423,7 +527,10 @@ export default function PastNights() {
             {slides.map(({ item, meta, isActive, originalIndex, offset }) => (
               <Box
                 key={`${item.label}-${offset}`}
-                onClick={() => setActiveIndex(originalIndex)}
+                onClick={() => {
+                  setActiveIndex(originalIndex)
+                  setSelectedMemory(item)
+                }}
                 sx={{
                   cursor: 'pointer',
                   display: 'flex',
@@ -489,6 +596,8 @@ export default function PastNights() {
           </Stack>
         </RevealBox>
       </Container>
+
+      <MemoryLightbox item={selectedMemory} onClose={() => setSelectedMemory(null)} />
     </FestiveSection>
   )
 }
@@ -630,7 +739,7 @@ export function Footer() {
             borderTop: '1px solid rgba(255,255,255,0.06)',
           }}
         >
-          © 2026 MGM Cultural Navratri. All rights reserved.
+          Powered by Wowsly
         </Typography>
       </Container>
     </FestiveSection>

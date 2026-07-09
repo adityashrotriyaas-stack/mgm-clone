@@ -1222,7 +1222,7 @@ export default function EventDetail() {
       {/* Footer */}
       <Box sx={{ borderTop: `1px solid ${colors.border}`, bgcolor: colors.bgSoft, py: 3, textAlign: 'center' }}>
         <Typography sx={{ color: colors.muted, fontSize: '0.9rem', fontWeight: 500 }}>
-          Powered by MGM Cultural Navratri
+          Powered by Wowsly
         </Typography>
       </Box>
     </FestiveSection>
