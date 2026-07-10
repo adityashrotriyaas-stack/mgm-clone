@@ -63,8 +63,15 @@ export function resolveTicketSelection(registration) {
   const ticket = resolveTicketFromPassMode(registration.passMode)
   const quantity = Number(registration.ticketCount || 1)
   const isSeasonal = registration.passMode === 'seasonal'
-  const nightId = isSeasonal ? null : Number(registration.selectedDay || registration.eventId)
-  const eventSlotId = nightId ? NIGHT_SLOT_MAP[nightId] ?? null : null
+
+  let eventSlotId = null
+  if (!isSeasonal) {
+    eventSlotId = registration.eventSlotId ?? null
+    if (!eventSlotId) {
+      const nightId = Number(registration.selectedDay || registration.eventId)
+      eventSlotId = nightId ? NIGHT_SLOT_MAP[nightId] ?? null : null
+    }
+  }
 
   return {
     ticketId: ticket.ticketId,

@@ -108,6 +108,10 @@ export async function submitRegistration({ name, countryCode, mobile, email }) {
   )
 }
 
+export async function getPublicSchedule() {
+  return wowslyFetch(`/events/${WOWSLY_EVENT_ID}/schedule/public`)
+}
+
 export async function getEventTickets(guestUuid) {
   const params = new URLSearchParams({
     include_hidden_tickets: '0',

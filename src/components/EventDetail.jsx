@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isWowslyConfigured } from '../config/wowsly'
 import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
 } from '../services/wowslyBooking'
+import { getPublicSchedule } from '../services/wowslyApi'
+import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
+import ScheduleStep from './ScheduleStep'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -278,10 +281,10 @@ const categoryMeta = {
   couple: { Icon: PeopleOutlinedIcon, bg: '#E8F8EE', color: '#22C55E' },
 }
 
-function RegistrationStepPills({ activeStep }) {
+function RegistrationStepPills({ activeStep, stepLabels }) {
   return (
     <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: { xs: 2, md: 3 } }}>
-      {['Pass Type', 'Category', 'Details'].map((label, index) => {
+      {stepLabels.map((label, index) => {
         const isCompleted = index < activeStep
         const isActive = index === activeStep
 
@@ -655,7 +658,10 @@ export default function EventDetail() {
   const [regStep, setRegStep] = useState(0)
   const [passMode, setPassMode] = useState('')
   const [category, setCategory] = useState('')
-  const [selectedDay, setSelectedDay] = useState('')
+  const [slotSelection, setSlotSelection] = useState(null)
+  const [schedule, setSchedule] = useState(null)
+  const [scheduleLoading, setScheduleLoading] = useState(false)
+  const [scheduleError, setScheduleError] = useState('')
   const [personForm, setPersonForm] = useState(emptyPerson)
   const [secondPersonForm, setSecondPersonForm] = useState(emptyPerson)
   const [maleForm, setMaleForm] = useState(emptyPerson)
@@ -672,6 +678,38 @@ export default function EventDetail() {
   const pricingMultiplier = isCoupleCategory ? 1 : Number(ticketCount || 1)
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
   const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
+  const scheduleStep = 2
+  const detailsStep = isSeasonalPass ? 2 : 3
+  const registrationStepLabels = isSeasonalPass
+    ? ['Pass Type', 'Category', 'Details']
+    : ['Pass Type', 'Category', 'Date & Time', 'Details']
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadSchedule() {
+      setScheduleLoading(true)
+      setScheduleError('')
+      try {
+        const response = isWowslyConfigured() ? await getPublicSchedule() : null
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(response || buildFallbackSchedule()))
+        }
+      } catch {
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+          setScheduleError('')
+        }
+      } finally {
+        if (!cancelled) setScheduleLoading(false)
+      }
+    }
+
+    loadSchedule()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   if (!event || !info) return <Navigate to="/" replace />
 
@@ -711,7 +749,7 @@ export default function EventDetail() {
 
   const canSubmitForm = () => {
     if (!acceptedNonRefundable) return false
-    if (!isSeasonalPass && !selectedDay) return false
+    if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
     if (isCoupleCategory) {
       return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
     }
@@ -732,10 +770,14 @@ export default function EventDetail() {
     if (!canSubmitForm() || submitting) return
 
     const passLabel = selectedPass?.data.title || passMode
-    const dayDetails = !isSeasonalPass && selectedDay
+    const scheduleDetails = !isSeasonalPass && slotSelection?.eventSlotId
       ? {
-          selectedDay,
-          selectedDayLabel: getNightLabel(selectedDay),
+          eventSlotId: slotSelection.eventSlotId,
+          eventDateId: slotSelection.eventDateId,
+          eventVenueId: slotSelection.eventVenueId,
+          eventShowId: slotSelection.eventShowId,
+          selectedDayLabel: getScheduleStepLabel(slotSelection),
+          scheduleSelection: slotSelection,
         }
       : {}
     let registration =
@@ -753,7 +795,7 @@ export default function EventDetail() {
             name: `${maleForm.name} & ${femaleForm.name}`,
             mobile: maleForm.mobile,
             email: maleForm.email,
-            ...dayDetails,
+            ...scheduleDetails,
           }
         : {
             category,
@@ -765,7 +807,7 @@ export default function EventDetail() {
             eventId: id,
             ...personForm,
             secondGuest: ticketCount === '2' ? secondPersonForm : null,
-            ...dayDetails,
+            ...scheduleDetails,
           }
 
     setSubmitError('')
@@ -915,7 +957,7 @@ export default function EventDetail() {
       </Container>
 
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
-          <Box id="event-registration" sx={{ maxWidth: 600, mx: 'auto', width: '100%' }}>
+          <Box id="event-registration" sx={{ maxWidth: !isSeasonalPass ? 720 : 600, mx: 'auto', width: '100%' }}>
             <Box
               sx={{
                 border: '1px solid #ECECEC',
@@ -931,12 +973,13 @@ export default function EventDetail() {
                 </Typography>
                 <Typography sx={{ fontSize: '0.875rem', color: ui.muted }}>
                   {regStep === 0 && 'Step 1 — Choose your pass type'}
-                  {regStep === 1 && 'Step 2 — Choose your category'}
-                  {regStep === 2 && 'Step 3 — Fill registration details'}
+                  {regStep === 1 && `Step 2 — Choose your category`}
+                  {!isSeasonalPass && regStep === scheduleStep && 'Step 3 — Select date, venue & time'}
+                  {regStep === detailsStep && `Step ${registrationStepLabels.length} — Fill registration details`}
                 </Typography>
               </Box>
 
-              <RegistrationStepPills activeStep={regStep} />
+              <RegistrationStepPills activeStep={regStep} stepLabels={registrationStepLabels} />
 
               {regStep === 0 && (
                 <Stack spacing={1.5}>
@@ -947,7 +990,7 @@ export default function EventDetail() {
                       selected={passMode === item.id}
                       onSelect={() => {
                         setPassMode(item.id)
-                        if (item.id === 'seasonal') setSelectedDay('')
+                        if (item.id === 'seasonal') setSlotSelection(null)
                         setRegStep(1)
                       }}
                     />
@@ -1005,7 +1048,20 @@ export default function EventDetail() {
                 </Stack>
               )}
 
-              {regStep === 2 && selected && selectedPass && (
+              {!isSeasonalPass && regStep === scheduleStep && (
+                <ScheduleStep
+                  schedule={schedule}
+                  loading={scheduleLoading}
+                  error={scheduleError}
+                  selection={slotSelection}
+                  onSelectionChange={setSlotSelection}
+                  defaultNightId={id}
+                  onBack={() => setRegStep(1)}
+                  onContinue={() => setRegStep(detailsStep)}
+                />
+              )}
+
+              {regStep === detailsStep && selected && selectedPass && (
                 <Box component="form" onSubmit={handleSubmit} sx={fieldSx}>
                   <Box sx={{ bgcolor: ui.surfaceMuted, border: `1px solid ${ui.border}`, borderRadius: '8px', p: 1.5, mb: 2.5, textAlign: 'center' }}>
                     <Typography sx={{ fontSize: '0.82rem', color: ui.muted }}>
@@ -1015,43 +1071,17 @@ export default function EventDetail() {
                     <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.5 }}>
                       {totalTickets} ticket{totalTickets > 1 ? 's' : ''}
                     </Typography>
-                    {!isSeasonalPass && selectedDay && (
+                    {!isSeasonalPass && slotSelection?.dateLabel && (
                       <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.75 }}>
-                        {getNightLabel(selectedDay)}
+                        {getScheduleStepLabel(slotSelection)}
+                      </Typography>
+                    )}
+                    {!isSeasonalPass && slotSelection?.timeLabel && (
+                      <Typography sx={{ fontSize: '0.76rem', color: ui.muted, mt: 0.35 }}>
+                        {slotSelection.timeLabel}
                       </Typography>
                     )}
                   </Box>
-
-                  {!isSeasonalPass && (
-                    <FormControl fullWidth required sx={{ mb: 2 }}>
-                      <Select
-                        value={selectedDay}
-                        onChange={(e) => setSelectedDay(e.target.value)}
-                        displayEmpty
-                        renderValue={(value) =>
-                          value ? getNightLabel(value) : <Box sx={{ color: ui.muted }}>Select Day</Box>
-                        }
-                        inputProps={{ 'aria-label': 'Select Day' }}
-                        sx={{
-                          bgcolor: ui.card,
-                          color: selectedDay ? ui.text : ui.muted,
-                          borderRadius: '8px',
-                          '& .MuiOutlinedInput-notchedOutline': { borderColor: ui.border },
-                          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: accentFestive },
-                        }}
-                      >
-                        <MenuItem value="" disabled>
-                          Select Day
-                        </MenuItem>
-                        {navratriNights.map((night) => (
-                          <MenuItem key={night.id} value={String(night.id)}>
-                            {night.label} · {night.date} · {night.theme}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
 
                   <FormControl fullWidth required sx={{ mb: 2 }}>
                     <Select
@@ -1123,19 +1153,20 @@ export default function EventDetail() {
                     />
                   </Box>
 
+                  {submitError && (
+                    <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
+                      {submitError}
+                    </Typography>
+                  )}
+
                   <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ mt: 2 }}>
                     <Button
                       type="button"
-                      onClick={() => setRegStep(1)}
+                      onClick={() => setRegStep(isSeasonalPass ? 1 : scheduleStep)}
                       sx={{ flex: 1, py: 1.5, minHeight: 48, borderRadius: '8px', border: `1px solid ${ui.border}`, color: ui.muted, textTransform: 'none' }}
                     >
                       Back
                     </Button>
-                    {submitError && (
-                      <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mb: 1 }}>
-                        {submitError}
-                      </Typography>
-                    )}
                     <Button
                       type="submit"
                       disabled={!canSubmitForm() || submitting}
