@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { Navigate, useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -194,6 +194,68 @@ const passModes = [
   { id: 'seasonal', title: 'Seasonal Pass', subtitle: '10 Nights Garba', data: passOptions.seasonal },
   { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
+
+function buildFallbackEvent(id) {
+  const night = navratriNights.find((item) => item.id === id)
+  if (!night) return null
+
+  return {
+    id: night.id,
+    title: night.theme,
+    badge: 'Now Booking',
+    night: night.label,
+    date: `🗓️ ${night.date}`,
+    time: '🕰️ 9:00 PM',
+    price: '₹499',
+    priceUnit: '/ pass',
+    image: promoBanner,
+  }
+}
+
+function buildFallbackInfo(id) {
+  const night = navratriNights.find((item) => item.id === id)
+  if (!night) return null
+
+  return {
+    dateRange: night.date.replace(',', ' 2026'),
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Daily Pass ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    venue: 'Seasons Hotel',
+    location: 'Rajkot, Gujarat',
+    price: '₹499',
+    description: `About ${night.theme}
+
+${night.label} of MGM Cultural Navratri 2026 celebrates ${night.theme.toLowerCase()} with live Garba, festive performances, and a vibrant cultural atmosphere in Rajkot.
+
+From the opening aarti to the late-night Mandli Garba session, guests can enjoy music, tradition, decorated festival grounds, and a memorable celebration with family and friends.`,
+    whyAttend: [
+      `Experience ${night.theme.toLowerCase()} in a live Navratri atmosphere`,
+      'Enjoy authentic Garba and Raas with a festive crowd',
+      'Celebrate with music, decor, devotion, and food stalls',
+      'Join one of Rajkot’s most vibrant cultural nights',
+      'Capture memorable moments with friends and family',
+      'Stay for the late-night Mandli Garba celebration',
+    ],
+    highlights: [
+      'Live Garba Performance',
+      'Festival Decor & Lighting',
+      'Food & Handicraft Stalls',
+      'Mandli Garba Late Night',
+      'Cultural Stage Experience',
+      'Family-Friendly Celebration',
+    ],
+    singer: {
+      name: 'Amit Dhorda & Team',
+      image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Main Stage', 'Garba Arena', 'Food Court', 'Entry Gate', 'Seating Zone'],
+    cta: `Book ${night.theme}`,
+  }
+}
 
 const accentFestive = '#C98B2E'
 const ui = {
@@ -583,8 +645,8 @@ export default function EventDetail() {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const id = Number(eventId)
-  const event = upcomingEvents.find(e => e.id === id)
-  const info = eventInfo[id]
+  const event = upcomingEvents.find((e) => e.id === id) || buildFallbackEvent(id)
+  const info = eventInfo[id] || buildFallbackInfo(id)
   const [regStep, setRegStep] = useState(0)
   const [passMode, setPassMode] = useState('')
   const [category, setCategory] = useState('')
@@ -603,6 +665,8 @@ export default function EventDetail() {
   const pricingMultiplier = isCoupleCategory ? 1 : Number(ticketCount || 1)
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
   const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
+
+  if (!event || !info) return <Navigate to="/" replace />
 
   const scrollToRegistration = () => {
     setRegStep(0)

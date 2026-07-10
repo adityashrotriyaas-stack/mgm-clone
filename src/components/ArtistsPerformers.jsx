@@ -514,7 +514,7 @@ export default function ArtistsPerformers() {
         <RevealBox variant="fadeUp" delay={0.28} sx={{ width: '100%' }}>
           <Stack alignItems="center" justifyContent="center" spacing={1.4} sx={{ width: '100%' }}>
             <Button
-              onClick={() => navigate('/#featured-event')}
+              onClick={() => navigate('/event/1')}
               startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
               endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
               sx={{
