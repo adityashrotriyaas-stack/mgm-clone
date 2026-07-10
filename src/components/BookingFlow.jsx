@@ -17,7 +17,12 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
 import { colors, gradients } from '../constants/colors'
 import { festiveCardSx } from '../constants/navratriTheme'
 import FestiveSection from './FestiveSection'
+import { isWowslyConfigured } from '../config/wowsly'
 import { registrationCategories } from '../data/siteData'
+import {
+  completeWowslyPayment,
+  loadWowslySession,
+} from '../services/wowslyBooking'
 import NonRefundableCheckbox from './NonRefundableCheckbox'
 
 const steps = [
@@ -68,10 +73,13 @@ export default function BookingFlow() {
   const [searchParams] = useSearchParams()
   const eventId = searchParams.get('event') || '1'
   const registration = location.state?.registration
+  const wowslySession = location.state?.wowslySession || loadWowslySession()
 
   const [activeStep, setActiveStep] = useState(4)
   const [paymentMethod, setPaymentMethod] = useState('upi')
   const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
+  const [paying, setPaying] = useState(false)
+  const [paymentError, setPaymentError] = useState('')
 
   const selectedCategory = registrationCategories[registration?.category || 'male']
 
@@ -87,6 +95,26 @@ export default function BookingFlow() {
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1)
     }
+  }
+
+  const handlePaySecurely = async () => {
+    if (!acceptedNonRefundable || paying) return
+
+    if (isWowslyConfigured() && wowslySession) {
+      setPaymentError('')
+      setPaying(true)
+      try {
+        await completeWowslyPayment(registration, wowslySession)
+        setActiveStep(5)
+      } catch (error) {
+        setPaymentError(error?.message || 'Payment failed. Please try again.')
+      } finally {
+        setPaying(false)
+      }
+      return
+    }
+
+    handleNext()
   }
 
   const handleBack = () => {
@@ -213,6 +241,11 @@ export default function BookingFlow() {
                   checked={acceptedNonRefundable}
                   onChange={setAcceptedNonRefundable}
                 />
+                {paymentError && (
+                  <Typography sx={{ fontSize: '0.82rem', color: '#ef4444' }}>
+                    {paymentError}
+                  </Typography>
+                )}
               </Stack>
             )}
 
@@ -261,8 +294,8 @@ export default function BookingFlow() {
             <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
               {activeStep < 5 && (
                 <Button
-                  onClick={handleNext}
-                  disabled={activeStep === 4 && !acceptedNonRefundable}
+                  onClick={handlePaySecurely}
+                  disabled={activeStep === 4 && (!acceptedNonRefundable || paying)}
                   endIcon={<ArrowForwardRoundedIcon />}
                   fullWidth
                   sx={{
@@ -276,7 +309,7 @@ export default function BookingFlow() {
                     '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
                   }}
                 >
-                  Pay Securely
+                  {paying ? 'Opening payment…' : 'Pay Securely'}
                 </Button>
               )}
               {activeStep === 5 && (

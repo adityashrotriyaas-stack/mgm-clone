@@ -1,4 +1,9 @@
 import { useState } from 'react'
+import { isWowslyConfigured } from '../config/wowsly'
+import {
+  applyQuotedPriceToRegistration,
+  prepareWowslyBooking,
+} from '../services/wowslyBooking'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -657,6 +662,8 @@ export default function EventDetail() {
   const [femaleForm, setFemaleForm] = useState(emptyPerson)
   const [ticketCount, setTicketCount] = useState('1')
   const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
   const isSeasonalPass = passMode === 'seasonal'
@@ -720,9 +727,9 @@ export default function EventDetail() {
     setRegStep(2)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!canSubmitForm()) return
+    if (!canSubmitForm() || submitting) return
 
     const passLabel = selectedPass?.data.title || passMode
     const dayDetails = !isSeasonalPass && selectedDay
@@ -731,7 +738,7 @@ export default function EventDetail() {
           selectedDayLabel: getNightLabel(selectedDay),
         }
       : {}
-    const registration =
+    let registration =
       isCoupleCategory
         ? {
             category,
@@ -761,7 +768,22 @@ export default function EventDetail() {
             ...dayDetails,
           }
 
-    navigate(`/book?event=${eventId}`, { state: { registration } })
+    setSubmitError('')
+    setSubmitting(true)
+
+    try {
+      let wowslySession = null
+      if (isWowslyConfigured()) {
+        wowslySession = await prepareWowslyBooking(registration)
+        registration = applyQuotedPriceToRegistration(registration, wowslySession)
+      }
+
+      navigate(`/book?event=${eventId}`, { state: { registration, wowslySession } })
+    } catch (error) {
+      setSubmitError(error?.message || 'Registration failed. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (!event || !info) {
@@ -1109,9 +1131,14 @@ export default function EventDetail() {
                     >
                       Back
                     </Button>
+                    {submitError && (
+                      <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mb: 1 }}>
+                        {submitError}
+                      </Typography>
+                    )}
                     <Button
                       type="submit"
-                      disabled={!canSubmitForm()}
+                      disabled={!canSubmitForm() || submitting}
                       sx={{
                         flex: { xs: 1, sm: 2 },
                         py: 1.5,
@@ -1126,7 +1153,7 @@ export default function EventDetail() {
                         '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
                       }}
                     >
-                      Proceed to Payment
+                      {submitting ? 'Processing…' : 'Proceed to Payment'}
                     </Button>
                   </Stack>
                 </Box>
