@@ -8,10 +8,11 @@ export default function NonRefundableCheckbox({ checked, onChange }) {
   return (
     <Box
       sx={{
-        p: 1.5,
-        borderRadius: '10px',
-        bgcolor: colors.bgWarm,
+        p: 1.75,
+        borderRadius: '14px',
+        bgcolor: 'rgba(30, 18, 16, 0.55)',
         border: `1px solid ${colors.border}`,
+        backgroundImage: 'linear-gradient(135deg, rgba(201, 139, 46, 0.06), transparent 60%)',
       }}
     >
       <FormControlLabel
@@ -20,22 +21,27 @@ export default function NonRefundableCheckbox({ checked, onChange }) {
             checked={checked}
             onChange={(e) => onChange(e.target.checked)}
             sx={{
-              color: colors.gold,
+              color: 'rgba(232, 184, 74, 0.45)',
               pt: 0.25,
-              '&.Mui-checked': { color: colors.gold },
+              '&.Mui-checked': {
+                color: colors.gold,
+              },
+              '&.Mui-checked .MuiSvgIcon-root': {
+                filter: 'drop-shadow(0 0 6px rgba(232, 184, 74, 0.45))',
+              },
             }}
           />
         }
         label={
-          <Typography sx={{ fontSize: '0.88rem', color: colors.muted, lineHeight: 1.6 }}>
+          <Typography sx={{ fontSize: '0.88rem', color: colors.muted, lineHeight: 1.65 }}>
             I agree that after payment, my ticket amount{' '}
-            <Box component="span" sx={{ fontWeight: 700, color: colors.textLight }}>
+            <Box component="span" sx={{ fontWeight: 800, color: colors.gold }}>
               cannot be refunded
             </Box>
             .
           </Typography>
         }
-        sx={{ alignItems: 'flex-start', m: 0, gap: 0.5 }}
+        sx={{ alignItems: 'flex-start', m: 0, gap: 0.75 }}
       />
     </Box>
   )

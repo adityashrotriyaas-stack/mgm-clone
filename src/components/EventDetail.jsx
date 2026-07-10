@@ -37,7 +37,16 @@ import promoBanner from '../assets/image.png'
 import wowslyLogo from '../assets/wowsly-logo.png'
 import FestiveSection from './FestiveSection'
 import { colors } from '../constants/colors'
-import { festiveCardSoftSx } from '../constants/navratriTheme'
+import {
+  personSectionSx,
+  personTitleSx,
+  registrationBackButtonSx,
+  registrationCardSx,
+  registrationFieldSx,
+  registrationSubmitButtonSx,
+  registrationSummarySx,
+  registrationUi,
+} from '../constants/registrationFormTheme'
 
 const eventInfo = {
   1: {
@@ -527,18 +536,17 @@ function getPriceAmount(price) {
   return Number.isFinite(digits) ? digits : 0
 }
 
-const fieldSx = {
-  '& .MuiOutlinedInput-root': {
-    bgcolor: ui.card,
-    color: ui.text,
-    borderRadius: '8px',
-    '& fieldset': { borderColor: ui.border },
-    '&:hover fieldset': { borderColor: colors.gold },
-    '&.Mui-focused fieldset': { borderColor: accentFestive },
-  },
-  '& .MuiInputBase-input::placeholder': { color: ui.muted, opacity: 1 },
-  '& .MuiInputAdornment-root': { mr: 0.5 },
-  '& .MuiSelect-select': { textAlign: 'left' },
+const fieldSx = registrationFieldSx
+
+const selectFieldSx = {
+  bgcolor: registrationUi.inputBg,
+  color: registrationUi.text,
+  borderRadius: '12px',
+  '& .MuiOutlinedInput-notchedOutline': { borderColor: registrationUi.border },
+  '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(232, 184, 74, 0.45)' },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold, borderWidth: '1.5px' },
+  '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(201, 139, 46, 0.15)' },
+  '& .MuiSelect-icon': { color: registrationUi.muted },
 }
 
 function getNightLabel(nightId) {
@@ -549,17 +557,19 @@ function getNightLabel(nightId) {
 
 function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
   return (
-    <Box sx={{ display: 'grid', gap: 1.5 }}>
+    <Box sx={personSectionSx}>
       {title && (
-        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.95rem', mb: 0.25 }}>
+        <Typography sx={personTitleSx}>
           {title}
         </Typography>
       )}
-      <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
-      <MobileNumberField value={person.mobile} onChange={onFieldChange('mobile')} />
-      <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
-      <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} />
-      <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} />
+      <Box sx={{ display: 'grid', gap: 1.5 }}>
+        <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
+        <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} />
+        <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
+        <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
+        <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} />
+      </Box>
     </Box>
   )
 }
@@ -958,15 +968,7 @@ export default function EventDetail() {
 
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
           <Box id="event-registration" sx={{ maxWidth: !isSeasonalPass ? 720 : 600, mx: 'auto', width: '100%' }}>
-            <Box
-              sx={{
-                border: '1px solid #ECECEC',
-                borderRadius: '16px',
-                p: { xs: 2, sm: 2.25, md: 3 },
-                bgcolor: ui.card,
-                boxShadow: '0 10px 36px rgba(15, 23, 42, 0.06)',
-              }}
-            >
+            <Box sx={registrationCardSx}>
               <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 2.5 } }}>
                 <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 0.5, fontSize: { xs: '1.15rem', md: '1.5rem' } }}>
                   Reserve Your Spot
@@ -1032,16 +1034,7 @@ export default function EventDetail() {
                     onClick={() => setRegStep(0)}
                     fullWidth
                     startIcon={<ChevronLeftRoundedIcon />}
-                    sx={{
-                      py: 1.35,
-                      minHeight: 48,
-                      borderRadius: '10px',
-                      bgcolor: ui.surfaceMuted,
-                      border: `1px solid ${ui.border}`,
-                      color: ui.muted,
-                      textTransform: 'none',
-                      '&:hover': { bgcolor: '#ececec' },
-                    }}
+                    sx={{ ...registrationBackButtonSx, flex: 'unset', width: '100%' }}
                   >
                     Back
                   </Button>
@@ -1063,11 +1056,16 @@ export default function EventDetail() {
 
               {regStep === detailsStep && selected && selectedPass && (
                 <Box component="form" onSubmit={handleSubmit} sx={fieldSx}>
-                  <Box sx={{ bgcolor: ui.surfaceMuted, border: `1px solid ${ui.border}`, borderRadius: '8px', p: 1.5, mb: 2.5, textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '0.82rem', color: ui.muted }}>
+                  <Box sx={registrationSummarySx}>
+                    <Typography sx={{ fontSize: '0.82rem', color: registrationUi.muted }}>
                       {selectedPass.title} · {selected.title}
                     </Typography>
-                    <Typography sx={{ fontWeight: 700, color: ui.text }}>{totalPrice}{pricingSource?.priceUnit}</Typography>
+                    <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.2rem', mt: 0.35 }}>
+                      {totalPrice}
+                      <Box component="span" sx={{ fontSize: '0.82rem', fontWeight: 500, color: registrationUi.muted, ml: 0.5 }}>
+                        {pricingSource?.priceUnit}
+                      </Box>
+                    </Typography>
                     <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.5 }}>
                       {totalTickets} ticket{totalTickets > 1 ? 's' : ''}
                     </Typography>
@@ -1089,14 +1087,7 @@ export default function EventDetail() {
                       onChange={(e) => setTicketCount(e.target.value)}
                       disabled={isCoupleCategory}
                       inputProps={{ 'aria-label': 'Number of Tickets' }}
-                      sx={{
-                        bgcolor: ui.card,
-                        color: ui.text,
-                        borderRadius: '8px',
-                        '& .MuiOutlinedInput-notchedOutline': { borderColor: ui.border },
-                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: accentFestive },
-                      }}
+                      sx={selectFieldSx}
                     >
                       {!isCoupleCategory && <MenuItem value="1">1 Ticket</MenuItem>}
                       <MenuItem value="2">2 Tickets</MenuItem>
@@ -1116,7 +1107,7 @@ export default function EventDetail() {
                         onFieldChange={makeFieldUpdater(setMaleForm)}
                         onPhotoChange={makePhotoUpdater(setMaleForm)}
                       />
-                      <Divider />
+                      <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
                       <PersonFields
                         title="Female Details"
                         person={femaleForm}
@@ -1134,7 +1125,7 @@ export default function EventDetail() {
                       />
                       {ticketCount === '2' && (
                         <>
-                          <Divider />
+                          <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
                           <PersonFields
                             title="Ticket 2 Details"
                             person={secondPersonForm}
@@ -1159,30 +1150,18 @@ export default function EventDetail() {
                     </Typography>
                   )}
 
-                  <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ mt: 2 }}>
+                  <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5 }}>
                     <Button
                       type="button"
                       onClick={() => setRegStep(isSeasonalPass ? 1 : scheduleStep)}
-                      sx={{ flex: 1, py: 1.5, minHeight: 48, borderRadius: '8px', border: `1px solid ${ui.border}`, color: ui.muted, textTransform: 'none' }}
+                      sx={registrationBackButtonSx}
                     >
                       Back
                     </Button>
                     <Button
                       type="submit"
                       disabled={!canSubmitForm() || submitting}
-                      sx={{
-                        flex: { xs: 1, sm: 2 },
-                        py: 1.5,
-                        minHeight: 48,
-                        borderRadius: '8px',
-                        background: '#1F1F1F',
-                        color: '#fff',
-                        fontWeight: 600,
-                        fontSize: '0.9375rem',
-                        textTransform: 'none',
-                        '&:hover': { background: '#333' },
-                        '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
-                      }}
+                      sx={registrationSubmitButtonSx}
                     >
                       {submitting ? 'Processing…' : 'Proceed to Payment'}
                     </Button>

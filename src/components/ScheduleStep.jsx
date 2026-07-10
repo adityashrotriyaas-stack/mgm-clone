@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import { colors } from '../constants/colors'
+import { registrationBackButtonSx } from '../constants/registrationFormTheme'
 import { buildDefaultSlotSelection, buildSlotSelection, formatShowTimeRange } from '../utils/schedule'
 
 const accentFestive = '#C98B2E'
@@ -182,7 +183,7 @@ export default function ScheduleStep({
     return (
       <Stack spacing={2}>
         <Typography sx={{ fontSize: '0.88rem', color: '#ef4444', textAlign: 'center' }}>{error}</Typography>
-        <Button onClick={onBack} startIcon={<ChevronLeftRoundedIcon />} sx={{ textTransform: 'none', color: ui.muted }}>
+        <Button onClick={onBack} startIcon={<ChevronLeftRoundedIcon />} sx={registrationBackButtonSx}>
           Back
         </Button>
       </Stack>
@@ -268,15 +269,7 @@ export default function ScheduleStep({
         <Button
           onClick={onBack}
           startIcon={<ChevronLeftRoundedIcon />}
-          sx={{
-            flex: 1,
-            py: 1.5,
-            minHeight: 48,
-            borderRadius: '8px',
-            border: `1px solid ${ui.border}`,
-            color: ui.muted,
-            textTransform: 'none',
-          }}
+          sx={registrationBackButtonSx}
         >
           Back
         </Button>
