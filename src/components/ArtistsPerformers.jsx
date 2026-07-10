@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import artistsBg from '../assets/artists-bg.png'
 import amitDhorda from '../assets/amit-dhorda.png'
 import { colors } from '../constants/colors'
-import { RevealBox } from './shared'
+import { RevealBox, RevealGroup } from './shared'
 
 const artists = [
   {
@@ -297,7 +297,7 @@ export default function ArtistsPerformers() {
       }}
     >
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
-        <RevealBox>
+        <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 3.75 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.9, color: colors.gold, mb: 0.85 }}>
               <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
@@ -358,6 +358,9 @@ export default function ArtistsPerformers() {
         </RevealBox>
 
         <RevealBox
+          variant="scaleUp"
+          delay={0.12}
+          duration={0.9}
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '40px minmax(0, 1fr) 40px', lg: '64px minmax(0, 1fr) 64px' },
@@ -430,7 +433,7 @@ export default function ArtistsPerformers() {
           </IconButton>
         </RevealBox>
 
-        <RevealBox>
+        <RevealBox variant="fadeUp" delay={0.2} duration={0.75}>
           <Box
             sx={{
               maxWidth: 920,
@@ -508,7 +511,7 @@ export default function ArtistsPerformers() {
           </Box>
         </RevealBox>
 
-        <RevealBox sx={{ width: '100%' }}>
+        <RevealBox variant="fadeUp" delay={0.28} sx={{ width: '100%' }}>
           <Stack alignItems="center" justifyContent="center" spacing={1.4} sx={{ width: '100%' }}>
             <Button
               onClick={() => navigate('/#featured-event')}

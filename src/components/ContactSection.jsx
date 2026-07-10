@@ -360,7 +360,7 @@ export default function ContactSection() {
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
-        <RevealBox>
+        <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3.5, md: 4.5 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, color: colors.gold, mb: 1 }}>
               <Box sx={{ width: { xs: 22, md: 36 }, height: 1, bgcolor: 'rgba(232,184,74,0.5)' }} />
@@ -409,7 +409,7 @@ export default function ContactSection() {
           </Box>
         </RevealBox>
 
-        <RevealBox>
+        <RevealBox variant="scaleUp" delay={0.15} duration={0.85}>
           <Box
             sx={{
               display: 'grid',

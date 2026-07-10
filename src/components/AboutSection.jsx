@@ -14,6 +14,8 @@ import { useEffect, useRef, useState } from 'react'
 import aboutBg from '../assets/about-bg.png'
 import { aboutContent } from '../data/siteData'
 
+const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
+
 const highlightIcons = [
   AutoAwesomeOutlinedIcon,
   MusicNoteOutlinedIcon,
@@ -121,7 +123,7 @@ function AboutCopy({ visible }) {
           transition: 'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s',
         }}
       >
-        {highlights.map(({ icon: Icon, label }) => (
+        {highlights.map(({ icon: Icon, label }, chipIndex) => (
           <Box
             key={label}
             sx={{
@@ -136,6 +138,9 @@ function AboutCopy({ visible }) {
               fontSize: '0.75rem',
               fontWeight: 600,
               color: colors.textLight,
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'translateY(0) scale(1)' : 'translateY(14px) scale(0.94)',
+              transition: `opacity 0.55s ease ${0.6 + chipIndex * 0.08}s, transform 0.55s ${EASE} ${0.6 + chipIndex * 0.08}s`,
             }}
           >
             <Box

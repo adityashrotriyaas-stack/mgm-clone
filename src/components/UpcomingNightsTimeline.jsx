@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import dandiyaDeco from '../assets/dandiya-deco.png'
 import { colors, gradients } from '../constants/colors'
 import { navratriNights, pastHighlights } from '../data/siteData'
+import { RevealBox } from './shared'
 
 const nightImages = [
   'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=800',
@@ -423,6 +424,7 @@ export default function UpcomingNightsTimeline() {
       />
 
       <Container maxWidth="xl" sx={{ px: { xs: 1.5, sm: 2.5, md: 4 } }}>
+        <RevealBox variant="blurUp" duration={0.85}>
         <Box sx={{ textAlign: 'center', mb: { xs: 2.25, md: 2.75 } }}>
           <Box
             sx={{
@@ -557,7 +559,9 @@ export default function UpcomingNightsTimeline() {
             />
           </Box>
         </Box>
+        </RevealBox>
 
+        <RevealBox variant="scaleUp" delay={0.15} duration={0.9}>
         <Stack
           direction="row"
           alignItems="center"
@@ -663,7 +667,9 @@ export default function UpcomingNightsTimeline() {
             </IconButton>
           </Box>
         </Stack>
+        </RevealBox>
 
+        <RevealBox variant="fadeUp" delay={0.22} duration={0.75}>
           <Box
             sx={{
               mt: 3,
@@ -724,6 +730,7 @@ export default function UpcomingNightsTimeline() {
               Book {activeNight.theme}
             </Button>
           </Stack>
+        </RevealBox>
         </Container>
     </Box>
   )

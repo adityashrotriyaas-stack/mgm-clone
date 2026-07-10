@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { useEffect } from 'react'
+import './styles/animations.css'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Outlet, createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'

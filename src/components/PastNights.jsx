@@ -506,11 +506,14 @@ export default function PastNights() {
       </Box>
 
       <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 2.5, md: 4 } }}>
-        <RevealBox>
+        <RevealBox variant="blurUp" duration={0.85}>
           <ThrowbackHeader />
         </RevealBox>
 
         <RevealBox
+          variant="scaleUp"
+          delay={0.12}
+          duration={0.9}
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '40px minmax(0, 1fr) 40px', lg: '72px minmax(0, 1fr) 72px' },
@@ -599,7 +602,7 @@ export default function PastNights() {
           </IconButton>
         </RevealBox>
 
-        <RevealBox>
+        <RevealBox variant="fadeUp" delay={0.22} duration={0.75}>
           <Stack
             direction="row"
             alignItems="center"

@@ -20,6 +20,7 @@ import promoBanner from '../assets/image.png'
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 import { aboutContent } from '../data/siteData'
+import { RevealBox, RevealGroup } from './shared'
 
 const section = {
   bg: '#180A0F',
@@ -121,6 +122,7 @@ export default function UpcomingNights() {
           border: `1px solid ${section.chipBorder}`,
           backgroundImage: patternMandala,
           pointerEvents: 'none',
+          animation: 'mgm-float-slow 8s ease-in-out infinite',
         }}
       />
       <Box
@@ -136,6 +138,7 @@ export default function UpcomingNights() {
           border: `1px solid ${section.chipBorder}`,
           backgroundImage: patternMandala,
           pointerEvents: 'none',
+          animation: 'mgm-float-slow 9s ease-in-out infinite reverse',
         }}
       />
       <Box
@@ -151,6 +154,7 @@ export default function UpcomingNights() {
           border: `1px solid ${section.chipBorder}`,
           backgroundImage: patternMandala,
           pointerEvents: 'none',
+          animation: 'mgm-float 7s ease-in-out infinite',
         }}
       />
       <Box
@@ -166,6 +170,7 @@ export default function UpcomingNights() {
           border: `1px solid ${section.chipBorder}`,
           backgroundImage: patternMandala,
           pointerEvents: 'none',
+          animation: 'mgm-float 6.5s ease-in-out infinite reverse',
         }}
       />
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
@@ -178,7 +183,7 @@ export default function UpcomingNights() {
           }}
         >
           {/* Left — framed poster card */}
-          <Box sx={{ minWidth: 0 }}>
+          <RevealBox variant="fadeRight" duration={0.85} sx={{ minWidth: 0 }}>
             <Box
               sx={{
                 position: 'relative',
@@ -227,10 +232,10 @@ export default function UpcomingNights() {
                 }}
               />
             </Box>
-          </Box>
+          </RevealBox>
 
           {/* Right — open content on cream (no extra card) */}
-          <Box sx={{ minWidth: 0 }}>
+          <RevealBox variant="fadeLeft" delay={0.12} duration={0.85} sx={{ minWidth: 0 }}>
             <Box
               sx={{
                 display: 'inline-block',
@@ -427,10 +432,12 @@ export default function UpcomingNights() {
                 </Box>
               ))}
             </Stack>
-          </Box>
+          </RevealBox>
         </Box>
 
-        <Box
+        <RevealGroup
+          stagger={0.1}
+          variant="scaleUp"
           sx={{
             mt: { xs: 3.5, md: 4.5 },
             display: 'grid',
@@ -452,6 +459,11 @@ export default function UpcomingNights() {
                 border: `1px solid ${section.chipBorder}`,
                 backdropFilter: 'blur(8px)',
                 boxShadow: '0 12px 24px rgba(0,0,0,0.16)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 16px 32px rgba(0,0,0,0.22)',
+                },
               }}
             >
               <Box
@@ -479,7 +491,7 @@ export default function UpcomingNights() {
               </Box>
             </Box>
           ))}
-        </Box>
+        </RevealGroup>
       </Container>
     </Box>
   )

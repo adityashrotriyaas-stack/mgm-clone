@@ -10,7 +10,7 @@ import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOu
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 import { legacyMoments } from '../data/siteData'
-import { RevealBox } from './shared'
+import { RevealBox, RevealStagger, RevealStaggerItem } from './shared'
 import FestiveSection from './FestiveSection'
 
 const icons = [
@@ -368,11 +368,12 @@ export default function LegacySection() {
       </Box>
 
       <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 }, position: 'relative' }}>
-        <RevealBox>
+        <RevealBox variant="blurUp">
           <JourneyHeader />
         </RevealBox>
 
-        <RevealBox
+        <RevealStagger
+          stagger={0.12}
           sx={{
             position: 'relative',
             display: 'grid',
@@ -384,9 +385,15 @@ export default function LegacySection() {
         >
           <TimelineSpine />
           {legacyMoments.map((item, index) => (
-            <TimelineCard key={item.year} item={item} index={index} />
+            <RevealStaggerItem
+              key={item.year}
+              index={index}
+              variant={index % 2 === 0 ? 'fadeRight' : 'fadeLeft'}
+            >
+              <TimelineCard item={item} index={index} />
+            </RevealStaggerItem>
           ))}
-        </RevealBox>
+        </RevealStagger>
       </Container>
     </FestiveSection>
   )

@@ -30,6 +30,8 @@ const barTheme = {
   border: 'rgba(232, 184, 74, 0.22)',
 }
 
+const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
+
 function HeroFeatureBar() {
   return (
     <Box
@@ -54,11 +56,21 @@ function HeroFeatureBar() {
           gap: { xs: 1.25, sm: 1.5, md: 2 },
         }}
       >
-        {heroFeatures.map(({ icon, title, subtitle }) => {
+        {heroFeatures.map(({ icon, title, subtitle }, index) => {
           const Icon = iconMap[icon]
 
           return (
-            <Stack key={title} direction="row" alignItems="center" spacing={1.25} sx={{ minWidth: 0 }}>
+            <Stack
+              key={title}
+              direction="row"
+              alignItems="center"
+              spacing={1.25}
+              sx={{
+                minWidth: 0,
+                opacity: 0,
+                animation: `mgm-hero-bar-in 0.7s ${EASE} ${0.35 + index * 0.1}s forwards`,
+              }}
+            >
               <Box
                 sx={{
                   width: { xs: 38, sm: 42, md: 46 },
@@ -195,6 +207,8 @@ export default function Hero() {
             boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
             aspectRatio: { xs: '9 / 14', sm: '16 / 10', lg: '16 / 7.4' },
             bgcolor: colors.nightMid,
+            opacity: 0,
+            animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
           }}
         >
           <Box
