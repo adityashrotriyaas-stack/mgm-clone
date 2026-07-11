@@ -1,192 +1,497 @@
-import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
-import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
-import Tooltip from '@mui/material/Tooltip'
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
-import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded'
-import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded'
-import { SectionHead } from './shared'
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
+import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
+import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
+import NightsStayOutlinedIcon from '@mui/icons-material/NightsStayOutlined'
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
+import promoBanner from '../assets/image.png'
 import { colors, gradients } from '../constants/colors'
-import { navratriNights, nightTracker, upcomingEvents } from '../data/siteData'
+import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
+import { aboutContent } from '../data/siteData'
+import { RevealBox, RevealGroup } from './shared'
 
-function EventCard({ event, onBook }) {
-  const cardRef = useRef(null)
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    setTilt({ x: x * 6, y: y * -6 })
-  }
-
-  const handleMouseLeave = () => setTilt({ x: 0, y: 0 })
-
-  return (
-    <Box
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      sx={{
-        flex: '0 0 auto',
-        width: { xs: 'min(85vw, 300px)', sm: 320, md: 340 },
-        scrollSnapAlign: 'start',
-        bgcolor: colors.bgSoft,
-        borderRadius: '20px',
-        overflow: 'hidden',
-        border: '1px solid rgba(184,134,11,0.10)',
-        transition: 'border-color 0.35s ease, box-shadow 0.35s ease',
-        transform: `perspective(800px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) translateY(${tilt.x || tilt.y ? -4 : 0}px)`,
-        boxShadow: tilt.x || tilt.y ? '0 24px 48px rgba(44,31,16,0.14)' : '0 8px 24px rgba(44,31,16,0.05)',
-        '@media (hover: hover)': {
-          '&:hover': {
-            borderColor: 'rgba(184,134,11,0.25)',
-          },
-        },
-      }}>
-      <Box sx={{ height: { xs: 150, sm: 160 }, backgroundImage: `url(${event.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', '&::after': { content: '""', position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, rgba(44,31,16,0.15) 100%)' } }}>
-        <Box sx={{ position: 'absolute', top: 12, left: 12, background: gradients.primary, color: '#fff', fontSize: '0.66rem', fontWeight: 700, px: 1.5, py: 0.6, borderRadius: '20px', zIndex: 1 }}>{event.badge}</Box>
-        <Box sx={{ position: 'absolute', top: 12, right: 12, bgcolor: 'rgba(255,255,255,0.90)', color: colors.teal, fontSize: '0.68rem', fontWeight: 700, px: 1.25, py: 0.6, borderRadius: '20px', zIndex: 1, backdropFilter: 'blur(4px)' }}>{event.night}</Box>
-      </Box>
-      <Box sx={{ p: { xs: 1.75, sm: 2 } }}>
-        <Typography sx={{ fontSize: { xs: '1rem', sm: '1.05rem' }, color: colors.ivory, fontWeight: 600, mb: 1, lineHeight: 1.3 }}>{event.title}</Typography>
-        <Stack spacing={0.7} sx={{ mb: 1.5, fontSize: '0.78rem', color: colors.muted }}>
-          <Stack direction="row" spacing={0.8} sx={{ alignItems: 'center' }}>
-            <CalendarMonthOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.teal }} />
-            <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{event.date}</Typography>
-          </Stack>
-          <Stack direction="row" spacing={0.8} sx={{ alignItems: 'center' }}>
-            <AccessTimeOutlinedIcon sx={{ fontSize: '0.95rem', color: colors.teal }} />
-            <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{event.time}</Typography>
-          </Stack>
-        </Stack>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} sx={{ alignItems: { xs: 'stretch', sm: 'center' }, justifyContent: 'space-between' }}>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography sx={{ fontWeight: 800, color: colors.marigoldSoft, fontSize: '1rem', minWidth: 0 }}>{event.price} <Box component="span" sx={{ fontWeight: 500, color: colors.muted, fontSize: '0.72rem' }}>{event.priceUnit}</Box></Typography>
-            <Typography sx={{ fontSize: '0.72rem', color: colors.muted, mt: 0.25 }}>Limited passes available</Typography>
-          </Box>
-          <Button onClick={() => onBook(event.id)} sx={{ background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.84rem', px: 2.5, py: 1.2, minHeight: 46, minWidth: { xs: '100%', sm: 120 }, borderRadius: '999px', flexShrink: 0, boxShadow: '0 10px 22px rgba(184,92,58,0.22)', transition: 'transform 0.25s ease, box-shadow 0.25s ease', '&:hover': { background: gradients.primaryReversed, transform: 'translateY(-1px)', boxShadow: '0 12px 28px rgba(184,92,58,0.30)' } }}>Book Pass</Button>
-        </Stack>
-      </Box>
-    </Box>
-  )
+const section = {
+  bg: '#180A0F',
+  bgSoft: '#2A1118',
+  heading: '#FFF8F0',
+  body: '#D7C5B8',
+  chipBg: 'rgba(255,255,255,0.05)',
+  chipBorder: 'rgba(232,176,74,.25)',
+  cardBorder: 'rgba(232,176,74,.28)',
+  frameShadow: '0 28px 70px rgba(0, 0, 0, 0.42)',
+  btnOutline: 'rgba(232,176,74,.3)',
+  gold: '#E8B04A',
+  goldLight: '#FFD87A',
 }
 
-function NightProgressTracker() {
-  const statusIcon = { done: CheckCircleRoundedIcon, today: RadioButtonCheckedRoundedIcon, upcoming: RadioButtonUncheckedRoundedIcon }
-  const statusColor = { done: colors.marigold, today: colors.coral, upcoming: colors.glassBorder }
-  const statusLabel = { done: 'Completed', today: 'Tonight!', upcoming: 'Upcoming' }
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: { xs: 0.5, sm: 1 }, mb: 3, px: 2, flexWrap: 'wrap' }}>
-      {nightTracker.map(({ night, status }) => {
-        const Icon = statusIcon[status]
-        const nightData = navratriNights.find((n) => n.id === night)
-        return (
-          <Tooltip key={night} title={nightData ? `${nightData.label} · ${nightData.date} · ${nightData.theme} (${statusLabel[status]})` : `Night ${night}`} arrow placement="top" slotProps={{ tooltip: { sx: { bgcolor: colors.ivory, color: '#fff', fontSize: '0.72rem', fontWeight: 600, borderRadius: '8px', px: 1.25, py: 0.75 } }, arrow: { sx: { color: colors.ivory } } }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.4, cursor: 'pointer', transition: 'transform 0.2s ease', '@media (hover: hover)': { '&:hover': { transform: 'translateY(-3px)' } } }}>
-              <Box sx={{ width: { xs: 28, sm: 32 }, height: { xs: 28, sm: 32 }, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: status === 'today' ? `${colors.coral}15` : 'transparent', animation: status === 'today' ? 'pulseGlow 2s ease-in-out infinite' : 'none' }}>
-                <Icon sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' }, color: statusColor[status] }} />
-              </Box>
-              <Typography sx={{ fontSize: { xs: '0.55rem', sm: '0.6rem' }, fontWeight: status === 'today' ? 700 : 500, color: status === 'today' ? colors.coral : colors.muted, display: { xs: status === 'today' ? 'block' : 'none', sm: 'block' } }}>
-                {status === 'today' ? 'Tonight' : `N${night}`}
-              </Typography>
-            </Box>
-          </Tooltip>
-        )
-      })}
-    </Box>
-  )
-}
+const metaChips = [
+  { icon: CalendarMonthOutlinedIcon, label: 'Oct 10 – Oct 19, 2026' },
+  { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot' },
+  { icon: AccessTimeOutlinedIcon, label: 'From 9:00 PM Daily' },
+]
+
+const trustPoints = [
+  { icon: '🛡', label: 'Secure Booking' },
+  { icon: '⚡', label: 'Instant QR Pass' },
+  { icon: '🎟', label: 'Easy Entry' },
+]
+
+const features = [
+  {
+    icon: CelebrationOutlinedIcon,
+    title: 'Amit Dhorda & Team',
+    subtitle: 'Authentic live Garba every evening',
+  },
+  {
+    icon: NightsStayOutlinedIcon,
+    title: '10 Grand Days',
+    subtitle: 'A unique cultural experience each night',
+  },
+  {
+    icon: VerifiedUserOutlinedIcon,
+    title: 'Renowned Artists',
+    subtitle: 'A different featured performer daily',
+  },
+  {
+    icon: WorkspacePremiumOutlinedIcon,
+    title: 'Mandli Garba',
+    subtitle: 'Traditional celebration late into the night',
+  },
+]
 
 export default function UpcomingNights() {
   const navigate = useNavigate()
-  const sliderRef = useRef(null)
-  const scrollTimerRef = useRef(null)
-  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  const updateActiveIndex = () => {
-    const node = sliderRef.current
-    if (!node) return
-    const cardWidth = node.children[0]?.offsetWidth || 340
-    const gap = 16
-    const scrollPos = node.scrollLeft
-    const index = Math.round(scrollPos / (cardWidth + gap))
-    setActiveIndex(Math.min(index, upcomingEvents.length - 1))
-  }
-
-  const scrollSlider = (direction) => {
-    const node = sliderRef.current
-    if (!node) return
-    const amount = Math.min(node.clientWidth * 0.85, 340)
-    node.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
-  }
-
-  useEffect(() => {
-    const node = sliderRef.current
-    if (!node || isAutoScrollPaused) return undefined
-    const interval = window.setInterval(() => {
-      const maxScrollLeft = node.scrollWidth - node.clientWidth
-      const amount = Math.min(node.clientWidth * 0.85, 340)
-      if (node.scrollLeft >= maxScrollLeft - 8) {
-        node.scrollTo({ left: 0, behavior: 'smooth' })
-        return
-      }
-      node.scrollBy({ left: amount, behavior: 'smooth' })
-    }, 3200)
-    return () => window.clearInterval(interval)
-  }, [isAutoScrollPaused])
-
-  useEffect(() => {
-    return () => {
-      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
-    }
-  }, [])
 
   return (
-    <Box component="section" id="upcoming" sx={{ py: { xs: 4.5, md: 6.25 }, overflow: 'hidden' }}>
-      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
-        <SectionHead eyebrow="What's Next" title="Upcoming Nights" description="Each night brings a new theme — book early, ground passes are limited." />
-      </Container>
-      <NightProgressTracker />
-      <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2, md: 3 } }}>
-        <Box sx={{ position: 'relative' }}>
-          <IconButton aria-label="Previous events" onClick={() => scrollSlider('left')} sx={{
-            display: 'inline-flex', position: 'absolute', left: { xs: 0, sm: 4, md: 0 }, top: { xs: 'calc(50% - 20px)', sm: '50%' }, transform: 'translateY(-50%)',
-            bgcolor: colors.bgSoft, border: '1px solid rgba(139,107,46,0.16)', color: colors.ivory, width: { xs: 32, sm: 44 }, height: { xs: 32, sm: 44 }, zIndex: 2, boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
-            '&:hover': { bgcolor: '#fff7ea' }, '& .MuiSvgIcon-root': { fontSize: { xs: '1.1rem', sm: '1.5rem' } },
-          }}>
-            <ChevronLeftRoundedIcon />
-          </IconButton>
-          <IconButton aria-label="Next events" onClick={() => scrollSlider('right')} sx={{
-            display: 'inline-flex', position: 'absolute', right: { xs: 0, sm: 4, md: 0 }, top: { xs: 'calc(50% - 20px)', sm: '50%' }, transform: 'translateY(-50%)',
-            bgcolor: colors.bgSoft, border: '1px solid rgba(139,107,46,0.16)', color: colors.ivory, width: { xs: 32, sm: 44 }, height: { xs: 32, sm: 44 }, zIndex: 2, boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
-            '&:hover': { bgcolor: '#fff7ea' }, '& .MuiSvgIcon-root': { fontSize: { xs: '1.1rem', sm: '1.5rem' } },
-          }}>
-            <ChevronRightRoundedIcon />
-          </IconButton>
-          <Box ref={sliderRef} onMouseEnter={() => setIsAutoScrollPaused(true)} onMouseLeave={() => setIsAutoScrollPaused(false)} onTouchStart={() => setIsAutoScrollPaused(true)} onTouchEnd={() => { const t = setTimeout(() => setIsAutoScrollPaused(false), 2500); scrollTimerRef.current = t }} onScroll={updateActiveIndex} sx={{ display: 'flex', flexWrap: 'nowrap', gap: { xs: 1.5, sm: 2 }, overflowX: 'auto', px: { xs: 2, sm: 3, md: 7 }, pb: 2.25, scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', '&::-webkit-scrollbar': { display: 'none' } }}>
-            {upcomingEvents.map((event) => (
-              <EventCard key={event.id} event={event} onBook={(id) => navigate(`/event/${id}`)} />
-            ))}
-          </Box>
-          <Stack direction="row" spacing={1} sx={{ mb: 2, display: { xs: 'flex', sm: 'none' }, justifyContent: 'center' }}>
-            {upcomingEvents.map((_, index) => (
-              <Box key={index} onClick={() => { const node = sliderRef.current; if (!node) return; const card = node.children[index]; if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }) }} sx={{ width: activeIndex === index ? 20 : 8, height: 8, borderRadius: '4px', bgcolor: activeIndex === index ? colors.marigold : colors.glassBorder, cursor: 'pointer', transition: 'all 0.3s ease' }} />
-            ))}
-          </Stack>
-          <Typography sx={{ display: { xs: 'block', sm: 'none' }, textAlign: 'center', fontSize: '0.72rem', color: colors.muted, mt: 0.5, px: 2 }}>Swipe to see more nights</Typography>
+    <Box
+      component="section"
+      id="featured-event"
+      sx={{
+        position: 'relative',
+        py: { xs: 5, md: 7 },
+        bgcolor: section.bg,
+        backgroundImage: `
+          radial-gradient(circle at 72% 34%, rgba(232,176,74,0.16), transparent 24%),
+          radial-gradient(circle at 24% 72%, rgba(168,50,72,0.14), transparent 22%),
+          linear-gradient(180deg, ${section.bg} 0%, ${section.bgSoft} 100%),
+          ${patternDiya},
+          ${patternMandala},
+          ${patternGarland}
+        `,
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background:
+            'repeating-linear-gradient(135deg, rgba(255,255,255,0.022) 0 1px, transparent 1px 28px)',
+          opacity: 0.35,
+          pointerEvents: 'none',
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(circle at center, transparent 44%, rgba(0,0,0,0.36) 100%)',
+          pointerEvents: 'none',
+        },
+      }}
+    >
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          top: 24,
+          left: 24,
+          width: 140,
+          height: 140,
+          opacity: 0.1,
+          borderRadius: '50%',
+          border: `1px solid ${section.chipBorder}`,
+          backgroundImage: patternMandala,
+          pointerEvents: 'none',
+          animation: 'mgm-float-slow 8s ease-in-out infinite',
+        }}
+      />
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          width: 140,
+          height: 140,
+          opacity: 0.1,
+          borderRadius: '50%',
+          border: `1px solid ${section.chipBorder}`,
+          backgroundImage: patternMandala,
+          pointerEvents: 'none',
+          animation: 'mgm-float-slow 9s ease-in-out infinite reverse',
+        }}
+      />
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          bottom: 24,
+          left: 24,
+          width: 120,
+          height: 120,
+          opacity: 0.08,
+          borderRadius: '50%',
+          border: `1px solid ${section.chipBorder}`,
+          backgroundImage: patternMandala,
+          pointerEvents: 'none',
+          animation: 'mgm-float 7s ease-in-out infinite',
+        }}
+      />
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          width: 120,
+          height: 120,
+          opacity: 0.08,
+          borderRadius: '50%',
+          border: `1px solid ${section.chipBorder}`,
+          backgroundImage: patternMandala,
+          pointerEvents: 'none',
+          animation: 'mgm-float 6.5s ease-in-out infinite reverse',
+        }}
+      />
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
+            gap: { xs: 3, md: 4, lg: 5 },
+            alignItems: 'center',
+          }}
+        >
+          {/* Left — framed poster card */}
+          <RevealBox variant="fadeRight" duration={0.85} sx={{ minWidth: 0 }}>
+            <Box
+              sx={{
+                position: 'relative',
+                bgcolor: 'rgba(255,255,255,0.03)',
+                borderRadius: { xs: '22px', md: '24px' },
+                p: { xs: 0.8, md: 1 },
+                border: `1px solid ${section.cardBorder}`,
+                boxShadow: section.frameShadow,
+                backdropFilter: 'blur(8px)',
+                animation: 'featuredFloat 6s ease-in-out infinite',
+                '@keyframes featuredFloat': {
+                  '0%, 100%': { transform: 'translateY(0px)' },
+                  '50%': { transform: 'translateY(-6px)' },
+                },
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  inset: 14,
+                  borderRadius: { xs: '18px', md: '20px' },
+                  border: '1px solid rgba(255,216,122,0.16)',
+                  pointerEvents: 'none',
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  inset: -1,
+                  borderRadius: { xs: '22px', md: '24px' },
+                  boxShadow: '0 0 36px rgba(232,176,74,0.16)',
+                  pointerEvents: 'none',
+                },
+              }}
+            >
+              <Box sx={{ position: 'absolute', top: 12, left: 12, width: 18, height: 18, borderTop: `2px solid ${section.goldLight}`, borderLeft: `2px solid ${section.goldLight}`, borderTopLeftRadius: 8, opacity: 0.75 }} />
+              <Box sx={{ position: 'absolute', top: 12, right: 12, width: 18, height: 18, borderTop: `2px solid ${section.goldLight}`, borderRight: `2px solid ${section.goldLight}`, borderTopRightRadius: 8, opacity: 0.75 }} />
+              <Box sx={{ position: 'absolute', bottom: 12, left: 12, width: 18, height: 18, borderBottom: `2px solid ${section.goldLight}`, borderLeft: `2px solid ${section.goldLight}`, borderBottomLeftRadius: 8, opacity: 0.75 }} />
+              <Box sx={{ position: 'absolute', bottom: 12, right: 12, width: 18, height: 18, borderBottom: `2px solid ${section.goldLight}`, borderRight: `2px solid ${section.goldLight}`, borderBottomRightRadius: 8, opacity: 0.75 }} />
+              <Box
+                component="img"
+                src={promoBanner}
+                alt="MGM Cultural Navratri 2025 — Rajkot event poster"
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: { xs: '14px', md: '16px' },
+                }}
+              />
+            </Box>
+          </RevealBox>
+
+          {/* Right — open content on cream (no extra card) */}
+          <RevealBox variant="fadeLeft" delay={0.12} duration={0.85} sx={{ minWidth: 0 }}>
+            <Box
+              sx={{
+                display: 'inline-block',
+                background: 'rgba(255,255,255,0.04)',
+                color: section.goldLight,
+                fontSize: { xs: '0.62rem', sm: '0.68rem' },
+                fontWeight: 700,
+                letterSpacing: '1.6px',
+                textTransform: 'uppercase',
+                px: 1.75,
+                py: 0.72,
+                borderRadius: '50px',
+                mb: { xs: 1.5, md: 2 },
+                border: `1px solid ${section.chipBorder}`,
+                boxShadow: '0 8px 20px rgba(0,0,0,0.18)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              ✦ MGM Cultural • Exclusive Event ✦
+            </Box>
+
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: '"Playfair Display", serif',
+                fontWeight: 700,
+                fontSize: { xs: '1.9rem', sm: '2.45rem', md: '3rem', lg: '3.35rem' },
+                lineHeight: 1.1,
+                color: section.heading,
+                mb: { xs: 1.25, md: 1.2 },
+              }}
+            >
+              Ten Days of{' '}
+              <Box
+                component="span"
+                sx={{
+                  background: 'linear-gradient(135deg, #FFD87A 0%, #E8B04A 55%, #C98B2E 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Culture
+              </Box>
+            </Typography>
+            <Box
+              sx={{
+                width: 126,
+                height: 2,
+                mb: { xs: 1.5, md: 1.8 },
+                background: 'linear-gradient(90deg, transparent, rgba(255,216,122,0.95), transparent)',
+                position: 'relative',
+                '&::before': {
+                  content: '"✦"',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -58%)',
+                  color: section.goldLight,
+                  fontSize: '0.8rem',
+                  bgcolor: section.bgSoft,
+                  px: 0.75,
+                },
+              }}
+            />
+
+            <Typography
+              sx={{
+                fontSize: { xs: '0.94rem', md: '1.04rem' },
+                color: section.body,
+                lineHeight: 1.9,
+                maxWidth: 620,
+                mb: { xs: 2.2, md: 2.7 },
+              }}
+            >
+              {aboutContent.featuredSummary}
+            </Typography>
+
+            <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: { xs: 2.5, md: 3 } }}>
+              {metaChips.map(({ icon: Icon, label }) => (
+                <Chip
+                  key={label}
+                  icon={<Icon sx={{ fontSize: '0.98rem !important', color: `${section.goldLight} !important` }} />}
+                  label={label}
+                  sx={{
+                    bgcolor: section.chipBg,
+                    border: `1px solid ${section.chipBorder}`,
+                    color: section.heading,
+                    fontWeight: 600,
+                    fontSize: { xs: '0.72rem', sm: '0.8rem' },
+                    height: 'auto',
+                    py: 0.6,
+                    maxWidth: '100%',
+                    boxShadow: '0 10px 24px rgba(0, 0, 0, 0.16)',
+                    backdropFilter: 'blur(8px)',
+                    transition: 'background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(255,255,255,0.08)',
+                      borderColor: 'rgba(255,216,122,0.45)',
+                      transform: 'translateY(-2px)',
+                    },
+                    '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' },
+                  }}
+                />
+              ))}
+            </Stack>
+
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1.5}
+              alignItems={{ xs: 'stretch', sm: 'center' }}
+            >
+              <Button
+                onClick={() => navigate('/event/1')}
+                startIcon={<ConfirmationNumberOutlinedIcon />}
+                endIcon={<ArrowForwardRoundedIcon />}
+                sx={{
+                  background: 'linear-gradient(180deg, #FFD76A 0%, #D19128 100%)',
+                  color: '#180A0F',
+                  px: 3,
+                  py: { xs: 1.35, md: 1.5 },
+                  minHeight: 48,
+                  fontSize: { xs: '0.9rem', md: '0.95rem' },
+                  fontWeight: 700,
+                  borderRadius: '50px',
+                  boxShadow: '0 14px 30px rgba(209, 145, 40, 0.28), 0 0 28px rgba(232,176,74,0.12)',
+                  transition: 'transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease',
+                  '& .MuiButton-startIcon, & .MuiButton-endIcon': {
+                    color: '#180A0F',
+                  },
+                  '&:hover': {
+                    background: 'linear-gradient(180deg, #FFD76A 0%, #D19128 100%)',
+                    filter: 'brightness(1.04)',
+                    transform: 'translateY(-2px) scale(1.03)',
+                    boxShadow: '0 18px 38px rgba(209, 145, 40, 0.35), 0 0 34px rgba(232,176,74,0.18)',
+                  },
+                }}
+              >
+                Book Tickets
+              </Button>
+              <Button
+                component="a"
+                href="#past"
+                startIcon={<CalendarMonthOutlinedIcon />}
+                sx={{
+                  bgcolor: 'rgba(255,255,255,0.04)',
+                  color: section.heading,
+                  border: `1.5px solid ${section.btnOutline}`,
+                  px: 3,
+                  py: { xs: 1.35, md: 1.5 },
+                  minHeight: 48,
+                  fontSize: { xs: '0.9rem', md: '0.95rem' },
+                  fontWeight: 700,
+                  borderRadius: '50px',
+                  backdropFilter: 'blur(10px)',
+                  '& .MuiButton-startIcon': { color: section.goldLight },
+                  '&:hover': {
+                    bgcolor: 'rgba(255,255,255,0.08)',
+                    borderColor: 'rgba(255,216,122,0.48)',
+                    color: section.heading,
+                    boxShadow: '0 0 22px rgba(232,176,74,0.12)',
+                  },
+                }}
+              >
+                Explore Events
+              </Button>
+            </Stack>
+
+            <Stack
+              direction="row"
+              flexWrap="wrap"
+              useFlexGap
+              spacing={1.4}
+              sx={{
+                mt: 1.6,
+                color: 'rgba(255,248,240,0.72)',
+                fontSize: { xs: '0.76rem', md: '0.82rem' },
+              }}
+            >
+              {trustPoints.map((item) => (
+                <Box
+                  key={item.label}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.65,
+                  }}
+                >
+                  <Box component="span" sx={{ fontSize: '0.9rem' }}>
+                    {item.icon}
+                  </Box>
+                  <Typography component="span" sx={{ fontSize: 'inherit', color: 'inherit' }}>
+                    {item.label}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
+          </RevealBox>
         </Box>
+
+        <RevealGroup
+          stagger={0.1}
+          variant="scaleUp"
+          sx={{
+            mt: { xs: 3.5, md: 4.5 },
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
+            gap: 1.5,
+          }}
+        >
+          {features.map(({ icon: Icon, title, subtitle }) => (
+            <Box
+              key={title}
+              sx={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 1.25,
+                px: { xs: 1.4, md: 1.6 },
+                py: { xs: 1.35, md: 1.55 },
+                borderRadius: '18px',
+                bgcolor: 'rgba(255,255,255,0.04)',
+                border: `1px solid ${section.chipBorder}`,
+                backdropFilter: 'blur(8px)',
+                boxShadow: '0 12px 24px rgba(0,0,0,0.16)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 16px 32px rgba(0,0,0,0.22)',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: '12px',
+                  border: `1px solid rgba(255,216,122,0.28)`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  bgcolor: 'rgba(255,255,255,0.03)',
+                }}
+              >
+                <Icon sx={{ color: section.goldLight, fontSize: '1.1rem' }} />
+              </Box>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography sx={{ color: section.heading, fontWeight: 700, fontSize: '0.9rem', mb: 0.2 }}>
+                  {title}
+                </Typography>
+                <Typography sx={{ color: section.body, fontSize: '0.75rem', lineHeight: 1.55 }}>
+                  {subtitle}
+                </Typography>
+              </Box>
+            </Box>
+          ))}
+        </RevealGroup>
       </Container>
     </Box>
   )

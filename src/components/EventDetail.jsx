@@ -1,5 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { isWowslyConfigured } from '../config/wowsly'
+import {
+  applyQuotedPriceToRegistration,
+  prepareWowslyBooking,
+} from '../services/wowslyBooking'
+import { getPublicSchedule } from '../services/wowslyApi'
+import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
+import ScheduleStep from './ScheduleStep'
+import { Navigate, useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -15,82 +23,530 @@ import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded'
 import ConfirmationNumberRoundedIcon from '@mui/icons-material/ConfirmationNumberRounded'
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
-import MusicNoteOutlinedIcon from '@mui/icons-material/MusicNoteOutlined'
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
-import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded'
-import MicIcon from '@mui/icons-material/Mic'
-import BusinessIcon from '@mui/icons-material/Business'
-import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import ManOutlinedIcon from '@mui/icons-material/ManOutlined'
+import WomanOutlinedIcon from '@mui/icons-material/WomanOutlined'
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined'
 import PhotoCaptureField from './PhotoCaptureField'
-import ShareSheet from './ShareSheet'
-import { usePageMeta } from '../hooks/usePageMeta'
-import { colors, gradients } from '../constants/colors'
-import promoBanner from '../assets/image.png'
+import NonRefundableCheckbox from './NonRefundableCheckbox'
+import MobileNumberField from './MobileNumberField'
+import AadhaarNumberField from './AadhaarNumberField'
 import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
+import promoBanner from '../assets/image.png'
+import wowslyLogo from '../assets/wowsly-logo.png'
+import FestiveSection from './FestiveSection'
+import { colors } from '../constants/colors'
+import {
+  personSectionSx,
+  personTitleSx,
+  registrationBackButtonSx,
+  registrationCardSx,
+  registrationFieldSx,
+  registrationSubmitButtonSx,
+  registrationSummarySx,
+  registrationUi,
+} from '../constants/registrationFormTheme'
 
 const eventInfo = {
   1: {
-    dateRange: '13 Oct 2026', time: '7:30 PM – 1:00 AM', ticketInfo: 'Stag ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
-    venue: 'Seasons Hotel', location: 'Rajkot, Gujarat', price: '₹499',
-    description: `About Rangeeli Raat\n\nThe third night of MGM Cultural Navratri is where the energy peaks. Rangeeli Raat — the colourful night — brings together devotion, dance, and dandiya under one open sky.\n\nHundreds gather in a single rhythmic circle as the dhol sets the beat and the air fills with the sound of clashing sticks and cheerful chants. From garba newbies dancing at the edge to seasoned raas performers spinning through the centre, every hand moves, every foot follows, and the circle never breaks.\n\nThe venue glows with rangoli, marigold strings, and diya-lined pathways. Folk artists take the stage between sets, keeping the spirit rooted in tradition. Stalls line the periphery with handcrafted souvenirs, fresh sugarcane juice, and hot kachori — because no night of garba is complete without a chai break at 1 AM.`,
-    whyAttend: ['Experience the most vibrant night of Garba and Dandiya', 'Dance under the open sky with hundreds of fellow celebrants', 'Enjoy live folk performances between Garba sets', 'Savour fresh sugarcane juice, kachori, and handcrafted souvenirs', 'Join a welcoming circle — beginners and experts alike', 'Capture the colourful night at themed photo spots'],
-    highlights: ['Live Dhol & Folk Performances', 'Grand Garba Circle', 'Rangoli & Marigold-Themed Decor', 'Handicraft & Food Stalls', 'Professional Photo Installations', 'Late-Night Chai & Snacks'],
+    dateRange: '13 Oct 2026',
+    time: '7:30 PM – 1:00 AM',
+    ticketInfo: 'Stag ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    venue: 'Seasons Hotel',
+    location: 'Rajkot, Gujarat',
+    price: '₹499',
+    description: `About Rangeeli Raat
+
+The third night of MGM Cultural Navratri is where the energy peaks. Rangeeli Raat — the colourful night — brings together devotion, dance, and dandiya under one open sky.
+
+Hundreds gather in a single rhythmic circle as the dhol sets the beat and the air fills with the sound of clashing sticks and cheerful chants. From garba newbies dancing at the edge to seasoned raas performers spinning through the centre, every hand moves, every foot follows, and the circle never breaks.
+
+The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk artists take the stage between sets, keeping the spirit rooted in tradition. Stalls line the periphery with handcrafted souvenirs, fresh sugarcane juice, and hot kachori — because no night of garba is complete without a chai break at 1 AM.`,
+    whyAttend: [
+      'Discover the latest innovations in fertilizers and crop nutrition',
+      'Connect with global industry leaders and decision-makers',
+      'Explore emerging technologies and sustainable solutions',
+      'Gain valuable insights from expert speakers and industry professionals',
+      'Build strategic partnerships and expand your business network',
+      'Access new market opportunities and potential collaborations',
+    ],
+    highlights: [
+      'International B2B Exhibition',
+      'Industry Expert Conference Sessions',
+      'Product Launches & Live Demonstrations',
+      'Networking Opportunities',
+      'Global Exhibitors & Delegates',
+      'Business Matchmaking Sessions',
+    ],
+    singer: {
+      name: 'Raj Gadhvi',
+      image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Main Stage', 'Fanpit Zone', 'VIP Lounge', 'Food Court', 'Entry Gate'],
     cta: 'Book Stag Pass',
   },
   2: {
-    dateRange: '14 Oct 2026', time: '7:30 PM – 1:00 AM', ticketInfo: 'Couple ₹899 | Includes Complimentary Mocktail',
-    venue: 'Seasons Hotel', location: 'Rajkot, Gujarat', price: '₹899',
-    description: `About Dhoom Dhamaka\n\nNight four is made for two. Dhoom Dhamaka is a celebration of togetherness — where love and tradition meet on the dance floor.\n\nCouples gather for partner Dandiya workshops before the main circle begins. Learn the steps together, find your rhythm, and then join the larger Garba circle as the night takes over.`,
-    whyAttend: ['Enjoy a special date-night experience during Navratri', 'Learn Dandiya steps together in partner workshops', 'Reserved couple seating zone', 'Complimentary welcome mocktail per couple', 'Dance in a romantic Garba circle', 'Capture the night at themed photo installations'],
-    highlights: ['Couple Dandiya Workshop', 'Romantic Garba Circle', 'Complimentary Mocktail per Couple', 'Reserved Couple Seating', 'Fairy-Light Themed Decor', 'Live Folk & Romantic Beats'],
+    dateRange: '14 Oct 2026',
+    time: '7:30 PM – 1:00 AM',
+    ticketInfo: 'Couple ₹899 | Includes Complimentary Mocktail',
+    venue: 'Seasons Hotel',
+    location: 'Rajkot, Gujarat',
+    price: '₹899',
+    description: `About Dhoom Dhamaka
+
+Night four is made for two. Dhoom Dhamaka is a celebration of togetherness — where love and tradition meet on the dance floor.
+
+Couples gather for partner Dandiya workshops before the main circle begins. Learn the steps together, find your rhythm, and then join the larger Garba circle as the night takes over.`,
+    whyAttend: [
+      'Enjoy a special date-night experience during Navratri',
+      'Learn Dandiya steps together in partner workshops',
+      'Reserved couple seating zone',
+      'Complimentary welcome mocktail per couple',
+      'Dance in a romantic Garba circle',
+      'Capture the night at themed photo installations',
+    ],
+    highlights: [
+      'Couple Dandiya Workshop',
+      'Romantic Garba Circle',
+      'Complimentary Mocktail per Couple',
+      'Reserved Couple Seating',
+      'Fairy-Light Themed Decor',
+      'Live Folk & Romantic Beats',
+    ],
+    singer: {
+      name: 'Aishwarya Majmudar',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Couple Zone', 'Main Stage', 'Mocktail Bar', 'Photo Booth', 'Entry Gate'],
     cta: 'Book Couple Pass',
   },
   3: {
-    dateRange: '15 Oct 2026', time: '7:30 PM – 2:00 AM', ticketInfo: 'Stag ₹599 | Entry to All Stalls Included',
-    venue: 'Seasons Hotel', location: 'Rajkot, Gujarat', price: '₹599',
-    description: `About Bollywood Beats\n\nNight five turns up the tempo. Bollywood Beats blends the soul of folk tradition with the pulse of contemporary music — creating a high-energy night that keeps the ground moving until 2 AM.`,
-    whyAttend: ['Dance to Bollywood anthems fused with live folk beats', 'Experience the LED dance floor with synchronised light shows', 'Join the Bollywood costume contest', 'Extended hours until 2 AM', 'Perfect fusion of tradition and contemporary energy', 'High-energy crowd, incredible atmosphere'],
-    highlights: ['Live DJ — Bollywood & Folk Fusion', 'LED Dance Floor with Light Show', 'Bollywood Costume Contest', 'Extended Session til 2 AM', 'Fusion-Themed Stage Decor', 'Late-Night Snack Counters Open'],
+    dateRange: '15 Oct 2026',
+    time: '7:30 PM – 2:00 AM',
+    ticketInfo: 'Stag ₹599 | Entry to All Stalls Included',
+    venue: 'Seasons Hotel',
+    location: 'Rajkot, Gujarat',
+    price: '₹599',
+    description: `About Bollywood Beats
+
+Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition with the pulse of contemporary music — creating a high-energy night that keeps the ground moving until 2 AM.`,
+    whyAttend: [
+      'Dance to Bollywood anthems fused with live folk beats',
+      'Experience the LED dance floor with synchronised light shows',
+      'Join the Bollywood costume contest',
+      'Extended hours until 2 AM',
+      'Perfect fusion of tradition and contemporary energy',
+      'High-energy crowd, incredible atmosphere',
+    ],
+    highlights: [
+      'Live DJ — Bollywood & Folk Fusion',
+      'LED Dance Floor with Light Show',
+      'Bollywood Costume Contest',
+      'Extended Session til 2 AM',
+      'Fusion-Themed Stage Decor',
+      'Late-Night Snack Counters Open',
+    ],
+    singer: {
+      name: 'Parthiv Gohil',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['LED Dance Floor', 'Main Stage', 'Food Court', 'Lounge Deck', 'Entry Gate'],
     cta: 'Book Your Pass',
   },
   4: {
-    dateRange: '20 Oct 2026', time: '7:00 PM – 1:00 AM', ticketInfo: 'Premium ₹1,299 | Includes Welcome Gift Pack',
-    venue: 'Seasons Hotel', location: 'Rajkot, Gujarat', price: '₹1,299',
-    description: `About Maha Aarti & Grand Finale\n\nTen nights lead to this one moment. The Grand Finale of MGM Cultural Navratri begins with a sacred Maha Aarti — a powerful ceremony of light, sound, and collective prayer that fills the entire venue with devotion.`,
-    whyAttend: ['Witness the sacred Maha Aarti ceremony', 'Enjoy a grand fireworks display', 'Watch live finale performances', 'Receive a premium welcome gift pack', 'Be part of the final Garba circle', 'Experience the most spectacular closing night'],
-    highlights: ['Sacred Maha Aarti Ceremony', 'Grand Fireworks Display', 'Live Finale Performances', 'Closing Garba Circle', 'Premium Welcome Gift Pack', 'Farewell Community Photo'],
+    dateRange: '20 Oct 2026',
+    time: '7:00 PM – 1:00 AM',
+    ticketInfo: 'Premium ₹1,299 | Includes Welcome Gift Pack',
+    venue: 'Seasons Hotel',
+    location: 'Rajkot, Gujarat',
+    price: '₹1,299',
+    description: `About Maha Aarti & Grand Finale
+
+Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri begins with a sacred Maha Aarti — a powerful ceremony of light, sound, and collective prayer that fills the entire venue with devotion.`,
+    whyAttend: [
+      'Witness the sacred Maha Aarti ceremony',
+      'Enjoy a grand fireworks display',
+      'Watch live finale performances',
+      'Receive a premium welcome gift pack',
+      'Be part of the final Garba circle',
+      'Experience the most spectacular closing night',
+    ],
+    highlights: [
+      'Sacred Maha Aarti Ceremony',
+      'Grand Fireworks Display',
+      'Live Finale Performances',
+      'Closing Garba Circle',
+      'Premium Welcome Gift Pack',
+      'Farewell Community Photo',
+    ],
+    singer: {
+      name: 'Falguni Pathak Tribute Live',
+      image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Maha Aarti Stage', 'Premium Deck', 'Garba Arena', 'Food Court', 'Entry Gate'],
     cta: 'Book Premium Pass',
   },
 }
 
 const categoryKeys = ['male', 'female', 'couple']
+
 const passModes = [
   { id: 'seasonal', title: 'Seasonal Pass', subtitle: '10 Nights Garba', data: passOptions.seasonal },
   { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
 
-const emptyPerson = () => ({ name: '', mobile: '', email: '', aadhaar: '', selfiePreview: '', errors: {} })
+function buildFallbackEvent(id) {
+  const night = navratriNights.find((item) => item.id === id)
+  if (!night) return null
 
-const validateField = (field, value, allValues) => {
-  switch (field) {
-    case 'name': return value.trim().length < 2 ? 'Enter full name' : ''
-    case 'mobile': return /^[6-9]\d{9}$/.test(value.trim()) ? '' : 'Enter valid 10-digit mobile'
-    case 'email': return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) ? '' : 'Enter valid email address'
-    case 'aadhaar': return /^\d{12}$/.test(value.replace(/\D/g, '')) ? '' : 'Enter valid 12-digit Aadhaar'
-    default: return ''
+  return {
+    id: night.id,
+    title: night.theme,
+    badge: 'Now Booking',
+    night: night.label,
+    date: `🗓️ ${night.date}`,
+    time: '🕰️ 9:00 PM',
+    price: '₹499',
+    priceUnit: '/ pass',
+    image: promoBanner,
   }
 }
 
-const fieldSx = {
-  '& .MuiOutlinedInput-root': { bgcolor: colors.bg, color: colors.ivory, borderRadius: '10px', transition: 'box-shadow 0.2s, border-color 0.2s', '& fieldset': { borderColor: 'rgba(184,134,11,0.12)' }, '&:hover fieldset': { borderColor: 'rgba(184,134,11,0.25)' }, '&.Mui-focused fieldset': { borderColor: colors.gold }, '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(184,134,11,0.08)' }, '&.Mui-error fieldset': { borderColor: '#d32f2f' } },
-  '& .MuiInputBase-input::placeholder': { color: colors.muted, opacity: 1 },
-  '& .MuiSelect-select': { textAlign: 'left' },
-  '& .MuiFormHelperText-root': { color: '#d32f2f', fontSize: '0.72rem', mx: 0 },
+function buildFallbackInfo(id) {
+  const night = navratriNights.find((item) => item.id === id)
+  if (!night) return null
+
+  return {
+    dateRange: night.date.replace(',', ' 2026'),
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Daily Pass ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    venue: 'Seasons Hotel',
+    location: 'Rajkot, Gujarat',
+    price: '₹499',
+    description: `About ${night.theme}
+
+${night.label} of MGM Cultural Navratri 2026 celebrates ${night.theme.toLowerCase()} with live Garba, festive performances, and a vibrant cultural atmosphere in Rajkot.
+
+From the opening aarti to the late-night Mandli Garba session, guests can enjoy music, tradition, decorated festival grounds, and a memorable celebration with family and friends.`,
+    whyAttend: [
+      `Experience ${night.theme.toLowerCase()} in a live Navratri atmosphere`,
+      'Enjoy authentic Garba and Raas with a festive crowd',
+      'Celebrate with music, decor, devotion, and food stalls',
+      'Join one of Rajkot’s most vibrant cultural nights',
+      'Capture memorable moments with friends and family',
+      'Stay for the late-night Mandli Garba celebration',
+    ],
+    highlights: [
+      'Live Garba Performance',
+      'Festival Decor & Lighting',
+      'Food & Handicraft Stalls',
+      'Mandli Garba Late Night',
+      'Cultural Stage Experience',
+      'Family-Friendly Celebration',
+    ],
+    singer: {
+      name: 'Amit Dhorda & Team',
+      image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900&auto=format&fit=crop',
+    },
+    organizer: {
+      name: 'MGM Event',
+      mark: 'R',
+    },
+    layoutZones: ['Main Stage', 'Garba Arena', 'Food Court', 'Entry Gate', 'Seating Zone'],
+    cta: `Book ${night.theme}`,
+  }
+}
+
+const accentFestive = '#C98B2E'
+const ui = {
+  card: colors.bgCard,
+  surface: colors.bgSoft,
+  surfaceMuted: colors.bgWarm,
+  text: colors.textLight,
+  muted: colors.muted,
+  border: colors.border,
+}
+
+const categoryMeta = {
+  male: { Icon: ManOutlinedIcon, bg: '#E8F1FF', color: '#3B82F6' },
+  female: { Icon: WomanOutlinedIcon, bg: '#FEECEC', color: '#EF4444' },
+  couple: { Icon: PeopleOutlinedIcon, bg: '#E8F8EE', color: '#22C55E' },
+}
+
+function RegistrationStepPills({ activeStep, stepLabels }) {
+  return (
+    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: { xs: 2, md: 3 } }}>
+      {stepLabels.map((label, index) => {
+        const isCompleted = index < activeStep
+        const isActive = index === activeStep
+
+        return (
+          <Box
+            key={label}
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.75,
+              px: { xs: 1.15, sm: 1.4 },
+              py: 0.55,
+              borderRadius: '50px',
+              fontSize: { xs: '0.68rem', sm: '0.75rem' },
+              fontWeight: 700,
+              bgcolor: isActive ? accentFestive : ui.surfaceMuted,
+              color: isActive ? colors.night : ui.muted,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {isCompleted ? (
+              <CheckRoundedIcon sx={{ fontSize: '1rem', color: ui.muted }} />
+            ) : (
+              <Box
+                sx={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  bgcolor: isActive ? colors.night : 'transparent',
+                  border: isActive ? 'none' : `2px solid ${colors.border}`,
+                  color: isActive ? accentFestive : ui.muted,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.65rem',
+                  fontWeight: 800,
+                  lineHeight: 1,
+                }}
+              >
+                {index + 1}
+              </Box>
+            )}
+            {!isCompleted && label}
+          </Box>
+        )
+      })}
+    </Stack>
+  )
+}
+
+function SelectedPassBanner({ title }) {
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1.5}
+      sx={{
+        bgcolor: ui.surfaceMuted,
+        border: `1px solid ${accentFestive}55`,
+        borderRadius: '12px',
+        p: 1.5,
+      }}
+    >
+      <Box
+        sx={{
+          width: 42,
+          height: 42,
+          borderRadius: '10px',
+          bgcolor: 'rgba(201, 139, 46, 0.16)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <ConfirmationNumberRoundedIcon sx={{ color: accentFestive, fontSize: '1.3rem' }} />
+      </Box>
+      <Typography sx={{ fontSize: '0.9rem', color: ui.muted }}>
+        Selected:{' '}
+        <Box component="span" sx={{ fontWeight: 700, color: accentFestive }}>
+          {title}
+        </Box>
+      </Typography>
+    </Stack>
+  )
+}
+
+function PassTypeOption({ item, selected, onSelect }) {
+  return (
+    <Button
+      onClick={onSelect}
+      sx={{
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 1.5,
+        textAlign: 'left',
+        px: 1.75,
+        py: 1.75,
+        width: '100%',
+        borderRadius: '12px',
+        border: selected ? `2px solid ${accentFestive}` : `1px solid ${ui.border}`,
+        bgcolor: selected ? 'rgba(201, 139, 46, 0.12)' : ui.card,
+        color: ui.text,
+        textTransform: 'none',
+        boxShadow: selected ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.2)',
+        '&:hover': {
+          bgcolor: selected ? 'rgba(201, 139, 46, 0.16)' : ui.surfaceMuted,
+          borderColor: selected ? accentFestive : colors.border,
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: 44,
+          height: 44,
+          borderRadius: '10px',
+          bgcolor: selected ? 'rgba(201, 139, 46, 0.2)' : ui.surfaceMuted,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <ConfirmationNumberRoundedIcon sx={{ color: selected ? accentFestive : ui.muted, fontSize: '1.35rem' }} />
+      </Box>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem' }}>{item.title}</Typography>
+        <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{item.subtitle}</Typography>
+      </Box>
+      <Stack direction="row" alignItems="center" spacing={1.25} sx={{ flexShrink: 0 }}>
+        <Typography sx={{ fontWeight: 800, color: selected ? accentFestive : ui.text, fontSize: '1rem' }}>
+          {item.data.price}
+        </Typography>
+        <Box
+          sx={{
+            width: 24,
+            height: 24,
+            borderRadius: '50%',
+            border: selected ? 'none' : `2px solid ${colors.border}`,
+            bgcolor: selected ? accentFestive : 'transparent',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {selected && <CheckRoundedIcon sx={{ color: colors.night, fontSize: '1rem' }} />}
+        </Box>
+      </Stack>
+    </Button>
+  )
+}
+
+function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, selected, onSelect }) {
+  const { Icon, bg, color } = categoryMeta[categoryKey] || categoryMeta.male
+
+  return (
+    <Button
+      onClick={onSelect}
+      sx={{
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 1.5,
+        textAlign: 'left',
+        px: 1.75,
+        py: 1.75,
+        width: '100%',
+        borderRadius: '12px',
+        border: selected ? `2px solid ${accentFestive}` : `1px solid ${ui.border}`,
+        bgcolor: ui.card,
+        color: ui.text,
+        textTransform: 'none',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        '&:hover': {
+          bgcolor: ui.surfaceMuted,
+          borderColor: selected ? accentFestive : colors.border,
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: 44,
+          height: 44,
+          borderRadius: '10px',
+          bgcolor: bg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <Icon sx={{ color, fontSize: '1.35rem' }} />
+      </Box>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', textTransform: 'capitalize' }}>{label}</Typography>
+        <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{subtitle}</Typography>
+      </Box>
+      <Stack direction="row" alignItems="center" spacing={1.5} sx={{ flexShrink: 0 }}>
+        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
+          {price}
+          {priceUnit ? (
+            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: ui.muted, ml: 0.35 }}>
+              {priceUnit}
+            </Box>
+          ) : null}
+        </Typography>
+        <Box
+          sx={{
+            width: 22,
+            height: 22,
+            borderRadius: '50%',
+            border: selected ? 'none' : `2px solid ${colors.border}`,
+            bgcolor: selected ? accentFestive : 'transparent',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          {selected && <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: colors.night }} />}
+        </Box>
+      </Stack>
+    </Button>
+  )
+}
+
+const emptyPerson = () => ({
+  name: '',
+  mobile: '',
+  email: '',
+  aadhaar: '',
+  selfiePreview: '',
+})
+
+function formatRupees(amount) {
+  return `₹${new Intl.NumberFormat('en-IN').format(amount)}`
+}
+
+function getPriceAmount(price) {
+  const digits = Number(String(price || '').replace(/[^\d]/g, ''))
+  return Number.isFinite(digits) ? digits : 0
+}
+
+const fieldSx = registrationFieldSx
+
+const selectFieldSx = {
+  bgcolor: registrationUi.inputBg,
+  color: registrationUi.text,
+  borderRadius: '12px',
+  '& .MuiOutlinedInput-notchedOutline': { borderColor: registrationUi.border },
+  '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(232, 184, 74, 0.45)' },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold, borderWidth: '1.5px' },
+  '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(201, 139, 46, 0.15)' },
+  '& .MuiSelect-icon': { color: registrationUi.muted },
 }
 
 function getNightLabel(nightId) {
@@ -99,16 +555,106 @@ function getNightLabel(nightId) {
   return `${night.label} · ${night.date} · ${night.theme}`
 }
 
-function PersonFields({ title, person, onFieldChange, onPhotoChange, onBlur }) {
-  const getError = (field) => person.errors?.[field] || ''
+function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
   return (
-    <Box sx={{ display: 'grid', gap: 1.5 }}>
-      {title && <Typography sx={{ fontWeight: 700, color: colors.ivory, fontSize: '0.92rem', mb: 0.15, letterSpacing: '0.3px' }}>{title}</Typography>}
-      <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} onBlur={onBlur?.('name')} error={!!getError('name')} helperText={getError('name')} fullWidth slotProps={{ formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
-      <TextField required placeholder="Mobile Number" type="tel" value={person.mobile} onChange={onFieldChange('mobile')} onBlur={onBlur?.('mobile')} error={!!getError('mobile')} helperText={getError('mobile')} fullWidth slotProps={{ htmlInput: { inputMode: 'numeric' }, formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
-      <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} onBlur={onBlur?.('email')} error={!!getError('email')} helperText={getError('email')} fullWidth slotProps={{ formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
-      <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} />
-      <TextField required placeholder="Aadhaar Card Number" value={person.aadhaar} onChange={onFieldChange('aadhaar')} onBlur={onBlur?.('aadhaar')} error={!!getError('aadhaar')} helperText={getError('aadhaar')} fullWidth slotProps={{ htmlInput: { inputMode: 'numeric', maxLength: 12 }, formHelperText: { sx: { fontSize: '0.72rem', mx: 0 } } }} />
+    <Box sx={personSectionSx}>
+      {title && (
+        <Typography sx={personTitleSx}>
+          {title}
+        </Typography>
+      )}
+      <Box sx={{ display: 'grid', gap: 1.5 }}>
+        <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
+        <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} />
+        <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
+        <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
+        <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} />
+      </Box>
+    </Box>
+  )
+}
+
+function DetailInfoCard({ title, children }) {
+  return (
+    <Box sx={{ mb: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>
+        {title}
+      </Typography>
+      <Box
+        sx={{
+          maxWidth: 360,
+          bgcolor: ui.card,
+          border: `1px solid ${ui.border}`,
+          borderRadius: '14px',
+          overflow: 'hidden',
+          boxShadow: '0 8px 22px rgba(15, 23, 42, 0.08)',
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  )
+}
+
+function EventLayoutCard({ zones = [] }) {
+  return (
+    <Box sx={{ mb: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 2, fontSize: '1.25rem' }}>
+        Event Layout
+      </Typography>
+      <Box
+        sx={{
+          maxWidth: 420,
+          bgcolor: ui.card,
+          border: `1px solid ${ui.border}`,
+          borderRadius: '14px',
+          p: 1.5,
+          boxShadow: '0 8px 22px rgba(15, 23, 42, 0.08)',
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            minHeight: 190,
+            background: 'linear-gradient(180deg, #F6A7C1 0 10%, #D7ED9A 10% 82%, #4A4F65 82% 100%)',
+            border: '1px solid rgba(0,0,0,0.08)',
+          }}
+        >
+          <Box sx={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', fontWeight: 800, color: '#4B2D18', fontSize: '0.92rem' }}>
+            Main Stage
+          </Box>
+          <Box sx={{ position: 'absolute', top: '28%', left: '50%', transform: 'translateX(-50%)', px: 1.5, py: 0.75, borderRadius: '10px', bgcolor: 'rgba(255,255,255,0.68)', color: '#4B2D18', fontWeight: 700, fontSize: '0.82rem' }}>
+            Fanpit Zone
+          </Box>
+          <Box sx={{ position: 'absolute', left: 12, bottom: 18, px: 1.25, py: 0.65, borderRadius: '10px', bgcolor: 'rgba(0,0,0,0.36)', color: '#fff', fontSize: '0.76rem', fontWeight: 700 }}>
+            Entry Gate
+          </Box>
+          <Box sx={{ position: 'absolute', right: 12, bottom: 18, px: 1.25, py: 0.65, borderRadius: '10px', bgcolor: 'rgba(0,0,0,0.36)', color: '#fff', fontSize: '0.76rem', fontWeight: 700 }}>
+            Food Court
+          </Box>
+        </Box>
+        <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} sx={{ mt: 1.5 }}>
+          {zones.map((zone) => (
+            <Box
+              key={zone}
+              sx={{
+                px: 1.1,
+                py: 0.55,
+                borderRadius: '999px',
+                bgcolor: ui.surfaceMuted,
+                border: `1px solid ${ui.border}`,
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                color: ui.muted,
+              }}
+            >
+              {zone}
+            </Box>
+          ))}
+        </Stack>
+      </Box>
     </Box>
   )
 }
@@ -117,60 +663,179 @@ export default function EventDetail() {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const id = Number(eventId)
-  const event = upcomingEvents.find(e => e.id === id)
-  const info = eventInfo[id]
-  const [tab, setTab] = useState('info')
+  const event = upcomingEvents.find((e) => e.id === id) || buildFallbackEvent(id)
+  const info = eventInfo[id] || buildFallbackInfo(id)
   const [regStep, setRegStep] = useState(0)
-  const [headerScrolled, setHeaderScrolled] = useState(false)
-  const [shareOpen, setShareOpen] = useState(false)
   const [passMode, setPassMode] = useState('')
   const [category, setCategory] = useState('')
-  const [selectedDay, setSelectedDay] = useState('')
+  const [slotSelection, setSlotSelection] = useState(null)
+  const [schedule, setSchedule] = useState(null)
+  const [scheduleLoading, setScheduleLoading] = useState(false)
+  const [scheduleError, setScheduleError] = useState('')
   const [personForm, setPersonForm] = useState(emptyPerson)
+  const [secondPersonForm, setSecondPersonForm] = useState(emptyPerson)
   const [maleForm, setMaleForm] = useState(emptyPerson)
   const [femaleForm, setFemaleForm] = useState(emptyPerson)
+  const [ticketCount, setTicketCount] = useState('1')
+  const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
   const isSeasonalPass = passMode === 'seasonal'
   const pricingSource = isSeasonalPass ? selectedPass?.data : selected
-
-  usePageMeta(event?.title || 'Event', `${event?.title} — ${info?.dateRange}. ${info?.ticketInfo}. Book your pass for MGM Cultural Navratri 2026.`)
+  const isCoupleCategory = category === 'couple'
+  const pricingMultiplier = isCoupleCategory ? 1 : Number(ticketCount || 1)
+  const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
+  const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
+  const scheduleStep = 2
+  const detailsStep = isSeasonalPass ? 2 : 3
+  const registrationStepLabels = isSeasonalPass
+    ? ['Pass Type', 'Category', 'Details']
+    : ['Pass Type', 'Category', 'Date & Time', 'Details']
 
   useEffect(() => {
-    const handleScroll = () => setHeaderScrolled(window.scrollY > 120)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    let cancelled = false
+
+    async function loadSchedule() {
+      setScheduleLoading(true)
+      setScheduleError('')
+      try {
+        const response = isWowslyConfigured() ? await getPublicSchedule() : null
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(response || buildFallbackSchedule()))
+        }
+      } catch {
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+          setScheduleError('')
+        }
+      } finally {
+        if (!cancelled) setScheduleLoading(false)
+      }
+    }
+
+    loadSchedule()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
-  const scrollToRegistration = () => { setTab('registration'); setRegStep(0); setTimeout(() => { document.getElementById('event-registration')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }, 100) }
+  if (!event || !info) return <Navigate to="/" replace />
 
-  const makeFieldUpdater = (setter) => (field) => (event) => setter((prev) => ({ ...prev, [field]: event.target.value, errors: { ...prev.errors, [field]: '' } }))
-  const makePhotoUpdater = (setter) => (previewUrl) => setter((prev) => { if (prev.selfiePreview?.startsWith('blob:')) { URL.revokeObjectURL(prev.selfiePreview) }; return { ...prev, selfiePreview: previewUrl, errors: { ...prev.errors, selfiePreview: '' } } })
-  const makeFieldBlur = (setter) => (field) => () => setter((prev) => {
-    const error = validateField(field, prev[field], prev)
-    if (!error) return prev
-    return { ...prev, errors: { ...prev.errors, [field]: error } }
-  })
-  const isPersonComplete = (person) => person.name && person.mobile && person.email && person.aadhaar.replace(/\D/g, '').length === 12 && person.selfiePreview
-  const hasErrors = (person) => Object.values(person.errors || {}).some(Boolean)
-  const canSubmitForm = () => {
-    if (!isSeasonalPass && !selectedDay) return false
-    if (category === 'couple') return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && !hasErrors(maleForm) && !hasErrors(femaleForm)
-    return isPersonComplete(personForm) && !hasErrors(personForm)
+  const scrollToRegistration = () => {
+    setRegStep(0)
+    setTimeout(() => {
+      document.getElementById('event-registration')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
   }
 
-  const goToDetailsStep = () => setRegStep(2)
+  const makeFieldUpdater = (setter) => (field) => (event) => {
+    let value = event.target.value
+    if (field === 'mobile') {
+      value = value.replace(/\D/g, '').slice(0, 10)
+    }
+    if (field === 'aadhaar') {
+      value = value.replace(/\D/g, '').slice(0, 12)
+    }
+    setter((prev) => ({ ...prev, [field]: value }))
+  }
 
-  const handleSubmit = (e) => {
+  const makePhotoUpdater = (setter) => (previewUrl) => {
+    setter((prev) => {
+      if (prev.selfiePreview?.startsWith('blob:')) {
+        URL.revokeObjectURL(prev.selfiePreview)
+      }
+      return { ...prev, selfiePreview: previewUrl }
+    })
+  }
+
+  const isPersonComplete = (person) =>
+    person.name &&
+    person.mobile.length === 10 &&
+    person.email &&
+    person.aadhaar.length === 12 &&
+    person.selfiePreview
+
+  const canSubmitForm = () => {
+    if (!acceptedNonRefundable) return false
+    if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
+    if (isCoupleCategory) {
+      return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
+    }
+    if (ticketCount === '2') {
+      return isPersonComplete(personForm) && isPersonComplete(secondPersonForm)
+    }
+    return isPersonComplete(personForm)
+  }
+
+  const selectCategory = (key) => {
+    setCategory(key)
+    setTicketCount(key === 'couple' ? '2' : '1')
+    setRegStep(2)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!canSubmitForm()) return
+    if (!canSubmitForm() || submitting) return
+
     const passLabel = selectedPass?.data.title || passMode
-    const dayDetails = !isSeasonalPass && selectedDay ? { selectedDay, selectedDayLabel: getNightLabel(selectedDay) } : {}
-    const registration = category === 'couple'
-      ? { category, passMode, passLabel, passPrice: pricingSource?.price, passPriceUnit: pricingSource?.priceUnit, eventId: id, male: maleForm, female: femaleForm, name: `${maleForm.name} & ${femaleForm.name}`, mobile: maleForm.mobile, email: maleForm.email, ...dayDetails }
-      : { category, passMode, passLabel, passPrice: pricingSource?.price, passPriceUnit: pricingSource?.priceUnit, eventId: id, ...personForm, ...dayDetails }
-    try { localStorage.setItem('mgm_registration', JSON.stringify(registration)) } catch {}
-    navigate(`/book?event=${eventId}`, { state: { registration } })
+    const scheduleDetails = !isSeasonalPass && slotSelection?.eventSlotId
+      ? {
+          eventSlotId: slotSelection.eventSlotId,
+          eventDateId: slotSelection.eventDateId,
+          eventVenueId: slotSelection.eventVenueId,
+          eventShowId: slotSelection.eventShowId,
+          selectedDayLabel: getScheduleStepLabel(slotSelection),
+          scheduleSelection: slotSelection,
+        }
+      : {}
+    let registration =
+      isCoupleCategory
+        ? {
+            category,
+            passMode,
+            passLabel,
+            passPrice: totalPrice,
+            passPriceUnit: pricingSource?.priceUnit,
+            ticketCount: totalTickets,
+            eventId: id,
+            male: maleForm,
+            female: femaleForm,
+            name: `${maleForm.name} & ${femaleForm.name}`,
+            mobile: maleForm.mobile,
+            email: maleForm.email,
+            ...scheduleDetails,
+          }
+        : {
+            category,
+            passMode,
+            passLabel,
+            passPrice: totalPrice,
+            passPriceUnit: pricingSource?.priceUnit,
+            ticketCount: totalTickets,
+            eventId: id,
+            ...personForm,
+            secondGuest: ticketCount === '2' ? secondPersonForm : null,
+            ...scheduleDetails,
+          }
+
+    setSubmitError('')
+    setSubmitting(true)
+
+    try {
+      let wowslySession = null
+      if (isWowslyConfigured()) {
+        wowslySession = await prepareWowslyBooking(registration)
+        registration = applyQuotedPriceToRegistration(registration, wowslySession)
+      }
+
+      navigate(`/book?event=${eventId}`, { state: { registration, wowslySession } })
+    } catch (error) {
+      setSubmitError(error?.message || 'Registration failed. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (!event || !info) {
@@ -183,54 +848,115 @@ export default function EventDetail() {
   }
 
   return (
-    <Box sx={{ bgcolor: colors.bg, minHeight: '100vh', overflowX: 'clip', position: 'relative' }}>
-      <Box sx={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.06, backgroundImage: `radial-gradient(circle at 15% 20%, ${colors.gold} 1px, transparent 1px), radial-gradient(circle at 85% 80%, ${colors.gold} 1px, transparent 1px)`, backgroundSize: '50px 50px, 70px 70px', backgroundPosition: '0 0, 35px 25px' }} />
-      <Box sx={{ borderBottom: headerScrolled ? '1px solid rgba(184,134,11,0.06)' : '1px solid rgba(184,134,11,0.10)', background: `linear-gradient(135deg, ${colors.heroCream} 0%, ${colors.bg} 100%)`, position: 'sticky', top: 0, zIndex: 10, backdropFilter: 'blur(8px)', transition: 'box-shadow 0.3s ease, border-color 0.3s ease', boxShadow: headerScrolled ? '0 4px 20px rgba(44,31,16,0.08)' : 'none', '&::before': { content: '""', position: 'absolute', bottom: -1, left: 0, right: 0, height: '2px', background: gradients.primary, opacity: headerScrolled ? 0.8 : 0.6, transition: 'opacity 0.3s ease' } }}>
+    <FestiveSection variant="night" showAccent={false} sx={{ minHeight: '100vh', overflowX: 'clip' }}>
+      <Box sx={{ borderBottom: `1px solid ${colors.border}` }}>
         <Container maxWidth="lg">
-          <Stack direction="row" sx={{ py: headerScrolled ? 0.5 : 0.75, transition: 'padding 0.3s ease', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Button onClick={() => navigate('/')} startIcon={<ChevronLeftRoundedIcon />} sx={{ color: colors.ivory, fontWeight: 600, textTransform: 'none', fontSize: '0.85rem', '&:hover': { bgcolor: 'transparent', color: colors.gold }, '& .MuiButton-startIcon': { mr: 0.5 } }}>Back</Button>
-            <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: '0.9rem', background: gradients.heroText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', opacity: headerScrolled ? 1 : 0, transition: 'opacity 0.3s ease' }}>MGM Navratri</Typography>
+          <Stack direction="row" alignItems="center" sx={{ py: 1 }}>
+            <Button
+              onClick={() => navigate('/')}
+              startIcon={<ChevronLeftRoundedIcon />}
+              sx={{ color: ui.text, fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
+            >
+              Back
+            </Button>
           </Stack>
         </Container>
       </Box>
-      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 }, position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={{ xs: 2, md: 2.5 }}>
+
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
+        <Grid container spacing={{ xs: 2, md: 2 }}>
+          {/* Left — Event Image & Title */}
           <Grid size={{ xs: 12, md: 8 }}>
-            <Box sx={{ position: 'relative', width: '100%', aspectRatio: '18/10', borderRadius: { xs: '16px', md: '22px' }, overflow: 'hidden', bgcolor: colors.bgSoft, border: '1px solid rgba(184,134,11,0.12)', boxShadow: '0 12px 32px rgba(44,31,16,0.08)' }}>
-              <Box sx={{ width: '100%', height: '100%', backgroundImage: `url(${promoBanner})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.4s ease', '@media (hover: hover)': { '&:hover': { transform: 'scale(1.03)' } } }} />
-              <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(0deg, rgba(44,31,16,0.15) 0%, transparent 100%)' }} />
+            <Box sx={{
+              position: 'relative',
+              width: '100%',
+              aspectRatio: '18/10',
+              borderRadius: { xs: '14px', md: '20px' },
+              overflow: 'hidden',
+              bgcolor: ui.surfaceMuted,
+            }}>
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url(${promoBanner})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
             </Box>
-            <Stack direction="row" spacing={1} sx={{ mt: { xs: 1.5, md: 2 }, mb: 0.75, alignItems: 'flex-start', justifyContent: 'space-between' }}>
-              <Typography sx={{ fontWeight: 700, color: colors.ivory, fontFamily: '"Playfair Display", serif', fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.85rem' }, lineHeight: 1.2, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>{event.title}</Typography>
-              <ShareRoundedIcon onClick={() => setShareOpen(true)} sx={{ color: colors.muted, fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.5, transition: 'color 0.2s', '&:hover': { color: colors.gold } }} />
+
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={1} sx={{ mt: 2, mb: 1 }}>
+              <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: { xs: '1.15rem', sm: '1.25rem', md: '1.625rem' }, lineHeight: 1.25, flex: 1, minWidth: 0, wordBreak: 'break-word' }}>
+                {event.title}
+              </Typography>
+              <ShareRoundedIcon sx={{ color: ui.text, fontSize: '1.25rem', cursor: 'pointer', flexShrink: 0, mt: 0.25 }} />
             </Stack>
-            <Stack direction="row" spacing={1} sx={{ gap: 0.75, alignItems: 'center', flexWrap: 'wrap' }}>
-              <Chip label={event.night} sx={{ background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
-              <Chip icon={<MusicNoteOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.dateRange} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
-              <Chip icon={<AccessTimeOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={info.time} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none' }} />
-              <Chip component="a" href="https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat" target="_blank" rel="noopener noreferrer" clickable icon={<LocationOnOutlinedIcon sx={{ fontSize: '0.85rem !important', color: `${colors.gold} !important` }} />} label={`${info.venue}, ${info.location}`} sx={{ bgcolor: colors.bgSoft, color: colors.muted, fontWeight: 600, fontSize: '0.78rem', borderRadius: '20px', border: '1px solid rgba(184,134,11,0.10)', textTransform: 'none', '&:hover': { bgcolor: colors.bg, borderColor: colors.gold } }} />
-              {event.badge && (
-                <Chip icon={<LocalFireDepartmentRoundedIcon sx={{ fontSize: '0.85rem !important' }} />} label={event.badge} sx={{ background: 'rgba(184,92,58,0.12)', color: colors.coral, fontWeight: 700, fontSize: '0.78rem', borderRadius: '20px', textTransform: 'none' }} />
-              )}
+
+            <Stack direction="row" spacing={1}>
+              <Chip label={event.night} sx={{ bgcolor: '#1F1F1F', color: '#fff', fontWeight: 500, fontSize: '0.8125rem', borderRadius: '6px', textTransform: 'none' }} />
             </Stack>
           </Grid>
+
+          {/* Right — Booking Card */}
           <Grid size={{ xs: 12, md: 4 }}>
-            <Box sx={{ border: '1px solid rgba(184,134,11,0.14)', borderRadius: { xs: '16px', md: '18px' }, p: { xs: 2, md: 2.5 }, position: { xs: 'static', md: 'sticky' }, top: { md: 24 }, bgcolor: colors.bgSoft, boxShadow: '0 8px 24px rgba(44,31,16,0.04)', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', top: 0, right: 0, width: 100, height: 100, borderRadius: '0 0 0 100%', background: 'radial-gradient(circle at top right, rgba(212,175,55,0.15), transparent 68%)', pointerEvents: 'none' } }}>
+            <Box sx={{
+              border: `1px solid ${ui.border}`,
+              borderRadius: { xs: '10px', md: '12px' },
+              p: { xs: 2, md: 2.5 },
+              position: { xs: 'static', md: 'sticky' },
+              top: { md: 24 },
+            }}>
               <Stack spacing={2}>
                 <Box>
-                  <Typography sx={{ fontSize: { xs: '1.5rem', md: '1.65rem' }, fontWeight: 800, color: colors.ivory, fontFamily: '"Unbounded", sans-serif' }}>{info.price}<Box component="span" sx={{ fontSize: '0.85rem', fontWeight: 500, color: colors.muted, ml: 0.5 }}>onwards</Box></Typography>
-                  <Typography sx={{ fontSize: { xs: '0.78rem', md: '0.85rem' }, color: colors.mutedLight, mt: 0.5, lineHeight: 1.55, wordBreak: 'break-word' }}>{info.ticketInfo}</Typography>
+                  <Typography sx={{ fontSize: { xs: '1.35rem', md: '1.5rem' }, fontWeight: 700, color: ui.text }}>
+                    {info.price}
+                    <Box component="span" sx={{ fontSize: '0.875rem', fontWeight: 500, color: ui.muted, ml: 0.5 }}>onwards</Box>
+                  </Typography>
+                  <Typography sx={{ fontSize: { xs: '0.75rem', md: '0.8125rem' }, color: ui.muted, mt: 0.5, lineHeight: 1.55, wordBreak: 'break-word' }}>
+                    {info.ticketInfo}
+                  </Typography>
                 </Box>
-                <Button onClick={scrollToRegistration} fullWidth size="large" sx={{ py: 1.5, minHeight: 48, borderRadius: '10px', background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.9rem', textTransform: 'none', boxShadow: '0 8px 20px rgba(184,134,11,0.22)', transition: 'transform 0.25s ease, box-shadow 0.25s ease', '&:hover': { background: gradients.primaryReversed, transform: 'translateY(-2px)', boxShadow: '0 12px 28px rgba(184,134,11,0.32)' } }}>
-                  <ConfirmationNumberRoundedIcon sx={{ mr: 1, fontSize: '1.15rem' }} />{info.cta}
+
+                <Button
+                  onClick={scrollToRegistration}
+                  fullWidth
+                  size="large"
+                  sx={{
+                    py: 1.5,
+                    minHeight: 48,
+                    borderRadius: '8px',
+                    background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 58%, #C98B2E 100%)',
+                    color: '#26140C',
+                    fontWeight: 700,
+                    fontSize: '0.9375rem',
+                    textTransform: 'none',
+                    boxShadow: '0 12px 24px rgba(201, 139, 46, 0.22)',
+                    '&:hover': {
+                      background: 'linear-gradient(180deg, #FFE299 0%, #F0C15D 58%, #D89A37 100%)',
+                    },
+                  }}
+                >
+                  <ConfirmationNumberRoundedIcon sx={{ mr: 1, fontSize: '1.25rem' }} />
+                  {info.cta}
                 </Button>
-                <Divider sx={{ borderColor: 'rgba(184,134,11,0.08)' }} />
-                <Typography sx={{ fontWeight: 700, color: colors.ivory, fontSize: '0.85rem' }}>What's Included</Typography>
+
+                <Divider />
+
+                <Typography sx={{ fontWeight: 600, color: ui.text, fontSize: '0.875rem' }}>
+                  What's Included
+                </Typography>
                 <Box component="ul" sx={{ m: 0, p: 0, listStyle: 'none' }}>
-                  {['Entry to event grounds', 'Welcome tilak & kalash blessing', 'Access to food & handicraft stalls', 'Free parking at venue', '24/7 customer support'].map((item, i) => (
+                  {[
+                    'Entry to event grounds',
+                    'Welcome tilak & kalash blessing',
+                    'Access to food & handicraft stalls',
+                    'Free parking at venue',
+                    '24/7 customer support',
+                  ].map((item, i) => (
                     <Stack key={i} direction="row" spacing={1} sx={{ mb: 0.5 }}>
-                      <CheckRoundedIcon sx={{ color: colors.success, fontSize: '0.9rem' }} />
-                      <Typography sx={{ fontSize: '0.82rem', color: colors.muted }}>{item}</Typography>
+                      <Box component="span" sx={{ color: ui.text, fontWeight: 600, fontSize: '0.8125rem' }}>✓</Box>
+                      <Typography sx={{ fontSize: '0.8125rem', color: ui.muted }}>{item}</Typography>
                     </Stack>
                   ))}
                 </Box>
@@ -240,253 +966,230 @@ export default function EventDetail() {
         </Grid>
       </Container>
 
-      <Box sx={{ borderBottom: '1px solid rgba(184,134,11,0.10)', bgcolor: colors.heroCream, mt: 2 }}>
-        <Container maxWidth="lg">
-          <Stack direction="row" spacing={0} sx={{ justifyContent: 'center' }}>
-            <Button onClick={() => setTab('info')} sx={{ py: 1.5, px: { xs: 2.5, sm: 3 }, flex: 1, maxWidth: 200, minHeight: 52, borderRadius: 0, fontWeight: tab === 'info' ? 700 : 500, fontSize: '0.9rem', textTransform: 'none', color: tab === 'info' ? colors.gold : colors.muted, borderBottom: tab === 'info' ? `3px solid ${colors.gold}` : '3px solid transparent', letterSpacing: '0.3px', transition: 'color 0.2s, border-color 0.2s', '&:hover': { bgcolor: 'transparent', color: colors.gold } }}>Info</Button>
-            <Button onClick={() => setTab('registration')} sx={{ py: 1.5, px: { xs: 2.5, sm: 3 }, flex: 1, maxWidth: 200, minHeight: 52, borderRadius: 0, fontWeight: tab === 'registration' ? 700 : 500, fontSize: '0.9rem', textTransform: 'none', color: tab === 'registration' ? colors.gold : colors.muted, borderBottom: tab === 'registration' ? `3px solid ${colors.gold}` : '3px solid transparent', letterSpacing: '0.3px', transition: 'color 0.2s, border-color 0.2s', '&:hover': { bgcolor: 'transparent', color: colors.gold } }}>Registration</Button>
-          </Stack>
-        </Container>
-      </Box>
-
-      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 }, position: 'relative', zIndex: 1 }}>
-        {tab === 'info' ? (
-          <Box sx={{ maxWidth: 720, mx: 'auto' }}>
-            <Box sx={{ mb: 5, position: 'relative' }}>
-              <Box sx={{ position: 'absolute', top: -40, right: -20, width: 150, height: 150, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
-              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>About</Typography>
-              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 3 }, border: '1px solid rgba(184,134,11,0.08)' }}>
-                <Typography sx={{ color: colors.muted, lineHeight: 1.85, whiteSpace: 'pre-line', fontSize: '0.95rem' }}>{info.description}</Typography>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 2, sm: 2.5, md: 3 } }}>
+          <Box id="event-registration" sx={{ maxWidth: !isSeasonalPass ? 720 : 600, mx: 'auto', width: '100%' }}>
+            <Box sx={registrationCardSx}>
+              <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 2.5 } }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: ui.text, mb: 0.5, fontSize: { xs: '1.15rem', md: '1.5rem' } }}>
+                  Reserve Your Spot
+                </Typography>
+                <Typography sx={{ fontSize: '0.875rem', color: ui.muted }}>
+                  {regStep === 0 && 'Step 1 — Choose your pass type'}
+                  {regStep === 1 && `Step 2 — Choose your category`}
+                  {!isSeasonalPass && regStep === scheduleStep && 'Step 3 — Select date, venue & time'}
+                  {regStep === detailsStep && `Step ${registrationStepLabels.length} — Fill registration details`}
+                </Typography>
               </Box>
-            </Box>
-            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-            <Box sx={{ mb: 5, position: 'relative' }}>
-              <Box sx={{ position: 'absolute', bottom: -30, left: -20, width: 120, height: 120, borderRadius: '50%', background: `radial-gradient(circle, ${colors.coral}06, transparent 70%)`, pointerEvents: 'none' }} />
-              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Why Attend</Typography>
-              <Box component="ul" sx={{ m: 0, p: 0, listStyle: 'none' }}>
-                {info.whyAttend.map((item, i) => (
-                  <Stack key={i} direction="row" spacing={1.5} sx={{ mb: 1.25, p: { xs: 1.25, md: 1.5 }, bgcolor: colors.bgSoft, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.06)' }}>
-                    <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: colors.successBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, mt: 0.15 }}>
-                      <StarBorderRoundedIcon sx={{ fontSize: '0.9rem', color: colors.success }} />
-                    </Box>
-                    <Typography sx={{ color: colors.muted, lineHeight: 1.65, fontSize: '0.92rem', pt: 0.15 }}>{item}</Typography>
-                  </Stack>
-                ))}
-              </Box>
-            </Box>
-            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-            <Box sx={{ mb: 4, position: 'relative' }}>
-              <Box sx={{ position: 'absolute', top: -20, right: -10, width: 100, height: 100, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
-              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5 }}>Event Highlights</Typography>
-              <Grid container spacing={1.5}>
-                {info.highlights.map((item, i) => (
-                  <Grid key={i} size={{ xs: 12, sm: 6 }}>
-                    <Stack direction="row" spacing={1.25} sx={{ p: { xs: 1.5, md: 1.75 }, bgcolor: colors.bgSoft, borderRadius: '12px', border: '1px solid rgba(184,134,11,0.08)', height: '100%', transition: 'border-color 0.2s, box-shadow 0.2s', alignItems: 'center', '@media (hover: hover)': { '&:hover': { borderColor: 'rgba(184,134,11,0.20)', boxShadow: '0 4px 12px rgba(44,31,16,0.05)' } } }}>
-                      <CelebrationOutlinedIcon sx={{ fontSize: '1rem', color: colors.gold, flexShrink: 0 }} />
-                      <Typography sx={{ color: colors.muted, fontSize: '0.9rem', lineHeight: 1.4 }}>{item}</Typography>
-                    </Stack>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
 
-            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-
-            <Box sx={{ mb: 4, position: 'relative' }}>
-              <Box sx={{ position: 'absolute', bottom: -20, left: -15, width: 100, height: 100, borderRadius: '50%', background: `radial-gradient(circle, ${colors.coral}06, transparent 70%)`, pointerEvents: 'none' }} />
-              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <MicIcon sx={{ color: colors.coral, fontSize: '1.2rem' }} />
-                Artist
-              </Typography>
-              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)', transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease', '@media (hover: hover)': { '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 12px 32px rgba(44,31,16,0.10)', borderColor: colors.glassBorder } } }}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: { xs: 'flex-start', sm: 'center' } }}>
-                  <Box sx={{ width: 64, height: 64, borderRadius: '50%', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 6px 16px rgba(184,92,58,0.2)', position: 'relative', '&::after': { content: '""', position: 'absolute', inset: -3, borderRadius: '50%', border: '2px solid rgba(184,134,11,0.12)' } }}>
-                    <MicIcon sx={{ color: '#fff', fontSize: '1.6rem' }} />
-                  </Box>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 800, fontSize: '1.1rem', color: colors.ivory, lineHeight: 1.3 }}>Raj Gadhvi</Typography>
-                    <Typography sx={{ fontSize: '0.88rem', color: colors.mutedLight, mt: 0.25, display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                      <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: colors.coral, flexShrink: 0 }} />
-                      Live Garba & Folk Vocalist
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Box>
-            </Box>
-
-            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-
-            <Box sx={{ mb: 4, position: 'relative' }}>
-              <Box sx={{ position: 'absolute', top: -15, right: -10, width: 80, height: 80, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
-              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <BusinessIcon sx={{ color: colors.marigold, fontSize: '1.2rem' }} />
-                Organized by
-              </Typography>
-              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)', transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease', '@media (hover: hover)': { '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 12px 32px rgba(44,31,16,0.10)', borderColor: colors.glassBorder } } }}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: { xs: 'flex-start', sm: 'center' } }}>
-                  <Box sx={{ width: 56, height: 56, borderRadius: '16px', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 6px 16px rgba(184,134,11,0.2)' }}>
-                    <BusinessIcon sx={{ color: '#fff', fontSize: '1.4rem' }} />
-                  </Box>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 800, fontSize: '1.05rem', color: colors.ivory, lineHeight: 1.3 }}>MGM Event</Typography>
-                    <Typography sx={{ fontSize: '0.88rem', color: colors.mutedLight, mt: 0.25, display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                      <LocationOnOutlinedIcon sx={{ fontSize: '0.9rem', color: colors.marigold }} />
-                      Rajkot, Gujarat
-                    </Typography>
-                    <Typography sx={{ fontSize: '0.78rem', color: colors.muted, mt: 0.5, lineHeight: 1.5 }}>Dedicated to curating premium cultural experiences that celebrate tradition, music, and community.</Typography>
-                  </Box>
-                </Stack>
-              </Box>
-            </Box>
-
-            <Divider sx={{ mb: 4, borderColor: 'rgba(184,134,11,0.08)' }} />
-
-            <Box sx={{ mb: 4, position: 'relative' }}>
-              <Box sx={{ position: 'absolute', bottom: -20, right: -15, width: 90, height: 90, borderRadius: '50%', background: `radial-gradient(circle, ${colors.marigold}06, transparent 70%)`, pointerEvents: 'none' }} />
-              <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <GridViewRoundedIcon sx={{ color: colors.gold, fontSize: '1.2rem' }} />
-                Event Layout
-              </Typography>
-              <Box sx={{ bgcolor: colors.bgSoft, borderRadius: '16px', p: { xs: 2, md: 2.5 }, border: '1px solid rgba(184,134,11,0.08)', transition: 'box-shadow 0.3s ease, border-color 0.3s ease', '@media (hover: hover)': { '&:hover': { boxShadow: '0 12px 32px rgba(44,31,16,0.10)', borderColor: colors.glassBorder } } }}>
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr', sm: 'repeat(3, 1fr)' }, gap: { xs: 1.5, md: 2 }, mb: 2.5, position: 'relative' }}>
-                  <Box sx={{ gridColumn: { xs: '1 / -1', sm: '1 / -1' }, textAlign: 'center', py: 2, borderRadius: '12px', background: `radial-gradient(circle at 50% 50%, rgba(184,134,11,0.06) 0%, transparent 80%)`, border: '1px dashed rgba(184,134,11,0.12)' }}>
-                    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, px: 3, py: 1.25, borderRadius: '30px', bgcolor: 'rgba(255,255,255,0.5)', boxShadow: '0 2px 8px rgba(44,31,16,0.04)', transition: 'transform 0.25s ease', '@media (hover: hover)': { '&:hover': { transform: 'scale(1.03)' } } }}>
-                      <Box sx={{ width: 32, height: 32, borderRadius: '8px', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <MicIcon sx={{ color: '#fff', fontSize: '0.85rem' }} />
-                      </Box>
-                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', color: colors.ivory }}>Main Stage</Typography>
-                      <Typography sx={{ fontSize: '0.7rem', color: colors.mutedLight, fontWeight: 500 }}>Live Performances</Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                <Stack spacing={1.25} sx={{ px: 0.5 }}>
-                  {[
-                    { label: 'Fanpit Zone', sub: 'Standing · Closest to Stage', color: colors.gold, icon: 'standing' },
-                    { label: 'VIP Lounge', sub: 'Reserved Seating · Premium View', color: colors.coral, icon: 'vip' },
-                    { label: 'Food Court', sub: 'Snacks · Drinks · Handicraft Stalls', color: colors.teal, icon: 'food' },
-                    { label: 'Entry Gate', sub: 'Check-in · QR Verification', color: colors.marigoldSoft, icon: 'gate' },
-                  ].map(({ label, sub, color }) => (
-                    <Box key={label} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: { xs: 1, md: 1.5 }, py: 1.25, borderRadius: '12px', bgcolor: 'rgba(255,255,255,0.3)', border: '1px solid rgba(184,134,11,0.05)', transition: 'all 0.25s ease', cursor: 'default', '@media (hover: hover)': { '&:hover': { bgcolor: 'rgba(255,255,255,0.55)', transform: 'translateX(4px)', borderColor: 'rgba(184,134,11,0.10)' } } }}>
-                      <Box sx={{ width: 24, height: 24, borderRadius: '8px', bgcolor: color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, opacity: 0.85 }}>
-                        <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: '#fff', opacity: 0.7 }} />
-                      </Box>
-                      <Box sx={{ flex: 1 }}>
-                        <Typography sx={{ fontWeight: 700, fontSize: '0.88rem', color: colors.ivory }}>{label}</Typography>
-                        <Typography sx={{ fontSize: '0.72rem', color: colors.muted }}>{sub}</Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Stack>
-              </Box>
-            </Box>
-          </Box>
-        ) : (
-          <Box id="event-registration" sx={{ maxWidth: 600, mx: 'auto', width: '100%' }}>
-            <Box sx={{ border: '1px solid rgba(184,134,11,0.12)', borderRadius: { xs: '16px', md: '20px' }, p: { xs: 1.75, sm: 2, md: 3.5 }, bgcolor: colors.heroCream, boxShadow: '0 8px 24px rgba(44,31,16,0.04)', position: 'relative', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', top: 0, left: '50%', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 60%)', transform: 'translateX(-50%)', pointerEvents: 'none' } }}>
-              <Box sx={{ textAlign: 'center', mb: { xs: 2, md: 3 }, position: 'relative', zIndex: 1 }}>
-                <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, color: colors.ivory, mb: 0.5, fontSize: { xs: '1.25rem', md: '1.55rem' } }}>Reserve Your Spot</Typography>
-                <Typography sx={{ fontSize: '0.85rem', color: colors.mutedLight }}>{regStep === 0 && 'Step 1 — Choose your pass type'}{regStep === 1 && 'Step 2 — Choose your category'}{regStep === 2 && 'Step 3 — Fill registration details'}</Typography>
-              </Box>
-              <Stack direction="row" spacing={0.75} sx={{ mb: { xs: 2, md: 3 }, position: 'relative', zIndex: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-                {['Pass Type', 'Category', 'Details'].map((label, index) => (
-                  <Box key={label} sx={{ px: { xs: 1, sm: 1.25 }, py: 0.5, borderRadius: '50px', fontSize: { xs: '0.65rem', sm: '0.72rem' }, fontWeight: 700, background: regStep >= index ? gradients.primary : colors.bgSoft, color: regStep >= index ? '#fff' : colors.muted, whiteSpace: 'nowrap', boxShadow: regStep >= index ? '0 4px 10px rgba(184,134,11,0.18)' : 'none' }}>{index + 1}. {label}</Box>
-                ))}
-              </Stack>
+              <RegistrationStepPills activeStep={regStep} stepLabels={registrationStepLabels} />
 
               {regStep === 0 && (
-                <Stack spacing={1.5} sx={{ position: 'relative', zIndex: 1 }}>
+                <Stack spacing={1.5}>
                   {passModes.map((item) => (
-                    <Button key={item.id} onClick={() => { setPassMode(item.id); if (item.id === 'seasonal') setSelectedDay(''); setRegStep(1) }} sx={{ justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 0.75, sm: 0 }, textAlign: 'left', px: 2.5, py: 2, minHeight: 48, borderRadius: '14px', border: '1px solid rgba(184,134,11,0.12)', bgcolor: colors.bg, color: colors.ivory, textTransform: 'none', transition: 'border-color 0.2s, box-shadow 0.2s, transform 0.2s', '&:hover': { bgcolor: colors.bg, borderColor: colors.gold, boxShadow: '0 8px 20px rgba(184,134,11,0.12)', transform: 'translateY(-2px)' } }}>
-                      <Box>
-                        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem' }}>{item.title}</Typography>
-                        <Typography sx={{ fontSize: '0.82rem', color: colors.muted }}>{item.subtitle}</Typography>
-                      </Box>
-                      <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.05rem', alignSelf: { xs: 'flex-start', sm: 'center' } }}>{item.data.price}</Typography>
-                    </Button>
+                    <PassTypeOption
+                      key={item.id}
+                      item={item}
+                      selected={passMode === item.id}
+                      onSelect={() => {
+                        setPassMode(item.id)
+                        if (item.id === 'seasonal') setSlotSelection(null)
+                        setRegStep(1)
+                      }}
+                    />
                   ))}
-                  <Button onClick={() => setTab('info')} sx={{ py: 1.35, minHeight: 48, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.12)', color: colors.muted, textTransform: 'none', fontWeight: 600, '&:hover': { borderColor: colors.gold, color: colors.ivory } }}>Cancel</Button>
+
+                  <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ pt: 0.5 }}>
+                    <InfoOutlinedIcon sx={{ color: accentFestive, fontSize: '1rem', mt: 0.15 }} />
+                    <Typography sx={{ fontSize: '0.78rem', color: '#888', lineHeight: 1.55 }}>
+                      Pass once selected cannot be changed later.
+                    </Typography>
+                  </Stack>
                 </Stack>
               )}
 
               {regStep === 1 && selectedPass && (
-                <Stack spacing={2} sx={{ position: 'relative', zIndex: 1 }}>
-                  <Box sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.10)', borderRadius: '10px', p: 1.5, textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '0.75rem', color: colors.muted, fontWeight: 600 }}>Selected: <Box component="span" sx={{ color: colors.gold, fontWeight: 700 }}>{selectedPass.title}</Box></Typography>
-                  </Box>
-                  <Stack direction="row" spacing={0.75} sx={{ bgcolor: colors.bg, borderRadius: '10px', p: 0.5, border: '1px solid rgba(184,134,11,0.08)' }}>
-                    {categoryKeys.map((key) => (
-                      <Button key={key} onClick={() => setCategory(key)} sx={{ flex: 1, py: { xs: 1.1, sm: 1 }, minHeight: 44, borderRadius: '8px', color: category === key ? '#fff' : colors.muted, background: category === key ? gradients.primary : 'transparent', fontWeight: 700, fontSize: '0.85rem', textTransform: 'capitalize', boxShadow: category === key ? '0 4px 12px rgba(184,134,11,0.18)' : 'none', transition: 'all 0.2s', '&:hover': { background: category === key ? gradients.primary : colors.bgSoft, color: category === key ? '#fff' : colors.ivory } }}>{key}</Button>
-                    ))}
+                <Stack spacing={2}>
+                  <SelectedPassBanner title={selectedPass.title} />
+
+                  <Stack spacing={1.25}>
+                    {categoryKeys.map((key) => {
+                      const cat = registrationCategories[key]
+                      const optionPrice = isSeasonalPass ? selectedPass.data : cat
+                      return (
+                        <CategoryOption
+                          key={key}
+                          categoryKey={key}
+                          label={key}
+                          subtitle={cat.title}
+                          price={optionPrice.price}
+                          priceUnit={optionPrice.priceUnit}
+                          selected={category === key}
+                          onSelect={() => selectCategory(key)}
+                        />
+                      )
+                    })}
                   </Stack>
-                  {selected && (
-                    <Box sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.10)', borderRadius: '14px', p: { xs: 1.75, md: 2.25 }, textAlign: 'center', position: 'relative', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: gradients.primary } }}>
-                      <Typography sx={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 1.5, color: colors.muted, fontWeight: 600 }}>{isSeasonalPass ? 'Seasonal Entry' : selected.eyebrow}</Typography>
-                      <Typography sx={{ fontWeight: 700, fontSize: '1.05rem', color: colors.ivory, mt: 0.5 }}>{selected.title}</Typography>
-                      <Typography sx={{ fontWeight: 800, fontSize: '1.65rem', color: colors.ivory, my: 1, fontFamily: '"Unbounded", sans-serif' }}>{pricingSource?.price}<Box component="span" sx={{ fontSize: '0.85rem', fontWeight: 500, color: colors.muted }}>{pricingSource?.priceUnit}</Box></Typography>
-                      <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.85rem', color: colors.muted }}>
-                        {(pricingSource?.perks || []).map((perk) => (
-                          <Stack key={perk} direction="row" spacing={0.75} sx={{ py: 0.5, justifyContent: 'center', alignItems: 'center' }}>
-                            <StarRoundedIcon sx={{ fontSize: '0.75rem', color: colors.gold, flexShrink: 0 }} />
-                            <Box component="li">{perk}</Box>
-                          </Stack>
-                        ))}
-                      </Box>
-                    </Box>
-                  )}
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
-                    <Button onClick={() => setRegStep(0)} sx={{ flex: 1, py: 1.35, minHeight: 48, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.12)', color: colors.muted, textTransform: 'none', fontWeight: 600, '&:hover': { borderColor: colors.gold, color: colors.ivory } }}>Back</Button>
-                    <Button disabled={!category} onClick={goToDetailsStep} sx={{ flex: { xs: 1, sm: 2 }, py: 1.35, minHeight: 48, borderRadius: '10px', background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.9rem', textTransform: 'none', boxShadow: '0 6px 16px rgba(184,134,11,0.20)', transition: 'transform 0.2s, box-shadow 0.2s', '&:hover': { background: gradients.primaryReversed, transform: 'translateY(-1px)', boxShadow: '0 10px 24px rgba(184,134,11,0.30)' }, '&.Mui-disabled': { bgcolor: colors.glassBorder, color: '#fff', boxShadow: 'none' } }}>Continue</Button>
-                  </Stack>
+
+                  <Button
+                    onClick={() => setRegStep(0)}
+                    fullWidth
+                    startIcon={<ChevronLeftRoundedIcon />}
+                    sx={{ ...registrationBackButtonSx, flex: 'unset', width: '100%' }}
+                  >
+                    Back
+                  </Button>
                 </Stack>
               )}
 
-              {regStep === 2 && selected && selectedPass && (
+              {!isSeasonalPass && regStep === scheduleStep && (
+                <ScheduleStep
+                  schedule={schedule}
+                  loading={scheduleLoading}
+                  error={scheduleError}
+                  selection={slotSelection}
+                  onSelectionChange={setSlotSelection}
+                  defaultNightId={id}
+                  onBack={() => setRegStep(1)}
+                  onContinue={() => setRegStep(detailsStep)}
+                />
+              )}
+
+              {regStep === detailsStep && selected && selectedPass && (
                 <Box component="form" onSubmit={handleSubmit} sx={fieldSx}>
-                  <Box sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.10)', borderRadius: '12px', p: { xs: 1.5, md: 1.75 }, mb: 2.5, textAlign: 'center', position: 'relative', zIndex: 1 }}>
-                    <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>{selectedPass.title} · <Box component="span" sx={{ fontWeight: 700, color: colors.ivory }}>{selected.title}</Box></Typography>
-                    <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.1rem', mt: 0.25 }}>{pricingSource?.price}{pricingSource?.priceUnit}</Typography>
-                    {!isSeasonalPass && selectedDay && <Typography sx={{ fontSize: '0.78rem', color: colors.mutedLight, mt: 0.75 }}>{getNightLabel(selectedDay)}</Typography>}
+                  <Box sx={registrationSummarySx}>
+                    <Typography sx={{ fontSize: '0.82rem', color: registrationUi.muted }}>
+                      {selectedPass.title} · {selected.title}
+                    </Typography>
+                    <Typography sx={{ fontWeight: 800, color: colors.gold, fontSize: '1.2rem', mt: 0.35 }}>
+                      {totalPrice}
+                      <Box component="span" sx={{ fontSize: '0.82rem', fontWeight: 500, color: registrationUi.muted, ml: 0.5 }}>
+                        {pricingSource?.priceUnit}
+                      </Box>
+                    </Typography>
+                    <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.5 }}>
+                      {totalTickets} ticket{totalTickets > 1 ? 's' : ''}
+                    </Typography>
+                    {!isSeasonalPass && slotSelection?.dateLabel && (
+                      <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mt: 0.75 }}>
+                        {getScheduleStepLabel(slotSelection)}
+                      </Typography>
+                    )}
+                    {!isSeasonalPass && slotSelection?.timeLabel && (
+                      <Typography sx={{ fontSize: '0.76rem', color: ui.muted, mt: 0.35 }}>
+                        {slotSelection.timeLabel}
+                      </Typography>
+                    )}
                   </Box>
-                  {!isSeasonalPass && (
-                    <FormControl fullWidth required sx={{ mb: 2.5, position: 'relative', zIndex: 1 }}>
-                      <Select value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)} displayEmpty renderValue={(value) => value ? getNightLabel(value) : <Box sx={{ color: colors.muted }}>Select Day</Box>} slotProps={{ htmlInput: { 'aria-label': 'Select Day' } }} sx={{ bgcolor: colors.bg, color: selectedDay ? colors.ivory : colors.muted, borderRadius: '10px', '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(184,134,11,0.12)' }, '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.glassBorder }, '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold } }}>
-                        <MenuItem value="" disabled>Select Day</MenuItem>
-                        {navratriNights.map((night) => (
-                          <MenuItem key={night.id} value={String(night.id)}>{night.label} · {night.date} · {night.theme}</MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+
+                  <FormControl fullWidth required sx={{ mb: 2 }}>
+                    <Select
+                      value={ticketCount}
+                      onChange={(e) => setTicketCount(e.target.value)}
+                      disabled={isCoupleCategory}
+                      inputProps={{ 'aria-label': 'Number of Tickets' }}
+                      sx={selectFieldSx}
+                    >
+                      {!isCoupleCategory && <MenuItem value="1">1 Ticket</MenuItem>}
+                      <MenuItem value="2">2 Tickets</MenuItem>
+                    </Select>
+                  </FormControl>
+                  {isCoupleCategory && (
+                    <Typography sx={{ fontSize: '0.78rem', color: ui.muted, mb: 2 }}>
+                      Couple pass includes 2 tickets.
+                    </Typography>
                   )}
-                  {category === 'couple' ? (
-                    <Stack spacing={2.5} sx={{ position: 'relative', zIndex: 1 }}>
-                      <PersonFields title="Male Details" person={maleForm} onFieldChange={makeFieldUpdater(setMaleForm)} onPhotoChange={makePhotoUpdater(setMaleForm)} onBlur={makeFieldBlur(setMaleForm)} />
-                      <Divider sx={{ borderColor: 'rgba(184,134,11,0.08)' }} />
-                      <PersonFields title="Female Details" person={femaleForm} onFieldChange={makeFieldUpdater(setFemaleForm)} onPhotoChange={makePhotoUpdater(setFemaleForm)} onBlur={makeFieldBlur(setFemaleForm)} />
+
+                  {isCoupleCategory ? (
+                    <Stack spacing={3}>
+                      <PersonFields
+                        title="Male Details"
+                        person={maleForm}
+                        onFieldChange={makeFieldUpdater(setMaleForm)}
+                        onPhotoChange={makePhotoUpdater(setMaleForm)}
+                      />
+                      <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
+                      <PersonFields
+                        title="Female Details"
+                        person={femaleForm}
+                        onFieldChange={makeFieldUpdater(setFemaleForm)}
+                        onPhotoChange={makePhotoUpdater(setFemaleForm)}
+                      />
                     </Stack>
                   ) : (
-                    <Box sx={{ position: 'relative', zIndex: 1 }}>
-                      <PersonFields title={category === 'male' ? 'Male Details' : 'Female Details'} person={personForm} onFieldChange={makeFieldUpdater(setPersonForm)} onPhotoChange={makePhotoUpdater(setPersonForm)} onBlur={makeFieldBlur(setPersonForm)} />
-                    </Box>
+                    <Stack spacing={3}>
+                      <PersonFields
+                        title={ticketCount === '2' ? 'Ticket 1 Details' : category === 'male' ? 'Male Details' : 'Female Details'}
+                        person={personForm}
+                        onFieldChange={makeFieldUpdater(setPersonForm)}
+                        onPhotoChange={makePhotoUpdater(setPersonForm)}
+                      />
+                      {ticketCount === '2' && (
+                        <>
+                          <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
+                          <PersonFields
+                            title="Ticket 2 Details"
+                            person={secondPersonForm}
+                            onFieldChange={makeFieldUpdater(setSecondPersonForm)}
+                            onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
+                          />
+                        </>
+                      )}
+                    </Stack>
                   )}
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5, position: 'relative', zIndex: 1 }}>
-                    <Button type="button" onClick={() => setRegStep(1)} sx={{ flex: 1, py: 1.5, minHeight: 48, borderRadius: '10px', border: '1px solid rgba(184,134,11,0.12)', color: colors.muted, textTransform: 'none', fontWeight: 600, '&:hover': { borderColor: colors.gold, color: colors.ivory } }}>Back</Button>
-                    <Button type="submit" disabled={!canSubmitForm()} sx={{ flex: { xs: 1, sm: 2 }, py: 1.5, minHeight: 48, borderRadius: '10px', background: gradients.primary, color: '#fff', fontWeight: 700, fontSize: '0.9rem', textTransform: 'none', boxShadow: '0 6px 16px rgba(184,134,11,0.20)', transition: 'transform 0.2s, box-shadow 0.2s', '&:hover': { background: gradients.primaryReversed, transform: 'translateY(-1px)', boxShadow: '0 10px 24px rgba(184,134,11,0.30)' }, '&.Mui-disabled': { bgcolor: colors.glassBorder, color: '#fff', boxShadow: 'none' } }}>Proceed to Payment</Button>
+
+                  <Box sx={{ mt: 2.5 }}>
+                    <NonRefundableCheckbox
+                      checked={acceptedNonRefundable}
+                      onChange={setAcceptedNonRefundable}
+                    />
+                  </Box>
+
+                  {submitError && (
+                    <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
+                      {submitError}
+                    </Typography>
+                  )}
+
+                  <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5 }}>
+                    <Button
+                      type="button"
+                      onClick={() => setRegStep(isSeasonalPass ? 1 : scheduleStep)}
+                      sx={registrationBackButtonSx}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={!canSubmitForm() || submitting}
+                      sx={registrationSubmitButtonSx}
+                    >
+                      {submitting ? 'Processing…' : 'Proceed to Payment'}
+                    </Button>
                   </Stack>
                 </Box>
               )}
             </Box>
           </Box>
-        )}
       </Container>
 
-      <Box sx={{ mt: 3, borderTop: '1px solid rgba(184,134,11,0.10)', bgcolor: colors.heroCream, py: { xs: 2.5, md: 3 }, textAlign: 'center', position: 'relative' }}>
-        <Box sx={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 120, height: '3px', borderRadius: '0 0 4px 4px', background: gradients.primary }} />
-        <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
-          <Typography sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: '0.95rem', background: gradients.heroText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', mb: 0.5 }}>MGM Cultural Navratri</Typography>
-          <Typography sx={{ color: colors.muted, fontSize: '0.8rem', fontWeight: 500 }}><Box component="a" href="https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat" target="_blank" rel="noopener noreferrer" sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: colors.gold } }}>Seasons Hotel, Rajkot</Box> · Ten Nights of Devotion & Dance</Typography>
-        </Container>
+      {/* Footer */}
+      <Box sx={{ borderTop: `1px solid ${colors.border}`, bgcolor: colors.bgSoft, py: 3, textAlign: 'center' }}>
+        <Box
+          component="img"
+          src={wowslyLogo}
+          alt="Wowsly"
+          sx={{
+            width: 92,
+            height: 'auto',
+            display: 'block',
+            mx: 'auto',
+            mb: 0.9,
+          }}
+        />
+        <Typography sx={{ color: colors.muted, fontSize: '0.9rem', fontWeight: 500 }}>
+          Powered by Wowsly
+        </Typography>
       </Box>
-      <ShareSheet open={shareOpen} onClose={() => setShareOpen(false)} title={event?.title || 'MGM Cultural Navratri'} />
-    </Box>
+    </FestiveSection>
   )
 }

@@ -1,78 +1,44 @@
 export const colors = {
-  bg: '#FFFDF8',
-  bgSoft: '#FFF6E8',
-  bgWarm: '#FFF8ED',
+  bg: '#1E1210',
+  bgSoft: '#2A1C16',
+  bgWarm: '#352418',
+  bgCard: 'rgba(58, 40, 32, 0.88)',
+  night: '#1A0A12',
+  nightMid: '#2D1018',
+  maroon: '#A83248',
+  maroonDeep: '#5C1220',
+  saffron: '#FF8C1A',
+  gold: '#E8B84A',
+  goldDeep: '#C98B2E',
+  chocolate: '#FFF5E6',
+  ivory: '#FFF5E6',
+  textLight: '#FFF5E6',
+  muted: 'rgba(255, 235, 210, 0.68)',
+  marigold: '#C98B2E',
+  marigoldSoft: '#E8B84A',
+  coral: '#A83248',
+  terracotta: '#B85C3A',
+  teal: '#C98B2E',
   violet: '#C98B2E',
-  violetLight: '#E8B85A',
-  marigold: '#C4A035',
-  marigoldSoft: '#D4AF37',
-  gold: '#B8860B',
-  coral: '#B85C3A',
-  coralLight: '#D97A56',
-  teal: '#8B6B2E',
-  ivory: '#2C1F10',
-  muted: '#6B5A45',
-  mutedLight: '#8C7B66',
-  regBrown: '#6F5734',
-  regGold: '#B77900',
-  heroCream: '#FFFDF5',
-  glass: 'rgba(255, 247, 230, 0.85)',
-  glassBorder: 'rgba(184, 134, 11, 0.10)',
-  glow: 'rgba(212, 175, 55, 0.20)',
-  glowStrong: 'rgba(212, 175, 55, 0.35)',
-  shadow: 'rgba(44, 31, 16, 0.08)',
-  shadowStrong: 'rgba(44, 31, 16, 0.18)',
-  success: '#22c55e',
-  successBg: 'rgba(34, 197, 94, 0.10)',
+  violetLight: '#E8B84A',
+  regBrown: '#C4A88A',
+  regGold: '#C98B2E',
+  heroCream: '#2A1C16',
+  navy: '#1A0A12',
+  navyDark: '#1A0A12',
+  border: 'rgba(232, 184, 74, 0.18)',
 }
 
 export const gradients = {
-  primary: `linear-gradient(135deg, ${colors.marigold}, ${colors.coral})`,
-  primaryReversed: `linear-gradient(135deg, ${colors.coral}, ${colors.marigold})`,
-  heroText: `linear-gradient(135deg, ${colors.marigoldSoft}, ${colors.coral} 55%, ${colors.teal})`,
-  progress: `linear-gradient(90deg, ${colors.marigold}, ${colors.coral}, ${colors.teal})`,
-  brand: `linear-gradient(135deg, ${colors.marigold}, ${colors.coral})`,
-  regWrap: 'linear-gradient(165deg, #FFF4D6, #F8E7B8)',
-  featuredPass: `linear-gradient(160deg, ${colors.violet}, ${colors.bgSoft})`,
-  warmGlow: `radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.12) 0%, transparent 70%)`,
-  heroBg: `linear-gradient(180deg, ${colors.heroCream} 0%, ${colors.bgWarm} 50%, ${colors.bg} 100%)`,
+  primary: 'linear-gradient(135deg, #E8B84A, #C98B2E)',
+  maroon: 'linear-gradient(135deg, #A83248, #5C1220)',
+  night: 'linear-gradient(180deg, #1A0A12, #2D1018)',
+  brown: 'linear-gradient(180deg, #1E1210, #2A1C16)',
+  brownWarm: 'linear-gradient(180deg, #2A1C16, #352418)',
+  saffron: 'linear-gradient(135deg, #FF8C1A, #E8B84A)',
+  heroText: 'linear-gradient(135deg, #E8B84A, #FF8C1A 55%, #A83248)',
+  progress: 'linear-gradient(90deg, #E8B84A, #FF8C1A, #A83248)',
+  brand: 'linear-gradient(135deg, #E8B84A, #C98B2E)',
+  regWrap: 'linear-gradient(165deg, #352418, #2A1C16)',
+  featuredPass: 'linear-gradient(160deg, #5C1220, #352418)',
 }
-
-export const keyframes = `
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-  }
-  @keyframes pulseGlow {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.05); }
-  }
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  @keyframes rotateSlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  @keyframes fadeSlideUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes equalizer {
-    0% { height: 4px; }
-    100% { height: 16px; }
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
-  @keyframes scaleIn {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`

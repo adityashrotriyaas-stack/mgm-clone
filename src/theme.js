@@ -1,41 +1,41 @@
 import { createTheme } from '@mui/material/styles'
-import { colors, keyframes } from './constants/colors'
+import { colors } from './constants/colors'
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
-      main: colors.marigold,
-      dark: colors.coral,
+      main: colors.gold,
+      dark: colors.goldDeep,
     },
     secondary: {
-      main: colors.teal,
+      main: colors.saffron,
     },
     background: {
       default: colors.bg,
       paper: colors.bgSoft,
     },
     text: {
-      primary: colors.ivory,
+      primary: colors.textLight,
       secondary: colors.muted,
     },
   },
   typography: {
-    fontFamily: '"Inter", "Plus Jakarta Sans", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Plus Jakarta Sans", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontFamily: '"Sora", "Unbounded", sans-serif',
+      fontFamily: '"Unbounded", sans-serif',
       fontWeight: 700,
       lineHeight: 1.18,
       letterSpacing: '-0.3px',
     },
     h2: {
-      fontFamily: '"Sora", "Unbounded", sans-serif',
+      fontFamily: '"Unbounded", sans-serif',
       fontWeight: 700,
       lineHeight: 1.18,
       letterSpacing: '-0.3px',
     },
     h3: {
-      fontFamily: '"Sora", "Unbounded", sans-serif',
+      fontFamily: '"Unbounded", sans-serif',
       fontWeight: 700,
       lineHeight: 1.18,
     },
@@ -45,54 +45,24 @@ const theme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `
-        ${keyframes}
-        html {
-          scroll-behavior: smooth;
-          -webkit-text-size-adjust: 100%;
-        }
-        body {
-          background-color: ${colors.bg};
-          color: ${colors.ivory};
-          line-height: 1.55;
-          -moz-osx-font-smoothing: grayscale;
-          padding-bottom: env(safe-area-inset-bottom, 0px);
-        }
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-        ::selection {
-          background: ${colors.gold};
-          color: #fff;
-        }
-        :focus-visible {
-          outline: 2px solid ${colors.gold};
-          outline-offset: 2px;
-        }
-        *::-webkit-scrollbar {
-          width: 6px;
-          height: 6px;
-        }
-        *::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        *::-webkit-scrollbar-thumb {
-          background: ${colors.glassBorder};
-          border-radius: 4px;
-        }
-        *::-webkit-scrollbar-thumb:hover {
-          background: ${colors.glowStrong};
-        }
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-            scroll-behavior: auto !important;
-          }
-        }
-      `,
+      styleOverrides: {
+        html: {
+          scrollBehavior: 'smooth',
+          WebkitTextSizeAdjust: '100%',
+        },
+        body: {
+          backgroundColor: colors.bg,
+          color: colors.textLight,
+          lineHeight: 1.55,
+          WebkitFontSmoothing: 'antialiased',
+          overflowX: 'clip',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        },
+        a: {
+          color: 'inherit',
+          textDecoration: 'none',
+        },
+      },
     },
     MuiContainer: {
       styleOverrides: {

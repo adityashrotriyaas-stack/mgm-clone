@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -13,31 +13,25 @@ import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
-import { colors, gradients } from '../constants/colors'
 import { navLinks } from '../data/siteData'
+import { colors, gradients } from '../constants/colors'
+import { patternNight } from '../constants/navratriTheme'
 
 export default function Header() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [hidden, setHidden] = useState(false)
-  const lastScrollY = useRef(0)
 
   const closeMenu = () => setOpen(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY
-      setScrolled(currentY > 60)
-      if (currentY > 120) {
-        setHidden(currentY > lastScrollY.current)
-      } else {
-        setHidden(false)
-      }
-      lastScrollY.current = currentY
+    const onScroll = () => {
+      setScrolled(window.scrollY > 18)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
@@ -45,85 +39,107 @@ export default function Header() {
       position="sticky"
       elevation={0}
       sx={{
-        bgcolor: scrolled ? 'rgba(255,253,248,0.92)' : colors.heroCream,
-        borderBottom: scrolled ? '1px solid rgba(184,134,11,0.10)' : '1px solid rgba(184,134,11,0.18)',
-        boxShadow: scrolled ? '0 4px 20px rgba(44,31,16,0.08)' : '0 2px 12px rgba(44,31,16,0.06)',
-        color: colors.ivory,
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
-        transition: 'transform 0.35s ease, background-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease',
+        top: 0,
+        zIndex: 1200,
+        bgcolor: scrolled ? 'rgba(26, 10, 18, 0.62)' : colors.night,
+        borderBottom: scrolled
+          ? '1px solid rgba(232, 184, 74, 0.22)'
+          : '1px solid rgba(232, 184, 74, 0.15)',
+        boxShadow: scrolled
+          ? '0 8px 28px rgba(10, 4, 8, 0.28)'
+          : '0 4px 24px rgba(26, 10, 18, 0.4)',
+        color: colors.textLight,
+        overflow: 'hidden',
+        backdropFilter: scrolled ? 'blur(14px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        transition:
+          'background-color 0.28s ease, backdrop-filter 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: patternNight,
+          opacity: scrolled ? 0.35 : 0.7,
+          pointerEvents: 'none',
+          transition: 'opacity 0.28s ease',
+        },
       }}
     >
-      <Container maxWidth="xl" disableGutters>
+      <Container maxWidth="xl" disableGutters sx={{ position: 'relative', zIndex: 1 }}>
         <Toolbar
           sx={{
             justifyContent: 'space-between',
             px: { xs: 2, md: 3 },
-            py: { xs: scrolled ? 0.75 : 1.5, md: scrolled ? 1 : 2 },
+            py: scrolled ? { xs: 1.1, md: 1.35 } : { xs: 1.5, md: 2 },
             minHeight: 'auto',
             gap: 2,
-            transition: 'padding 0.3s ease',
+            transition: 'padding 0.28s ease',
           }}
         >
           <Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none' }}>
             <Box
               sx={{
-                width: { xs: scrolled ? 42 : 52, md: scrolled ? 48 : 60 },
-                height: { xs: scrolled ? 42 : 52, md: scrolled ? 48 : 60 },
+                width: { xs: 52, md: 60 },
+                height: { xs: 52, md: 60 },
                 borderRadius: '50%',
-                border: `2px solid ${colors.marigold}`,
-                background: `radial-gradient(circle at 30% 30%, #F5E6B8, ${colors.marigoldSoft})`,
+                border: '2px solid #F7C76B',
+                background: 'radial-gradient(circle at 30% 30%, #F5E6B8, #D4AF37)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                boxShadow: '0 4px 14px rgba(184,134,11,0.25)',
-                transition: 'width 0.3s ease, height 0.3s ease',
+                boxShadow: '0 4px 14px rgba(247, 199, 107, 0.35)',
               }}
             >
               <Typography
                 sx={{
                   fontFamily: '"Playfair Display", serif',
-                  fontSize: { xs: scrolled ? '0.48rem' : '0.55rem', md: scrolled ? '0.55rem' : '0.62rem' },
+                  fontSize: { xs: '0.55rem', md: '0.62rem' },
                   fontWeight: 700,
-                  color: colors.ivory,
+                  color: '#2C1F10',
                   textAlign: 'center',
                   lineHeight: 1.15,
                   px: 0.5,
-                  transition: 'font-size 0.3s ease',
                 }}
               >
                 MGM
               </Typography>
             </Box>
-            <Box sx={{ display: { xs: scrolled ? 'none' : 'block', sm: 'block' }, minWidth: 0 }}>
+            <Box sx={{ display: { xs: 'block', sm: 'none' }, minWidth: 0 }}>
               <Typography
                 sx={{
                   fontFamily: '"Playfair Display", serif',
-                  fontSize: { xs: scrolled ? '0rem' : '0.82rem', sm: scrolled ? '0.85rem' : '0.95rem', md: scrolled ? '0.9rem' : '1.05rem' },
+                  fontSize: '0.82rem',
                   fontWeight: 700,
                   lineHeight: 1.15,
-                  color: colors.ivory,
+                  color: '#FFF8E7',
+                  letterSpacing: '0.3px',
+                }}
+              >
+                MGM Navratri
+              </Typography>
+            </Box>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Typography
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontSize: { sm: '0.95rem', md: '1.05rem' },
+                  fontWeight: 700,
+                  lineHeight: 1.15,
+                  color: '#FFF8E7',
                   letterSpacing: '0.5px',
-                  transition: 'font-size 0.3s ease',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
                 }}
               >
                 MGM CULTURAL NAVRATRI
               </Typography>
               <Typography
                 sx={{
-                  fontSize: scrolled ? '0.5rem' : '0.58rem',
+                  fontSize: '0.58rem',
                   letterSpacing: '2px',
                   textTransform: 'uppercase',
-                  color: colors.gold,
+                  color: '#F7C76B',
                   fontWeight: 600,
                   mt: 0.25,
-                  transition: 'font-size 0.3s ease, opacity 0.3s ease',
-                  opacity: scrolled ? 0 : 1,
-                  height: scrolled ? 0 : 'auto',
-                  overflow: 'hidden',
                 }}
               >
                 Ten Nights of Garba
@@ -142,25 +158,25 @@ export default function Header() {
                 key={link.label}
                 href={link.href}
                 sx={{
-                  color: link.active ? colors.ivory : colors.muted,
+                  color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.72)',
                   fontWeight: link.active ? 700 : 500,
-                  fontSize: scrolled ? '0.82rem' : '0.88rem',
+                  fontSize: '0.88rem',
                   position: 'relative',
+                  pb: 0.5,
                   textDecoration: 'none',
-                  transition: 'font-size 0.3s ease',
-                  '&::after': {
-                    content: '""',
-                    position: 'absolute',
-                    bottom: -2,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    bgcolor: colors.gold,
-                    borderRadius: 1,
-                    transform: link.active ? 'scaleX(1)' : 'scaleX(0)',
-                    transition: 'transform 0.25s ease',
-                  },
-                  '&:hover': { color: colors.ivory, '&::after': { transform: 'scaleX(1)' } },
+                  '&:hover': { color: '#FFF8E7' },
+                  ...(link.active && {
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      bottom: 0,
+                      left: '20%',
+                      right: '20%',
+                      height: 2,
+                      bgcolor: '#F7C76B',
+                      borderRadius: 1,
+                    },
+                  }),
                 }}
               >
                 {link.label}
@@ -170,22 +186,20 @@ export default function Header() {
 
           <Button
             onClick={() => navigate('/event/1')}
-            startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: scrolled ? '0.95rem !important' : '1.1rem !important' }} />}
+            startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
               background: gradients.primary,
-              color: '#fff',
-              px: scrolled ? 2 : 2.5,
-              py: scrolled ? 0.9 : 1.2,
-              fontSize: scrolled ? '0.8rem' : '0.86rem',
+              color: '#231509',
+              px: 2.5,
+              py: 1.2,
+              fontSize: '0.86rem',
               fontWeight: 700,
               borderRadius: '50px',
-              boxShadow: '0 6px 20px rgba(184,134,11,0.35)',
-              transition: 'transform 0.25s ease, box-shadow 0.25s ease, padding 0.3s ease, font-size 0.3s ease',
+              boxShadow: '0 8px 22px rgba(230, 149, 75, 0.32)',
               '&:hover': {
-                background: gradients.primaryReversed,
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 24px rgba(184,134,11,0.45)',
+                background: gradients.primary,
+                filter: 'brightness(1.05)',
               },
             }}
           >
@@ -198,7 +212,7 @@ export default function Header() {
             onClick={() => setOpen((prev) => !prev)}
             sx={{
               display: { xs: 'inline-flex', lg: 'none' },
-              color: colors.ivory,
+              color: '#FFF8E7',
               width: 44,
               height: 44,
             }}
@@ -210,10 +224,12 @@ export default function Header() {
         <Collapse in={open} sx={{ display: { xs: 'block', lg: 'none' } }}>
           <Box
             sx={{
-              bgcolor: colors.heroCream,
+              bgcolor: scrolled ? 'rgba(26, 10, 18, 0.72)' : 'rgba(45, 16, 24, 0.95)',
+              backdropFilter: scrolled ? 'blur(14px)' : 'none',
+              WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
               px: 2,
               pb: 2,
-              borderTop: '1px solid rgba(184,134,11,0.12)',
+              borderTop: '1px solid rgba(255, 220, 150, 0.1)',
             }}
           >
             <Stack component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
@@ -225,10 +241,11 @@ export default function Header() {
                     sx={{
                       display: 'block',
                       py: 1.4,
-                      color: colors.ivory,
+                      color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.82)',
                       fontWeight: link.active ? 700 : 600,
                       fontSize: '0.95rem',
-                      borderBottom: '1px solid rgba(139,107,46,0.08)',
+                      borderBottom: '1px solid rgba(255,255,255,0.06)',
+                      textDecoration: 'none',
                     }}
                   >
                     {link.mobileLabel || link.label}
@@ -237,7 +254,10 @@ export default function Header() {
               ))}
               <Box component="li" sx={{ mt: 1.25 }}>
                 <Button
-                  onClick={() => { closeMenu(); navigate('/event/1') }}
+                  onClick={() => {
+                    closeMenu()
+                    navigate('/event/1')
+                  }}
                   fullWidth
                   sx={{
                     display: 'flex',
@@ -248,9 +268,11 @@ export default function Header() {
                     py: 1.4,
                     fontWeight: 700,
                     background: gradients.primary,
-                    color: '#fff',
-                    boxShadow: '0 6px 20px rgba(184,134,11,0.35)',
-                    '&:hover': { background: gradients.primaryReversed },
+                    color: '#231509',
+                    '&:hover': {
+                      background: gradients.primary,
+                      filter: 'brightness(1.04)',
+                    },
                   }}
                 >
                   <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />

@@ -1,9 +1,9 @@
 export const contactInfo = {
-  phone: '+91 98765 43210',
-  phoneHref: 'tel:+919876543210',
-  whatsappNumber: '919876543210',
+  phone: '+91 89800 09014',
+  phoneHref: 'tel:+918980009014',
+  whatsappNumber: '918980009014',
   whatsappMessage: 'Hi, I would like to know more about MGM Cultural Navratri passes and event details.',
-  email: 'hello@mgmcultural.in',
+  email: 'mgmculturalnavratri23@gmail.com',
   venue: 'Seasons Hotel, Rajkot',
   venueHref: 'https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat',
   gatesOpen: 'Gates Open 7:30 PM',

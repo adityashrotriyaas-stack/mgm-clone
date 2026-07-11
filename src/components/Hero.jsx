@@ -1,236 +1,246 @@
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
-import { colors, gradients } from '../constants/colors'
-import promoBanner from '../assets/image.png'
-import { heroFeatures, stats } from '../data/siteData'
-import { useRevealRef } from './shared'
+import heroVideo from '../assets/navratri video.mp4'
+import { colors } from '../constants/colors'
+import { patternNight } from '../constants/navratriTheme'
+import { heroFeatures } from '../data/siteData'
 
-const featureIcons = {
+const heroVideoSrc = heroVideo
+
+const iconMap = {
   calendar: CalendarMonthOutlinedIcon,
   location: LocationOnOutlinedIcon,
   people: GroupsOutlinedIcon,
   food: RestaurantOutlinedIcon,
 }
 
-const heroMetaChips = [
-  { icon: CalendarMonthOutlinedIcon, label: 'Oct 11 – Oct 20, 2026' },
-  { icon: LocationOnOutlinedIcon, label: 'Seasons Hotel, Rajkot', href: 'https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat' },
-  { icon: PaymentsOutlinedIcon, label: 'Garba & Dandiya' },
-]
-
-function FeatureItem({ icon, title, subtitle }) {
-  const Icon = featureIcons[icon]
-  return (
-    <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', width: '100%', minWidth: 0 }}>
-      <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: 'rgba(184,134,11,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <Icon sx={{ color: colors.gold, fontSize: '1.35rem' }} />
-      </Box>
-      <Box sx={{ minWidth: 0 }}>
-        <Typography sx={{ fontWeight: 700, fontSize: { xs: '0.85rem', md: '0.9rem' }, color: colors.ivory, lineHeight: 1.2 }}>{title}</Typography>
-        <Typography sx={{ fontSize: { xs: '0.72rem', md: '0.75rem' }, color: colors.muted, lineHeight: 1.3 }}>{subtitle}</Typography>
-      </Box>
-    </Stack>
-  )
+const barTheme = {
+  bg: 'rgba(30, 18, 16, 0.72)',
+  iconBg: 'rgba(53, 36, 24, 0.85)',
+  title: '#FFF5E6',
+  subtitle: 'rgba(255, 235, 210, 0.72)',
+  icon: '#E8B84A',
+  border: 'rgba(232, 184, 74, 0.22)',
 }
 
-function DecorativeOrb({ size, top, left, right, bottom, delay = 0, duration = 8 }) {
-  return (
-    <Box sx={{ position: 'absolute', width: size, height: size, borderRadius: '50%', top, left, right, bottom, background: `radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%)`, animation: `float ${duration}s ease-in-out infinite`, animationDelay: `${delay}s`, pointerEvents: 'none', zIndex: 0 }} />
-  )
-}
+const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
-function RangoliDot({ top, left, right, size = 6, delay = 0 }) {
-  return (
-    <Box sx={{ position: 'absolute', width: size, height: size, borderRadius: '50%', top, left, right, background: colors.glow, animation: `pulseGlow 3s ease-in-out infinite`, animationDelay: `${delay}s`, pointerEvents: 'none', zIndex: 0 }} />
-  )
-}
-
-function useCountUp(target, enabled) {
-  const [value, setValue] = useState(0)
-  const started = useRef(false)
-
-  useEffect(() => {
-    if (!enabled || started.current) return
-    started.current = true
-    let current = 0
-    const step = Math.max(1, Math.ceil(target / 60))
-    const tick = () => {
-      current += step
-      if (current >= target) { setValue(target); return }
-      setValue(current)
-      requestAnimationFrame(tick)
-    }
-    tick()
-  }, [enabled, target])
-
-  return value
-}
-
-function StatItem({ value, label, visible, index }) {
-  const count = useCountUp(value, visible)
+function HeroFeatureBar() {
   return (
     <Box
       sx={{
-        textAlign: 'center',
-        py: { xs: 1.5, md: 2 },
-        px: 1,
-        borderRadius: '16px',
-        bgcolor: 'rgba(255,255,255,0.35)',
-        border: '1px solid rgba(184,134,11,0.08)',
-        backdropFilter: 'blur(4px)',
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(16px)',
-        transition: `opacity 0.5s ease, transform 0.5s ease`,
-        transitionDelay: `${index * 0.12}s`,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        px: { xs: 1.25, sm: 2, md: 3 },
+        py: { xs: 1.15, sm: 1.35, md: 1.6 },
+        bgcolor: barTheme.bg,
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderTop: `1px solid ${barTheme.border}`,
       }}
     >
-      <Typography
+      <Box
         sx={{
-          fontFamily: '"Unbounded", sans-serif',
-          fontWeight: 800,
-          fontSize: { xs: '1.3rem', sm: '1.6rem', md: '2rem' },
-          background: gradients.heroText,
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          lineHeight: 1.1,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+          gap: { xs: 1.25, sm: 1.5, md: 2 },
         }}
       >
-        {count.toLocaleString()}+
-      </Typography>
-      <Typography
-        sx={{
-          fontSize: { xs: '0.65rem', sm: '0.72rem', md: '0.78rem' },
-          color: colors.muted,
-          fontWeight: 600,
-          mt: 0.25,
-          letterSpacing: '0.3px',
-        }}
-      >
-        {label}
-      </Typography>
-    </Box>
-  )
-}
+        {heroFeatures.map(({ icon, title, subtitle }, index) => {
+          const Icon = iconMap[icon]
 
-function StatsRow() {
-  const { ref, visible } = useRevealRef(0.3)
-
-  return (
-    <Box
-      ref={ref}
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: { xs: 'repeat(3, 1fr)' },
-        gap: { xs: 1.5, md: 3 },
-        mb: { xs: 2.5, md: 3 },
-        px: { xs: 0.5, md: 0 },
-      }}
-    >
-      {stats.map((stat, index) => (
-        <StatItem key={stat.label} value={stat.value} label={stat.label} visible={visible} index={index} />
-      ))}
+          return (
+            <Stack
+              key={title}
+              direction="row"
+              alignItems="center"
+              spacing={1.25}
+              sx={{
+                minWidth: 0,
+                opacity: 0,
+                animation: `mgm-hero-bar-in 0.7s ${EASE} ${0.35 + index * 0.1}s forwards`,
+              }}
+            >
+              <Box
+                sx={{
+                  width: { xs: 38, sm: 42, md: 46 },
+                  height: { xs: 38, sm: 42, md: 46 },
+                  borderRadius: '12px',
+                  bgcolor: barTheme.iconBg,
+                  border: `1px solid ${barTheme.border}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: barTheme.icon }} />
+              </Box>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: '0.78rem', sm: '0.85rem', md: '0.92rem' },
+                    color: barTheme.title,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {title}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: { xs: '0.68rem', sm: '0.72rem', md: '0.78rem' },
+                    color: barTheme.subtitle,
+                    lineHeight: 1.35,
+                    mt: 0.15,
+                  }}
+                >
+                  {subtitle}
+                </Typography>
+              </Box>
+            </Stack>
+          )
+        })}
+      </Box>
     </Box>
   )
 }
 
 export default function Hero() {
-  const navigate = useNavigate()
+  const videoRef = useRef(null)
+  const frameRef = useRef(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    const frame = frameRef.current
+    if (!video || !frame) return undefined
+
+    const tryPlay = () => {
+      video.play().catch(() => {})
+    }
+
+    // Start video immediately on first load
+    tryPlay()
+    video.addEventListener('loadeddata', tryPlay)
+    video.addEventListener('canplay', tryPlay)
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          tryPlay()
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.35 },
+    )
+
+    observer.observe(frame)
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        video.pause()
+        return
+      }
+      const rect = frame.getBoundingClientRect()
+      const inView = rect.top < window.innerHeight && rect.bottom > 0
+      if (inView) {
+        tryPlay()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      observer.disconnect()
+      video.removeEventListener('loadeddata', tryPlay)
+      video.removeEventListener('canplay', tryPlay)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [])
+
   return (
-    <Box component="section" id="home" sx={{ display: 'flex', flexDirection: 'column', background: gradients.heroBg, overflow: 'hidden', position: 'relative' }}>
-      <DecorativeOrb size={400} top="-120px" right="-100px" delay={0} duration={8} />
-      <DecorativeOrb size={300} bottom="-80px" left="-80px" delay={1.5} duration={10} />
-      <RangoliDot top="15%" left="10%" delay={0} />
-      <RangoliDot top="25%" right="15%" delay={0.8} size={8} />
-      <RangoliDot bottom="30%" left="20%" delay={1.6} size={5} />
-      <RangoliDot top="45%" right="8%" delay={2.4} />
-
-      <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.04, backgroundImage: `
-        radial-gradient(circle at 20% 30%, ${colors.gold} 1px, transparent 1px),
-        radial-gradient(circle at 80% 70%, ${colors.gold} 1px, transparent 1px),
-        radial-gradient(circle at 50% 50%, ${colors.coral} 1px, transparent 1px)
-      `, backgroundSize: '60px 60px, 80px 80px, 100px 100px', backgroundPosition: '0 0, 40px 20px, 80px 40px' }} />
-
-      <Container maxWidth="xl" sx={{ flex: 1, px: { xs: 2, sm: 2.5, md: 4 }, py: { xs: 3, sm: 4, md: 6 }, position: 'relative', zIndex: 1 }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: { xs: 2.5, sm: 3.5, lg: 5 }, alignItems: 'center' }}>
-          <Box sx={{ order: { xs: 1, lg: 0 }, minWidth: 0 }}>
-            <Box sx={{ bgcolor: colors.bg, borderRadius: { xs: '16px', md: '20px' }, p: { xs: 0.75, md: 1.25 }, boxShadow: '0 20px 50px rgba(44,31,16,0.12)', border: '1px solid rgba(184,134,11,0.12)', transition: 'transform 0.4s ease, box-shadow 0.4s ease', '@media (hover: hover)': { '&:hover': { transform: 'scale(1.01)', boxShadow: '0 28px 60px rgba(44,31,16,0.18)' } } }}>
-              <Box sx={{ position: 'relative', '&::after': { content: '""', position: 'absolute', inset: '-3px', borderRadius: { xs: '15px', md: '17px' }, border: '1px solid rgba(184,134,11,0.12)', pointerEvents: 'none' } }}>
-                <Box component="img" src={promoBanner} alt="MGM Cultural Navratri 2026 — Rajkot event poster" loading="lazy" sx={{ width: '100%', height: 'auto', display: 'block', borderRadius: { xs: '12px', md: '14px' } }} />
-              </Box>
-            </Box>
-          </Box>
-
-          <Box sx={{ order: { xs: 2, lg: 0 }, minWidth: 0 }}>
-            <Stack direction="row" spacing={1} sx={{ mb: { xs: 1.5, md: 2 }, alignItems: 'center' }}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, background: gradients.primary, color: '#fff', fontSize: { xs: '0.62rem', sm: '0.68rem' }, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', px: 1.5, py: 0.6, borderRadius: '50px' }}>
-                <AutoAwesomeIcon sx={{ fontSize: '0.75rem' }} />
-                MGM Cultural · Exclusive Event
-              </Box>
-            </Stack>
-
-            <Typography component="h1" sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: { xs: '1.85rem', sm: '2.4rem', md: '3.2rem', lg: '3.6rem' }, lineHeight: 1.12, color: colors.ivory, mb: { xs: 1.25, md: 1.5 } }}>
-              Ten Nights of{' '}
-              <Box component="span" sx={{ background: gradients.heroText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', backgroundSize: '200% auto', animation: 'shimmer 4s ease-in-out infinite' }}>
-                Garba
-              </Box>
-            </Typography>
-
-            <Typography sx={{ fontSize: { xs: '0.9rem', md: '1.02rem' }, color: colors.mutedLight, lineHeight: 1.7, maxWidth: 500, mb: { xs: 2, md: 2.5 } }}>
-              Devotion. Dance. Dandiya. Experience the joy of Navratri like never before at Rajkot&apos;s grand ten-night celebration.
-            </Typography>
-
-            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: { xs: 2.5, md: 3 } }}>
-              {heroMetaChips.map(({ icon: Icon, label, href }) => (
-                <Chip key={label} component={href ? 'a' : undefined} href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener noreferrer' : undefined} clickable={!!href} icon={<Icon sx={{ fontSize: '0.95rem !important', color: `${colors.gold} !important` }} />} label={label} sx={{ bgcolor: colors.bg, border: '1px solid rgba(184,134,11,0.18)', color: colors.ivory, fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.8rem' }, height: 'auto', py: 0.5, maxWidth: '100%', boxShadow: '0 2px 8px rgba(44,31,16,0.04)', '& .MuiChip-label': { px: 0.75, whiteSpace: 'normal' }, '&:hover': href ? { bgcolor: colors.bg, borderColor: colors.gold } : {} }} />
-              ))}
-            </Stack>
-
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ alignItems: { xs: 'stretch', sm: 'center' } }}>
-              <Button onClick={() => navigate('/event/1')} startIcon={<ConfirmationNumberOutlinedIcon />} sx={{
-                background: gradients.primary, color: '#fff', px: 3, py: { xs: 1.35, md: 1.5 }, minHeight: 48, fontSize: { xs: '0.9rem', md: '0.95rem' }, fontWeight: 700, borderRadius: '50px',
-                boxShadow: '0 8px 24px rgba(184,134,11,0.3)', transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                '&:hover': { background: gradients.primaryReversed, transform: 'translateY(-2px)', boxShadow: '0 12px 32px rgba(184,134,11,0.4)' },
-                '&:active': { transform: 'translateY(0)' },
-              }}>
-                Book Tickets
-              </Button>
-              <Button component="a" href="#upcoming" startIcon={<CalendarMonthOutlinedIcon />} sx={{
-                bgcolor: colors.bg, color: colors.ivory, border: '1.5px solid rgba(184,134,11,0.35)', px: 3, py: { xs: 1.35, md: 1.5 }, minHeight: 48, fontSize: { xs: '0.9rem', md: '0.95rem' }, fontWeight: 700, borderRadius: '50px',
-                transition: 'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease',
-                '&:hover': { bgcolor: colors.bg, borderColor: colors.gold, transform: 'translateY(-2px)', boxShadow: '0 8px 20px rgba(44,31,16,0.10)' },
-              }}>
-                Explore Events
-              </Button>
-            </Stack>
-
-            <StatsRow />
-          </Box>
+    <Box
+      component="section"
+      id="home"
+      sx={{
+        position: 'relative',
+        bgcolor: colors.night,
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: patternNight,
+          pointerEvents: 'none',
+        },
+      }}
+    >
+      <Container
+        maxWidth="xl"
+        sx={{
+          position: 'relative',
+          zIndex: 1,
+          px: { xs: 2, sm: 2.5, md: 4 },
+          pt: { xs: 1.5, sm: 2, md: 2.5 },
+          pb: { xs: 2, sm: 2.5, md: 3 },
+        }}
+      >
+        <Box
+          ref={frameRef}
+          sx={{
+            position: 'relative',
+            borderRadius: { xs: '20px', md: '28px' },
+            overflow: 'hidden',
+            border: '1px solid rgba(232, 184, 74, 0.22)',
+            boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
+            aspectRatio: { xs: '9 / 14', sm: '16 / 10', lg: '16 / 7.4' },
+            bgcolor: colors.nightMid,
+            opacity: 0,
+            animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+          }}
+        >
+          <Box
+            ref={videoRef}
+            component="video"
+            src={heroVideoSrc}
+            muted
+            autoPlay
+            loop
+            playsInline
+            preload="auto"
+            sx={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              backgroundColor: colors.nightMid,
+            }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(180deg, rgba(26,10,18,0.04) 0%, rgba(26,10,18,0.12) 50%, rgba(26,10,18,0.55) 100%)',
+              pointerEvents: 'none',
+              zIndex: 1,
+            }}
+          />
+          <HeroFeatureBar />
         </Box>
       </Container>
-
-      <Box sx={{ borderTop: '1px solid rgba(184,134,11,0.15)', bgcolor: 'rgba(255,255,255,0.40)', backdropFilter: 'blur(4px)', py: { xs: 2, md: 3 }, position: 'relative', zIndex: 1 }}>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 2.5, md: 4 } }}>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' }, gap: { xs: 2, md: 3 } }}>
-            {heroFeatures.map((feature) => (
-              <FeatureItem key={feature.title} {...feature} />
-            ))}
-          </Box>
-        </Container>
-      </Box>
     </Box>
   )
 }

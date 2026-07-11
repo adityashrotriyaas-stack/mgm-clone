@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGM Cultural Navratri — Nine Nights of Garba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF7E6;
+    --bg-soft:#FFF1CC;
+    --violet:#C98B2E;
+    --violet-light:#E8B85A;
+    --marigold:#C9952E;
+    --marigold-soft:#E8C77A;
+    --coral:#B85C3A;
+    --teal:#8B6B2E;
+    --ivory:#3B2A16;
+    --muted:#806A4A;
+    --maxw:1180px;
+    --radius:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    background:var(--bg);
+    color:var(--ivory);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    line-height:1.18;
+    letter-spacing:-.3px;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  .container{max-width:var(--maxw); margin:0 auto; padding:0 18px;}
+  .eyebrow{
+    font-size:.7rem; text-transform:uppercase; letter-spacing:2.5px;
+    color:var(--teal); font-weight:700; margin-bottom:8px; display:inline-block;
+  }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+    outline:2.5px solid var(--teal); outline-offset:2px;
+  }
+
+  /* scroll progress */
+  .progress-bar{
+    position:fixed; top:0; left:0; height:3px; z-index:100;
+    background:linear-gradient(90deg, var(--marigold), var(--coral), var(--teal));
+    width:0%; transition:width .1s linear;
+  }
+
+  /* reveal animation */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,247,230,.90);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px; max-width:var(--maxw); margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:40px; height:40px; border-radius:12px;
+    background:linear-gradient(135deg, var(--marigold), var(--coral));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Unbounded',sans-serif; color:var(--bg); font-size:1.1rem; font-weight:800;
+    flex-shrink:0;
+  }
+  .brand-text .display{font-size:1.02rem; color:var(--ivory); letter-spacing:0;}
+  .brand-text small{font-size:.62rem; letter-spacing:1.8px; text-transform:uppercase; color:var(--teal); font-weight:600;}
+
+  nav.desktop-nav{display:none;}
+  nav.desktop-nav ul{list-style:none; display:flex; gap:30px;}
+  nav.desktop-nav a{color:var(--muted); font-weight:600; font-size:.9rem; transition:color .2s;}
+  nav.desktop-nav a:hover{color:var(--ivory);}
+
+  .nav-cta{display:none;}
+  .nav-cta a{
+    background:linear-gradient(135deg, var(--marigold), var(--coral)); color:var(--bg); font-weight:700;
+    padding:11px 22px; border-radius:30px; font-size:.86rem;
+    box-shadow:0 6px 18px rgba(255,94,126,.3);
+    transition:transform .2s;
+  }
+  .nav-cta a:hover{transform:translateY(-2px);}
+
+  .hamburger{
+    background:none; border:none; width:42px; height:42px;
+    display:flex; flex-direction:column; gap:5px; align-items:center; justify-content:center;
+  }
+  .hamburger span, .hamburger::before, .hamburger::after{
+    content:''; display:block; width:22px; height:2px; background:var(--ivory);
+    position:relative; transition:.25s;
+  }
+  .hamburger.open span{opacity:0;}
+  .hamburger.open::before{transform:translateY(7px) rotate(45deg);}
+  .hamburger.open::after{transform:translateY(-7px) rotate(-45deg);}
+
+  .mobile-menu{
+    max-height:0; overflow:hidden; background:var(--bg-soft);
+    transition:max-height .35s ease;
+  }
+  .mobile-menu.open{max-height:420px;}
+  .mobile-menu ul{list-style:none; padding:8px 18px 18px;}
+  .mobile-menu a{
+    display:block; padding:13px 4px; color:var(--ivory); font-weight:600;
+    border-bottom:1px solid rgba(255,255,255,.07); font-size:1rem;
+  }
+  .mobile-menu .menu-cta{
+    margin-top:10px; background:linear-gradient(135deg, var(--marigold), var(--coral)); color:var(--bg);
+    text-align:center; border-radius:30px; padding:13px; font-weight:700;
+    border-bottom:none;
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative; overflow:hidden;
+    padding:44px 0 56px;
+  }
+  .hero-blob{
+    position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; opacity:.35;
+  }
+  .b1{width:340px; height:340px; background:var(--coral); top:-120px; left:-100px; animation:float1 14s ease-in-out infinite;}
+  .b2{width:300px; height:300px; background:var(--teal); bottom:-100px; right:-80px; animation:float2 16s ease-in-out infinite;}
+  .b3{width:220px; height:220px; background:var(--marigold); top:30%; right:10%; animation:float1 11s ease-in-out infinite reverse;}
+  @keyframes float1{0%,100%{transform:translate(0,0);} 50%{transform:translate(30px,-20px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);} 50%{transform:translate(-25px,25px);}}
+  @media (prefers-reduced-motion: reduce){ .hero-blob{animation:none;} }
+
+  .hero-inner{position:relative; z-index:1; text-align:center;}
+  .hero h1{
+    font-size:clamp(2.1rem, 8vw, 4rem);
+    background:linear-gradient(135deg, var(--marigold-soft), var(--coral) 55%, var(--teal));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero h1 .line2{display:block; font-size:.85em; -webkit-text-fill-color:var(--ivory); color:var(--ivory); margin-top:2px;}
+  .hero p.sub{
+    max-width:520px; margin:18px auto 0; color:var(--muted); font-size:1.02rem;
+  }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:10px;
+    margin-top:24px;
+  }
+  .hero-meta span{
+    display:flex; align-items:center; gap:6px; font-size:.8rem; color:var(--ivory);
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+    padding:8px 14px; border-radius:20px;
+  }
+  .hero-actions{
+    display:flex; flex-direction:column; gap:12px; align-items:center; margin-top:30px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:16px 30px; border-radius:32px; font-weight:700; font-size:.98rem;
+    border:none; width:100%; max-width:320px; transition:transform .18s, box-shadow .18s;
+  }
+  .btn:hover{transform:translateY(-3px);}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--marigold), var(--coral));
+    color:var(--bg); box-shadow:0 10px 28px rgba(255,94,126,.32);
+  }
+  .btn-ghost{
+    background:rgba(255,255,255,.06); color:var(--ivory); border:1.5px solid rgba(255,255,255,.18);
+  }
+
+  /* stats counter */
+  .stats-row{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+    max-width:560px; margin:40px auto 0; position:relative; z-index:1;
+  }
+  .stat{
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+    border-radius:16px; padding:16px 8px; text-align:center;
+  }
+  .stat .num{font-family:'Unbounded'; font-size:1.5rem; font-weight:700; color:var(--marigold-soft);}
+  .stat .lbl{font-size:.65rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-top:4px;}
+
+  /* night tracker */
+  .nav-tracker{
+    margin-top:34px; display:flex; justify-content:center; gap:7px; flex-wrap:wrap;
+    position:relative; z-index:1;
+  }
+  .tracker-label{width:100%; text-align:center; font-size:.68rem; letter-spacing:1.8px; text-transform:uppercase; color:var(--teal); margin-bottom:10px;}
+  .nav-dot{
+    width:28px; height:28px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-size:.7rem; font-weight:700; color:var(--muted); background:rgba(255,255,255,.05);
+    border:1.5px solid rgba(255,255,255,.12); transition:.2s;
+  }
+  .nav-dot.done{background:var(--teal); color:var(--bg); border-color:var(--teal);}
+  .nav-dot.today{background:linear-gradient(135deg,var(--marigold),var(--coral)); border-color:transparent; color:var(--bg); box-shadow:0 0 0 4px rgba(255,94,126,.2); transform:scale(1.12);}
+
+  /* ===== Section shell ===== */
+  section{padding:50px 0;}
+  .section-head{margin-bottom:26px; text-align:center;}
+  .section-head h2{font-size:clamp(1.6rem, 5vw, 2.2rem); color:var(--ivory);}
+  .section-head p{color:var(--muted); max-width:480px; margin:8px auto 0; font-size:.95rem;}
+
+  /* ===== Event cards ===== */
+  .scroller{
+    display:flex; gap:16px; overflow-x:auto; padding:6px 18px 18px; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  .scroller::-webkit-scrollbar{height:5px;}
+  .scroller::-webkit-scrollbar-thumb{background:var(--coral); border-radius:3px;}
+  .grid{display:grid; grid-template-columns:1fr; gap:18px; padding:0 18px;}
+  .card{
+    background:var(--bg-soft); border-radius:var(--radius); overflow:hidden;
+    flex:0 0 80%; scroll-snap-align:start;
+    border:1px solid rgba(255,255,255,.07);
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .card:hover{transform:translateY(-6px); border-color:rgba(255,178,62,.35); box-shadow:0 16px 36px rgba(0,0,0,.35);}
+  .grid .card{flex:none; width:auto;}
+  .card-img{height:160px; background-size:cover; background-position:center; position:relative;}
+  .card-badge{
+    position:absolute; top:12px; left:12px; background:var(--coral); color:#fff;
+    font-size:.66rem; font-weight:700; padding:5px 12px; border-radius:20px; letter-spacing:.4px;
+  }
+  .card-night{
+    position:absolute; top:12px; right:12px; background:rgba(255,247,230,.85); color:var(--teal);
+    font-size:.68rem; font-weight:700; padding:5px 10px; border-radius:20px;
+  }
+  .card-body{padding:16px;}
+  .card-body h3{font-size:1.05rem; color:var(--ivory); margin-bottom:6px; font-weight:600; font-family:'Plus Jakarta Sans';}
+  .card-meta{font-size:.78rem; color:var(--muted); display:flex; flex-wrap:wrap; gap:4px 12px; margin-bottom:14px;}
+  .card-foot{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .price{font-weight:800; color:var(--marigold-soft); font-size:.95rem;}
+  .price span{font-weight:500; color:var(--muted); font-size:.72rem;}
+  .card-btn{
+    background:rgba(255,255,255,.08); color:var(--ivory); font-weight:700; font-size:.8rem;
+    padding:9px 16px; border-radius:24px; white-space:nowrap; transition:.2s;
+  }
+  .card-btn:hover{background:linear-gradient(135deg,var(--marigold),var(--coral)); color:var(--bg);}
+
+  /* ===== Pass picker (daily vs seasonal) ===== */
+  .pass-wrap{padding:0 18px;}
+  .pass-toggle{
+    display:flex; max-width:320px; margin:0 auto 28px; background:var(--bg-soft);
+    border:1px solid rgba(255,255,255,.08); border-radius:30px; padding:5px;
+  }
+  .pass-toggle button{
+    flex:1; padding:11px 8px; border:none; background:transparent; border-radius:24px;
+    color:var(--muted); font-weight:700; font-size:.85rem; transition:.2s;
+  }
+  .pass-toggle button.active{background:linear-gradient(135deg, var(--marigold), var(--coral)); color:var(--bg);}
+
+  .pass-grid{display:grid; gap:16px; max-width:920px; margin:0 auto;}
+  .pass-card{
+    background:var(--bg-soft); border:1px solid rgba(255,255,255,.08); border-radius:20px;
+    padding:24px; position:relative; transition:.3s;
+  }
+  .pass-card:hover{border-color:rgba(30,217,197,.4); transform:translateY(-4px);}
+  .pass-card.featured{border-color:var(--marigold); background:linear-gradient(160deg, var(--violet), var(--bg-soft));}
+  .pass-card .ribbon{
+    position:absolute; top:-12px; right:18px; background:linear-gradient(135deg,var(--marigold),var(--coral));
+    color:var(--bg); font-size:.68rem; font-weight:800; padding:6px 14px; border-radius:14px;
+  }
+  .pass-card h3{font-size:1.1rem; margin-bottom:8px; color:var(--ivory);}
+  .pass-card .pp{font-family:'Unbounded'; font-size:2rem; font-weight:700; color:var(--marigold-soft); margin:8px 0;}
+  .pass-card .pp span{font-size:.85rem; font-weight:400; color:var(--muted); font-family:'Plus Jakarta Sans';}
+  .pass-card ul{list-style:none; margin:14px 0 18px; font-size:.85rem; color:var(--muted);}
+  .pass-card li{padding:6px 0; padding-left:22px; position:relative;}
+  .pass-card li::before{content:'✓'; position:absolute; left:0; color:var(--teal); font-weight:700;}
+  .pass-card .btn{width:100%; max-width:none; padding:13px;}
+
+  @media (min-width:680px){
+    .pass-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  /* ===== Registration ===== */
+  .reg-wrap{
+    background:linear-gradient(165deg, var(--violet), #F6E4B8);
+    border-radius:24px; margin:0 18px; padding:30px 20px 34px;
+    position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.06);
+  }
+  .reg-wrap::before{
+    content:''; position:absolute; width:260px; height:260px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,178,62,.18), transparent 70%);
+    top:-90px; right:-90px;
+  }
+  .reg-head{position:relative; z-index:1; text-align:center; margin-bottom:22px;}
+  .reg-head h2{color:var(--ivory); font-size:1.6rem;}
+  .reg-head p{font-size:.87rem; color:var(--muted); margin-top:6px;}
+
+  .tabs{
+    display:flex; gap:8px; background:rgba(255,255,255,.05); border-radius:30px; padding:5px;
+    position:relative; z-index:1; margin-bottom:20px;
+  }
+  .tab{
+    flex:1; text-align:center; padding:10px 6px; border:none; background:transparent;
+    border-radius:24px; color:var(--muted); font-weight:700; font-size:.85rem; transition:.2s;
+  }
+  .tab.active{background:linear-gradient(135deg, var(--marigold), var(--coral)); color:var(--bg);}
+
+  .reg-panel{
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1);
+    border-radius:18px; padding:20px; position:relative; z-index:1;
+  }
+  .reg-panel h3{font-family:'Plus Jakarta Sans'; font-weight:700; font-size:1rem; margin-bottom:4px; color:var(--ivory);}
+  .reg-panel .panel-price{font-size:1.8rem; font-weight:800; color:var(--marigold-soft); margin:8px 0 4px; font-family:'Unbounded';}
+  .reg-panel .panel-price span{font-size:.8rem; font-weight:500; color:var(--muted); font-family:'Plus Jakarta Sans';}
+  .reg-perks{list-style:none; margin:14px 0; font-size:.85rem; color:var(--muted);}
+  .reg-perks li{padding:6px 0; padding-left:22px; position:relative;}
+  .reg-perks li::before{content:'✦'; position:absolute; left:0; color:var(--teal); font-size:.8rem;}
+
+  .form-grid{display:grid; gap:12px; margin-top:16px; position:relative; z-index:1;}
+  .form-grid input, .form-grid select{
+    width:100%; padding:13px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.05); color:var(--ivory); font-family:inherit; font-size:.92rem;
+  }
+  .form-grid input::placeholder{color:var(--muted);}
+  .form-grid select option{color:#000;}
+  .reg-submit{
+    margin-top:16px; width:100%; padding:15px; border-radius:14px; border:none;
+    background:linear-gradient(135deg, var(--marigold), var(--coral)); color:var(--bg);
+    font-weight:800; font-size:1rem; transition:.2s;
+  }
+  .reg-submit:hover{filter:brightness(1.08);}
+
+  @media (min-width:1024px){
+    .reg-grid-desktop{display:grid; grid-template-columns:1fr 1.3fr; gap:36px; align-items:start;}
+  }
+
+  /* ===== Gallery / past events ===== */
+  .past-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:0 18px;}
+  .past-thumb{
+    aspect-ratio:1/1; border-radius:14px; background-size:cover; background-position:center;
+    position:relative; overflow:hidden; transition:transform .3s;
+  }
+  .past-thumb:hover{transform:scale(1.03);}
+  .past-thumb::after{content:''; position:absolute; inset:0; background:linear-gradient(transparent 50%, rgba(80,55,20,.35));}
+  .past-thumb span{position:absolute; bottom:8px; left:10px; color:#fff; font-size:.75rem; font-weight:700; z-index:1;}
+
+  /* ===== Footer ===== */
+  footer{background:var(--bg-soft); color:var(--muted); padding:42px 0 24px; margin-top:34px; border-top:1px solid rgba(255,255,255,.06);}
+  .foot-grid{display:grid; gap:26px; padding:0 18px;}
+  .foot-brand .display{color:var(--ivory); font-size:1.2rem;}
+  .foot-brand p{font-size:.85rem; margin-top:10px; max-width:320px;}
+  .foot-col h4{font-size:.74rem; text-transform:uppercase; letter-spacing:1.8px; color:var(--teal); margin-bottom:12px;}
+  .foot-col ul{list-style:none; display:flex; flex-direction:column; gap:9px; font-size:.88rem;}
+  .foot-social{display:flex; gap:12px; margin-top:14px;}
+  .foot-social a{
+    width:38px; height:38px; border-radius:12px; background:rgba(255,255,255,.06);
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; transition:.2s;
+  }
+  .foot-social a:hover{background:linear-gradient(135deg,var(--marigold),var(--coral)); color:var(--bg);}
+  .foot-bottom{
+    text-align:center; font-size:.78rem; opacity:.6; margin-top:30px; padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+
+  /* ===== Sticky mobile CTA ===== */
+  .sticky-cta{
+    position:fixed; bottom:0; left:0; right:0; z-index:60;
+    background:rgba(255,247,230,.94); backdrop-filter:blur(12px);
+    padding:12px 18px; display:flex; gap:10px; align-items:center;
+    box-shadow:0 -6px 22px rgba(0,0,0,.4); border-top:1px solid rgba(255,255,255,.08);
+  }
+  .sticky-cta .btn{margin:0; padding:13px 24px;}
+  .sticky-cta .info{flex:1;}
+  .sticky-cta .info .price{color:var(--marigold-soft); font-size:1.05rem; font-weight:800;}
+  .sticky-cta .info small{display:block; font-size:.66rem; color:var(--muted);}
+
+  @media (min-width:768px){
+    .hamburger, .mobile-menu{display:none;}
+    nav.desktop-nav{display:block;}
+    .nav-cta{display:block;}
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .past-grid{grid-template-columns:repeat(4,1fr);}
+    .foot-grid{grid-template-columns:1.4fr 1fr 1fr 1fr;}
+    .hero-actions{flex-direction:row; justify-content:center;}
+    .btn{width:auto;}
+  }
+  @media (min-width:1024px){
+    .grid{grid-template-columns:repeat(3,1fr);}
+    .scroller{overflow:visible; flex-wrap:wrap; padding:6px 18px 18px; justify-content:center;}
+    .card{flex:0 1 31%;}
+    .reg-wrap{padding:46px 50px;}
+    .sticky-cta{display:none;}
+    .past-grid{grid-template-columns:repeat(6,1fr);}
+  }
+
+  /* Light theme readability fixes */
+  .reg-wrap{
+    background:linear-gradient(165deg,#FFF4D6,#F8E7B8);
+    color:#3B2A16;
+  }
+  .reg-head h2,
+  .reg-panel h3{
+    color:#3B2A16;
+  }
+  .reg-head p,
+  .reg-perks,
+  .form-grid input::placeholder{
+    color:#6F5734;
+  }
+  .tabs,
+  .reg-panel{
+    background:rgba(255,255,255,.45);
+    border-color:rgba(139,107,46,.18);
+  }
+  .tab{
+    color:#6F5734;
+  }
+  .tab.active{
+    color:#fff;
+  }
+  .reg-panel .panel-price{
+    color:#B77900;
+  }
+  .form-grid input,
+  .form-grid select{
+    background:#FFF9EA;
+    color:#3B2A16;
+    border-color:rgba(139,107,46,.25);
+  }
+  .form-grid select option{
+    color:#3B2A16;
+  }
+  .reg-submit{
+    color:#fff;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header>
+  <div class="nav-row">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div class="brand-text">
+        <div class="display">MGM Cultural</div>
+        <small>Navratri · Rajkot</small>
+      </div>
+    </div>
+    <nav class="desktop-nav">
+      <ul>
+        <li><a href="#upcoming">Upcoming</a></li>
+        <li><a href="#passes">Passes</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="#past">Past Nights</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta"><a href="#register">Get Tickets</a></div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#upcoming">Upcoming Events</a></li>
+      <li><a href="#passes">Passes</a></li>
+      <li><a href="#register">Register</a></li>
+      <li><a href="#past">Past Nights</a></li>
+      <li><a href="#register" class="menu-cta">Get Tickets</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="hero-blob b3"></div>
+  <div class="container hero-inner">
+    <span class="eyebrow">Ten Days · Garba &amp; Culture</span>
+    <h1>MGM CULTURAL<span class="line2">Navratri 2026</span></h1>
+    <p class="sub">A spectacular 10-day cultural festival led by Amit Dhorda — live Garba from 9:00 PM, renowned artists each evening, and Mandli Garba late into the night at Seasons Hotel, Rajkot.</p>
+    <div class="hero-meta">
+      <span>📅 Oct 11 – Oct 20, 2026</span>
+      <span>📍 Seasons Hotel, Rajkot</span>
+      <span>🕰️ From 9:00 PM</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#register" class="btn btn-primary">Book Your Pass</a>
+      <a href="#upcoming" class="btn btn-ghost">View Schedule</a>
+    </div>
+
+    <div class="stats-row reveal">
+      <div class="stat"><div class="num" data-count="25000">0</div><div class="lbl">Dancers · 2025</div></div>
+      <div class="stat"><div class="num" data-count="10">0</div><div class="lbl">Days</div></div>
+      <div class="stat"><div class="num" data-count="50">0</div><div class="lbl">Artists On Stage</div></div>
+    </div>
+
+    <div class="nav-tracker">
+      <span class="tracker-label">Nau Raat · Night Tracker</span>
+      <div class="nav-dot done">1</div>
+      <div class="nav-dot done">2</div>
+      <div class="nav-dot today">3</div>
+      <div class="nav-dot">4</div>
+      <div class="nav-dot">5</div>
+      <div class="nav-dot">6</div>
+      <div class="nav-dot">7</div>
+      <div class="nav-dot">8</div>
+      <div class="nav-dot">9</div>
+    </div>
+  </div>
+</section>
+
+<section id="upcoming">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">What's Next</span>
+      <h2>Upcoming Nights</h2>
+      <p>Each night brings a new theme — book early, ground passes are limited.</p>
+    </div>
+  </div>
+  <div class="scroller">
+    <article class="card reveal">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=600')">
+        <span class="card-badge">Selling Fast</span>
+        <span class="card-night">Night 3</span>
+      </div>
+      <div class="card-body">
+        <h3>Rangeeli Raat</h3>
+        <div class="card-meta"><span>🗓️ Oct 13, Tue</span><span>🕰️ 7:30 PM</span></div>
+        <div class="card-foot">
+          <div class="price">₹499 <span>/ stag</span></div>
+          <a href="#register" class="card-btn">Book</a>
+        </div>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=600')">
+        <span class="card-badge">Couple Special</span>
+        <span class="card-night">Night 4</span>
+      </div>
+      <div class="card-body">
+        <h3>Dhoom Dhamaka</h3>
+        <div class="card-meta"><span>🗓️ Oct 14, Wed</span><span>🕰️ 7:30 PM</span></div>
+        <div class="card-foot">
+          <div class="price">₹899 <span>/ couple</span></div>
+          <a href="#register" class="card-btn">Book</a>
+        </div>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600')">
+        <span class="card-badge">Live DJ</span>
+        <span class="card-night">Night 5</span>
+      </div>
+      <div class="card-body">
+        <h3>Bollywood Beats</h3>
+        <div class="card-meta"><span>🗓️ Oct 15, Thu</span><span>🕰️ 7:30 PM</span></div>
+        <div class="card-foot">
+          <div class="price">₹599 <span>/ stag</span></div>
+          <a href="#register" class="card-btn">Book</a>
+        </div>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=600')">
+        <span class="card-badge">Grand Finale</span>
+        <span class="card-night">Night 9</span>
+      </div>
+      <div class="card-body">
+        <h3>Maha Aarti &amp; Finale</h3>
+        <div class="card-meta"><span>🗓️ Oct 19, Mon</span><span>🕰️ 7:00 PM</span></div>
+        <div class="card-foot">
+          <div class="price">₹1299 <span>/ stag</span></div>
+          <a href="#register" class="card-btn">Book</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="passes">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Choose Your Pass</span>
+      <h2>Daily or Seasonal</h2>
+      <p>Drop in for one special night, or lock in all nine for the best value.</p>
+    </div>
+  </div>
+
+  <div class="pass-wrap">
+    <div class="pass-toggle reveal">
+      <button class="active" data-pass="daily">Daily Pass</button>
+      <button data-pass="seasonal">Seasonal Pass</button>
+    </div>
+
+    <div class="pass-grid reveal" id="passGrid">
+      <div class="pass-card">
+        <h3>Daily Pass</h3>
+        <div class="pp">₹499 <span>/ person / night</span></div>
+        <ul>
+          <li>Entry to any single night</li>
+          <li>Welcome tilak &amp; kalash blessing</li>
+          <li>Access to food &amp; handicraft stalls</li>
+          <li>Choose your night at checkout</li>
+        </ul>
+        <a href="#register" class="btn btn-ghost">Book a Single Night</a>
+      </div>
+      <div class="pass-card featured">
+        <span class="ribbon">Best Value</span>
+        <h3>Seasonal Pass</h3>
+        <div class="pp">₹2,999 <span>/ person / all 9 nights</span></div>
+        <ul>
+          <li>Entry to all nine nights — no rebooking</li>
+          <li>Priority entry lane, every night</li>
+          <li>Reserved seating zone access</li>
+          <li>Save ~33% vs booking nightly</li>
+        </ul>
+        <a href="#register" class="btn btn-primary">Get Seasonal Pass</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="register">
+  <div class="reg-wrap reveal">
+    <div class="reg-head">
+      <span class="eyebrow">Book Now</span>
+      <h2>Reserve Your Spot</h2>
+      <p>Pick a category — pricing and perks update instantly.</p>
+    </div>
+
+    <div class="reg-grid-desktop">
+      <div>
+        <div class="tabs" role="tablist" aria-label="Ticket category">
+          <button class="tab active" data-cat="male" role="tab" aria-selected="true">Male</button>
+          <button class="tab" data-cat="female" role="tab" aria-selected="false">Female</button>
+          <button class="tab" data-cat="couple" role="tab" aria-selected="false">Couple</button>
+        </div>
+
+        <div class="reg-panel">
+          <span class="eyebrow">Stag Entry</span>
+          <h3 id="panelTitle">Male Pass</h3>
+          <div class="panel-price" id="panelPrice">₹499 <span>/ night</span></div>
+          <ul class="reg-perks" id="panelPerks">
+            <li>Entry to Rangeeli Raat grounds</li>
+            <li>Welcome tilak &amp; kalash blessing</li>
+            <li>Access to food &amp; handicraft stalls</li>
+          </ul>
+        </div>
+      </div>
+
+      <form class="form-grid" id="regForm">
+        <input type="text" placeholder="Full Name" required>
+        <input type="tel" placeholder="Mobile Number" required>
+        <input type="email" placeholder="Email Address">
+        <select required>
+          <option value="" disabled selected>Select Pass Type</option>
+          <option>Daily — Night 3, Rangeeli Raat (Oct 13)</option>
+          <option>Daily — Night 4, Dhoom Dhamaka (Oct 14)</option>
+          <option>Daily — Night 5, Bollywood Beats (Oct 15)</option>
+          <option>Daily — Night 9, Grand Finale (Oct 19)</option>
+          <option>Seasonal Pass — All 9 Nights</option>
+        </select>
+        <input type="number" min="1" max="10" placeholder="Number of Tickets" value="1">
+        <button type="submit" class="reg-submit">Proceed to Payment</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="past">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Throwback</span>
+      <h2>Past Nights, Forever Memories</h2>
+      <p>Highlights from Navratri 2025 — over 25,000 dancers across nine nights.</p>
+    </div>
+  </div>
+  <div class="past-grid reveal">
+    <div class="past-thumb" style="background-image:url('https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=400')"><span>Opening Night</span></div>
+    <div class="past-thumb" style="background-image:url('https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=400')"><span>Garba Circle</span></div>
+    <div class="past-thumb" style="background-image:url('https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=400')"><span>Dandiya Raas</span></div>
+    <div class="past-thumb" style="background-image:url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=400')"><span>Couples Night</span></div>
+    <div class="past-thumb" style="background-image:url('https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=400')"><span>Aarti Ceremony</span></div>
+    <div class="past-thumb" style="background-image:url('https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=400')"><span>Finale Fireworks</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot-grid">
+    <div class="foot-brand">
+      <div class="display">MGM Cultural</div>
+      <p>A 10-day cultural festival in Rajkot — Garba, devotion, and India’s finest artists, led by Amit Dhorda.</p>
+      <div class="foot-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="YouTube">YT</a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#upcoming">Upcoming Nights</a></li>
+        <li><a href="#passes">Passes</a></li>
+        <li><a href="#past">Past Highlights</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Venue</h4>
+      <ul>
+        <li>Seasons Hotel</li>
+        <li>Rajkot, Gujarat</li>
+        <li>Gates open 7:30 PM</li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Support</h4>
+      <ul>
+        <li>+91 89800 09014</li>
+        <li>mgmculturalnavratri23@gmail.com</li>
+        <li>Organiser Login</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom container">
+    <img src="src/assets/wowsly-logo.png" alt="Wowsly" style="width:92px;height:auto;display:block;margin:0 auto 8px;" />
+    <div>Powered by Wowsly</div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <div class="info"><span class="price">₹499</span><small>Tonight · Rangeeli Raat</small></div>
+  <a href="#register" class="btn btn-primary">Book Now</a>
+</div>
+
+<script>
+  // mobile menu
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburgerBtn.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburgerBtn.classList.toggle('open', isOpen);
+    hamburgerBtn.setAttribute('aria-expanded', isOpen);
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburgerBtn.classList.remove('open');
+  }));
+
+  // scroll progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:.15});
+  revealEls.forEach(el => io.observe(el));
+
+  // animated counters
+  const counters = document.querySelectorAll('[data-count]');
+  const cIo = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        const el = en.target;
+        const target = parseInt(el.dataset.count, 10);
+        let cur = 0;
+        const step = Math.max(1, Math.ceil(target / 60));
+        const tick = () => {
+          cur += step;
+          if(cur >= target){ el.textContent = target.toLocaleString(); return; }
+          el.textContent = cur.toLocaleString();
+          requestAnimationFrame(tick);
+        };
+        tick();
+        cIo.unobserve(el);
+      }
+    });
+  }, {threshold:.4});
+  counters.forEach(c => cIo.observe(c));
+
+  // registration category tabs
+  const categories = {
+    male: { title:'Male Pass', price:'₹499 <span>/ night</span>', perks:['Entry to Rangeeli Raat grounds','Welcome tilak & kalash blessing','Access to food & handicraft stalls'] },
+    female: { title:'Female Pass', price:'₹399 <span>/ night</span>', perks:['Entry to Rangeeli Raat grounds','Welcome tilak & kalash blessing','Priority queue at entry gates'] },
+    couple: { title:'Couple Pass', price:'₹899 <span>/ night</span>', perks:['Entry for 2 guests','Reserved couple seating zone','Welcome tilak & kalash blessing','Complimentary mocktail coupon'] }
+  };
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('active'); tab.setAttribute('aria-selected','true');
+      const cat = categories[tab.dataset.cat];
+      document.getElementById('panelTitle').textContent = cat.title;
+      document.getElementById('panelPrice').innerHTML = cat.price;
+      document.getElementById('panelPerks').innerHTML = cat.perks.map(p => `<li>${p}</li>`).join('');
+    });
+  });
+
+  // daily vs seasonal pass toggle (scrolls + highlights relevant card)
+  document.querySelectorAll('.pass-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pass-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.pass-card');
+      if(btn.dataset.pass === 'daily'){
+        cards[0].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      } else {
+        cards[1].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      }
+    });
+  });
+
+  document.getElementById('regForm').addEventListener('submit', e => {
+    e.preventDefault();
+    alert('Demo form — connect this to your payment gateway (e.g. Razorpay) to go live.');
+  });
+</script>
+
+</body>
+</html>
