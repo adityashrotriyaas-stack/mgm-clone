@@ -18,6 +18,11 @@
 - **Impact:** React is unaware of out-of-band updates, which could lead to stale component renderings.
 - **Fix approach:** Wrap `sessionStorage` in a React Context Provider or custom hook subscribing to updates.
 
+**Marketing Price Sync Discrepancies:**
+- **Issue:** UI prices are defined in `src/data/siteData.js` as static marketing copy and are not synced with the actual live ticket API pricing.
+- **Impact:** If live prices change on the backend, the user might see different prices during checkout than what was advertised on the landing pages.
+- **Fix approach:** Ensure pricing quotes from `/v2/pricing/quote` are used to render pricing in checkout/wizard stages.
+
 ## Known Bugs & Fragile Areas
 
 **Razorpay Notes Truncation:**
@@ -34,6 +39,11 @@
 - **Impact:** If the user has strict ad-blockers, custom DNS rules, or fires up payment steps offline, script loads will fail and crash with generic "Failed to load Razorpay" warnings.
 - **Fix approach:** Improve connection verification; catch load failures and display clear diagnostic banners (e.g. "Check your network or disable ad blockers").
 
+**Staging & Production CORS Access:**
+- **Issue:** Accessing `https://dev-backend.wowsly.com/api` from localhost works but may hit CORS blocks on staging/production environments.
+- **Impact:** Booking flow crashes on API calls in production deployment environments.
+- **Fix approach:** Coordinate with the Wowsly team to whitelist deployment domains.
+
 ## Security Considerations
 
 **Public API Keys & Client Bundling:**
@@ -46,6 +56,18 @@
 - **Risk:** Running third-party scripts loaded dynamically from external CDNs (like `checkout.razorpay.com`) grants those scripts full context permissions inside the browser window.
 - **Current mitigation:** Relying on the HTTPS script location protocol check.
 - **Recommendations:** Implement strict Content Security Policies (CSP) restricting allowed script sources.
+
+## Missing Critical Features
+
+**Placeholder QR Code / Receipt Ticket Details Integration:**
+- **Issue:** The ticket confirmation screen in `src/components/BookingFlow.jsx` still displays a placeholder QR icon instead of dynamic ticket QR passes.
+- **Impact:** Users do not receive their real booking QR pass on the confirmation page.
+- **Fix approach:** Wire up `GET /events/163/{guestUuid}/tickets/details` to fetch the real booking details and render the generated QR pass code.
+
+**Delegate Form Handling for Group Bookings:**
+- **Issue:** Couples and multi-ticket quantities are sent as single registration payloads. It is unconfirmed whether Wowsly expects individual attendee delegations.
+- **Impact:** Multi-person bookings might list all passes under one attendee's name.
+- **Fix approach:** Confirm Wowsly API capability for multi-delegate form answers.
 
 ## Test Coverage Gaps
 

@@ -48,19 +48,17 @@
 
 **Environment:**
 - Environment variables configured via Vite `import.meta.env` prefixing with `VITE_`.
-- Example variables:
-  - `VITE_WOWSLY_API_BASE`
-  - `VITE_WOWSLY_EVENT_ID`
-  - `VITE_RAZORPAY_KEY_ID`
-  - `VITE_DEFAULT_DIALING_CODE`
-  - `VITE_DEFAULT_TIMEZONE`
-  - `VITE_ENABLE_LIVE_PAYMENT`
-  - `VITE_WOWSLY_VERIFY_PATH`
-  - `VITE_WOWSLY_REQUIRE_PAYMENT_VERIFY`
+- Environment variables defined in `.env`:
+  - `VITE_WOWSLY_API_BASE=https://dev-backend.wowsly.com/api` (Dev backend API route)
+  - `VITE_WOWSLY_EVENT_ID=163` (Event ID config)
+  - `VITE_RAZORPAY_KEY_ID=` (Required for live payment overlay checkout)
+  - `VITE_DEFAULT_DIALING_CODE=91`
+  - `VITE_DEFAULT_TIMEZONE=Asia/Calcutta`
+  - `VITE_ENABLE_LIVE_PAYMENT=true`
 
 **Build:**
 - `vite.config.js` - Configuration for the build runner and plugins (React).
-- `package.json` - Custom NPM scripts.
+- `package.json` - Custom NPM scripts (`dev`, `build`, `preview`, `lint`).
 - `.oxlintrc.json` - Configuration rules for the Oxlint linter.
 
 ## Platform Requirements

@@ -8,23 +8,50 @@
 - **Purpose:** Manages registration forms, retrieves tickets, provides dynamic pricing quotes, handles ticket selection/reservation, creates orders, and verifies payment signatures.
 - **Integration Method:** Native REST API client using standard `fetch` API (`src/services/wowslyApi.js`).
 - **Configuration:**
-  - Base URL: `import.meta.env.VITE_WOWSLY_API_BASE`
-  - Event ID: `import.meta.env.VITE_WOWSLY_EVENT_ID`
-  - Form ID: Constant `122` in configuration.
-  - Verification path: `import.meta.env.VITE_WOWSLY_VERIFY_PATH`
+  - Base URL: `import.meta.env.VITE_WOWSLY_API_BASE` (dev: `https://dev-backend.wowsly.com/api`)
+  - Event ID: `163` (dev configuration)
+  - Form ID: `122`
+  - Path style: **Common event** → always `?common_event_link=true` and `/commonEvent/...`
+- **Registration Questions Mappings:**
+  - Name: `622`
+  - Country Code: `623`
+  - Mobile: `624`
+  - Email: `625`
+  - *Note: Aadhaar and selfie photo capture are UI-only and are not sent to Wowsly.*
+- **Ticket Mapping:**
+  - Daily Pass: `263` (SINGLE DAY TICKET)
+  - Seasonal Pass: `265` (Season Pass)
+- **Daily Night to Wowsly slot IDs (715 - 724):**
+  - Night 1: `715` (Oct 10)
+  - Night 2: `716` (Oct 11)
+  - Night 3: `717` (Oct 12)
+  - Night 4: `718` (Oct 13)
+  - Night 5: `719` (Oct 14)
+  - Night 6: `720` (Oct 15)
+  - Night 7: `721` (Oct 16)
+  - Night 8: `722` (Oct 17)
+  - Night 9: `723` (Oct 18)
+  - Night 10: `724` (Oct 19)
 - **Endpoints Used:**
-  - `POST /events/{eventId}/commonEvent/registrationform/answer?common_event_link=true` (Submit Registration Form)
-  - `GET /events/{eventId}/eventticket?include_hidden_tickets=0&has_split_share=0&common_event_link=true&uuid={uuid}` (Retrieve Tickets)
+  - `POST /events/163/commonEvent/registrationform/answer?common_event_link=true` (Submit Registration Form)
+  - `GET /events/163/eventticket?include_hidden_tickets=0&has_split_share=0&common_event_link=true&uuid={uuid}` (Retrieve Tickets)
   - `POST /v2/pricing/quote` (Get Ticket Pricing Quote)
-  - `POST /events/{eventId}/commonEvent/ticket/select?common_event_link=true` (Select and lock ticket booking)
+  - `POST /events/163/commonEvent/ticket/select?common_event_link=true` (Select and lock ticket booking)
   - `POST /v2/checkout/create-order` (Initiate order creation for payment gateway)
-  - `POST {verify_path}` (Verify final payment response from Razorpay)
+  - `POST /v2/checkout/verify-payment` (Verify final payment response from Razorpay)
+  - `GET /events/163/{guestUuid}/tickets/details` (Fetch ticket confirmation details and QR code - planned/unwired)
 
 **Razorpay Checkout:**
 - **Purpose:** Handles credit card, UPI, wallet, and net banking payments inside the browser.
 - **Integration Method:** Dynamic script injection loading the standard Razorpay web overlay from `https://checkout.razorpay.com/v1/checkout.js` (`src/utils/razorpay.js`).
 - **Configuration:**
   - Key ID: `import.meta.env.VITE_RAZORPAY_KEY_ID`
+- **For fulfillment, notes must contain:**
+  - `task`: `"event_ticket_payment"`
+  - `invited_guest_uuid`
+  - `guest_ticket_id` (Crucial for backend verification)
+  - `ticket_details`: e.g. `"263:1"`
+  - `facility_details`: JSON string of names (or `"[]"`)
 - **Event Callbacks:**
   - `handler`: Returns payment confirmation payload (signature, order ID, payment ID).
   - `modal.ondismiss`: Catches checkout close events to mark bookings as cancelled.
@@ -34,23 +61,20 @@
 
 **Local/Session Storage:**
 - **Booking Sessions:** Saves current step, UUID, pricing, selection details, and payment state inside the browser's `sessionStorage` under the key `mgm_wowsly_session` (`src/services/wowslyBooking.js`).
-
-## Authentication & Identity
-
-- No explicit user authentication system (like JWT/OAuth) exists.
-- Guest identities are tracked anonymously via a registration-generated `guest_uuid` returned from the initial Wowsly Form submit.
-
-## Environment Configuration
-
-**Required variables (defined in `.env.example`):**
-- `VITE_WOWSLY_API_BASE` - Endpoint URL for Wowsly services.
-- `VITE_WOWSLY_EVENT_ID` - Event ID configured on the platform.
-- `VITE_RAZORPAY_KEY_ID` - Key ID for Razorpay integration.
-- `VITE_DEFAULT_DIALING_CODE` - Country calling code (default: `91`).
-- `VITE_DEFAULT_TIMEZONE` - Local timezone (default: `Asia/Calcutta`).
-- `VITE_ENABLE_LIVE_PAYMENT` - Flag toggling live transactions.
-- `VITE_WOWSLY_VERIFY_PATH` - Override route for signature verification.
-- `VITE_WOWSLY_REQUIRE_PAYMENT_VERIFY` - Boolean enabling signature verification enforcement.
+```json
+{
+  "uuid": "guest-uuid-string",
+  "userId": 12345,
+  "guestTicketId": 54321,
+  "batchId": 98765,
+  "ticketId": 263,
+  "quantity": 1,
+  "eventSlotId": 716,
+  "finalPayable": 500,
+  "ticketTitle": "SINGLE DAY TICKET",
+  "step": "checkout_prepared"
+}
+```
 
 ---
 

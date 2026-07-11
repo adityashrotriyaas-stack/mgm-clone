@@ -28,16 +28,32 @@ npm run build     # Verify the Vite production bundle builds successfully
   - Check entry effects (Reveal boxes) and smooth scroll triggers.
   - Confirm animations fallback gracefully when `prefers-reduced-motion` is enabled in client systems.
 
-### 3. Ticketing & Booking Workflow Audits
-Test the 6-step registration flow (`src/components/BookingFlow.jsx`):
-- **Step 1-3 (Registration Details):** Input valid/invalid mobile and Aadhaar numbers. Confirm formatting masks apply correctly.
-- **Step 4 (Pricing & Quoting):** Verify client issues quote requests. Check loading spinners.
-- **Step 5 (Razorpay Checkout Overlay):**
-  - Verify Razorpay scripts load over HTTPS.
-  - Confirm the modal overlay displays correct pricing, phone numbers, and emails.
-  - Test checkout cancellation (esc key or clicking outside) cancels the session gracefully.
-  - Test test-mode card details trigger successful callback handler routes.
-- **Step 6 (QR Pass Confirmation):** Verify page receives session responses, displays unique registration QR codes, and resets booking cache.
+### 3. Live API & Booking Workflow Verification Checklist
+To verify integration success:
+
+1. Configure `.env` with:
+   - `VITE_WOWSLY_API_BASE=https://dev-backend.wowsly.com/api`
+   - `VITE_WOWSLY_EVENT_ID=163`
+   - `VITE_ENABLE_LIVE_PAYMENT=true`
+   - Valid `VITE_RAZORPAY_KEY_ID`
+2. **Restart** the local development server (Vite only loads env variables on launch).
+3. **Daily Pass Flow Test:**
+   - Open `/event/2` (Night 2).
+   - Select Daily Pass -> Choose Category -> Pick Date/Venue/Time.
+   - Open Browser DevTools Network tab.
+   - Fill registration details and click **Proceed to Payment**.
+   - **Verification:**
+     - Confirm `POST /events/163/commonEvent/registrationform/answer?common_event_link=true` succeeds and returns `uuid` and `user_id`.
+     - Confirm `POST /v2/pricing/quote` includes `event_slot_id: 716` and the response details `breakdown.final_payable`.
+     - Confirm `POST /events/163/commonEvent/ticket/select?common_event_link=true` matches `guest_ticket_id` and `batch_id`.
+   - On the `/book` page, verify the calculated amount matches `final_payable` from the quote (not hardcoded values).
+   - Click **Pay Securely**:
+     - Confirm `POST /v2/checkout/create-order` matches with `invited_guest_uuid` and `guest_ticket_id` inside the `notes` payload.
+     - Verify the Razorpay payment modal overlay opens.
+4. **Seasonal Pass Flow Test:**
+   - Repeat the registration step selecting **Seasonal Pass**.
+   - Verify the scheduling step is skipped automatically.
+   - **Verification:** Confirm that pricing quote, ticket selection, and create-order payloads **omit** `event_slot_id` entirely.
 
 ---
 
