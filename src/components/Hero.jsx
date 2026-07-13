@@ -46,6 +46,8 @@ function HeroFeatureCard({ icon, title, subtitle, index }) {
           boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
         }}
       >
+
+
         <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: colors.maroon }} />
       </Box>
       <Box sx={{ minWidth: 0 }}>
