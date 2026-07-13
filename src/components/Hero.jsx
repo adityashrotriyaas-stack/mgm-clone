@@ -7,7 +7,6 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
 import heroBanner from '../assets/hero-banner.jpeg'
-import heroBannerMobile from '../assets/hero-banner-mobile.jpeg'
 import { colors } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
@@ -150,22 +149,12 @@ export default function Hero() {
             overflow: 'hidden',
             border: '1px solid rgba(232, 184, 74, 0.22)',
             boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
-            aspectRatio: { xs: 'auto', sm: '16 / 10', lg: '16 / 7.4' },
+            aspectRatio: { xs: '9 / 14', sm: '16 / 10', lg: '16 / 7.4' },
             bgcolor: colors.nightMid,
             opacity: 0,
             animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
           }}
         >
-          <Box
-            component="img"
-            src={heroBannerMobile}
-            alt="MGM Navratri 2026"
-            sx={{
-              width: '100%',
-              height: 'auto',
-              display: { xs: 'block', sm: 'none' },
-            }}
-          />
           <Box
             component="img"
             src={heroBanner}
@@ -174,7 +163,8 @@ export default function Hero() {
               width: '100%',
               height: '100%',
               objectFit: 'contain',
-              display: { xs: 'none', sm: 'block' },
+              display: 'block',
+              backgroundColor: colors.nightMid,
             }}
           />
           <Box
