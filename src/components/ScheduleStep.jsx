@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
-import { colors } from '../constants/colors'
+import { colors, gradients } from '../constants/colors'
 import { registrationBackButtonSx } from '../constants/registrationFormTheme'
 import { buildDefaultSlotSelection, buildSlotSelection, formatShowTimeRange } from '../utils/schedule'
 
