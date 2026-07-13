@@ -88,10 +88,6 @@ export default function Header() {
                 height: '60px',
                 maxWidth: '60px',
                 maxHeight: '60px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                border: '2px solid #F7C76B',
-                boxShadow: '0 4px 14px rgba(247, 199, 107, 0.35)',
                 flexShrink: 0,
               }}
             />
