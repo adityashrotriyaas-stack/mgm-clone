@@ -10,7 +10,7 @@ import { colors } from '../constants/colors'
 import { registrationBackButtonSx } from '../constants/registrationFormTheme'
 import { buildDefaultSlotSelection, buildSlotSelection, formatShowTimeRange } from '../utils/schedule'
 
-const accentFestive = '#C98B2E'
+const accentFestive = '#E05040'
 const ui = {
   card: colors.bgCard,
   surfaceMuted: colors.bgWarm,
@@ -43,7 +43,7 @@ function SelectionSummary({ selection }) {
       >
         YOUR SELECTION
       </Typography>
-      <Stack direction="row" flexWrap="wrap" useFlexGap gap={0.75} sx={{ mb: selection?.timeLabel ? 0.75 : 0 }}>
+      <Stack direction="row" useFlexGap gap={0.75} sx={{ mb: selection?.timeLabel ? 0.75 : 0, flexWrap: 'wrap' }}>
         {chips.map((chip) => (
           <Box
             key={chip}
@@ -172,7 +172,7 @@ export default function ScheduleStep({
 
   if (loading) {
     return (
-      <Stack alignItems="center" spacing={2} sx={{ py: 4 }}>
+      <Stack spacing={2} sx={{ py: 4, alignItems: 'center' }}>
         <CircularProgress size={28} sx={{ color: accentFestive }} />
         <Typography sx={{ fontSize: '0.88rem', color: ui.muted }}>Loading schedule…</Typography>
       </Stack>

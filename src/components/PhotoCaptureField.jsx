@@ -402,7 +402,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               variant="contained"
               sx={{
                 background: gradients.primary,
-                color: colors.night,
+                color: colors.textLight,
                 textTransform: 'none',
                 minHeight: 44,
                 px: 3,

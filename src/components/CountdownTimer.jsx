@@ -58,7 +58,7 @@ export default function CountdownTimer() {
         borderRadius: '14px',
         px: { xs: 1.5, sm: 2.5 },
         py: { xs: 1, sm: 1.25 },
-        border: '1px solid rgba(184,134,11,0.08)',
+        border: '1px solid rgba(192,29,22,0.08)',
         backdropFilter: 'blur(4px)',
         mb: { xs: 2, md: 2.5 },
       }}

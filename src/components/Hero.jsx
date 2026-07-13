@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
@@ -7,12 +6,10 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import heroVideo from '../assets/navratri video.mp4'
+import heroBanner from '../assets/hero-banner.jpeg'
 import { colors } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
-
-const heroVideoSrc = heroVideo
 
 const iconMap = {
   calendar: CalendarMonthOutlinedIcon,
@@ -22,12 +19,12 @@ const iconMap = {
 }
 
 const barTheme = {
-  bg: 'rgba(30, 18, 16, 0.72)',
-  iconBg: 'rgba(53, 36, 24, 0.85)',
-  title: '#FFF5E6',
-  subtitle: 'rgba(255, 235, 210, 0.72)',
-  icon: '#E8B84A',
-  border: 'rgba(232, 184, 74, 0.22)',
+  bg: 'rgba(12, 12, 12, 0.72)',
+  iconBg: 'rgba(26, 26, 26, 0.85)',
+  title: '#F5EDE5',
+  subtitle: 'rgba(255, 255, 255, 0.72)',
+  icon: '#E05040',
+  border: 'rgba(192, 29, 22, 0.22)',
 }
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
@@ -118,58 +115,6 @@ function HeroFeatureBar() {
 }
 
 export default function Hero() {
-  const videoRef = useRef(null)
-  const frameRef = useRef(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    const frame = frameRef.current
-    if (!video || !frame) return undefined
-
-    const tryPlay = () => {
-      video.play().catch(() => {})
-    }
-
-    // Start video immediately on first load
-    tryPlay()
-    video.addEventListener('loadeddata', tryPlay)
-    video.addEventListener('canplay', tryPlay)
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          tryPlay()
-        } else {
-          video.pause()
-        }
-      },
-      { threshold: 0.35 },
-    )
-
-    observer.observe(frame)
-
-    const handleVisibility = () => {
-      if (document.hidden) {
-        video.pause()
-        return
-      }
-      const rect = frame.getBoundingClientRect()
-      const inView = rect.top < window.innerHeight && rect.bottom > 0
-      if (inView) {
-        tryPlay()
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibility)
-
-    return () => {
-      observer.disconnect()
-      video.removeEventListener('loadeddata', tryPlay)
-      video.removeEventListener('canplay', tryPlay)
-      document.removeEventListener('visibilitychange', handleVisibility)
-    }
-  }, [])
-
   return (
     <Box
       component="section"
@@ -198,7 +143,6 @@ export default function Hero() {
         }}
       >
         <Box
-          ref={frameRef}
           sx={{
             position: 'relative',
             borderRadius: { xs: '20px', md: '28px' },
@@ -212,18 +156,13 @@ export default function Hero() {
           }}
         >
           <Box
-            ref={videoRef}
-            component="video"
-            src={heroVideoSrc}
-            muted
-            autoPlay
-            loop
-            playsInline
-            preload="auto"
+            component="img"
+            src={heroBanner}
+            alt="MGM Navratri 2026"
             sx={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               display: 'block',
               backgroundColor: colors.nightMid,
             }}

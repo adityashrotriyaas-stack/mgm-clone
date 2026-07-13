@@ -24,6 +24,7 @@ import helpBg from '../assets/help-bg.png'
 
 const infoLines = [
   { icon: CallOutlinedIcon, label: 'Phone', value: contactInfo.phone, href: contactInfo.phoneHref },
+  { icon: CallOutlinedIcon, label: 'Phone 2', value: contactInfo.phone2, href: contactInfo.phone2Href },
   { icon: EmailOutlinedIcon, label: 'Email', value: contactInfo.email, href: `mailto:${contactInfo.email}` },
   { icon: LocationOnOutlinedIcon, label: 'Venue', value: contactInfo.venue },
 ]
@@ -42,7 +43,7 @@ const ornateCardSx = {
     position: 'absolute',
     width: 18,
     height: 18,
-    borderColor: 'rgba(255, 216, 122, 0.75)',
+    borderColor: 'rgba(192, 29, 22, 0.75)',
     borderStyle: 'solid',
     pointerEvents: 'none',
   },
@@ -321,14 +322,14 @@ function ContactForm() {
           mt: 0.5,
           py: 1.3,
           borderRadius: '999px',
-          background: 'linear-gradient(135deg, #FFD76A 0%, #E8B84A 50%, #C98B2E 100%)',
+          background: 'linear-gradient(135deg, #E8D5B0 0%, #E05040 50%, #C02822 100%)',
           color: '#1A0A12',
           fontWeight: 800,
           fontSize: '0.92rem',
           textTransform: 'none',
           boxShadow: '0 10px 28px rgba(201, 139, 46, 0.35)',
           '&:hover': {
-            background: 'linear-gradient(135deg, #FFD76A 0%, #E8B84A 50%, #C98B2E 100%)',
+            background: 'linear-gradient(135deg, #E8D5B0 0%, #E05040 50%, #C02822 100%)',
             filter: 'brightness(1.05)',
             transform: 'translateY(-1px)',
           },
@@ -427,7 +428,7 @@ export default function ContactSection() {
                   position: 'absolute',
                   width: 18,
                   height: 18,
-                  borderColor: 'rgba(255, 216, 122, 0.75)',
+                  borderColor: 'rgba(192, 29, 22, 0.75)',
                   borderStyle: 'solid',
                   pointerEvents: 'none',
                 },
@@ -465,7 +466,7 @@ export default function ContactSection() {
 
               <Stack spacing={0}>
                 {infoLines.map((item, index) => (
-                  <InfoRow key={item.label} {...item} showDivider={index < infoLines.length - 1} />
+                  <InfoRow key={`${item.label}-${index}`} {...item} showDivider={index < infoLines.length - 1} />
                 ))}
               </Stack>
             </Box>
@@ -500,7 +501,7 @@ export default function ContactSection() {
                   left: 10,
                   width: 18,
                   height: 18,
-                  borderColor: 'rgba(255, 216, 122, 0.75)',
+                  borderColor: 'rgba(192, 29, 22, 0.75)',
                   borderStyle: 'solid',
                   borderWidth: '0 0 1.5px 1.5px',
                   borderBottomLeftRadius: 4,
@@ -515,7 +516,7 @@ export default function ContactSection() {
                   right: 10,
                   width: 18,
                   height: 18,
-                  borderColor: 'rgba(255, 216, 122, 0.75)',
+                  borderColor: 'rgba(192, 29, 22, 0.75)',
                   borderStyle: 'solid',
                   borderWidth: '0 1.5px 1.5px 0',
                   borderBottomRightRadius: 4,

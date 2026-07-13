@@ -32,7 +32,9 @@ async function parseResponse(response) {
 
 async function wowslyFetch(path, options = {}) {
   const url = `${WOWSLY_API_BASE}${path}`
+  console.log('[wowslyApi] Request:', url, options)
   const response = await fetch(url, options)
+  console.log('[wowslyApi] Response status:', response.status)
   return parseResponse(response)
 }
 

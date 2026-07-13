@@ -35,12 +35,12 @@ export default function ScrollToTop() {
           width: 44, height: 44,
           borderRadius: '50%',
           background: gradients.primary,
-          color: '#fff',
-          boxShadow: '0 4px 14px rgba(184,134,11,0.3)',
+          color: '#F0E8E0',
+          boxShadow: '0 4px 14px rgba(192,29,22,0.3)',
           transition: 'transform 0.25s ease, box-shadow 0.25s ease',
           '&:hover': {
             transform: 'translateY(-2px) scale(1.05)',
-            boxShadow: '0 8px 20px rgba(184,134,11,0.4)',
+            boxShadow: '0 8px 20px rgba(192,29,22,0.4)',
           },
         }}
       >

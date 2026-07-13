@@ -128,9 +128,9 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
           clipPath: 'polygon(0 16%, 7% 7%, 16% 2.5%, 50% 0, 84% 2.5%, 93% 7%, 100% 16%, 100% 100%, 0 100%)',
           borderRadius: '0 0 20px 20px',
           overflow: 'hidden',
-          border: active ? '2.5px solid rgba(255, 216, 122, 0.95)' : '1.5px solid rgba(232, 184, 74, 0.6)',
+          border: active ? '2.5px solid rgba(192, 29, 22, 0.95)' : '1.5px solid rgba(232, 184, 74, 0.6)',
           boxShadow: active
-            ? '0 0 0 1px rgba(255,216,122,0.22), 0 20px 42px rgba(0,0,0,0.38), 0 0 34px rgba(232,184,74,0.3)'
+            ? '0 0 0 1px rgba(192,29,22,0.22), 0 20px 42px rgba(0,0,0,0.38), 0 0 34px rgba(232,184,74,0.3)'
             : '0 10px 24px rgba(0,0,0,0.26)',
           backgroundImage: `linear-gradient(180deg, rgba(20,8,10,0.02) 8%, rgba(20,8,10,0.35) 48%, rgba(14,5,8,0.94) 100%), url(${artist.image})`,
           backgroundSize: 'cover',
@@ -146,9 +146,9 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
           left: '10%',
           right: '10%',
           height: active ? 46 : 36,
-          borderTop: active ? '2px solid rgba(255,216,122,0.7)' : '1px solid rgba(232,184,74,0.38)',
-          borderLeft: active ? '1.5px solid rgba(255,216,122,0.35)' : '1px solid rgba(232,184,74,0.2)',
-          borderRight: active ? '1.5px solid rgba(255,216,122,0.35)' : '1px solid rgba(232,184,74,0.2)',
+          borderTop: active ? '2px solid rgba(192,29,22,0.7)' : '1px solid rgba(232,184,74,0.38)',
+          borderLeft: active ? '1.5px solid rgba(192,29,22,0.35)' : '1px solid rgba(232,184,74,0.2)',
+          borderRight: active ? '1.5px solid rgba(192,29,22,0.35)' : '1px solid rgba(232,184,74,0.2)',
           borderRadius: '999px 999px 0 0',
           pointerEvents: 'none',
         }}
@@ -174,7 +174,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             fontWeight: 700,
             letterSpacing: '0.05em',
             textTransform: 'uppercase',
-            color: '#FFD87A',
+            color: '#F0E8E0',
             fontSize: active ? { xs: '0.95rem', md: '1.12rem' } : { xs: '0.74rem', md: '0.86rem' },
             lineHeight: 1.15,
             mb: 0.35,
@@ -199,8 +199,8 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             px: active ? 1.5 : 1.1,
             py: active ? 0.38 : 0.28,
             borderRadius: '999px',
-            border: '1px solid rgba(255, 216, 122, 0.7)',
-            color: '#FFD87A',
+            border: '1px solid rgba(192, 29, 22, 0.7)',
+            color: '#F0E8E0',
             fontSize: active ? '0.62rem' : '0.54rem',
             fontWeight: 700,
             letterSpacing: '0.6px',
@@ -218,11 +218,11 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             height: active ? 34 : 28,
             mx: 'auto',
             borderRadius: '50%',
-            border: '1px solid rgba(255, 216, 122, 0.7)',
+            border: '1px solid rgba(192, 29, 22, 0.7)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#FFD87A',
+            color: '#F0E8E0',
             bgcolor: 'transparent',
           }}
         >
@@ -331,7 +331,7 @@ export default function ArtistsPerformers() {
               <Box
                 component="span"
                 sx={{
-                  background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+                  background: 'linear-gradient(180deg, #E8D5B0 0%, #E05040 55%, #C02822 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -378,7 +378,7 @@ export default function ArtistsPerformers() {
               border: '1px solid rgba(232,184,74,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
-              '&:hover': { borderColor: 'rgba(255,216,122,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
+              '&:hover': { borderColor: 'rgba(192,29,22,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
             }}
           >
             <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.35rem' } }} />
@@ -426,7 +426,7 @@ export default function ArtistsPerformers() {
               border: '1px solid rgba(232,184,74,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
-              '&:hover': { borderColor: 'rgba(255,216,122,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
+              '&:hover': { borderColor: 'rgba(192,29,22,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
             }}
           >
             <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.35rem' } }} />
@@ -489,7 +489,7 @@ export default function ArtistsPerformers() {
                     <Box sx={{ minWidth: 0 }}>
                       <Typography
                         sx={{
-                          color: '#FFD87A',
+                          color: '#F0E8E0',
                           fontWeight: 700,
                           fontSize: '0.74rem',
                           letterSpacing: '0.4px',
@@ -518,7 +518,7 @@ export default function ArtistsPerformers() {
               startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
               endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
               sx={{
-                background: 'linear-gradient(135deg, #FFD76A 0%, #E8B84A 50%, #C98B2E 100%)',
+                background: 'linear-gradient(135deg, #E8D5B0 0%, #E05040 50%, #C02822 100%)',
                 color: '#1A0A12',
                 px: { xs: 2.4, md: 3 },
                 py: { xs: 0.9, md: 1 },
@@ -535,7 +535,7 @@ export default function ArtistsPerformers() {
                 '& .MuiButton-startIcon': { mr: 0.7 },
                 '& .MuiButton-endIcon': { ml: 0.7 },
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #FFD76A 0%, #E8B84A 50%, #C98B2E 100%)',
+                  background: 'linear-gradient(135deg, #E8D5B0 0%, #E05040 50%, #C02822 100%)',
                   filter: 'brightness(1.05)',
                   transform: 'translateY(-2px)',
                   boxShadow: '0 14px 30px rgba(201, 139, 46, 0.4)',
