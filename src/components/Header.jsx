@@ -44,8 +44,8 @@ export default function Header() {
         zIndex: 1200,
         bgcolor: scrolled ? 'rgba(26, 10, 18, 0.62)' : colors.night,
         borderBottom: scrolled
-          ? '1px solid rgba(232, 184, 74, 0.22)'
-          : '1px solid rgba(232, 184, 74, 0.15)',
+          ? '1px solid rgba(255, 179, 0, 0.22)'
+          : '1px solid rgba(255, 179, 0, 0.15)',
         boxShadow: scrolled
           ? '0 8px 28px rgba(10, 4, 8, 0.28)'
           : '0 4px 24px rgba(26, 10, 18, 0.4)',
@@ -160,11 +160,12 @@ export default function Header() {
                       content: '""',
                       position: 'absolute',
                       bottom: 0,
-                      left: '20%',
-                      right: '20%',
-                      height: 2,
-                      bgcolor: '#F7C76B',
+                      left: '15%',
+                      right: '15%',
+                      height: 3,
+                      bgcolor: '#FFB300',
                       borderRadius: 1,
+                      boxShadow: '0 0 10px rgba(255,179,0,0.5)',
                     },
                   }),
                 }}
@@ -179,17 +180,19 @@ export default function Header() {
             startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
-              background: gradients.primary,
+              background: gradients.button,
               color: '#231509',
               px: 2.5,
               py: 1.2,
               fontSize: '0.86rem',
               fontWeight: 700,
               borderRadius: '50px',
-              boxShadow: '0 8px 22px rgba(230, 149, 75, 0.32)',
+              boxShadow: '0 8px 22px rgba(234, 90, 0, 0.35)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               '&:hover': {
-                background: gradients.primary,
-                filter: 'brightness(1.05)',
+                background: gradients.buttonHover,
+                transform: 'scale(1.03)',
+                boxShadow: '0 12px 28px rgba(234, 90, 0, 0.50)',
               },
             }}
           >
@@ -214,7 +217,7 @@ export default function Header() {
         <Collapse in={open} sx={{ display: { xs: 'block', lg: 'none' } }}>
           <Box
             sx={{
-              bgcolor: scrolled ? 'rgba(26, 10, 18, 0.72)' : 'rgba(45, 16, 24, 0.95)',
+              bgcolor: scrolled ? 'rgba(26, 14, 0, 0.80)' : 'rgba(42, 22, 0, 0.95)',
               backdropFilter: scrolled ? 'blur(14px)' : 'none',
               WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
               px: 2,
@@ -231,11 +234,13 @@ export default function Header() {
                     sx={{
                       display: 'block',
                       py: 1.4,
-                      color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.82)',
+                      color: link.active ? '#FFF8F0' : 'rgba(255,248,240,0.80)',
                       fontWeight: link.active ? 700 : 600,
                       fontSize: '0.95rem',
-                      borderBottom: '1px solid rgba(255,255,255,0.06)',
+                      borderBottom: link.active ? '2px solid rgba(255,179,0,0.5)' : '1px solid rgba(255,255,255,0.06)',
                       textDecoration: 'none',
+                      pl: link.active ? 1 : 0,
+                      borderLeft: link.active ? '3px solid #FFB300' : '3px solid transparent',
                     }}
                   >
                     {link.mobileLabel || link.label}
@@ -257,11 +262,13 @@ export default function Header() {
                     borderRadius: '50px',
                     py: 1.4,
                     fontWeight: 700,
-                    background: gradients.primary,
-                    color: '#231509',
+                    background: gradients.button,
+                    color: '#3A1C00',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     '&:hover': {
-                      background: gradients.primary,
-                      filter: 'brightness(1.04)',
+                      background: gradients.buttonHover,
+                      transform: 'scale(1.02)',
+                      boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)',
                     },
                   }}
                 >

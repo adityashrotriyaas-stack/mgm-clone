@@ -55,7 +55,7 @@ function StepDots({ activeStep }) {
             borderRadius: '50px',
             fontSize: { xs: '0.62rem', sm: '0.68rem' },
             fontWeight: 700,
-            bgcolor: index <= activeStep ? colors.gold : 'rgba(192,29,22,0.1)',
+            bgcolor: index <= activeStep ? colors.gold : 'rgba(234, 90, 0,0.1)',
             color: index <= activeStep ? '#fff' : colors.muted,
             whiteSpace: 'nowrap',
           }}
@@ -174,7 +174,7 @@ export default function BookingFlow() {
                 mb: 2,
                 height: 6,
                 borderRadius: 3,
-                bgcolor: 'rgba(192,29,22,0.12)',
+                bgcolor: 'rgba(234, 90, 0,0.12)',
                 '& .MuiLinearProgress-bar': { background: gradients.primary },
               }}
             />
@@ -228,8 +228,8 @@ export default function BookingFlow() {
                       px: 2,
                       py: 1.5,
                       borderRadius: '14px',
-                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(192,29,22,0.18)',
-                      bgcolor: paymentMethod === id ? 'rgba(201, 139, 46, 0.12)' : colors.bgWarm,
+                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(234, 90, 0,0.18)',
+                      bgcolor: paymentMethod === id ? 'rgba(255, 179, 0, 0.12)' : colors.bgWarm,
                       color: colors.ivory,
                       textTransform: 'none',
                     }}
@@ -264,7 +264,7 @@ export default function BookingFlow() {
                     width: 180,
                     height: 180,
                     borderRadius: '16px',
-                    border: '2px solid rgba(192,29,22,0.25)',
+                    border: '2px solid rgba(234, 90, 0,0.25)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -306,10 +306,11 @@ export default function BookingFlow() {
                     py: 1.4,
                     minHeight: 48,
                     borderRadius: '12px',
-                    background: gradients.primary,
-                    color: '#fff',
+                    background: gradients.button,
+                    color: '#3A1C00',
                     fontWeight: 700,
-                    '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    '&:hover': { background: gradients.buttonHover, transform: 'scale(1.02)', boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)' },
                     '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
                   }}
                 >
@@ -324,7 +325,7 @@ export default function BookingFlow() {
                     py: 1.4,
                     minHeight: 48,
                     borderRadius: '12px',
-                    background: gradients.primary,
+                    background: gradients.button,
                     color: '#fff',
                     fontWeight: 700,
                   }}

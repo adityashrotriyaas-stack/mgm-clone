@@ -168,7 +168,7 @@ export default function ApiDebugPanel() {
                       bgcolor: filter === f ? colors.gold : 'transparent',
                       color: filter === f ? '#12121e' : colors.gold,
                       borderColor: colors.gold,
-                      '&:hover': { bgcolor: filter === f ? '#b8860b' : 'rgba(201,139,46,0.1)' },
+                      '&:hover': { bgcolor: filter === f ? '#b8860b' : 'rgba(255, 179, 0,0.1)' },
                     }}
                   >
                     {f}
@@ -226,11 +226,11 @@ export default function ApiDebugPanel() {
                     sx={{
                       border: `1px solid ${log.status === 'error' || (typeof log.status === 'number' && log.status >= 400) ? '#ef4444' : colors.gold}`,
                       borderRadius: 2,
-                      bgcolor: selectedLog?.id === log.id ? 'rgba(201,139,46,0.1)' : 'rgba(18,18,30,0.9)',
+                      bgcolor: selectedLog?.id === log.id ? 'rgba(255, 179, 0,0.1)' : 'rgba(18,18,30,0.9)',
                       p: 1,
                       cursor: 'pointer',
                       transition: 'all 0.15s',
-                      '&:hover': { bgcolor: 'rgba(201,139,46,0.15)' },
+                      '&:hover': { bgcolor: 'rgba(255, 179, 0,0.15)' },
                     }}
                     onClick={() => setSelectedLog(selectedLog?.id === log.id ? null : log)}
                   >

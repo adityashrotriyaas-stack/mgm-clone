@@ -68,7 +68,7 @@ export function ToastProvider({ children }) {
                 borderRadius: '14px',
                 bgcolor: bgColors[toast.type],
                 border: `1px solid ${borderColors[toast.type]}30`,
-                boxShadow: '0 12px 32px rgba(44,31,16,0.12)',
+                boxShadow: '0 12px 32px rgba(26, 14, 0,0.12)',
                 backdropFilter: 'blur(8px)',
                 cursor: 'pointer',
                 pointerEvents: 'auto',

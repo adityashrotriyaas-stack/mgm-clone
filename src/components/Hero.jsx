@@ -38,7 +38,7 @@ function HeroFeatureCard({ icon, title, subtitle, index }) {
           height: { xs: 38, sm: 42 },
           borderRadius: '12px',
           bgcolor: 'rgba(26, 26, 26, 0.85)',
-          border: '1px solid rgba(192, 29, 22, 0.22)',
+          border: `1px solid ${colors.border}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -46,14 +46,14 @@ function HeroFeatureCard({ icon, title, subtitle, index }) {
           boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: '#E05040' }} />
+        <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: colors.maroon }} />
       </Box>
       <Box sx={{ minWidth: 0 }}>
         <Typography
           sx={{
             fontWeight: 700,
             fontSize: { xs: '0.78rem', sm: '0.85rem' },
-            color: '#F5EDE5',
+            color: colors.textLight,
             lineHeight: 1.2,
           }}
         >
@@ -97,9 +97,9 @@ export default function Hero() {
         sx={{
           position: 'relative',
           zIndex: 1,
-          px: { xs: 2, sm: 2.5, md: 4 },
-          pt: { xs: 1.5, sm: 2, md: 2.5 },
-          pb: { xs: 2, sm: 2.5, md: 3 },
+          px: { xs: 1.5, sm: 2, md: 3 },
+          pt: { xs: 1, sm: 1.5, md: 2 },
+          pb: { xs: 1.5, sm: 2, md: 2.5 },
         }}
       >
         <Box
@@ -107,12 +107,14 @@ export default function Hero() {
             position: 'relative',
             borderRadius: { xs: '20px', md: '28px' },
             overflow: 'hidden',
-            border: '1px solid rgba(232, 184, 74, 0.22)',
+            border: `1px solid ${colors.border}`,
             boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
-            aspectRatio: { xs: '16 / 9', sm: '16 / 10', lg: '16 / 7.4' },
             bgcolor: colors.nightMid,
             opacity: 0,
             animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+            lineHeight: 0,
+            maxWidth: { xs: '100%', lg: '1100px' },
+            mx: 'auto',
           }}
         >
           <Box
@@ -121,10 +123,8 @@ export default function Hero() {
             alt="MGM Navratri 2026"
             sx={{
               width: '100%',
-              height: '100%',
-              objectFit: 'contain',
+              height: 'auto',
               display: 'block',
-              bgcolor: colors.nightMid,
             }}
           />
           <Box
@@ -143,9 +143,11 @@ export default function Hero() {
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-            gap: { xs: 1.25, sm: 1.5, md: 2 },
-            mt: { xs: 0, md: 2 },
+            gap: { xs: 1, sm: 1.25, md: 1.5 },
+            mt: { xs: 0.5, md: 1.5 },
             px: { xs: 0.5, sm: 0 },
+            maxWidth: { xs: '100%', lg: '1100px' },
+            mx: 'auto',
           }}
         >
           {heroFeatures.map((item, index) => (

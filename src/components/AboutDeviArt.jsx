@@ -132,7 +132,7 @@ export default function AboutDeviArt() {
           position: 'absolute',
           inset: '8% 6%',
           background:
-            'radial-gradient(circle at center, rgba(232, 184, 74, 0.14) 0%, rgba(232, 184, 74, 0.04) 36%, transparent 72%)',
+            'radial-gradient(circle at center, rgba(255, 179, 0, 0.14) 0%, rgba(255, 179, 0, 0.04) 36%, transparent 72%)',
           filter: 'blur(12px)',
           pointerEvents: 'none',
         }}
@@ -143,7 +143,7 @@ export default function AboutDeviArt() {
           width: { xs: 300, md: 440 },
           height: { xs: 300, md: 440 },
           borderRadius: '50%',
-          border: '1px dashed rgba(232, 184, 74, 0.18)',
+          border: '1px dashed rgba(255, 179, 0, 0.18)',
           animation: `${orbit} 48s linear infinite`,
           pointerEvents: 'none',
         }}
@@ -154,7 +154,7 @@ export default function AboutDeviArt() {
           width: { xs: 260, md: 360 },
           height: { xs: 260, md: 360 },
           borderRadius: '50%',
-          border: '1px solid rgba(232, 184, 74, 0.1)',
+          border: '1px solid rgba(255, 179, 0, 0.1)',
           animation: `${orbitReverse} 36s linear infinite`,
           pointerEvents: 'none',
         }}
@@ -164,7 +164,7 @@ export default function AboutDeviArt() {
           position: 'absolute',
           inset: '18%',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(232,184,74,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255, 179, 0,0.12) 0%, transparent 70%)',
           animation: `${pulseGlow} 4s ease-in-out infinite`,
           pointerEvents: 'none',
         }}

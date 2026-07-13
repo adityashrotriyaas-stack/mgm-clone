@@ -52,7 +52,7 @@ const workflowSteps = [
   },
 ]
 
-const goldGradient = 'linear-gradient(135deg, #E8D5B0 0%, #E05040 100%)'
+const goldGradient = 'linear-gradient(135deg, #FFB300 0%, #EA5A00 100%)'
 const particles = Array.from({ length: 14 }, (_, i) => ({
   id: i,
   left: `${6 + (i * 6.8) % 88}%`,
@@ -131,7 +131,7 @@ function TimelineConnector({ vertical = false }) {
           position: 'absolute',
           width: 7,
           height: 7,
-          bgcolor: '#E8D5B0',
+          bgcolor: '#FFB300',
           transform: 'rotate(45deg)',
           boxShadow: '0 0 10px rgba(255, 196, 78, 0.55)',
           ...(vertical
@@ -172,7 +172,7 @@ function WorkflowStep({ step, index, visible }) {
           height: 56,
           borderRadius: '50%',
           background: goldGradient,
-          color: '#120B08',
+          color: '#1A0800',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -262,7 +262,7 @@ export default function BookingWorkflowSection() {
         position: 'relative',
         py: { xs: 6, md: 9 },
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #2B1B12 0%, #120B08 100%)',
+        background: 'linear-gradient(180deg, #3C1C00 0%, #1A0800 100%)',
       }}
     >
       <Box
@@ -358,7 +358,7 @@ export default function BookingWorkflowSection() {
                 transform: 'translate(-50%, -50%) rotate(45deg)',
                 width: 8,
                 height: 8,
-                bgcolor: '#E8D5B0',
+                bgcolor: '#FFB300',
                 boxShadow: '0 0 10px rgba(255,196,78,0.5)',
               },
             }}
@@ -424,7 +424,7 @@ export default function BookingWorkflowSection() {
               height: 60,
               borderRadius: '999px',
               background: goldGradient,
-              color: '#120B08',
+              color: '#1A0800',
               fontWeight: 800,
               fontSize: '1.15rem',
               letterSpacing: '0.02em',

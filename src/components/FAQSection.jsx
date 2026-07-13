@@ -47,7 +47,7 @@ function AccordionItem({ question, answer, open, onToggle }) {
   return (
     <Box
       sx={{
-        borderBottom: '1px solid rgba(192,29,22,0.08)',
+        borderBottom: '1px solid rgba(234, 90, 0,0.08)',
         '&:last-child': { borderBottom: 'none' },
       }}
     >
@@ -64,7 +64,7 @@ function AccordionItem({ question, answer, open, onToggle }) {
         <Typography sx={{ fontWeight: 600, fontSize: '0.92rem', color: 'inherit', flex: 1, lineHeight: 1.4 }}>
           {question}
         </Typography>
-        <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: open ? gradients.primary : 'rgba(192,29,22,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.25s ease' }}>
+        <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: open ? gradients.primary : 'rgba(234, 90, 0,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.25s ease' }}>
           {open ? <RemoveRoundedIcon sx={{ color: '#fff', fontSize: '0.85rem' }} /> : <AddRoundedIcon sx={{ color: colors.gold, fontSize: '0.85rem' }} />}
         </Box>
       </Box>
@@ -98,7 +98,7 @@ export default function FAQSection() {
           title="Frequently Asked Questions"
           description="Everything you need to know about MGM Cultural Navratri 2026."
         />
-        <Box sx={{ bgcolor: colors.bg, borderRadius: '16px', border: '1px solid rgba(192,29,22,0.08)', boxShadow: '0 8px 24px rgba(44,31,16,0.04)', px: { xs: 2, md: 3 } }}>
+        <Box sx={{ bgcolor: colors.bg, borderRadius: '16px', border: '1px solid rgba(234, 90, 0,0.08)', boxShadow: '0 8px 24px rgba(26, 14, 0,0.04)', px: { xs: 2, md: 3 } }}>
           {faqs.map((faq, i) => (
             <AccordionItem key={i} question={faq.q} answer={faq.a} open={openIndex === i} onToggle={() => toggle(i)} />
           ))}

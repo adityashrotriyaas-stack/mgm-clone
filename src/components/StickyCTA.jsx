@@ -78,7 +78,7 @@ export default function StickyCTA() {
       <Button
         onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
-          background: gradients.primary,
+          background: gradients.button,
           color: colors.textLight,
           px: { xs: 2.5, sm: 3 },
           py: 1.35,
@@ -88,8 +88,9 @@ export default function StickyCTA() {
           fontWeight: 700,
           borderRadius: '50px',
           flexShrink: 0,
-          boxShadow: '0 8px 20px rgba(192, 29, 22, 0.28)',
-          '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+          boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          '&:hover': { background: gradients.buttonHover, transform: 'scale(1.03)', boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)' },
         }}
       >
         Book Now

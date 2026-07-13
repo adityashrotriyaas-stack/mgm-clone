@@ -31,16 +31,16 @@ const nightImages = [
 ]
 
 const cardDetails = [
-  { accent: 'Opening Aarti' },
-  { accent: 'Classic Raas' },
-  { accent: 'Color Burst' },
-  { accent: 'High Energy' },
-  { accent: 'Bollywood Night' },
-  { accent: 'Folk Fusion' },
-  { accent: 'Dandiya Special' },
-  { accent: 'Celebration' },
-  { accent: 'Raas Rhythm' },
-  { accent: 'Grand Finale' },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
 ]
 
 const TOTAL = navratriNights.length
@@ -97,10 +97,10 @@ const arrowBtnSx = {
   flexShrink: 0,
   '&:hover': {
     bgcolor: 'rgba(255, 255, 255, 0.1)',
-    borderColor: 'rgba(232, 184, 74, 0.65)',
+    borderColor: 'rgba(255, 179, 0, 0.65)',
     color: colors.gold,
     transform: 'scale(1.06)',
-    boxShadow: '0 0 20px rgba(232, 184, 74, 0.2)',
+    boxShadow: '0 0 20px rgba(255, 179, 0, 0.2)',
   },
 }
 
@@ -189,7 +189,7 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
             transform: 'translateX(-50%)',
             width: '70%',
             height: '40%',
-            background: 'radial-gradient(ellipse, rgba(255,180,60,0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(255,179,0,0.15) 0%, transparent 70%)',
             pointerEvents: 'none',
             animation: 'cardGlow 3s ease-in-out infinite',
             '@keyframes cardGlow': {
@@ -257,11 +257,8 @@ color: '#F0E8E0',
         </Box>
 
         <Box>
-          <Typography sx={{ fontSize: '0.78rem', fontWeight: 600, color: 'rgba(255, 235, 210, 0.85)' }}>
+          <Typography sx={{ fontSize: '0.78rem', fontWeight: 600, color: 'rgba(255, 248, 240, 0.85)' }}>
             {night.date}
-          </Typography>
-          <Typography sx={{ fontSize: '0.72rem', color: 'rgba(255, 220, 160, 0.7)', mt: 0.35 }}>
-            {detail.accent}
           </Typography>
         </Box>
       </Box>
@@ -286,7 +283,7 @@ function NightThumb({ night, image, isActive, onClick }) {
         overflow: 'hidden',
         cursor: 'pointer',
         border: isActive ? `2px solid ${colors.gold}` : '1.5px solid rgba(255,255,255,0.15)',
-        boxShadow: isActive ? '0 0 16px rgba(232,184,74,0.35)' : 'none',
+        boxShadow: isActive ? '0 0 16px rgba(255, 179, 0,0.35)' : 'none',
         transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
         opacity: isActive ? 1 : 0.55,
         transform: isActive ? 'translateY(-4px) scale(1.05)' : 'none',
@@ -409,8 +406,8 @@ export default function UpcomingNightsTimeline() {
         pb: { xs: 5, md: 6 },
         bgcolor: colors.night,
         backgroundImage: `
-          radial-gradient(circle at 50% 20%, rgba(255,180,60,0.08), transparent 40%),
-          radial-gradient(circle at 15% 80%, rgba(168,50,72,0.08), transparent 30%),
+          radial-gradient(circle at 50% 20%, rgba(255,179,0,0.10), transparent 40%),
+          radial-gradient(circle at 15% 80%, rgba(234,90,0,0.08), transparent 30%),
           repeating-linear-gradient(45deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 24px)
         `,
         overflow: 'hidden',
@@ -489,7 +486,7 @@ export default function UpcomingNightsTimeline() {
             <Box
               component="span"
               sx={{
-                background: 'linear-gradient(180deg, #E8D5B0 0%, #E05040 55%, #C02822 100%)',
+                background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
@@ -688,7 +685,7 @@ export default function UpcomingNightsTimeline() {
               pb: 1,
               px: 1,
               '&::-webkit-scrollbar': { height: 4 },
-              '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(232,184,74,0.3)', borderRadius: 4 },
+              '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255, 179, 0,0.3)', borderRadius: 4 },
             }}
           >
             <Stack direction="row" spacing={1} justifyContent="center" sx={{ minWidth: 'max-content', py: 1 }}>
@@ -726,7 +723,7 @@ export default function UpcomingNightsTimeline() {
                     py: { xs: 1.35, md: 1.55 },
                     borderRadius: '18px',
                     bgcolor: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(232,176,74,.25)',
+                    border: '1px solid rgba(255,179,0,.25)',
                     backdropFilter: 'blur(8px)',
                     boxShadow: '0 12px 24px rgba(0,0,0,0.16)',
                     height: '100%',
@@ -743,7 +740,7 @@ export default function UpcomingNightsTimeline() {
                       height: 38,
                       minWidth: 38,
                       borderRadius: '12px',
-                      border: '1px solid rgba(192,29,22,0.28)',
+                      border: '1px solid rgba(234, 90, 0,0.28)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',

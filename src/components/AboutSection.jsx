@@ -134,7 +134,7 @@ function AboutCopy({ visible }) {
               py: 0.65,
               borderRadius: '50px',
               border: `1px solid ${colors.border}`,
-              bgcolor: 'rgba(53, 36, 24, 0.5)',
+              bgcolor: 'rgba(42, 22, 0, 0.5)',
               fontSize: '0.75rem',
               fontWeight: 600,
               color: colors.textLight,
@@ -175,9 +175,9 @@ export default function AboutSection() {
       showAccent={false}
       sx={{
         py: { xs: 6, md: 9 },
-        backgroundColor: '#1A0A12',
+        backgroundColor: '#3A1C00',
         backgroundImage: `
-          linear-gradient(180deg, rgba(18,7,10,0.58) 0%, rgba(18,7,10,0.38) 45%, rgba(18,7,10,0.55) 100%),
+          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%),
           url(${aboutBg})
         `,
         backgroundSize: 'cover',
