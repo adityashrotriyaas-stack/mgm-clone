@@ -16,6 +16,32 @@ export const QUESTION_MAP = {
   email: '625',
 }
 
+/** Semantic keys mapped to the exact question strings in the API */
+export const FORM_LABELS = {
+  NAME: 'Name',
+  COUNTRY_CODE: 'Country Code',
+  MOBILE: 'Mobile Number',
+  EMAIL: 'Email',
+}
+
+/** Maps API fields array to semantic map of IDs */
+export const mapFormFields = (fields) => {
+  if (!fields || !Array.isArray(fields)) return {}
+  
+  const map = {}
+  Object.entries(FORM_LABELS).forEach(([key, label]) => {
+    const field = fields.find((f) => {
+      const q = String(f.question || '').trim().toLowerCase()
+      const l = String(label || '').trim().toLowerCase()
+      return q === l
+    })
+    if (field) {
+      map[key] = field.id
+    }
+  })
+  return map
+}
+
 export const COMMON_EVENT_QUERY = '?common_event_link=true'
 
 /** Local night id (1–10) → Wowsly event_slot_id */

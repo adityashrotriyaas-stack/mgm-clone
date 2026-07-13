@@ -1,4 +1,4 @@
-import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment } from '../config/wowsly'
+import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment, QUESTION_MAP, mapFormFields } from '../config/wowsly'
 import { resolveTicketFromPassMode } from '../data/wowslyCatalog'
 import { openRazorpayCheckout, sanitizeNotesForRazorpay } from '../utils/razorpay'
 import {
@@ -9,6 +9,7 @@ import {
   extractFinalPayable,
   extractGuestTicketId,
   extractOrderDetails,
+  fetchRegistrationForm,
   getEventTickets,
   getPricingQuote,
   selectTicket,
@@ -96,7 +97,23 @@ export async function prepareWowslyBooking(registration) {
   const guest = extractGuestFromRegistration(registration)
   const { ticketId, ticketTitle, quantity, eventSlotId } = resolveTicketSelection(registration)
 
-  const regResponse = await submitRegistration(guest)
+  // Fetch form dynamically to resolve field mappings
+  let activeQuestionMap = { ...QUESTION_MAP }
+  try {
+    const formResponse = await fetchRegistrationForm()
+    const fields = formResponse?.form?.[0]?.fields || formResponse?.data?.form?.[0]?.fields || []
+    if (fields.length > 0) {
+      const dynamicMap = mapFormFields(fields)
+      if (dynamicMap.NAME) activeQuestionMap.name = String(dynamicMap.NAME)
+      if (dynamicMap.COUNTRY_CODE) activeQuestionMap.countryCode = String(dynamicMap.COUNTRY_CODE)
+      if (dynamicMap.MOBILE) activeQuestionMap.mobile = String(dynamicMap.MOBILE)
+      if (dynamicMap.EMAIL) activeQuestionMap.email = String(dynamicMap.EMAIL)
+    }
+  } catch (err) {
+    console.warn('Failed to fetch dynamic form fields, using static fallback:', err)
+  }
+
+  const regResponse = await submitRegistration(guest, activeQuestionMap)
   const guestData = regResponse?.guest_data ?? regResponse?.data?.guest_data ?? {}
   const uuid = guestData.uuid
   const userId = guestData.user_id

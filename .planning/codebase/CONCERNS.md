@@ -4,12 +4,13 @@
 
 ## Tech Debt
 
-**Hardcoded Form & Slot IDs:**
-- **Issue:** Wowsly event slot IDs, question maps, and form IDs are hardcoded.
-- **Files:** `src/config/wowsly.js` (Lines 10-33)
-- **Why:** Simplifies initial project structure and avoids dynamic schema queries.
-- **Impact:** Any changes in form questions or slot definitions require rebuilding and redeploying the entire client bundle.
-- **Fix approach:** Move ID maps to a lightweight CMS or fetch them dynamically during app bootstrap.
+**Hardcoded Event Slot & Form IDs:**
+- **Issue:** Wowsly event slot IDs and the root form ID are hardcoded.
+- **Files:** `src/config/wowsly.js` (Lines 10-50)
+- **Why:** Simplifies project configuration setup.
+- **Mitigation Status:** Registration form question mappings have been converted to run dynamically via `fetchRegistrationForm()` and `mapFormFields()`. However, the root `FORM_ID` (122) and `NIGHT_SLOT_MAP` remain hardcoded.
+- **Impact:** Future modifications to the event's root form ID or calendar slot mappings will still require client rebuilds and redeployments.
+- **Fix approach:** Move slot mappings to a dynamic config service or resolve them dynamically via backend APIs.
 
 **Direct Session Storage Hooks:**
 - **Issue:** Direct browser `sessionStorage` manipulation is used to manage booking status state transitions.

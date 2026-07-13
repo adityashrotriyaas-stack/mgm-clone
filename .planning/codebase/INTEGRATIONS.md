@@ -12,11 +12,10 @@
   - Event ID: `163` (dev configuration)
   - Form ID: `122`
   - Path style: **Common event** → always `?common_event_link=true` and `/commonEvent/...`
-- **Registration Questions Mappings:**
-  - Name: `622`
-  - Country Code: `623`
-  - Mobile: `624`
-  - Email: `625`
+- **Registration Questions Mappings (Dynamic with Static Fallback):**
+  - **Dynamic Retrieval:** Fetches form questions dynamically from `GET /events/163/registration/status?common_event_link=true` (`fetchRegistrationForm()`).
+  - **Semantic Mapping:** Maps questions dynamically using labels defined in `FORM_LABELS` (Name -> `NAME`, Country Code -> `COUNTRY_CODE`, Mobile Number -> `MOBILE`, Email -> `EMAIL`) via `mapFormFields()`.
+  - **Static Fallback:** Falls back to static `QUESTION_MAP` (Name: `622`, Country Code: `623`, Mobile: `624`, Email: `625`) if the API call fails.
   - *Note: Aadhaar and selfie photo capture are UI-only and are not sent to Wowsly.*
 - **Ticket Mapping:**
   - Daily Pass: `263` (SINGLE DAY TICKET)

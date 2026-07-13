@@ -84,17 +84,17 @@ export function buildFacilityNameMap(ticketsResponse) {
   return map
 }
 
-export async function submitRegistration({ name, countryCode, mobile, email }) {
+export async function submitRegistration({ name, countryCode, mobile, email }, questionMap = QUESTION_MAP) {
   const formData = new FormData()
   formData.append('form_id', String(FORM_ID))
   formData.append('dialing_code', DEFAULT_DIALING_CODE)
   formData.append('mobile', mobile)
 
   const answers = [
-    { question_id: QUESTION_MAP.name, answer: name },
-    { question_id: QUESTION_MAP.countryCode, answer: countryCode || DEFAULT_DIALING_CODE },
-    { question_id: QUESTION_MAP.mobile, answer: mobile },
-    { question_id: QUESTION_MAP.email, answer: email },
+    { question_id: questionMap.name, answer: name },
+    { question_id: questionMap.countryCode, answer: countryCode || DEFAULT_DIALING_CODE },
+    { question_id: questionMap.mobile, answer: mobile },
+    { question_id: questionMap.email, answer: email },
   ]
 
   answers.forEach((qa, index) => {
@@ -106,6 +106,10 @@ export async function submitRegistration({ name, countryCode, mobile, email }) {
     `/events/${WOWSLY_EVENT_ID}/commonEvent/registrationform/answer${COMMON_EVENT_QUERY}`,
     { method: 'POST', body: formData },
   )
+}
+
+export async function fetchRegistrationForm() {
+  return wowslyFetch(`/events/${WOWSLY_EVENT_ID}/registration/status${COMMON_EVENT_QUERY}`)
 }
 
 export async function getPublicSchedule() {
