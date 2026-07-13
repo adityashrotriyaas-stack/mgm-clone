@@ -27,7 +27,7 @@ export const FORM_LABELS = {
 /** Maps API fields array to semantic map of IDs */
 export const mapFormFields = (fields) => {
   if (!fields || !Array.isArray(fields)) return {}
-  
+
   const map = {}
   Object.entries(FORM_LABELS).forEach(([key, label]) => {
     const field = fields.find((f) => {
