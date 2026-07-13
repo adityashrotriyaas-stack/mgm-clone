@@ -1,4 +1,4 @@
-import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment, QUESTION_MAP, mapFormFields } from '../config/wowsly'
+import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment, QUESTION_MAP, mapFormFields, updateFormId } from '../config/wowsly'
 import { resolveTicketFromPassMode } from '../data/wowslyCatalog'
 import { openRazorpayCheckout, sanitizeNotesForRazorpay } from '../utils/razorpay'
 import {
@@ -93,6 +93,23 @@ function formatRupees(amount) {
   return `₹${value.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`
 }
 
+export function resolveDynamicTicketId(ticketsResponse, passMode) {
+  const tickets = ticketsResponse?.data?.tickets || ticketsResponse?.tickets || ticketsResponse?.data || ticketsResponse || []
+  if (!Array.isArray(tickets)) return null
+
+  if (passMode === 'seasonal') {
+    const ticket = tickets.find((t) => String(t.name || t.ticket_name || '').toLowerCase().includes('season'))
+    return ticket ? ticket.id : null
+  } else {
+    const ticket = tickets.find(
+      (t) =>
+        String(t.name || t.ticket_name || '').toLowerCase().includes('single') ||
+        String(t.name || t.ticket_name || '').toLowerCase().includes('daily')
+    )
+    return ticket ? ticket.id : null
+  }
+}
+
 export async function prepareWowslyBooking(registration) {
   if (!isWowslyConfigured()) {
     return null
@@ -105,7 +122,11 @@ export async function prepareWowslyBooking(registration) {
   let activeQuestionMap = { ...QUESTION_MAP }
   try {
     const formResponse = await fetchRegistrationForm()
-    const fields = formResponse?.form?.[0]?.fields || formResponse?.data?.form?.[0]?.fields || []
+    const formObj = formResponse?.form?.[0] || formResponse?.data?.form?.[0]
+    if (formObj?.id) {
+      updateFormId(formObj.id)
+    }
+    const fields = formObj?.fields || []
     if (fields.length > 0) {
       const dynamicMap = mapFormFields(fields)
       if (dynamicMap.NAME) activeQuestionMap.NAME = String(dynamicMap.NAME)
@@ -128,9 +149,11 @@ export async function prepareWowslyBooking(registration) {
     throw new Error('Registration failed. Please check your details and try again.')
   }
 
-  await getEventTickets(uuid)
+  const ticketsResponse = await getEventTickets(uuid)
+  const dynamicTicketId = resolveDynamicTicketId(ticketsResponse, registration.passMode)
+  const activeTicketId = dynamicTicketId || ticketId
 
-  const quote = await getPricingQuote({ ticketId, quantity, eventSlotId })
+  const quote = await getPricingQuote({ ticketId: activeTicketId, quantity, eventSlotId })
   const finalPayable = extractFinalPayable(quote)
 
   if (!finalPayable) {
@@ -140,7 +163,7 @@ export async function prepareWowslyBooking(registration) {
   const selectResponse = await selectTicket(
     buildTicketSelectPayload({
       guestUuid: uuid,
-      ticketId,
+      ticketId: activeTicketId,
       ticketTitle,
       quantity,
       finalPayable,
