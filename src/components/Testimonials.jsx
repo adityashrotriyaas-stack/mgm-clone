@@ -70,8 +70,8 @@ export default function Testimonials() {
             key={activeIndex}
             sx={{
               bgcolor: colors.heroCream, borderRadius: '20px',
-              border: '1px solid rgba(192,29,22,0.08)',
-              boxShadow: '0 8px 28px rgba(44,31,16,0.04)',
+              border: '1px solid rgba(234, 90, 0,0.08)',
+              boxShadow: '0 8px 28px rgba(26, 14, 0,0.04)',
               px: { xs: 2.5, md: 4 },
               py: { xs: 3, md: 3.5 },
               textAlign: 'center',
@@ -99,7 +99,7 @@ export default function Testimonials() {
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1.5, mt: 2.5 }}>
             <IconButton
               onClick={prev}
-              sx={{ width: 36, height: 36, bgcolor: 'rgba(192,29,22,0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(192,29,22,0.15)' } }}
+              sx={{ width: 36, height: 36, bgcolor: 'rgba(234, 90, 0,0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(234, 90, 0,0.15)' } }}
             >
               <ChevronLeftRoundedIcon sx={{ fontSize: '1.1rem' }} />
             </IconButton>
@@ -120,7 +120,7 @@ export default function Testimonials() {
             </Box>
             <IconButton
               onClick={next}
-              sx={{ width: 36, height: 36, bgcolor: 'rgba(192,29,22,0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(192,29,22,0.15)' } }}
+              sx={{ width: 36, height: 36, bgcolor: 'rgba(234, 90, 0,0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(234, 90, 0,0.15)' } }}
             >
               <ChevronRightRoundedIcon sx={{ fontSize: '1.1rem' }} />
             </IconButton>

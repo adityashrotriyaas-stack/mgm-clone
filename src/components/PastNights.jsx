@@ -45,7 +45,7 @@ function ThrowbackHeader() {
           mb: 1,
         }}
       >
-        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(255, 179, 0, 0.45)' }} />
         <Typography
           sx={{
             fontSize: { xs: '0.7rem', md: '0.8rem' },
@@ -56,7 +56,7 @@ function ThrowbackHeader() {
         >
           Throwback
         </Typography>
-        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(255, 179, 0, 0.45)' }} />
       </Box>
 
       <Typography
@@ -77,7 +77,7 @@ function ThrowbackHeader() {
           component="span"
           sx={{
             display: 'block',
-            background: 'linear-gradient(180deg, #E8D5B0 0%, #E05040 55%, #C02822 100%)',
+            background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
@@ -137,9 +137,9 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
         borderRadius: '22px',
         overflow: 'hidden',
         flexShrink: 0,
-        border: active ? '1px solid rgba(192, 29, 22, 0.88)' : '1px solid rgba(232, 184, 74, 0.45)',
+        border: active ? '1px solid rgba(234, 90, 0, 0.88)' : '1px solid rgba(255, 179, 0, 0.45)',
         boxShadow: active
-          ? '0 0 0 1px rgba(232, 184, 74, 0.16), 0 18px 44px rgba(0,0,0,0.34), 0 0 24px rgba(232,184,74,0.18)'
+          ? '0 0 0 1px rgba(255, 179, 0, 0.16), 0 18px 44px rgba(0,0,0,0.34), 0 0 24px rgba(255, 179, 0,0.18)'
           : absOffset === 1
             ? '0 12px 28px rgba(0,0,0,0.24)'
             : '0 10px 22px rgba(0,0,0,0.18)',
@@ -169,7 +169,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
               content: '""',
               position: 'absolute',
               inset: 0,
-              boxShadow: 'inset 0 0 0 1px rgba(192, 29, 22, 0.25)',
+              boxShadow: 'inset 0 0 0 1px rgba(234, 90, 0, 0.25)',
               borderRadius: '22px',
             }
           : undefined,
@@ -189,7 +189,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
             py: 0.7,
             borderRadius: '999px',
             bgcolor: 'rgba(36, 21, 16, 0.86)',
-            border: '1px solid rgba(192, 29, 22, 0.18)',
+            border: '1px solid rgba(234, 90, 0, 0.18)',
 color: '#F0E8E0',
             fontSize: '0.72rem',
             fontWeight: 700,
@@ -210,7 +210,7 @@ color: '#F0E8E0',
           width: active ? 58 : 52,
           height: active ? 58 : 52,
           borderRadius: '50%',
-          border: '1px solid rgba(192, 29, 22, 0.72)',
+          border: '1px solid rgba(234, 90, 0, 0.72)',
           bgcolor: 'rgba(28, 12, 16, 0.38)',
           backdropFilter: 'blur(6px)',
           display: 'flex',
@@ -218,7 +218,7 @@ color: '#F0E8E0',
           justifyContent: 'center',
           color: colors.gold,
           zIndex: 2,
-          boxShadow: active ? '0 0 18px rgba(232, 184, 74, 0.16)' : 'none',
+          boxShadow: active ? '0 0 18px rgba(255, 179, 0, 0.16)' : 'none',
         }}
       >
         <Icon sx={{ fontSize: active ? '1.7rem' : '1.55rem' }} />
@@ -280,8 +280,8 @@ function MemoryLightbox({ item, onClose }) {
           maxWidth: 760,
           borderRadius: { xs: '18px', md: '22px' },
           overflow: 'hidden',
-          border: '1px solid rgba(192, 29, 22, 0.42)',
-          boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(232, 184, 74, 0.14)',
+          border: '1px solid rgba(234, 90, 0, 0.42)',
+          boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 179, 0, 0.14)',
           bgcolor: '#12070D',
           maxHeight: 'calc(100vh - 24px)',
         }}
@@ -298,7 +298,7 @@ function MemoryLightbox({ item, onClose }) {
             width: { xs: 38, md: 42 },
             height: { xs: 38, md: 42 },
             bgcolor: 'rgba(20, 10, 12, 0.82)',
-            border: '1px solid rgba(192, 29, 22, 0.5)',
+            border: '1px solid rgba(234, 90, 0, 0.5)',
             boxShadow: '0 8px 22px rgba(0, 0, 0, 0.3)',
             '&:hover': { bgcolor: 'rgba(20, 10, 12, 0.95)' },
           }}
@@ -454,10 +454,10 @@ export default function PastNights() {
       sx={{
         py: { xs: 5.5, md: 7.5 },
         backgroundImage: `
-          radial-gradient(circle at 50% 16%, rgba(232,184,74,0.1), transparent 20%),
-          radial-gradient(circle at 20% 22%, rgba(168,50,72,0.14), transparent 18%),
-          radial-gradient(circle at 80% 20%, rgba(168,50,72,0.14), transparent 18%),
-          linear-gradient(180deg, ${colors.night} 0%, #15070D 100%),
+          radial-gradient(circle at 50% 16%, rgba(255, 179, 0,0.12), transparent 20%),
+          radial-gradient(circle at 20% 22%, rgba(234, 90, 0,0.14), transparent 18%),
+          radial-gradient(circle at 80% 20%, rgba(234, 90, 0,0.14), transparent 18%),
+          linear-gradient(180deg, ${colors.night} 0%, #3A1C00 100%),
           ${patternDiya},
           ${patternMandala},
           ${patternGarland}
@@ -479,7 +479,7 @@ export default function PastNights() {
             top: 0,
             width: '36%',
             height: 54,
-            borderTop: '3px solid rgba(232, 184, 74, 0.16)',
+            borderTop: '3px solid rgba(255, 179, 0, 0.16)',
           },
           '&::before': { left: 0, borderTopRightRadius: 120 },
           '&::after': { right: 0, borderTopLeftRadius: 120 },
@@ -498,7 +498,7 @@ export default function PastNights() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                bgcolor: '#E8D5B0',
+                bgcolor: '#FFB300',
                 boxShadow: '0 0 8px rgba(255, 215, 106, 0.95), 0 0 18px rgba(255, 176, 74, 0.45)',
               }}
             />
@@ -528,12 +528,12 @@ export default function PastNights() {
             sx={{
               width: { xs: 40, lg: 56 },
               height: { xs: 40, lg: 56 },
-              border: '1px solid rgba(232, 184, 74, 0.5)',
+              border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
               transition: 'transform 0.25s ease, border-color 0.25s ease',
               '&:hover': {
-                borderColor: 'rgba(192, 29, 22, 0.9)',
+                borderColor: 'rgba(234, 90, 0, 0.9)',
                 transform: 'translateX(-2px)',
               },
             }}
@@ -559,7 +559,7 @@ export default function PastNights() {
               width: '100%',
               '&::-webkit-scrollbar': { height: 6 },
               '&::-webkit-scrollbar-thumb': {
-                background: 'rgba(232, 184, 74, 0.25)',
+                background: 'rgba(255, 179, 0, 0.25)',
                 borderRadius: 999,
               },
             }}
@@ -589,12 +589,12 @@ export default function PastNights() {
             sx={{
               width: { xs: 40, lg: 56 },
               height: { xs: 40, lg: 56 },
-              border: '1px solid rgba(232, 184, 74, 0.5)',
+              border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
               transition: 'transform 0.25s ease, border-color 0.25s ease',
               '&:hover': {
-                borderColor: 'rgba(192, 29, 22, 0.9)',
+                borderColor: 'rgba(234, 90, 0, 0.9)',
                 transform: 'translateX(2px)',
               },
             }}
@@ -616,7 +616,7 @@ export default function PastNights() {
               mx: 'auto',
             }}
           >
-            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(232, 184, 74, 0.42)' }} />
+            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(255, 179, 0, 0.42)' }} />
             <Typography sx={{ fontSize: '0.95rem', lineHeight: 1 }}>❀</Typography>
             {showcase.map((_, dot) => (
               <Box
@@ -625,14 +625,14 @@ export default function PastNights() {
                   width: dot === activeIndex ? 28 : 7,
                   height: 7,
                   borderRadius: 999,
-                  bgcolor: dot === activeIndex ? colors.gold : 'rgba(232, 184, 74, 0.55)',
-                  boxShadow: dot === activeIndex ? '0 0 12px rgba(232, 184, 74, 0.4)' : 'none',
+                  bgcolor: dot === activeIndex ? colors.gold : 'rgba(255, 179, 0, 0.55)',
+                  boxShadow: dot === activeIndex ? '0 0 12px rgba(255, 179, 0, 0.4)' : 'none',
                   transition: 'all 0.25s ease',
                 }}
               />
             ))}
             <Typography sx={{ fontSize: '0.95rem', lineHeight: 1 }}>❀</Typography>
-            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(232, 184, 74, 0.42)' }} />
+            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(255, 179, 0, 0.42)' }} />
           </Stack>
         </RevealBox>
       </Container>
@@ -704,7 +704,7 @@ export function Footer() {
                     justifyContent: 'center',
                     fontSize: '0.85rem',
                     '&:hover': {
-                      background: gradients.primary,
+                      background: gradients.button,
                       color: colors.bg,
                     },
                   }}

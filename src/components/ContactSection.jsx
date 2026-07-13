@@ -34,8 +34,8 @@ const ornateCardSx = {
   p: { xs: 2.5, md: 3.25 },
   borderRadius: '20px',
   background: 'linear-gradient(180deg, rgba(42, 18, 22, 0.82) 0%, rgba(22, 9, 14, 0.9) 100%)',
-  border: '1px solid rgba(232, 184, 74, 0.55)',
-  boxShadow: '0 0 0 1px rgba(232,184,74,0.08), 0 16px 40px rgba(0,0,0,0.32), 0 0 28px rgba(232,184,74,0.12)',
+  border: '1px solid rgba(255, 179, 0, 0.55)',
+  boxShadow: '0 0 0 1px rgba(255, 179, 0,0.08), 0 16px 40px rgba(0,0,0,0.32), 0 0 28px rgba(255, 179, 0,0.12)',
   backdropFilter: 'blur(8px)',
   overflow: 'hidden',
   '&::before, &::after': {
@@ -43,7 +43,7 @@ const ornateCardSx = {
     position: 'absolute',
     width: 18,
     height: 18,
-    borderColor: 'rgba(192, 29, 22, 0.75)',
+    borderColor: 'rgba(234, 90, 0, 0.75)',
     borderStyle: 'solid',
     pointerEvents: 'none',
   },
@@ -77,16 +77,16 @@ function StarIconFrame({ children, size = 42 }) {
           content: '""',
           position: 'absolute',
           inset: 0,
-          border: '1px solid rgba(232, 184, 74, 0.7)',
+          border: '1px solid rgba(255, 179, 0, 0.7)',
           borderRadius: '10px',
           transform: 'rotate(45deg)',
-          boxShadow: '0 0 12px rgba(232,184,74,0.15)',
+          boxShadow: '0 0 12px rgba(255, 179, 0,0.15)',
         },
         '&::after': {
           content: '""',
           position: 'absolute',
           inset: 4,
-          border: '1px solid rgba(232, 184, 74, 0.28)',
+          border: '1px solid rgba(255, 179, 0, 0.28)',
           borderRadius: '8px',
           transform: 'rotate(45deg)',
         },
@@ -171,12 +171,12 @@ function InfoRow({ icon: Icon, label, value, href, showDivider }) {
             display: 'flex',
             alignItems: 'center',
             gap: 0.8,
-            color: 'rgba(232,184,74,0.55)',
+            color: 'rgba(255, 179, 0,0.55)',
           }}
         >
-          <Box sx={{ flex: 1, borderTop: '1px dotted rgba(232,184,74,0.45)' }} />
+          <Box sx={{ flex: 1, borderTop: '1px dotted rgba(255, 179, 0,0.45)' }} />
           <Box sx={{ fontSize: '0.4rem', lineHeight: 1 }}>◆</Box>
-          <Box sx={{ flex: 1, borderTop: '1px dotted rgba(232,184,74,0.45)' }} />
+          <Box sx={{ flex: 1, borderTop: '1px dotted rgba(255, 179, 0,0.45)' }} />
         </Box>
       )}
     </Box>
@@ -189,19 +189,19 @@ const fieldSx = {
     color: '#FFF8EE',
     borderRadius: '14px',
     '& fieldset': {
-      borderColor: 'rgba(232, 184, 74, 0.35)',
+      borderColor: 'rgba(255, 179, 0, 0.35)',
     },
     '&:hover fieldset': {
-      borderColor: 'rgba(232, 184, 74, 0.55)',
+      borderColor: 'rgba(255, 179, 0, 0.55)',
     },
     '&.Mui-focused fieldset': {
       borderColor: colors.gold,
       borderWidth: '1.5px',
-      boxShadow: '0 0 14px rgba(232,184,74,0.18)',
+      boxShadow: '0 0 14px rgba(255, 179, 0,0.18)',
     },
   },
   '& .MuiInputBase-input::placeholder': {
-    color: 'rgba(255, 235, 210, 0.52)',
+    color: 'rgba(255, 248, 240, 0.52)',
     opacity: 1,
   },
   '& .MuiInputAdornment-root': {
@@ -274,7 +274,7 @@ function ContactForm() {
         sx={{
           ...fieldSx,
           '& .MuiTypography-root': { color: `${colors.gold} !important` },
-          '& .MuiDivider-root': { borderColor: 'rgba(232,184,74,0.4) !important' },
+          '& .MuiDivider-root': { borderColor: 'rgba(255, 179, 0,0.4) !important' },
         }}
         slotProps={{
           input: {
@@ -283,7 +283,7 @@ function ContactForm() {
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <PhoneOutlinedIcon sx={{ fontSize: '1.05rem', color: colors.gold }} />
                   <Typography sx={{ fontWeight: 700, color: colors.gold, fontSize: '0.9rem' }}>+91</Typography>
-                  <Box sx={{ width: 1, height: 18, bgcolor: 'rgba(232,184,74,0.4)' }} />
+                  <Box sx={{ width: 1, height: 18, bgcolor: 'rgba(255, 179, 0,0.4)' }} />
                 </Stack>
               </InputAdornment>
             ),
@@ -322,14 +322,14 @@ function ContactForm() {
           mt: 0.5,
           py: 1.3,
           borderRadius: '999px',
-          background: 'linear-gradient(135deg, #E8D5B0 0%, #E05040 50%, #C02822 100%)',
-          color: '#1A0A12',
+          background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
+          color: '#3A1C00',
           fontWeight: 800,
           fontSize: '0.92rem',
           textTransform: 'none',
-          boxShadow: '0 10px 28px rgba(201, 139, 46, 0.35)',
+          boxShadow: '0 10px 28px rgba(255, 179, 0, 0.35)',
           '&:hover': {
-            background: 'linear-gradient(135deg, #E8D5B0 0%, #E05040 50%, #C02822 100%)',
+            background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
             filter: 'brightness(1.05)',
             transform: 'translateY(-1px)',
           },
@@ -349,9 +349,9 @@ export default function ContactSection() {
       showAccent={false}
       sx={{
         py: { xs: 5, md: 7 },
-        backgroundColor: '#1A0A12',
+        backgroundColor: '#3A1C00',
         backgroundImage: `
-          linear-gradient(180deg, rgba(18,7,10,0.55) 0%, rgba(18,7,10,0.38) 40%, rgba(18,7,10,0.55) 100%),
+          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%),
           url(${helpBg})
         `,
         backgroundSize: 'cover',
@@ -364,7 +364,7 @@ export default function ContactSection() {
         <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3.5, md: 4.5 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, color: colors.gold, mb: 1 }}>
-              <Box sx={{ width: { xs: 22, md: 36 }, height: 1, bgcolor: 'rgba(232,184,74,0.5)' }} />
+              <Box sx={{ width: { xs: 22, md: 36 }, height: 1, bgcolor: 'rgba(255, 179, 0,0.5)' }} />
               <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
               <Typography
                 sx={{
@@ -377,7 +377,7 @@ export default function ContactSection() {
                 Contact
               </Typography>
               <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
-              <Box sx={{ width: { xs: 22, md: 36 }, height: 1, bgcolor: 'rgba(232,184,74,0.5)' }} />
+              <Box sx={{ width: { xs: 22, md: 36 }, height: 1, bgcolor: 'rgba(255, 179, 0,0.5)' }} />
             </Box>
 
             <Typography
@@ -428,7 +428,7 @@ export default function ContactSection() {
                   position: 'absolute',
                   width: 18,
                   height: 18,
-                  borderColor: 'rgba(192, 29, 22, 0.75)',
+                  borderColor: 'rgba(234, 90, 0, 0.75)',
                   borderStyle: 'solid',
                   pointerEvents: 'none',
                 },
@@ -482,9 +482,9 @@ export default function ContactSection() {
               }}
             >
               <Box sx={{ textAlign: 'center' }}>
-                <Box sx={{ width: 1, height: 48, mx: 'auto', bgcolor: 'rgba(232,184,74,0.35)', mb: 1 }} />
+                <Box sx={{ width: 1, height: 48, mx: 'auto', bgcolor: 'rgba(255, 179, 0,0.35)', mb: 1 }} />
                 <Box sx={{ fontSize: '0.7rem', lineHeight: 1 }}>◈</Box>
-                <Box sx={{ width: 1, height: 48, mx: 'auto', bgcolor: 'rgba(232,184,74,0.35)', mt: 1 }} />
+                <Box sx={{ width: 1, height: 48, mx: 'auto', bgcolor: 'rgba(255, 179, 0,0.35)', mt: 1 }} />
               </Box>
             </Box>
 
@@ -501,7 +501,7 @@ export default function ContactSection() {
                   left: 10,
                   width: 18,
                   height: 18,
-                  borderColor: 'rgba(192, 29, 22, 0.75)',
+                  borderColor: 'rgba(234, 90, 0, 0.75)',
                   borderStyle: 'solid',
                   borderWidth: '0 0 1.5px 1.5px',
                   borderBottomLeftRadius: 4,
@@ -516,7 +516,7 @@ export default function ContactSection() {
                   right: 10,
                   width: 18,
                   height: 18,
-                  borderColor: 'rgba(192, 29, 22, 0.75)',
+                  borderColor: 'rgba(234, 90, 0, 0.75)',
                   borderStyle: 'solid',
                   borderWidth: '0 1.5px 1.5px 0',
                   borderBottomRightRadius: 4,

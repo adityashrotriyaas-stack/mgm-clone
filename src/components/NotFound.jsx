@@ -16,7 +16,7 @@ export default function NotFound() {
         <Typography sx={{ fontFamily: '"Playfair Display", serif', fontSize: { xs: '5rem', md: '7rem' }, fontWeight: 800, background: gradients.heroText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1, mb: 1 }}>404</Typography>
         <Typography sx={{ fontSize: { xs: '1.1rem', md: '1.3rem' }, fontWeight: 700, color: colors.ivory, mb: 1 }}>Page Not Found</Typography>
         <Typography sx={{ color: colors.muted, fontSize: '0.9rem', mb: 3, maxWidth: 360, mx: 'auto' }}>The page you're looking for doesn't exist or has been moved. Let's get you back to the Garba.</Typography>
-        <Button onClick={() => navigate('/')} startIcon={<ArrowBackRoundedIcon />} sx={{ px: 4, py: 1.4, borderRadius: '50px', background: gradients.primary, color: '#F0E8E0', fontWeight: 700, '&:hover': { background: gradients.primaryReversed } }}>Back to Home</Button>
+        <Button onClick={() => navigate('/')} startIcon={<ArrowBackRoundedIcon />} sx={{ px: 4, py: 1.4, borderRadius: '50px', background: gradients.button, color: '#F0E8E0', fontWeight: 700, '&:hover': { background: gradients.buttonHover } }}>Back to Home</Button>
       </Container>
     </Box>
   )

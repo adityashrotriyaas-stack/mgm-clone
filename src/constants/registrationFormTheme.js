@@ -4,12 +4,12 @@ export const registrationUi = {
   card: colors.bgCard,
   surface: colors.bgSoft,
   surfaceMuted: colors.bgWarm,
-  inputBg: 'rgba(42, 28, 22, 0.92)',
+  inputBg: 'rgba(26, 14, 0, 0.92)',
   text: colors.textLight,
   muted: colors.muted,
   border: colors.border,
   accent: colors.goldDeep,
-  accentSoft: 'rgba(201, 139, 46, 0.14)',
+  accentSoft: 'rgba(255, 184, 0, 0.14)',
 }
 
 export const registrationFieldSx = {
@@ -20,13 +20,13 @@ export const registrationFieldSx = {
     fontSize: '0.95rem',
     transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
     '& fieldset': { borderColor: registrationUi.border },
-    '&:hover fieldset': { borderColor: 'rgba(232, 184, 74, 0.45)' },
+    '&:hover fieldset': { borderColor: 'rgba(255, 179, 0, 0.55)' },
     '&.Mui-focused fieldset': {
       borderColor: colors.gold,
-      borderWidth: '1.5px',
+      borderWidth: '2px',
     },
     '&.Mui-focused': {
-      boxShadow: '0 0 0 3px rgba(201, 139, 46, 0.15)',
+      boxShadow: '0 0 0 4px rgba(255, 179, 0, 0.20)',
     },
   },
   '& .MuiInputBase-input': {
@@ -56,7 +56,7 @@ export const registrationCardSx = {
 
 export const registrationSummarySx = {
   bgcolor: registrationUi.accentSoft,
-  border: `1px solid rgba(201, 139, 46, 0.28)`,
+   border: `1px solid rgba(255, 184, 0, 0.28)`,
   borderRadius: '14px',
   p: 1.75,
   mb: 2.5,
@@ -70,15 +70,17 @@ export const registrationBackButtonSx = {
   borderRadius: '12px',
   border: `1.5px solid ${registrationUi.border}`,
   color: registrationUi.text,
-  bgcolor: 'rgba(42, 28, 22, 0.55)',
+  bgcolor: 'rgba(26, 14, 0, 0.55)',
   fontWeight: 600,
   fontSize: '0.9375rem',
   textTransform: 'none',
+  transition: 'all 0.2s ease',
   '& .MuiButton-startIcon': { color: 'inherit' },
   '&.MuiButton-root:hover': {
-    bgcolor: 'rgba(53, 36, 24, 0.92)',
-    borderColor: 'rgba(232, 184, 74, 0.55)',
-    color: registrationUi.text,
+    bgcolor: 'rgba(42, 22, 0, 0.92)',
+    borderColor: 'rgba(255, 179, 0, 0.70)',
+    color: colors.gold,
+    boxShadow: '0 0 0 2px rgba(255, 179, 0, 0.10)',
   },
 }
 
@@ -92,16 +94,17 @@ export const registrationSubmitButtonSx = {
   fontWeight: 800,
   fontSize: '0.9375rem',
   textTransform: 'none',
-  boxShadow: '0 10px 24px rgba(201, 139, 46, 0.28)',
+  boxShadow: '0 10px 24px rgba(255, 179, 0, 0.30)',
+  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
   '&:hover': {
-    background: gradients.primary,
-    filter: 'brightness(1.06)',
-    boxShadow: '0 12px 28px rgba(201, 139, 46, 0.36)',
+    background: gradients.primaryHover,
+    transform: 'scale(1.02)',
+    boxShadow: '0 14px 32px rgba(255, 179, 0, 0.45)',
   },
   '&.Mui-disabled': {
-    bgcolor: 'rgba(80, 60, 50, 0.5)',
-    background: 'rgba(80, 60, 50, 0.5)',
-    color: 'rgba(255, 235, 210, 0.35)',
+    bgcolor: 'rgba(60, 40, 0, 0.5)',
+    background: 'rgba(60, 40, 0, 0.5)',
+    color: 'rgba(255, 248, 240, 0.35)',
     boxShadow: 'none',
   },
 }
@@ -109,7 +112,7 @@ export const registrationSubmitButtonSx = {
 export const personSectionSx = {
   p: { xs: 1.75, sm: 2 },
   borderRadius: '16px',
-  bgcolor: 'rgba(30, 18, 16, 0.55)',
+  bgcolor: 'rgba(20, 10, 0, 0.55)',
   border: `1px solid ${registrationUi.border}`,
   boxShadow: 'inset 0 1px 0 rgba(255, 235, 210, 0.04)',
 }

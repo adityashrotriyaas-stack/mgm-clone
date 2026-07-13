@@ -111,11 +111,11 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
 
   const containerSx = isFestive
     ? {
-        border: preview ? `1.5px solid rgba(201, 139, 46, 0.35)` : `1.5px dashed rgba(201, 139, 46, 0.4)`,
+        border: preview ? `1.5px solid rgba(255, 179, 0, 0.35)` : `1.5px dashed rgba(255, 179, 0, 0.4)`,
         borderRadius: '16px',
         p: 2,
         bgcolor: 'rgba(30, 18, 16, 0.72)',
-        backgroundImage: 'radial-gradient(circle at top right, rgba(201, 139, 46, 0.08), transparent 55%)',
+        backgroundImage: 'radial-gradient(circle at top right, rgba(255, 179, 0, 0.08), transparent 55%)',
       }
     : {
         border: preview ? '1px solid #E5E4E9' : '1px dashed #E5E4E9',
@@ -126,7 +126,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
 
   const titleColor = isFestive ? registrationUi.text : '#000'
   const subtitleColor = isFestive ? registrationUi.muted : '#777'
-  const iconBg = isFestive ? 'rgba(201, 139, 46, 0.18)' : 'rgba(255,148,102,0.12)'
+  const iconBg = isFestive ? 'rgba(255, 179, 0, 0.18)' : 'rgba(255,148,102,0.12)'
   const iconColor = isFestive ? colors.gold : '#ff9466'
 
   return (
@@ -138,7 +138,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
             height: 46,
             borderRadius: '12px',
             bgcolor: iconBg,
-            border: isFestive ? `1px solid rgba(201, 139, 46, 0.25)` : 'none',
+            border: isFestive ? `1px solid rgba(255, 179, 0, 0.25)` : 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -215,12 +215,12 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               onClick={startCamera}
               sx={{
                 ...festiveActionSx,
-                borderColor: isFestive ? 'rgba(232, 184, 74, 0.45)' : '#E5E4E9',
+                borderColor: isFestive ? 'rgba(255, 179, 0, 0.45)' : '#E5E4E9',
                 color: isFestive ? registrationUi.text : '#555',
                 bgcolor: isFestive ? 'rgba(42, 28, 22, 0.5)' : 'transparent',
                 '&:hover': {
                   borderColor: colors.gold,
-                  bgcolor: isFestive ? 'rgba(201, 139, 46, 0.12)' : 'rgba(0,0,0,0.04)',
+                  bgcolor: isFestive ? 'rgba(255, 179, 0, 0.12)' : 'rgba(0,0,0,0.04)',
                 },
               }}
             >
@@ -233,12 +233,12 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               onClick={() => fileInputRef.current?.click()}
               sx={{
                 ...festiveActionSx,
-                borderColor: isFestive ? 'rgba(232, 184, 74, 0.45)' : '#E5E4E9',
+                borderColor: isFestive ? 'rgba(255, 179, 0, 0.45)' : '#E5E4E9',
                 color: isFestive ? registrationUi.text : '#555',
                 bgcolor: isFestive ? 'rgba(42, 28, 22, 0.5)' : 'transparent',
                 '&:hover': {
                   borderColor: colors.gold,
-                  bgcolor: isFestive ? 'rgba(201, 139, 46, 0.12)' : 'rgba(0,0,0,0.04)',
+                  bgcolor: isFestive ? 'rgba(255, 179, 0, 0.12)' : 'rgba(0,0,0,0.04)',
                 },
               }}
             >
@@ -251,7 +251,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
           <Box
             sx={{
               borderRadius: '14px',
-              border: isFestive ? `1px dashed rgba(232, 184, 74, 0.28)` : '1px dashed #ddd',
+              border: isFestive ? `1px dashed rgba(255, 179, 0, 0.28)` : '1px dashed #ddd',
               bgcolor: isFestive ? 'rgba(0,0,0,0.18)' : '#fff',
               py: 2.5,
               px: 2,
@@ -274,7 +274,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
                 flex: 1.2,
                 background: isFestive ? gradients.primary : '#1F1F1F',
                 color: isFestive ? colors.night : '#fff',
-                boxShadow: isFestive ? '0 8px 20px rgba(201, 139, 46, 0.25)' : 'none',
+                boxShadow: isFestive ? '0 8px 20px rgba(255, 179, 0, 0.25)' : 'none',
                 '&:hover': {
                   background: isFestive ? gradients.primary : '#333',
                   filter: isFestive ? 'brightness(1.05)' : 'none',
@@ -291,12 +291,12 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               sx={{
                 ...festiveActionSx,
                 flex: 1,
-                borderColor: isFestive ? 'rgba(232, 184, 74, 0.5)' : '#E5E4E9',
+                borderColor: isFestive ? 'rgba(255, 179, 0, 0.5)' : '#E5E4E9',
                 color: isFestive ? registrationUi.text : '#555',
                 bgcolor: isFestive ? 'rgba(42, 28, 22, 0.45)' : 'transparent',
                 '&:hover': {
                   borderColor: colors.gold,
-                  bgcolor: isFestive ? 'rgba(201, 139, 46, 0.1)' : 'rgba(0,0,0,0.04)',
+                  bgcolor: isFestive ? 'rgba(255, 179, 0, 0.1)' : 'rgba(0,0,0,0.04)',
                 },
               }}
             >
@@ -338,7 +338,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
         </DialogTitle>
         <DialogContent sx={{ pt: 0 }}>
           {cameraError ? (
-            <Box sx={{ bgcolor: 'rgba(168, 50, 72, 0.12)', border: '1px solid rgba(168, 50, 72, 0.3)', borderRadius: '12px', p: 2 }}>
+            <Box sx={{ bgcolor: 'rgba(234, 90, 0, 0.12)', border: '1px solid rgba(234, 90, 0, 0.3)', borderRadius: '12px', p: 2 }}>
               <Typography sx={{ fontSize: '0.88rem', color: colors.textLight, lineHeight: 1.6 }}>
                 {cameraError}
               </Typography>
@@ -366,7 +366,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
                 sx={{
                   position: 'absolute',
                   inset: '12%',
-                  border: '2px dashed rgba(232, 184, 74, 0.65)',
+                  border: '2px dashed rgba(255, 179, 0, 0.65)',
                   borderRadius: '50%',
                   pointerEvents: 'none',
                 }}
@@ -401,14 +401,15 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               disabled={isStartingCamera}
               variant="contained"
               sx={{
-                background: gradients.primary,
+                background: gradients.button,
                 color: colors.textLight,
                 textTransform: 'none',
                 minHeight: 44,
                 px: 3,
                 fontWeight: 800,
                 borderRadius: '10px',
-                '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                '&:hover': { background: gradients.buttonHover, transform: 'scale(1.02)', boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)' },
               }}
             >
               Capture Photo

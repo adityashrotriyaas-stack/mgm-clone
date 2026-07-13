@@ -10,7 +10,7 @@ import { colors } from '../constants/colors'
 import { registrationBackButtonSx } from '../constants/registrationFormTheme'
 import { buildDefaultSlotSelection, buildSlotSelection, formatShowTimeRange } from '../utils/schedule'
 
-const accentFestive = '#E05040'
+const accentFestive = '#EA5A00'
 const ui = {
   card: colors.bgCard,
   surfaceMuted: colors.bgWarm,
@@ -101,12 +101,12 @@ function SelectableCard({ selected, onClick, disabled, children, sx = {} }) {
         py: 1.35,
         borderRadius: '12px',
         border: selected ? `2px solid ${accentFestive}` : `1px solid ${ui.border}`,
-        bgcolor: selected ? 'rgba(201, 139, 46, 0.12)' : ui.card,
+        bgcolor: selected ? 'rgba(255, 179, 0, 0.12)' : ui.card,
         color: ui.text,
         textTransform: 'none',
         boxShadow: selected ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.08)',
         '&:hover': {
-          bgcolor: selected ? 'rgba(201, 139, 46, 0.16)' : ui.surfaceMuted,
+          bgcolor: selected ? 'rgba(255, 179, 0, 0.18)' : ui.surfaceMuted,
         },
         ...sx,
       }}
@@ -281,12 +281,13 @@ export default function ScheduleStep({
             py: 1.5,
             minHeight: 48,
             borderRadius: '8px',
-            background: accentFestive,
+            background: gradients.button,
             color: '#fff',
             fontWeight: 700,
             fontSize: '0.9375rem',
             textTransform: 'none',
-            '&:hover': { background: '#b07a28' },
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            '&:hover': { transform: 'scale(1.02)', background: gradients.buttonHover, boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)' },
             '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
           }}
         >

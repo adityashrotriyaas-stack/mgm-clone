@@ -3,9 +3,9 @@ import Container from '@mui/material/Container'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 
 const section = {
-  bg: '#180A0F',
-  bgSoft: '#2A1118',
-  chipBorder: 'rgba(232,176,74,.25)',
+  bg: '#1A0800',
+  bgSoft: '#3A1C00',
+  chipBorder: 'rgba(255,179,0,.25)',
 }
 
 export default function UpcomingNights() {
@@ -18,8 +18,8 @@ export default function UpcomingNights() {
         py: { xs: 5, md: 7 },
         bgcolor: section.bg,
         backgroundImage: `
-          radial-gradient(circle at 72% 34%, rgba(232,176,74,0.16), transparent 24%),
-          radial-gradient(circle at 24% 72%, rgba(168,50,72,0.14), transparent 22%),
+          radial-gradient(circle at 72% 34%, rgba(255,179,0,0.16), transparent 24%),
+          radial-gradient(circle at 24% 72%, rgba(234,90,0,0.14), transparent 22%),
           linear-gradient(180deg, ${section.bg} 0%, ${section.bgSoft} 100%),
           ${patternDiya},
           ${patternMandala},

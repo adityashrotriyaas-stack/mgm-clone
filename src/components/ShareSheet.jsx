@@ -34,7 +34,7 @@ export default function ShareSheet({ open, onClose, title, url }) {
       onClick={onClose}
       sx={{
         position: 'fixed', inset: 0, zIndex: 1400,
-        bgcolor: 'rgba(44,31,16,0.5)',
+        bgcolor: 'rgba(26, 14, 0,0.5)',
         backdropFilter: 'blur(4px)',
         display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
         animation: 'fadeSlideUp 0.2s ease',
@@ -70,7 +70,7 @@ export default function ShareSheet({ open, onClose, title, url }) {
             <Typography sx={{ fontSize: '0.7rem', color: colors.muted }}>Facebook</Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }} onClick={handleCopy}>
-            <Box sx={{ width: 56, height: 56, borderRadius: '16px', background: gradients.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.08)' } }}>
+            <Box sx={{ width: 56, height: 56, borderRadius: '16px', background: gradients.button, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.08)' } }}>
               <ContentCopyRoundedIcon sx={{ color: '#fff', fontSize: '1.3rem' }} />
             </Box>
             <Typography sx={{ fontSize: '0.7rem', color: colors.muted }}>Copy Link</Typography>

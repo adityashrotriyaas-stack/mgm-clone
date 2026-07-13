@@ -210,10 +210,10 @@ function PassTypeOption({ item, selected, onSelect }) {
     cursor: 'pointer',
     p: 2,
     borderRadius: '16px',
-    bgcolor: selected ? 'rgba(192, 29, 22, 0.2)' : 'rgba(18, 12, 10, 0.65)',
+    bgcolor: selected ? 'rgba(234, 90, 0, 0.2)' : 'rgba(26, 14, 0, 0.65)',
     border: selected ? `2px solid ${colors.gold}` : `1px solid ${colors.border}`,
     transition: 'all 0.2s',
-    '&:hover': { borderColor: colors.gold, bgcolor: 'rgba(192, 29, 22, 0.12)' },
+    '&:hover': { borderColor: colors.gold, bgcolor: 'rgba(234, 90, 0, 0.12)' },
   }
   return (
     <Box sx={sx} onClick={onSelect}>
@@ -294,7 +294,7 @@ From the opening aarti to the late-night Mandli Garba session, guests can enjoy 
   }
 }
 
-const accentFestive = '#E05040'
+const accentFestive = '#EA5A00'
 const ui = {
   card: colors.bgCard,
   surface: colors.bgSoft,
@@ -305,9 +305,9 @@ const ui = {
 }
 
 const categoryMeta = {
-  male: { Icon: ManOutlinedIcon, bg: '#E8F1FF', color: '#3B82F6' },
-  female: { Icon: WomanOutlinedIcon, bg: '#FEECEC', color: '#EF4444' },
-  couple: { Icon: PeopleOutlinedIcon, bg: '#E8F8EE', color: '#22C55E' },
+  male: { Icon: ManOutlinedIcon, bg: 'rgba(255,179,0,0.12)', color: '#FFB300' },
+  female: { Icon: WomanOutlinedIcon, bg: 'rgba(234,90,0,0.12)', color: '#EA5A00' },
+  couple: { Icon: PeopleOutlinedIcon, bg: 'rgba(255,179,0,0.08)', color: '#C88F00' },
 }
 
 function RegistrationStepPills({ activeStep, stepLabels }) {
@@ -370,7 +370,7 @@ function SelectedPassBanner({ title }) {
       sx={{
         p: 2,
         borderRadius: '16px',
-        background: 'linear-gradient(135deg, rgba(192, 29, 22, 0.25), rgba(192, 29, 22, 0.08))',
+        background: 'linear-gradient(135deg, rgba(234, 90, 0, 0.25), rgba(234, 90, 0, 0.08))',
         border: `1px solid ${colors.gold}`,
         textAlign: 'center',
       }}
@@ -478,9 +478,9 @@ const selectFieldSx = {
   color: registrationUi.text,
   borderRadius: '12px',
   '& .MuiOutlinedInput-notchedOutline': { borderColor: registrationUi.border },
-  '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(232, 184, 74, 0.45)' },
+  '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255, 179, 0, 0.45)' },
   '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.gold, borderWidth: '1.5px' },
-  '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(201, 139, 46, 0.15)' },
+  '&.Mui-focused': { boxShadow: '0 0 0 3px rgba(255, 179, 0, 0.15)' },
   '& .MuiSelect-icon': { color: registrationUi.muted },
 }
 
@@ -553,14 +553,14 @@ function EventLayoutCard({ zones = [] }) {
             borderRadius: '12px',
             overflow: 'hidden',
             minHeight: 190,
-            background: 'linear-gradient(180deg, #F6A7C1 0 10%, #D7ED9A 10% 82%, #4A4F65 82% 100%)',
-            border: '1px solid rgba(0,0,0,0.08)',
+            background: 'linear-gradient(180deg, #FFB300 0 10%, #7A4200 10% 82%, #3A1C00 82% 100%)',
+            border: `1px solid ${colors.border}`,
           }}
         >
-          <Box sx={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', fontWeight: 800, color: '#4B2D18', fontSize: '0.92rem' }}>
+          <Box sx={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', fontWeight: 800, color: '#FFF8F0', fontSize: '0.92rem' }}>
             Main Stage
           </Box>
-          <Box sx={{ position: 'absolute', top: '28%', left: '50%', transform: 'translateX(-50%)', px: 1.5, py: 0.75, borderRadius: '10px', bgcolor: 'rgba(255,255,255,0.68)', color: '#4B2D18', fontWeight: 700, fontSize: '0.82rem' }}>
+          <Box sx={{ position: 'absolute', top: '28%', left: '50%', transform: 'translateX(-50%)', px: 1.5, py: 0.75, borderRadius: '10px', bgcolor: 'rgba(255,248,240,0.85)', color: '#EA5A00', fontWeight: 700, fontSize: '0.82rem' }}>
             Fanpit Zone
           </Box>
           <Box sx={{ position: 'absolute', left: 12, bottom: 18, px: 1.25, py: 0.65, borderRadius: '10px', bgcolor: 'rgba(0,0,0,0.36)', color: '#fff', fontSize: '0.76rem', fontWeight: 700 }}>
@@ -910,7 +910,7 @@ export default function EventDetail() {
                         onFieldChange={makeFieldUpdater(setMaleForm)}
                         onPhotoChange={makePhotoUpdater(setMaleForm)}
                       />
-                      <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
+                      <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
                       <PersonFields
                         title="Female Details"
                         person={femaleForm}
@@ -928,7 +928,7 @@ export default function EventDetail() {
                       />
                       {ticketCount === '2' && (
                         <>
-                          <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
+                          <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
                           <PersonFields
                             title="Ticket 2 Details"
                             person={secondPersonForm}
@@ -962,13 +962,13 @@ export default function EventDetail() {
                           checked={acceptedPolicies}
                           onChange={(e) => setAcceptedPolicies(e.target.checked)}
                           sx={{
-                            color: 'rgba(232, 184, 74, 0.45)',
+                            color: 'rgba(255, 179, 0, 0.45)',
                             pt: 0.25,
                             '&.Mui-checked': {
                               color: colors.gold,
                             },
                             '&.Mui-checked .MuiSvgIcon-root': {
-                              filter: 'drop-shadow(0 0 6px rgba(232, 184, 74, 0.45))',
+                              filter: 'drop-shadow(0 0 6px rgba(255, 179, 0, 0.45))',
                             },
                           }}
                         />
