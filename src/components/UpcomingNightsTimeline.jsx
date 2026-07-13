@@ -203,17 +203,6 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
       <Box sx={{ position: 'relative', zIndex: 1, height: '100%', p: 2, display: 'flex', flexDirection: 'column' }}>
         <Typography
           sx={{
-            fontSize: '0.68rem',
-            textTransform: 'uppercase',
-            letterSpacing: '1.6px',
-            fontWeight: 700,
-            color: 'rgba(255, 220, 160, 0.9)',
-          }}
-        >
-          {night.label}
-        </Typography>
-        <Typography
-          sx={{
             mt: 0.5,
             fontFamily: '"Playfair Display", serif',
             fontSize: { xs: '1.05rem', md: '1.18rem' },
@@ -254,12 +243,6 @@ color: '#F0E8E0',
           >
             <PlayArrowRoundedIcon sx={{ fontSize: '1.9rem' }} />
           </IconButton>
-        </Box>
-
-        <Box>
-          <Typography sx={{ fontSize: '0.78rem', fontWeight: 600, color: 'rgba(255, 248, 240, 0.85)' }}>
-            {night.date}
-          </Typography>
         </Box>
       </Box>
     </Box>

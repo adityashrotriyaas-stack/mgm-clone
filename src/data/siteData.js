@@ -80,22 +80,22 @@ export const nightTracker = [
 ]
 
 export const navratriNights = [
-  { id: 1, label: 'Night 1', date: 'Oct 10, Fri', theme: 'MGM' },
-  { id: 2, label: 'Night 2', date: 'Oct 11, Sat', theme: 'MGM' },
-  { id: 3, label: 'Night 3', date: 'Oct 12, Sun', theme: 'MGM' },
-  { id: 4, label: 'Night 4', date: 'Oct 13, Mon', theme: 'MGM' },
-  { id: 5, label: 'Night 5', date: 'Oct 14, Tue', theme: 'MGM' },
-  { id: 6, label: 'Night 6', date: 'Oct 15, Wed', theme: 'MGM' },
-  { id: 7, label: 'Night 7', date: 'Oct 16, Thu', theme: 'MGM' },
-  { id: 8, label: 'Night 8', date: 'Oct 17, Fri', theme: 'MGM' },
-  { id: 9, label: 'Night 9', date: 'Oct 18, Sat', theme: 'MGM' },
-  { id: 10, label: 'Night 10', date: 'Oct 19, Mon', theme: 'MGM' },
+  { id: 1, label: 'Night 1', date: 'Oct 10, Fri', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 2, label: 'Night 2', date: 'Oct 11, Sat', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 3, label: 'Night 3', date: 'Oct 12, Sun', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 4, label: 'Night 4', date: 'Oct 13, Mon', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 5, label: 'Night 5', date: 'Oct 14, Tue', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 6, label: 'Night 6', date: 'Oct 15, Wed', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 7, label: 'Night 7', date: 'Oct 16, Thu', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 8, label: 'Night 8', date: 'Oct 17, Fri', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 9, label: 'Night 9', date: 'Oct 18, Sat', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 10, label: 'Night 10', date: 'Oct 19, Mon', theme: 'MGM CULTURAL NAVRATRI' },
 ]
 
 export const upcomingEvents = [
   {
     id: 1,
-    title: 'Rangeeli Raat',
+    title: 'MGM Cultural Navratri',
     badge: 'Selling Fast',
     night: 'Night 3',
     date: 'Oct 13, Tue',
