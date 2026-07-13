@@ -47,18 +47,7 @@ export const mapFormFields = (fields) => {
 export const COMMON_EVENT_QUERY = '?common_event_link=true'
 
 /** Local night id (1–10) → Wowsly event_slot_id */
-export let NIGHT_SLOT_MAP = {
-  1: 715,
-  2: 716,
-  3: 717,
-  4: 718,
-  5: 719,
-  6: 720,
-  7: 721,
-  8: 722,
-  9: 723,
-  10: 724,
-}
+export let NIGHT_SLOT_MAP = {}
 
 /** Dynamically populates NIGHT_SLOT_MAP from schedule public response */
 export function updateNightSlotMap(scheduleData) {

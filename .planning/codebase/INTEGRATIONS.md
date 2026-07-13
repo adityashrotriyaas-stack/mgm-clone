@@ -20,17 +20,9 @@
 - **Ticket Mapping:**
   - Daily Pass: `263` (SINGLE DAY TICKET)
   - Seasonal Pass: `265` (Season Pass)
-- **Daily Night to Wowsly slot IDs (715 - 724):**
-  - Night 1: `715` (Oct 10)
-  - Night 2: `716` (Oct 11)
-  - Night 3: `717` (Oct 12)
-  - Night 4: `718` (Oct 13)
-  - Night 5: `719` (Oct 14)
-  - Night 6: `720` (Oct 15)
-  - Night 7: `721` (Oct 16)
-  - Night 8: `722` (Oct 17)
-  - Night 9: `723` (Oct 18)
-  - Night 10: `724` (Oct 19)
+- **Daily Night to Wowsly slot IDs (Dynamic Lookup):**
+  - **Dynamic Population:** Mapped dynamically at runtime by parsing the public schedule response (`GET /events/163/schedule/public`) and correlating chronological date IDs with slot IDs via `updateNightSlotMap()`.
+  - **Static Fallback:** If the API fails, it falls back to hardcoded slots defined inside the schedule utility fallback mock data structure.
 - **Endpoints Used:**
   - `POST /events/163/commonEvent/registrationform/answer?common_event_link=true` (Submit Registration Form)
   - `GET /events/163/eventticket?include_hidden_tickets=0&has_split_share=0&common_event_link=true&uuid={uuid}` (Retrieve Tickets)
