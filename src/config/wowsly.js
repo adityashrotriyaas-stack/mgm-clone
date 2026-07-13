@@ -47,7 +47,7 @@ export const mapFormFields = (fields) => {
 export const COMMON_EVENT_QUERY = '?common_event_link=true'
 
 /** Local night id (1–10) → Wowsly event_slot_id */
-export const NIGHT_SLOT_MAP = {
+export let NIGHT_SLOT_MAP = {
   1: 715,
   2: 716,
   3: 717,
@@ -58,6 +58,28 @@ export const NIGHT_SLOT_MAP = {
   8: 722,
   9: 723,
   10: 724,
+}
+
+/** Dynamically populates NIGHT_SLOT_MAP from schedule public response */
+export function updateNightSlotMap(scheduleData) {
+  const data = scheduleData?.data ?? scheduleData ?? {}
+  const dates = Array.isArray(data.dates) ? [...data.dates].sort((a, b) => String(a.date || '').localeCompare(String(b.date || ''))) : []
+  const slots = Array.isArray(data.slots) ? data.slots : []
+
+  if (dates.length === 0 || slots.length === 0) return
+
+  const newMap = {}
+  dates.forEach((dateObj, index) => {
+    const nightNumber = index + 1
+    const matchingSlot = slots.find((s) => s.event_date_id === dateObj.id || s.date_id === dateObj.id)
+    if (matchingSlot) {
+      newMap[nightNumber] = matchingSlot.id
+    }
+  })
+
+  if (Object.keys(newMap).length > 0) {
+    NIGHT_SLOT_MAP = { ...NIGHT_SLOT_MAP, ...newMap }
+  }
 }
 
 export function isWowslyConfigured() {

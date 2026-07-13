@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { isWowslyConfigured } from '../config/wowsly'
+import { isWowslyConfigured, updateNightSlotMap } from '../config/wowsly'
 import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
@@ -702,6 +702,9 @@ export default function EventDetail() {
       setScheduleError('')
       try {
         const response = isWowslyConfigured() ? await getPublicSchedule() : null
+        if (response) {
+          updateNightSlotMap(response)
+        }
         if (!cancelled) {
           setSchedule(normalizeScheduleResponse(response || buildFallbackSchedule()))
         }
