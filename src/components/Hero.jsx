@@ -18,99 +18,59 @@ const iconMap = {
   food: RestaurantOutlinedIcon,
 }
 
-const barTheme = {
-  bg: 'rgba(12, 12, 12, 0.72)',
-  iconBg: 'rgba(26, 26, 26, 0.85)',
-  title: '#F5EDE5',
-  subtitle: 'rgba(255, 255, 255, 0.72)',
-  icon: '#E05040',
-  border: 'rgba(192, 29, 22, 0.22)',
-}
-
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
-function HeroFeatureBar() {
+function HeroFeatureCard({ icon, title, subtitle, index }) {
+  const Icon = iconMap[icon]
   return (
-    <Box
+    <Stack
+      direction="row"
+      spacing={1.25}
+      alignItems="center"
       sx={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 2,
-        px: { xs: 1.25, sm: 2, md: 3 },
-        py: { xs: 1.15, sm: 1.35, md: 1.6 },
-        bgcolor: barTheme.bg,
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderTop: `1px solid ${barTheme.border}`,
+        opacity: 0,
+        animation: `mgm-hero-bar-in 0.7s ${EASE} ${0.35 + index * 0.1}s forwards`,
       }}
     >
       <Box
         sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-          gap: { xs: 1.25, sm: 1.5, md: 2 },
+          width: { xs: 38, sm: 42 },
+          height: { xs: 38, sm: 42 },
+          borderRadius: '12px',
+          bgcolor: 'rgba(26, 26, 26, 0.85)',
+          border: '1px solid rgba(192, 29, 22, 0.22)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
         }}
       >
-        {heroFeatures.map(({ icon, title, subtitle }, index) => {
-          const Icon = iconMap[icon]
-
-          return (
-            <Stack
-              key={title}
-              direction="row"
-              alignItems="center"
-              spacing={1.25}
-              sx={{
-                minWidth: 0,
-                opacity: 0,
-                animation: `mgm-hero-bar-in 0.7s ${EASE} ${0.35 + index * 0.1}s forwards`,
-              }}
-            >
-              <Box
-                sx={{
-                  width: { xs: 38, sm: 42, md: 46 },
-                  height: { xs: 38, sm: 42, md: 46 },
-                  borderRadius: '12px',
-                  bgcolor: barTheme.iconBg,
-                  border: `1px solid ${barTheme.border}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: barTheme.icon }} />
-              </Box>
-              <Box sx={{ minWidth: 0 }}>
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: { xs: '0.78rem', sm: '0.85rem', md: '0.92rem' },
-                    color: barTheme.title,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {title}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: { xs: '0.68rem', sm: '0.72rem', md: '0.78rem' },
-                    color: barTheme.subtitle,
-                    lineHeight: 1.35,
-                    mt: 0.15,
-                  }}
-                >
-                  {subtitle}
-                </Typography>
-              </Box>
-            </Stack>
-          )
-        })}
+        <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: '#E05040' }} />
       </Box>
-    </Box>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          sx={{
+            fontWeight: 700,
+            fontSize: { xs: '0.78rem', sm: '0.85rem' },
+            color: '#F5EDE5',
+            lineHeight: 1.2,
+          }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: { xs: '0.68rem', sm: '0.72rem' },
+            color: 'rgba(255, 255, 255, 0.72)',
+            lineHeight: 1.35,
+            mt: 0.15,
+          }}
+        >
+          {subtitle}
+        </Typography>
+      </Box>
+    </Stack>
   )
 }
 
@@ -149,7 +109,7 @@ export default function Hero() {
             overflow: 'hidden',
             border: '1px solid rgba(232, 184, 74, 0.22)',
             boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
-            aspectRatio: { xs: '9 / 14', sm: '16 / 10', lg: '16 / 7.4' },
+            aspectRatio: { xs: '16 / 9', sm: '16 / 10', lg: '16 / 7.4' },
             bgcolor: colors.nightMid,
             opacity: 0,
             animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
@@ -164,7 +124,7 @@ export default function Hero() {
               height: '100%',
               objectFit: 'contain',
               display: 'block',
-              backgroundColor: colors.nightMid,
+              bgcolor: colors.nightMid,
             }}
           />
           <Box
@@ -177,7 +137,20 @@ export default function Hero() {
               zIndex: 1,
             }}
           />
-          <HeroFeatureBar />
+        </Box>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+            gap: { xs: 1.25, sm: 1.5, md: 2 },
+            mt: { xs: 0, md: 2 },
+            px: { xs: 0.5, sm: 0 },
+          }}
+        >
+          {heroFeatures.map((item, index) => (
+            <HeroFeatureCard key={item.title} {...item} index={index} />
+          ))}
         </Box>
       </Container>
     </Box>
