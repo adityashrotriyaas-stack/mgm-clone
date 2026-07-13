@@ -84,22 +84,52 @@ export function buildFacilityNameMap(ticketsResponse) {
   return map
 }
 
-export async function submitRegistration({ name, countryCode, mobile, email }, questionMap = QUESTION_MAP) {
+async function getBlobFromUrl(url) {
+  if (!url) return null
+  if (!url.startsWith('blob:')) return url
+  try {
+    const response = await fetch(url)
+    return await response.blob()
+  } catch (err) {
+    console.error('Failed to get blob from URL:', err)
+    return null
+  }
+}
+
+export async function submitRegistration({ name, countryCode, mobile, email, aadhaar, photo }, questionMap = QUESTION_MAP) {
   const formData = new FormData()
   formData.append('form_id', String(FORM_ID))
   formData.append('dialing_code', DEFAULT_DIALING_CODE)
   formData.append('mobile', mobile)
 
   const answers = [
-    { question_id: questionMap.name, answer: name },
-    { question_id: questionMap.countryCode, answer: countryCode || DEFAULT_DIALING_CODE },
-    { question_id: questionMap.mobile, answer: mobile },
-    { question_id: questionMap.email, answer: email },
+    { question_id: questionMap.NAME, answer: name },
+    { question_id: questionMap.COUNTRY_CODE, answer: countryCode || DEFAULT_DIALING_CODE },
+    { question_id: questionMap.MOBILE, answer: mobile },
+    { question_id: questionMap.EMAIL, answer: email },
   ]
+
+  if (aadhaar && questionMap.AADHAAR) {
+    answers.push({ question_id: questionMap.AADHAAR, answer: aadhaar })
+  }
+
+  if (photo && questionMap.PHOTO) {
+    let photoBlob = photo
+    if (typeof photo === 'string' && photo.startsWith('blob:')) {
+      photoBlob = await getBlobFromUrl(photo)
+    }
+    if (photoBlob) {
+      answers.push({ question_id: questionMap.PHOTO, answer: photoBlob, isFile: true })
+    }
+  }
 
   answers.forEach((qa, index) => {
     formData.append(`QAs[${index}][question_id]`, qa.question_id)
-    formData.append(`QAs[${index}][answer]`, qa.answer)
+    if (qa.isFile) {
+      formData.append(`QAs[${index}][answer]`, qa.answer, 'selfie.jpg')
+    } else {
+      formData.append(`QAs[${index}][answer]`, qa.answer)
+    }
   })
 
   return wowslyFetch(

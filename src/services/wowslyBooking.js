@@ -49,6 +49,8 @@ export function extractGuestFromRegistration(registration) {
       mobile: registration.male.mobile,
       email: registration.male.email,
       countryCode: '91',
+      aadhaar: registration.male.aadhaar,
+      photo: registration.male.selfiePreview,
     }
   }
 
@@ -57,6 +59,8 @@ export function extractGuestFromRegistration(registration) {
     mobile: registration.mobile,
     email: registration.email,
     countryCode: '91',
+    aadhaar: registration.aadhaar,
+    photo: registration.selfiePreview,
   }
 }
 
@@ -104,10 +108,12 @@ export async function prepareWowslyBooking(registration) {
     const fields = formResponse?.form?.[0]?.fields || formResponse?.data?.form?.[0]?.fields || []
     if (fields.length > 0) {
       const dynamicMap = mapFormFields(fields)
-      if (dynamicMap.NAME) activeQuestionMap.name = String(dynamicMap.NAME)
-      if (dynamicMap.COUNTRY_CODE) activeQuestionMap.countryCode = String(dynamicMap.COUNTRY_CODE)
-      if (dynamicMap.MOBILE) activeQuestionMap.mobile = String(dynamicMap.MOBILE)
-      if (dynamicMap.EMAIL) activeQuestionMap.email = String(dynamicMap.EMAIL)
+      if (dynamicMap.NAME) activeQuestionMap.NAME = String(dynamicMap.NAME)
+      if (dynamicMap.COUNTRY_CODE) activeQuestionMap.COUNTRY_CODE = String(dynamicMap.COUNTRY_CODE)
+      if (dynamicMap.MOBILE) activeQuestionMap.MOBILE = String(dynamicMap.MOBILE)
+      if (dynamicMap.EMAIL) activeQuestionMap.EMAIL = String(dynamicMap.EMAIL)
+      if (dynamicMap.AADHAAR) activeQuestionMap.AADHAAR = String(dynamicMap.AADHAAR)
+      if (dynamicMap.PHOTO) activeQuestionMap.PHOTO = String(dynamicMap.PHOTO)
     }
   } catch (err) {
     console.warn('Failed to fetch dynamic form fields, using static fallback:', err)

@@ -9,19 +9,21 @@ export const WOWSLY_REQUIRE_PAYMENT_VERIFY = import.meta.env.VITE_WOWSLY_REQUIRE
 
 export const FORM_ID = 122
 
-export const QUESTION_MAP = {
-  name: '622',
-  countryCode: '623',
-  mobile: '624',
-  email: '625',
-}
+// export const QUESTION_MAP = {
+//   name: '622',
+//   countryCode: '623',
+//   mobile: '624',
+//   email: '625',
+// }
 
 /** Semantic keys mapped to the exact question strings in the API */
-export const FORM_LABELS = {
+export const QUESTION_MAP = {
   NAME: 'Name',
   COUNTRY_CODE: 'Country Code',
   MOBILE: 'Mobile Number',
   EMAIL: 'Email',
+  AADHAAR: 'Aadhaar Card Number',
+  PHOTO: 'Pass Photo',
 }
 
 /** Maps API fields array to semantic map of IDs */
@@ -29,7 +31,7 @@ export const mapFormFields = (fields) => {
   if (!fields || !Array.isArray(fields)) return {}
 
   const map = {}
-  Object.entries(FORM_LABELS).forEach(([key, label]) => {
+  Object.entries(QUESTION_MAP).forEach(([key, label]) => {
     const field = fields.find((f) => {
       const q = String(f.question || '').trim().toLowerCase()
       const l = String(label || '').trim().toLowerCase()
