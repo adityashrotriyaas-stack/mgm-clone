@@ -20,6 +20,7 @@ import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
 import { contactInfo } from '../data/contactInfo'
 import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
+import logoImg from '../assets/logo.jpeg'
 import wowslyLogo from '../assets/wowsly-logo.png'
 
 const highlightIcons = [
@@ -76,7 +77,7 @@ function ThrowbackHeader() {
           component="span"
           sx={{
             display: 'block',
-            background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+            background: 'linear-gradient(180deg, #E8D5B0 0%, #E05040 55%, #C02822 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
@@ -136,7 +137,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
         borderRadius: '22px',
         overflow: 'hidden',
         flexShrink: 0,
-        border: active ? '1px solid rgba(255, 216, 122, 0.88)' : '1px solid rgba(232, 184, 74, 0.45)',
+        border: active ? '1px solid rgba(192, 29, 22, 0.88)' : '1px solid rgba(232, 184, 74, 0.45)',
         boxShadow: active
           ? '0 0 0 1px rgba(232, 184, 74, 0.16), 0 18px 44px rgba(0,0,0,0.34), 0 0 24px rgba(232,184,74,0.18)'
           : absOffset === 1
@@ -168,7 +169,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
               content: '""',
               position: 'absolute',
               inset: 0,
-              boxShadow: 'inset 0 0 0 1px rgba(255, 216, 122, 0.25)',
+              boxShadow: 'inset 0 0 0 1px rgba(192, 29, 22, 0.25)',
               borderRadius: '22px',
             }
           : undefined,
@@ -188,8 +189,8 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
             py: 0.7,
             borderRadius: '999px',
             bgcolor: 'rgba(36, 21, 16, 0.86)',
-            border: '1px solid rgba(255, 216, 122, 0.18)',
-            color: '#FFD76A',
+            border: '1px solid rgba(192, 29, 22, 0.18)',
+color: '#F0E8E0',
             fontSize: '0.72rem',
             fontWeight: 700,
             letterSpacing: '0.4px',
@@ -209,7 +210,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
           width: active ? 58 : 52,
           height: active ? 58 : 52,
           borderRadius: '50%',
-          border: '1px solid rgba(255, 216, 122, 0.72)',
+          border: '1px solid rgba(192, 29, 22, 0.72)',
           bgcolor: 'rgba(28, 12, 16, 0.38)',
           backdropFilter: 'blur(6px)',
           display: 'flex',
@@ -279,7 +280,7 @@ function MemoryLightbox({ item, onClose }) {
           maxWidth: 760,
           borderRadius: { xs: '18px', md: '22px' },
           overflow: 'hidden',
-          border: '1px solid rgba(255, 216, 122, 0.42)',
+          border: '1px solid rgba(192, 29, 22, 0.42)',
           boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(232, 184, 74, 0.14)',
           bgcolor: '#12070D',
           maxHeight: 'calc(100vh - 24px)',
@@ -297,7 +298,7 @@ function MemoryLightbox({ item, onClose }) {
             width: { xs: 38, md: 42 },
             height: { xs: 38, md: 42 },
             bgcolor: 'rgba(20, 10, 12, 0.82)',
-            border: '1px solid rgba(255, 216, 122, 0.5)',
+            border: '1px solid rgba(192, 29, 22, 0.5)',
             boxShadow: '0 8px 22px rgba(0, 0, 0, 0.3)',
             '&:hover': { bgcolor: 'rgba(20, 10, 12, 0.95)' },
           }}
@@ -497,7 +498,7 @@ export default function PastNights() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                bgcolor: '#FFD76A',
+                bgcolor: '#E8D5B0',
                 boxShadow: '0 0 8px rgba(255, 215, 106, 0.95), 0 0 18px rgba(255, 176, 74, 0.45)',
               }}
             />
@@ -532,7 +533,7 @@ export default function PastNights() {
               justifySelf: 'center',
               transition: 'transform 0.25s ease, border-color 0.25s ease',
               '&:hover': {
-                borderColor: 'rgba(255, 216, 122, 0.9)',
+                borderColor: 'rgba(192, 29, 22, 0.9)',
                 transform: 'translateX(-2px)',
               },
             }}
@@ -593,7 +594,7 @@ export default function PastNights() {
               justifySelf: 'center',
               transition: 'transform 0.25s ease, border-color 0.25s ease',
               '&:hover': {
-                borderColor: 'rgba(255, 216, 122, 0.9)',
+                borderColor: 'rgba(192, 29, 22, 0.9)',
                 transform: 'translateX(2px)',
               },
             }}
@@ -655,6 +656,17 @@ export function Footer() {
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Box
+            component="img"
+            src={wowslyLogo}
+            alt="Wowsly"
+            sx={{ width: 64, height: 'auto', display: 'block', mx: 'auto', mb: 0.4 }}
+          />
+          <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>
+            Powered by Wowsly
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: 'grid',
@@ -762,41 +774,14 @@ export function Footer() {
             </Typography>
             <Stack component="ul" spacing={1.1} sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.88rem' }}>
               <Box component="li">{contactInfo.phone}</Box>
+              <Box component="li">{contactInfo.phone2}</Box>
               <Box component="li">{contactInfo.email}</Box>
               <Box component="li">Organiser Login</Box>
             </Stack>
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            mt: 3.75,
-            pt: 2.25,
-            borderTop: '1px solid rgba(255,255,255,0.06)',
-            textAlign: 'center',
-          }}
-        >
-          <Box
-            component="img"
-            src={wowslyLogo}
-            alt="Wowsly"
-            sx={{
-              width: { xs: 82, md: 94 },
-              height: 'auto',
-              display: 'block',
-              mx: 'auto',
-              mb: 0.9,
-            }}
-          />
-          <Typography
-            sx={{
-              fontSize: '0.78rem',
-              opacity: 0.72,
-            }}
-          >
-            Powered by Wowsly
-          </Typography>
-        </Box>
+
       </Container>
     </FestiveSection>
   )

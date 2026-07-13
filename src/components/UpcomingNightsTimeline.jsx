@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded'
+import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
+import NightsStayOutlinedIcon from '@mui/icons-material/NightsStayOutlined'
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
 import { useNavigate } from 'react-router-dom'
 import dandiyaDeco from '../assets/dandiya-deco.png'
-import { colors, gradients } from '../constants/colors'
+import { colors } from '../constants/colors'
 import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
 
@@ -43,6 +45,13 @@ const cardDetails = [
 
 const TOTAL = navratriNights.length
 const VISIBLE_RANGE = 3
+
+const features = [
+  { icon: CelebrationOutlinedIcon, title: 'Amit Dhorda & Team', subtitle: 'Authentic live Garba every evening' },
+  { icon: NightsStayOutlinedIcon, title: '10 Grand Days', subtitle: 'A unique cultural experience each night' },
+  { icon: VerifiedUserOutlinedIcon, title: 'Renowned Artists', subtitle: 'A different featured performer daily' },
+  { icon: WorkspacePremiumOutlinedIcon, title: 'Mandli Garba', subtitle: 'Traditional celebration late into the night' },
+]
 
 function getCircularOffset(index, activeIndex, total) {
   let offset = index - activeIndex
@@ -229,7 +238,7 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
               border: '2px solid rgba(255, 190, 90, 0.85)',
               bgcolor: 'rgba(12, 8, 20, 0.5)',
               backdropFilter: 'blur(8px)',
-              color: '#FFD98A',
+color: '#F0E8E0',
               boxShadow: '0 0 28px rgba(255, 170, 60, 0.3)',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               animation: isActive ? 'playPulse 2s ease-in-out infinite' : 'none',
@@ -393,7 +402,7 @@ export default function UpcomingNightsTimeline() {
   return (
     <Box
       component="section"
-      id="upcoming"
+      id="artists"
       sx={{
         position: 'relative',
         pt: { xs: 2, md: 2.5 },
@@ -451,7 +460,7 @@ export default function UpcomingNightsTimeline() {
                 color: colors.gold,
               }}
             >
-              What&apos;s Next
+              What's On
             </Typography>
             <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
             <Box
@@ -475,17 +484,17 @@ export default function UpcomingNightsTimeline() {
             }}
           >
             <Box component="span" sx={{ color: '#FFFFFF' }}>
-              Upcoming{' '}
+              Artists &{' '}
             </Box>
             <Box
               component="span"
               sx={{
-                background: 'linear-gradient(180deg, #FFD87A 0%, #E8B04A 55%, #C98B2E 100%)',
+                background: 'linear-gradient(180deg, #E8D5B0 0%, #E05040 55%, #C02822 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Nights
+              Performers
             </Box>
           </Typography>
 
@@ -499,7 +508,7 @@ export default function UpcomingNightsTimeline() {
               mb: 1.5,
             }}
           >
-            Each night brings a new theme — book early, ground passes are limited.
+            Swipe through our lineup — each night features a different artist.
           </Typography>
 
           <Box
@@ -696,39 +705,65 @@ export default function UpcomingNightsTimeline() {
           </Box>
 
           <Stack alignItems="center" sx={{ mt: 2.5, width: '100%' }}>
-            <Button
-              onClick={() => navigate(`/event/${activeNight.id}`)}
-              startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.05rem' }} />}
+            <Box
               sx={{
-                background: gradients.primary,
-                color: colors.night,
-                px: { xs: 2.5, md: 3 },
-                py: 1.1,
-                borderRadius: '999px',
-                fontWeight: 700,
-                fontSize: { xs: '0.92rem', md: '0.98rem' },
-                minWidth: 'auto',
-                width: 'fit-content',
-                maxWidth: 'calc(100vw - 48px)',
-                whiteSpace: 'nowrap',
-                alignSelf: 'center',
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+                gap: 1.5,
+                width: '100%',
+                maxWidth: 900,
                 mx: 'auto',
-                display: 'inline-flex',
-                boxShadow: '0 10px 28px rgba(201, 139, 46, 0.3)',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                '& .MuiButton-startIcon': {
-                  mr: 0.7,
-                },
-                '&:hover': {
-                  background: gradients.primary,
-                  filter: 'brightness(1.05)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 14px 32px rgba(201, 139, 46, 0.4)',
-                },
               }}
             >
-              Book {activeNight.theme}
-            </Button>
+              {features.map(({ icon: Icon, title, subtitle }) => (
+                <Box
+                  key={title}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.25,
+                    px: { xs: 1.4, md: 1.6 },
+                    py: { xs: 1.35, md: 1.55 },
+                    borderRadius: '18px',
+                    bgcolor: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(232,176,74,.25)',
+                    backdropFilter: 'blur(8px)',
+                    boxShadow: '0 12px 24px rgba(0,0,0,0.16)',
+                    height: '100%',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 16px 32px rgba(0,0,0,0.22)',
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 38,
+                      height: 38,
+                      minWidth: 38,
+                      borderRadius: '12px',
+                      border: '1px solid rgba(192,29,22,0.28)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                      bgcolor: 'rgba(255,255,255,0.03)',
+                    }}
+                  >
+                    <Icon sx={{ color: '#FFFFFF', fontSize: '1.1rem' }} />
+                  </Box>
+                  <Box sx={{ minWidth: 0 }}>
+                    <Typography sx={{ color: '#FFF8F0', fontWeight: 700, fontSize: '0.9rem', mb: 0.2 }}>
+                      {title}
+                    </Typography>
+                    <Typography sx={{ color: '#D7C5B8', fontSize: '0.75rem', lineHeight: 1.55 }}>
+                      {subtitle}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
           </Stack>
         </RevealBox>
         </Container>

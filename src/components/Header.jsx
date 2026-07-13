@@ -16,6 +16,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
+import logoImg from '../assets/logo.jpeg'
 
 export default function Header() {
   const navigate = useNavigate()
@@ -76,35 +77,24 @@ export default function Header() {
             transition: 'padding 0.28s ease',
           }}
         >
-          <Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none' }}>
-            <Box
-              sx={{
-                width: { xs: 52, md: 60 },
-                height: { xs: 52, md: 60 },
+<Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none', flexShrink: 0 }}>
+            <img
+              src={logoImg}
+              alt="MGM Navratri"
+              width="60"
+              height="60"
+              style={{
+                width: '60px',
+                height: '60px',
+                maxWidth: '60px',
+                maxHeight: '60px',
                 borderRadius: '50%',
+                objectFit: 'cover',
                 border: '2px solid #F7C76B',
-                background: 'radial-gradient(circle at 30% 30%, #F5E6B8, #D4AF37)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
                 boxShadow: '0 4px 14px rgba(247, 199, 107, 0.35)',
+                flexShrink: 0,
               }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: '"Playfair Display", serif',
-                  fontSize: { xs: '0.55rem', md: '0.62rem' },
-                  fontWeight: 700,
-                  color: '#2C1F10',
-                  textAlign: 'center',
-                  lineHeight: 1.15,
-                  px: 0.5,
-                }}
-              >
-                MGM
-              </Typography>
-            </Box>
+            />
             <Box sx={{ display: { xs: 'block', sm: 'none' }, minWidth: 0 }}>
               <Typography
                 sx={{

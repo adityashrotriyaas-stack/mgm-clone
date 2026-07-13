@@ -79,7 +79,7 @@ export default function StickyCTA() {
         onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
           background: gradients.primary,
-          color: colors.night,
+          color: colors.textLight,
           px: { xs: 2.5, sm: 3 },
           py: 1.35,
           minHeight: 48,
@@ -88,7 +88,7 @@ export default function StickyCTA() {
           fontWeight: 700,
           borderRadius: '50px',
           flexShrink: 0,
-          boxShadow: '0 8px 20px rgba(184,134,11,0.28)',
+          boxShadow: '0 8px 20px rgba(192, 29, 22, 0.28)',
           '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
         }}
       >

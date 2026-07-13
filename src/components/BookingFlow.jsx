@@ -45,7 +45,7 @@ const stepShortLabels = ['Book', 'Pass', 'Category', 'Details', 'Pay', 'QR']
 
 function StepDots({ activeStep }) {
   return (
-    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: 3, gap: 0.75 }}>
+    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: 3, gap: 0.75, justifyContent: 'center', flexWrap: 'wrap' }}>
       {steps.map((label, index) => (
         <Box
           key={label}
@@ -55,7 +55,7 @@ function StepDots({ activeStep }) {
             borderRadius: '50px',
             fontSize: { xs: '0.62rem', sm: '0.68rem' },
             fontWeight: 700,
-            bgcolor: index <= activeStep ? colors.gold : 'rgba(184,134,11,0.1)',
+            bgcolor: index <= activeStep ? colors.gold : 'rgba(192,29,22,0.1)',
             color: index <= activeStep ? '#fff' : colors.muted,
             whiteSpace: 'nowrap',
           }}
@@ -104,16 +104,20 @@ export default function BookingFlow() {
       setPaymentError('')
       setPaying(true)
       try {
+        console.log('[BookingFlow] Starting payment with session:', wowslySession)
         await completeWowslyPayment(registration, wowslySession)
+        console.log('[BookingFlow] Payment completed successfully')
         setActiveStep(5)
       } catch (error) {
-        setPaymentError(error?.message || 'Payment failed. Please try again.')
+        console.error('[BookingFlow] Payment error:', error)
+        setPaymentError(error?.message || error?.toString() || 'Payment failed. Please try again.')
       } finally {
         setPaying(false)
       }
       return
     }
 
+    console.log('[BookingFlow] Demo mode - skipping payment, going to next step')
     handleNext()
   }
 
@@ -170,7 +174,7 @@ export default function BookingFlow() {
                 mb: 2,
                 height: 6,
                 borderRadius: 3,
-                bgcolor: 'rgba(184,134,11,0.12)',
+                bgcolor: 'rgba(192,29,22,0.12)',
                 '& .MuiLinearProgress-bar': { background: gradients.primary },
               }}
             />
@@ -224,7 +228,7 @@ export default function BookingFlow() {
                       px: 2,
                       py: 1.5,
                       borderRadius: '14px',
-                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(184,134,11,0.18)',
+                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(192,29,22,0.18)',
                       bgcolor: paymentMethod === id ? 'rgba(201, 139, 46, 0.12)' : colors.bgWarm,
                       color: colors.ivory,
                       textTransform: 'none',
@@ -260,7 +264,7 @@ export default function BookingFlow() {
                     width: 180,
                     height: 180,
                     borderRadius: '16px',
-                    border: '2px solid rgba(184,134,11,0.25)',
+                    border: '2px solid rgba(192,29,22,0.25)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

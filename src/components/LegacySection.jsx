@@ -64,7 +64,7 @@ function JourneyHeader() {
         <Box
           component="span"
           sx={{
-            background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+            background: 'linear-gradient(180deg, #E8D5B0 0%, #E05040 55%, #C02822 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             display: 'block',
@@ -166,7 +166,7 @@ function TimelineCard({ item, index }) {
                 py: 0.85,
                 borderRadius: '999px',
                 background: gradients.primary,
-                color: colors.night,
+                color: colors.textLight,
                 fontWeight: 800,
                 fontSize: '0.96rem',
                 boxShadow: '0 6px 18px rgba(232, 184, 74, 0.25)',
@@ -266,7 +266,7 @@ function TimelineSpine() {
           left: '50%',
           transform: 'translateX(-50%)',
           width: 2,
-          background: 'linear-gradient(180deg, rgba(232,184,74,0.2), rgba(255,216,122,0.95), rgba(232,184,74,0.2))',
+          background: 'linear-gradient(180deg, rgba(232,184,74,0.2), rgba(192,29,22,0.95), rgba(232,184,74,0.2))',
           boxShadow: '0 0 18px rgba(232, 184, 74, 0.24)',
         }}
       />
@@ -282,7 +282,7 @@ function TimelineSpine() {
             width: 28,
             height: 28,
             borderRadius: '50%',
-            border: '2px solid rgba(255, 216, 122, 0.95)',
+            border: '2px solid rgba(192, 29, 22, 0.95)',
             bgcolor: 'rgba(53, 18, 24, 0.92)',
             boxShadow: '0 0 0 6px rgba(232, 184, 74, 0.08), 0 0 20px rgba(232, 184, 74, 0.45)',
             '&::before': {
@@ -359,7 +359,7 @@ export default function LegacySection() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                bgcolor: '#FFD76A',
+                bgcolor: '#E8D5B0',
                 boxShadow: '0 0 8px rgba(255, 215, 106, 0.95), 0 0 18px rgba(255, 176, 74, 0.45)',
               }}
             />

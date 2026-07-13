@@ -114,13 +114,13 @@ function AboutCopy({ visible }) {
 
       <Stack
         direction="row"
-        flexWrap="wrap"
         useFlexGap
         spacing={1}
         sx={{
           opacity: visible ? 1 : 0,
           transform: visible ? 'translateY(0)' : 'translateY(12px)',
           transition: 'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s',
+          flexWrap: 'wrap',
         }}
       >
         {highlights.map(({ icon: Icon, label }, chipIndex) => (
@@ -152,7 +152,7 @@ function AboutCopy({ visible }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: colors.night,
+                color: colors.textLight,
               }}
             >
               <Icon sx={{ fontSize: '0.95rem' }} />
