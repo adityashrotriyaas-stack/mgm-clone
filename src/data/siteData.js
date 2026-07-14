@@ -16,11 +16,6 @@ export const navLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export const policyLinks = [
-  { label: 'Privacy Policy', href: '/privacy-policy' },
-  { label: 'Refund Policy', href: '/refund-policy' },
-]
-
 export const aboutContent = {
   eyebrow: 'About MGM Cultural',
   titleLine1: 'MGM CULTURAL',
