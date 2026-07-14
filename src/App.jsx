@@ -15,6 +15,8 @@ import { colors } from './constants/colors'
 function App() {
   return (
     <Box
+      component="main"
+      id="main-content"
       sx={{
         bgcolor: colors.bg,
         color: colors.ivory,

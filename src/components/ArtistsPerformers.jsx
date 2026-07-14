@@ -13,6 +13,7 @@ import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined'
 import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded'
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { useNavigate } from 'react-router-dom'
 import amitDhorda from '../assets/amit-dhorda.png'
 import { colors } from '../constants/colors'
@@ -200,7 +201,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             borderRadius: '999px',
             border: '1px solid rgba(234, 90, 0, 0.7)',
             color: '#F0E8E0',
-            fontSize: active ? '0.62rem' : '0.54rem',
+            fontSize: active ? { xs: '0.62rem', sm: '0.7rem' } : { xs: '0.58rem', sm: '0.65rem' },
             fontWeight: 700,
             letterSpacing: '0.6px',
             textTransform: 'uppercase',
@@ -299,7 +300,7 @@ export default function ArtistsPerformers() {
         <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 3.75 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.9, color: colors.gold, mb: 0.85 }}>
-              <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
+              <StarRoundedIcon sx={{ fontSize: '0.85rem', color: colors.gold }} />
               <Typography
                 sx={{
                   fontSize: { xs: '0.62rem', md: '0.7rem' },
@@ -308,9 +309,9 @@ export default function ArtistsPerformers() {
                   fontWeight: 700,
                 }}
               >
-                The Stars of Navratri
+                Star Artists
               </Typography>
-              <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
+              <StarRoundedIcon sx={{ fontSize: '0.85rem', color: colors.gold }} />
             </Box>
 
             <Typography
@@ -349,7 +350,7 @@ export default function ArtistsPerformers() {
                 mb: 1.4,
               }}
             >
-              Led by Amit Dhorda with renowned artists — bringing energy, music and tradition together
+              A new performer each night
             </Typography>
 
             <LotusDivider maxWidth={240} />
@@ -372,8 +373,8 @@ export default function ArtistsPerformers() {
             aria-label="Previous artist"
             onClick={goPrev}
             sx={{
-              width: { xs: 40, lg: 52 },
-              height: { xs: 40, lg: 52 },
+              width: { xs: 48, lg: 52 },
+              height: { xs: 48, lg: 52 },
               border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -420,8 +421,8 @@ export default function ArtistsPerformers() {
             aria-label="Next artist"
             onClick={goNext}
             sx={{
-              width: { xs: 40, lg: 52 },
-              height: { xs: 40, lg: 52 },
+              width: { xs: 48, lg: 52 },
+              height: { xs: 48, lg: 52 },
               border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
