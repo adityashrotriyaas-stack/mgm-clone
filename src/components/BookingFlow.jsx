@@ -70,12 +70,19 @@ function StepDots({ activeStep }) {
 export default function BookingFlow() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const eventId = searchParams.get('event') || '1'
-  const registration = location.state?.registration
+  const stepParam = parseInt(searchParams.get('step') || '4', 10)
+  const registration = location.state?.registration || (() => { try { return JSON.parse(sessionStorage.getItem('bookingFlowRegistration')) } catch { return null } })()
   const wowslySession = location.state?.wowslySession || loadWowslySession()
 
-  const [activeStep, setActiveStep] = useState(4)
+  useEffect(() => {
+    if (registration) {
+      try { sessionStorage.setItem('bookingFlowRegistration', JSON.stringify(registration)) } catch {}
+    }
+  }, [registration])
+
+  const [activeStep, setActiveStep] = useState(isNaN(stepParam) ? 4 : Math.min(stepParam, steps.length - 1))
   const [paymentMethod, setPaymentMethod] = useState('upi')
   const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
   const [paying, setPaying] = useState(false)
@@ -88,6 +95,10 @@ export default function BookingFlow() {
       navigate(`/event/${eventId}`, { replace: true })
     }
   }, [registration, eventId, navigate])
+
+  useEffect(() => {
+    setSearchParams({ event: eventId, step: activeStep }, { replace: true })
+  }, [activeStep, eventId, setSearchParams])
 
   const progress = useMemo(() => ((activeStep + 1) / steps.length) * 100, [activeStep])
 
