@@ -13,6 +13,7 @@ import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined'
 import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded'
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { useNavigate } from 'react-router-dom'
 import amitDhorda from '../assets/amit-dhorda.png'
 import { colors } from '../constants/colors'
@@ -299,7 +300,7 @@ export default function ArtistsPerformers() {
         <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 3.75 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.9, color: colors.gold, mb: 0.85 }}>
-              <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
+              <StarRoundedIcon sx={{ fontSize: '0.85rem', color: colors.gold }} />
               <Typography
                 sx={{
                   fontSize: { xs: '0.62rem', md: '0.7rem' },
@@ -308,9 +309,9 @@ export default function ArtistsPerformers() {
                   fontWeight: 700,
                 }}
               >
-                The Stars of Navratri
+                Star Artists
               </Typography>
-              <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
+              <StarRoundedIcon sx={{ fontSize: '0.85rem', color: colors.gold }} />
             </Box>
 
             <Typography
@@ -349,7 +350,7 @@ export default function ArtistsPerformers() {
                 mb: 1.4,
               }}
             >
-              Led by Amit Dhorda with renowned artists — bringing energy, music and tradition together
+              A new performer each night
             </Typography>
 
             <LotusDivider maxWidth={240} />
