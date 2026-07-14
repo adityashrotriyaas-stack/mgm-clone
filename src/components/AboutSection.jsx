@@ -11,7 +11,6 @@ import { Eyebrow } from './shared'
 import FestiveSection from './FestiveSection'
 import AboutDeviArt from './AboutDeviArt'
 import { useEffect, useRef, useState } from 'react'
-import aboutBg from '../assets/about-bg.png'
 import { aboutContent } from '../data/siteData'
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
@@ -57,7 +56,7 @@ function AboutCopy({ visible }) {
   const blocks = aboutContent.paragraphs
 
   return (
-    <Box sx={{ flex: 1, maxWidth: { lg: '48%' } }}>
+    <Box sx={{ flex: 1, maxWidth: { lg: '48%' }, bgcolor: 'rgba(26, 8, 0, 0.35)', borderRadius: '24px', p: { xs: 2, md: 3 }, backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 179, 0, 0.1)' }}>
       <Box
         sx={{
           opacity: visible ? 1 : 0,
@@ -114,13 +113,13 @@ function AboutCopy({ visible }) {
 
       <Stack
         direction="row"
-        flexWrap="wrap"
         useFlexGap
         spacing={1}
         sx={{
           opacity: visible ? 1 : 0,
           transform: visible ? 'translateY(0)' : 'translateY(12px)',
           transition: 'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s',
+          flexWrap: 'wrap',
         }}
       >
         {highlights.map(({ icon: Icon, label }, chipIndex) => (
@@ -134,7 +133,7 @@ function AboutCopy({ visible }) {
               py: 0.65,
               borderRadius: '50px',
               border: `1px solid ${colors.border}`,
-              bgcolor: 'rgba(53, 36, 24, 0.5)',
+              bgcolor: 'rgba(42, 22, 0, 0.5)',
               fontSize: '0.75rem',
               fontWeight: 600,
               color: colors.textLight,
@@ -152,7 +151,7 @@ function AboutCopy({ visible }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: colors.night,
+                color: colors.textLight,
               }}
             >
               <Icon sx={{ fontSize: '0.95rem' }} />
@@ -175,10 +174,9 @@ export default function AboutSection() {
       showAccent={false}
       sx={{
         py: { xs: 6, md: 9 },
-        backgroundColor: '#1A0A12',
+        backgroundColor: '#3A1C00',
         backgroundImage: `
-          linear-gradient(180deg, rgba(18,7,10,0.58) 0%, rgba(18,7,10,0.38) 45%, rgba(18,7,10,0.55) 100%),
-          url(${aboutBg})
+          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%)
         `,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

@@ -12,7 +12,6 @@ import { patternDiya, patternGarland, patternMandala } from '../constants/navrat
 import { legacyMoments } from '../data/siteData'
 import { RevealBox, RevealStagger, RevealStaggerItem } from './shared'
 import FestiveSection from './FestiveSection'
-
 const icons = [
   AccessTimeOutlinedIcon,
   CelebrationOutlinedIcon,
@@ -33,7 +32,7 @@ function JourneyHeader() {
           color: colors.gold,
         }}
       >
-        <Box sx={{ width: { xs: 20, md: 28 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Box sx={{ width: { xs: 20, md: 28 }, height: 1, bgcolor: 'rgba(255, 179, 0, 0.45)' }} />
         <Typography
           sx={{
             fontSize: { xs: '0.68rem', md: '0.78rem' },
@@ -44,7 +43,7 @@ function JourneyHeader() {
         >
           Our Journey
         </Typography>
-        <Box sx={{ width: { xs: 20, md: 28 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Box sx={{ width: { xs: 20, md: 28 }, height: 1, bgcolor: 'rgba(255, 179, 0, 0.45)' }} />
       </Box>
 
       <Typography
@@ -64,7 +63,7 @@ function JourneyHeader() {
         <Box
           component="span"
           sx={{
-            background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+            background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             display: 'block',
@@ -128,11 +127,11 @@ function TimelineCard({ item, index }) {
           minHeight: { md: 220 },
           borderRadius: '26px',
           background: `
-            radial-gradient(circle at ${isLeft ? '80%' : '20%'} 0%, rgba(232, 184, 74, 0.16), transparent 26%),
+            radial-gradient(circle at ${isLeft ? '80%' : '20%'} 0%, rgba(255, 179, 0, 0.16), transparent 26%),
             linear-gradient(180deg, rgba(52, 24, 22, 0.96) 0%, rgba(29, 10, 18, 0.96) 100%)
           `,
-          border: '1px solid rgba(232, 184, 74, 0.55)',
-          boxShadow: '0 0 0 1px rgba(232, 184, 74, 0.1), 0 18px 44px rgba(0, 0, 0, 0.34), 0 0 24px rgba(232, 184, 74, 0.14)',
+          border: '1px solid rgba(255, 179, 0, 0.55)',
+          boxShadow: '0 0 0 1px rgba(255, 179, 0, 0.1), 0 18px 44px rgba(0, 0, 0, 0.34), 0 0 24px rgba(255, 179, 0, 0.14)',
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -147,7 +146,7 @@ function TimelineCard({ item, index }) {
             position: 'absolute',
             top: 12,
             right: 18,
-            color: 'rgba(232, 184, 74, 0.7)',
+            color: 'rgba(255, 179, 0, 0.7)',
             fontSize: '1.6rem',
             lineHeight: 1,
             pointerEvents: 'none',
@@ -166,10 +165,10 @@ function TimelineCard({ item, index }) {
                 py: 0.85,
                 borderRadius: '999px',
                 background: gradients.primary,
-                color: colors.night,
+                color: colors.textLight,
                 fontWeight: 800,
                 fontSize: '0.96rem',
-                boxShadow: '0 6px 18px rgba(232, 184, 74, 0.25)',
+                boxShadow: '0 6px 18px rgba(255, 179, 0, 0.25)',
               }}
             >
               {item.year}
@@ -180,8 +179,8 @@ function TimelineCard({ item, index }) {
                 width: 36,
                 height: 36,
                 borderRadius: '50%',
-                bgcolor: 'rgba(232, 184, 74, 0.08)',
-                border: '1px solid rgba(232, 184, 74, 0.18)',
+                bgcolor: 'rgba(255, 179, 0, 0.08)',
+                border: '1px solid rgba(255, 179, 0, 0.18)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -228,12 +227,12 @@ function TimelineCard({ item, index }) {
               width: 48,
               height: 48,
               borderRadius: '50%',
-              border: '1px solid rgba(232, 184, 74, 0.65)',
+              border: '1px solid rgba(255, 179, 0, 0.65)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: colors.gold,
-              boxShadow: '0 0 16px rgba(232, 184, 74, 0.12)',
+              boxShadow: '0 0 16px rgba(255, 179, 0, 0.12)',
               flexShrink: 0,
             }}
           >
@@ -266,8 +265,8 @@ function TimelineSpine() {
           left: '50%',
           transform: 'translateX(-50%)',
           width: 2,
-          background: 'linear-gradient(180deg, rgba(232,184,74,0.2), rgba(255,216,122,0.95), rgba(232,184,74,0.2))',
-          boxShadow: '0 0 18px rgba(232, 184, 74, 0.24)',
+          background: 'linear-gradient(180deg, rgba(255, 179, 0,0.2), rgba(234, 90, 0,0.95), rgba(255, 179, 0,0.2))',
+          boxShadow: '0 0 18px rgba(255, 179, 0, 0.24)',
         }}
       />
 
@@ -282,9 +281,9 @@ function TimelineSpine() {
             width: 28,
             height: 28,
             borderRadius: '50%',
-            border: '2px solid rgba(255, 216, 122, 0.95)',
+            border: '2px solid rgba(234, 90, 0, 0.95)',
             bgcolor: 'rgba(53, 18, 24, 0.92)',
-            boxShadow: '0 0 0 6px rgba(232, 184, 74, 0.08), 0 0 20px rgba(232, 184, 74, 0.45)',
+            boxShadow: '0 0 0 6px rgba(255, 179, 0, 0.08), 0 0 20px rgba(255, 179, 0, 0.45)',
             '&::before': {
               content: '""',
               position: 'absolute',
@@ -308,13 +307,7 @@ export default function LegacySection() {
       sx={{
         py: { xs: 6, md: 9 },
         backgroundImage: `
-          radial-gradient(circle at 50% 18%, rgba(232,184,74,0.12), transparent 22%),
-          radial-gradient(circle at 16% 20%, rgba(168,50,72,0.16), transparent 18%),
-          radial-gradient(circle at 84% 22%, rgba(168,50,72,0.14), transparent 18%),
-          linear-gradient(180deg, ${colors.night} 0%, #16070E 100%),
-          ${patternDiya},
-          ${patternMandala},
-          ${patternGarland}
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
         `,
       }}
     >
@@ -334,7 +327,7 @@ export default function LegacySection() {
             top: 0,
             width: '44%',
             height: 56,
-            borderTop: '3px solid rgba(232, 184, 74, 0.18)',
+            borderTop: '3px solid rgba(255, 179, 0, 0.18)',
           },
           '&::before': {
             left: 0,
@@ -359,7 +352,7 @@ export default function LegacySection() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                bgcolor: '#FFD76A',
+                bgcolor: '#FFB300',
                 boxShadow: '0 0 8px rgba(255, 215, 106, 0.95), 0 0 18px rgba(255, 176, 74, 0.45)',
               }}
             />

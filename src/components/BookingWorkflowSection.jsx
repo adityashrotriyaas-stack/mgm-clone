@@ -5,6 +5,7 @@ import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined'
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
@@ -17,7 +18,7 @@ const workflowSteps = [
     step: '01',
     title: 'Book Now',
     description: 'Click Book Now to start your booking.',
-    icon: 'dandiya',
+    Icon: CalendarMonthOutlinedIcon,
   },
   {
     step: '02',
@@ -51,7 +52,7 @@ const workflowSteps = [
   },
 ]
 
-const goldGradient = 'linear-gradient(135deg, #FFD76A 0%, #C7901E 100%)'
+const goldGradient = 'linear-gradient(135deg, #FFB300 0%, #EA5A00 100%)'
 const particles = Array.from({ length: 14 }, (_, i) => ({
   id: i,
   left: `${6 + (i * 6.8) % 88}%`,
@@ -130,7 +131,7 @@ function TimelineConnector({ vertical = false }) {
           position: 'absolute',
           width: 7,
           height: 7,
-          bgcolor: '#FFD76A',
+          bgcolor: '#FFB300',
           transform: 'rotate(45deg)',
           boxShadow: '0 0 10px rgba(255, 196, 78, 0.55)',
           ...(vertical
@@ -142,40 +143,9 @@ function TimelineConnector({ vertical = false }) {
   )
 }
 
-function DandiyaIcon() {
-  return (
-    <Box
-      component="svg"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 48 48"
-      fill="none"
-      sx={{ width: 48, height: 48 }}
-      aria-hidden
-    >
-      <path d="M11 37L37 11" stroke="#FFD76A" strokeWidth="2.4" strokeLinecap="round" />
-      <path d="M11 11L37 37" stroke="#FFD76A" strokeWidth="2.4" strokeLinecap="round" />
-      <path d="M16 32L20 28" stroke="#FFD76A" strokeWidth="1.8" strokeLinecap="round" opacity="0.85" />
-      <path d="M28 20L32 16" stroke="#FFD76A" strokeWidth="1.8" strokeLinecap="round" opacity="0.85" />
-      <circle cx="11" cy="37" r="2.8" fill="#FFD76A" />
-      <circle cx="37" cy="11" r="2.8" fill="#FFD76A" />
-      <circle cx="11" cy="11" r="2.8" fill="#FFD76A" />
-      <circle cx="37" cy="37" r="2.8" fill="#FFD76A" />
-      <path
-        d="M22 24c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2z"
-        fill="#FFD76A"
-        opacity="0.5"
-      />
-    </Box>
-  )
-}
-
 function StepIcon({ step }) {
-  if (step.icon === 'dandiya') {
-    return <DandiyaIcon />
-  }
-
   const Icon = step.Icon
-  return <Icon sx={{ fontSize: 48, color: '#FFD76A', strokeWidth: 0.5 }} />
+  return <Icon sx={{ fontSize: 48, color: '#F0E8E0' }} />
 }
 
 function WorkflowStep({ step, index, visible }) {
@@ -202,7 +172,7 @@ function WorkflowStep({ step, index, visible }) {
           height: 56,
           borderRadius: '50%',
           background: goldGradient,
-          color: '#120B08',
+          color: '#1A0800',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -223,9 +193,10 @@ function WorkflowStep({ step, index, visible }) {
           px: 1.5,
           textAlign: 'center',
           borderRadius: '72px 72px 16px 16px',
-          border: '1px solid rgba(255, 196, 78, 0.45)',
-          bgcolor: 'rgba(255, 255, 255, 0.03)',
-          backdropFilter: 'blur(6px)',
+          border: '1px solid rgba(255, 179, 0, 0.35)',
+          bgcolor: 'rgba(42, 14, 0, 0.45)',
+          backdropFilter: 'blur(14px)',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 179, 0, 0.12)',
           minHeight: { xs: 220, lg: 240 },
           display: 'flex',
           flexDirection: 'column',
@@ -292,7 +263,12 @@ export default function BookingWorkflowSection() {
         position: 'relative',
         py: { xs: 6, md: 9 },
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #2B1B12 0%, #120B08 100%)',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box
@@ -350,7 +326,7 @@ export default function BookingWorkflowSection() {
               textTransform: 'uppercase',
               letterSpacing: '4px',
               fontWeight: 700,
-              color: '#FFD76A',
+              color: '#F0E8E0',
               mb: 1.5,
             }}
           >
@@ -378,7 +354,7 @@ export default function BookingWorkflowSection() {
               height: 2,
               mx: 'auto',
               mb: 2,
-              background: 'linear-gradient(90deg, transparent, #FFD76A, transparent)',
+              background: 'linear-gradient(90deg, transparent, #FFFFFF, transparent)',
               position: 'relative',
               '&::after': {
                 content: '""',
@@ -388,7 +364,7 @@ export default function BookingWorkflowSection() {
                 transform: 'translate(-50%, -50%) rotate(45deg)',
                 width: 8,
                 height: 8,
-                bgcolor: '#FFD76A',
+                bgcolor: '#FFB300',
                 boxShadow: '0 0 10px rgba(255,196,78,0.5)',
               },
             }}
@@ -454,7 +430,7 @@ export default function BookingWorkflowSection() {
               height: 60,
               borderRadius: '999px',
               background: goldGradient,
-              color: '#120B08',
+              color: '#1A0800',
               fontWeight: 800,
               fontSize: '1.15rem',
               letterSpacing: '0.02em',

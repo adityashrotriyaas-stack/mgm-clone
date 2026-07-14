@@ -99,12 +99,12 @@ export default function Registration() {
                     py: 1.25,
                     borderRadius: '24px',
                     color: category === key ? '#fff' : colors.regBrown,
-                    background: category === key ? gradients.primary : 'transparent',
+                    background: category === key ? gradients.button : 'transparent',
                     fontWeight: 700,
                     fontSize: '0.85rem',
                     textTransform: 'capitalize',
                     '&:hover': {
-                      background: category === key ? gradients.primary : 'rgba(255,255,255,0.3)',
+                      background: category === key ? gradients.button : 'rgba(255,255,255,0.3)',
                     },
                   }}
                 >
@@ -251,13 +251,15 @@ export default function Registration() {
                 mt: 1,
                 py: 1.9,
                 borderRadius: '14px',
-                background: gradients.primary,
-                color: '#fff',
+                background: gradients.button,
+                color: '#3A1C00',
                 fontWeight: 800,
                 fontSize: '1rem',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                 '&:hover': {
-                  background: gradients.primary,
-                  filter: 'brightness(1.08)',
+                  background: gradients.buttonHover,
+                  transform: 'scale(1.02)',
+                  boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)',
                 },
               }}
             >

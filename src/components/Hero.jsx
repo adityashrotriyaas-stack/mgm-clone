@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
@@ -7,12 +6,10 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import heroVideo from '../assets/navratri video.mp4'
+import heroBanner from '../assets/hero-banner.jpeg'
 import { colors } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
-
-const heroVideoSrc = heroVideo
 
 const iconMap = {
   calendar: CalendarMonthOutlinedIcon,
@@ -21,162 +18,74 @@ const iconMap = {
   food: RestaurantOutlinedIcon,
 }
 
-const barTheme = {
-  bg: 'rgba(30, 18, 16, 0.72)',
-  iconBg: 'rgba(53, 36, 24, 0.85)',
-  title: '#FFF5E6',
-  subtitle: 'rgba(255, 235, 210, 0.72)',
-  icon: '#E8B84A',
-  border: 'rgba(232, 184, 74, 0.22)',
-}
-
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
-function HeroFeatureBar() {
+function HeroFeatureCard({ icon, title, subtitle, index }) {
+  const Icon = iconMap[icon]
   return (
-    <Box
+    <Stack
+      direction="row"
+      spacing={1.25}
+      alignItems="center"
       sx={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 2,
-        px: { xs: 1.25, sm: 2, md: 3 },
-        py: { xs: 1.15, sm: 1.35, md: 1.6 },
-        bgcolor: barTheme.bg,
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderTop: `1px solid ${barTheme.border}`,
+        opacity: 0,
+        animation: `mgm-hero-bar-in 0.7s ${EASE} ${0.35 + index * 0.1}s forwards`,
       }}
     >
       <Box
         sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-          gap: { xs: 1.25, sm: 1.5, md: 2 },
+          width: { xs: 38, sm: 42 },
+          height: { xs: 38, sm: 42 },
+          borderRadius: '14px',
+          bgcolor: 'rgba(42, 14, 0, 0.75)',
+          border: '1px solid rgba(255, 179, 0, 0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          boxShadow: '0 6px 18px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 179, 0, 0.15)',
+          backdropFilter: 'blur(12px)',
         }}
       >
-        {heroFeatures.map(({ icon, title, subtitle }, index) => {
-          const Icon = iconMap[icon]
-
-          return (
-            <Stack
-              key={title}
-              direction="row"
-              alignItems="center"
-              spacing={1.25}
-              sx={{
-                minWidth: 0,
-                opacity: 0,
-                animation: `mgm-hero-bar-in 0.7s ${EASE} ${0.35 + index * 0.1}s forwards`,
-              }}
-            >
-              <Box
-                sx={{
-                  width: { xs: 38, sm: 42, md: 46 },
-                  height: { xs: 38, sm: 42, md: 46 },
-                  borderRadius: '12px',
-                  bgcolor: barTheme.iconBg,
-                  border: `1px solid ${barTheme.border}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: barTheme.icon }} />
-              </Box>
-              <Box sx={{ minWidth: 0 }}>
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: { xs: '0.78rem', sm: '0.85rem', md: '0.92rem' },
-                    color: barTheme.title,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {title}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: { xs: '0.68rem', sm: '0.72rem', md: '0.78rem' },
-                    color: barTheme.subtitle,
-                    lineHeight: 1.35,
-                    mt: 0.15,
-                  }}
-                >
-                  {subtitle}
-                </Typography>
-              </Box>
-            </Stack>
-          )
-        })}
+        <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: colors.gold }} />
       </Box>
-    </Box>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          sx={{
+            fontWeight: 700,
+            fontSize: { xs: '0.78rem', sm: '0.85rem' },
+            color: colors.textLight,
+            lineHeight: 1.2,
+          }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: { xs: '0.68rem', sm: '0.72rem' },
+            color: 'rgba(255, 245, 230, 0.65)',
+            lineHeight: 1.35,
+            mt: 0.15,
+          }}
+        >
+          {subtitle}
+        </Typography>
+      </Box>
+    </Stack>
   )
 }
 
 export default function Hero() {
-  const videoRef = useRef(null)
-  const frameRef = useRef(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    const frame = frameRef.current
-    if (!video || !frame) return undefined
-
-    const tryPlay = () => {
-      video.play().catch(() => {})
-    }
-
-    // Start video immediately on first load
-    tryPlay()
-    video.addEventListener('loadeddata', tryPlay)
-    video.addEventListener('canplay', tryPlay)
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          tryPlay()
-        } else {
-          video.pause()
-        }
-      },
-      { threshold: 0.35 },
-    )
-
-    observer.observe(frame)
-
-    const handleVisibility = () => {
-      if (document.hidden) {
-        video.pause()
-        return
-      }
-      const rect = frame.getBoundingClientRect()
-      const inView = rect.top < window.innerHeight && rect.bottom > 0
-      if (inView) {
-        tryPlay()
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibility)
-
-    return () => {
-      observer.disconnect()
-      video.removeEventListener('loadeddata', tryPlay)
-      video.removeEventListener('canplay', tryPlay)
-      document.removeEventListener('visibilitychange', handleVisibility)
-    }
-  }, [])
-
   return (
     <Box
       component="section"
       id="home"
       sx={{
         position: 'relative',
-        bgcolor: colors.night,
+        backgroundImage: `linear-gradient(180deg, rgba(42,14,0,0.88) 0%, rgba(255,179,0,0.15) 50%, rgba(42,14,0,0.92) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
         '&::before': {
           content: '""',
@@ -192,40 +101,35 @@ export default function Hero() {
         sx={{
           position: 'relative',
           zIndex: 1,
-          px: { xs: 2, sm: 2.5, md: 4 },
-          pt: { xs: 1.5, sm: 2, md: 2.5 },
-          pb: { xs: 2, sm: 2.5, md: 3 },
+          px: { xs: 1.5, sm: 2, md: 3 },
+          pt: { xs: 1, sm: 1.5, md: 2 },
+          pb: { xs: 1.5, sm: 2, md: 2.5 },
         }}
       >
         <Box
-          ref={frameRef}
           sx={{
             position: 'relative',
             borderRadius: { xs: '20px', md: '28px' },
             overflow: 'hidden',
-            border: '1px solid rgba(232, 184, 74, 0.22)',
-            boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
-            aspectRatio: { xs: '9 / 14', sm: '16 / 10', lg: '16 / 7.4' },
+            border: '1px solid rgba(255, 179, 0, 0.35)',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 179, 0, 0.12)',
             bgcolor: colors.nightMid,
             opacity: 0,
             animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+            lineHeight: 0,
+            maxWidth: { xs: '100%', lg: '1100px' },
+            mx: 'auto',
           }}
         >
           <Box
-            ref={videoRef}
-            component="video"
-            src={heroVideoSrc}
-            muted
-            autoPlay
-            loop
-            playsInline
-            preload="auto"
+            component="img"
+            src={heroBanner}
+            alt="MGM Navratri 2026"
+            loading="eager"
             sx={{
               width: '100%',
-              height: '100%',
-              objectFit: 'cover',
+              height: 'auto',
               display: 'block',
-              backgroundColor: colors.nightMid,
             }}
           />
           <Box
@@ -238,7 +142,22 @@ export default function Hero() {
               zIndex: 1,
             }}
           />
-          <HeroFeatureBar />
+        </Box>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+            gap: { xs: 1, sm: 1.25, md: 1.5 },
+            mt: { xs: 0.5, md: 1.5 },
+            px: { xs: 0.5, sm: 0 },
+            maxWidth: { xs: '100%', lg: '1100px' },
+            mx: 'auto',
+          }}
+        >
+          {heroFeatures.map((item, index) => (
+            <HeroFeatureCard key={item.title} {...item} index={index} />
+          ))}
         </Box>
       </Container>
     </Box>

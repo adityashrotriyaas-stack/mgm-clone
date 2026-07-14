@@ -14,7 +14,6 @@ import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded'
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import { useNavigate } from 'react-router-dom'
-import artistsBg from '../assets/artists-bg.png'
 import amitDhorda from '../assets/amit-dhorda.png'
 import { colors } from '../constants/colors'
 import { RevealBox, RevealGroup } from './shared'
@@ -128,11 +127,11 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
           clipPath: 'polygon(0 16%, 7% 7%, 16% 2.5%, 50% 0, 84% 2.5%, 93% 7%, 100% 16%, 100% 100%, 0 100%)',
           borderRadius: '0 0 20px 20px',
           overflow: 'hidden',
-          border: active ? '2.5px solid rgba(255, 216, 122, 0.95)' : '1.5px solid rgba(232, 184, 74, 0.6)',
+          border: active ? '2.5px solid rgba(234, 90, 0, 0.85)' : '1.5px solid rgba(255, 179, 0, 0.5)',
           boxShadow: active
-            ? '0 0 0 1px rgba(255,216,122,0.22), 0 20px 42px rgba(0,0,0,0.38), 0 0 34px rgba(232,184,74,0.3)'
+            ? '0 0 0 1px rgba(234, 90, 0,0.22), 0 20px 42px rgba(0,0,0,0.38), 0 0 34px rgba(255, 179, 0,0.3)'
             : '0 10px 24px rgba(0,0,0,0.26)',
-          backgroundImage: `linear-gradient(180deg, rgba(20,8,10,0.02) 8%, rgba(20,8,10,0.35) 48%, rgba(14,5,8,0.94) 100%), url(${artist.image})`,
+          backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.02) 8%, rgba(10,6,0,0.35) 48%, rgba(10,6,0,0.9) 100%), url(${artist.image})`,
           backgroundSize: 'cover',
           backgroundPosition: artist.imagePosition || 'center top',
         }}
@@ -146,9 +145,9 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
           left: '10%',
           right: '10%',
           height: active ? 46 : 36,
-          borderTop: active ? '2px solid rgba(255,216,122,0.7)' : '1px solid rgba(232,184,74,0.38)',
-          borderLeft: active ? '1.5px solid rgba(255,216,122,0.35)' : '1px solid rgba(232,184,74,0.2)',
-          borderRight: active ? '1.5px solid rgba(255,216,122,0.35)' : '1px solid rgba(232,184,74,0.2)',
+          borderTop: active ? '2px solid rgba(234, 90, 0,0.7)' : '1px solid rgba(255, 179, 0,0.38)',
+          borderLeft: active ? '1.5px solid rgba(234, 90, 0,0.35)' : '1px solid rgba(255, 179, 0,0.2)',
+          borderRight: active ? '1.5px solid rgba(234, 90, 0,0.35)' : '1px solid rgba(255, 179, 0,0.2)',
           borderRadius: '999px 999px 0 0',
           pointerEvents: 'none',
         }}
@@ -165,7 +164,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
           pb: active ? 1.6 : 1.25,
           pt: 3,
           textAlign: 'center',
-          background: 'linear-gradient(180deg, transparent 0%, rgba(14,5,8,0.68) 32%, rgba(14,5,8,0.96) 100%)',
+          background: 'linear-gradient(180deg, transparent 0%, rgba(10,6,0,0.68) 32%, rgba(10,6,0,0.96) 100%)',
         }}
       >
         <Typography
@@ -174,7 +173,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             fontWeight: 700,
             letterSpacing: '0.05em',
             textTransform: 'uppercase',
-            color: '#FFD87A',
+            color: '#F0E8E0',
             fontSize: active ? { xs: '0.95rem', md: '1.12rem' } : { xs: '0.74rem', md: '0.86rem' },
             lineHeight: 1.15,
             mb: 0.35,
@@ -199,8 +198,8 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             px: active ? 1.5 : 1.1,
             py: active ? 0.38 : 0.28,
             borderRadius: '999px',
-            border: '1px solid rgba(255, 216, 122, 0.7)',
-            color: '#FFD87A',
+            border: '1px solid rgba(234, 90, 0, 0.7)',
+            color: '#F0E8E0',
             fontSize: active ? '0.62rem' : '0.54rem',
             fontWeight: 700,
             letterSpacing: '0.6px',
@@ -218,11 +217,11 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             height: active ? 34 : 28,
             mx: 'auto',
             borderRadius: '50%',
-            border: '1px solid rgba(255, 216, 122, 0.7)',
+            border: '1px solid rgba(234, 90, 0, 0.7)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#FFD87A',
+            color: '#F0E8E0',
             bgcolor: 'transparent',
           }}
         >
@@ -289,8 +288,8 @@ export default function ArtistsPerformers() {
         py: { xs: 6, md: 8.5 },
         overflow: 'hidden',
         color: colors.ivory,
-        backgroundColor: '#1A0A12',
-        backgroundImage: `linear-gradient(180deg, rgba(16,6,10,0.55) 0%, rgba(16,6,10,0.35) 35%, rgba(16,6,10,0.5) 100%), url(${artistsBg})`,
+        backgroundColor: '#3A1C00',
+        backgroundImage: `linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 35%, rgba(10,6,0,0.60) 100%)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center top',
         backgroundRepeat: 'no-repeat',
@@ -331,7 +330,7 @@ export default function ArtistsPerformers() {
               <Box
                 component="span"
                 sx={{
-                  background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+                  background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -375,10 +374,10 @@ export default function ArtistsPerformers() {
             sx={{
               width: { xs: 40, lg: 52 },
               height: { xs: 40, lg: 52 },
-              border: '1px solid rgba(232,184,74,0.55)',
+              border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
-              '&:hover': { borderColor: 'rgba(255,216,122,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
+              '&:hover': { borderColor: 'rgba(234, 90, 0,0.95)', bgcolor: 'rgba(255, 179, 0,0.08)' },
             }}
           >
             <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.35rem' } }} />
@@ -401,7 +400,7 @@ export default function ArtistsPerformers() {
               width: '100%',
               '&::-webkit-scrollbar': { height: 5 },
               '&::-webkit-scrollbar-thumb': {
-                background: 'rgba(232,184,74,0.28)',
+                background: 'rgba(255, 179, 0,0.28)',
                 borderRadius: 999,
               },
             }}
@@ -423,10 +422,10 @@ export default function ArtistsPerformers() {
             sx={{
               width: { xs: 40, lg: 52 },
               height: { xs: 40, lg: 52 },
-              border: '1px solid rgba(232,184,74,0.55)',
+              border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
-              '&:hover': { borderColor: 'rgba(255,216,122,0.95)', bgcolor: 'rgba(232,184,74,0.08)' },
+              '&:hover': { borderColor: 'rgba(234, 90, 0,0.95)', bgcolor: 'rgba(255, 179, 0,0.08)' },
             }}
           >
             <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.1rem', lg: '1.35rem' } }} />
@@ -442,7 +441,7 @@ export default function ArtistsPerformers() {
               px: { xs: 1.25, md: 1.5 },
               py: { xs: 1.75, md: 2 },
               borderRadius: '14px',
-              border: '1px solid rgba(232,184,74,0.42)',
+              border: '1px solid rgba(255, 179, 0,0.42)',
               background: 'linear-gradient(180deg, rgba(36,16,20,0.78) 0%, rgba(22,9,13,0.84) 100%)',
               boxShadow: '0 10px 28px rgba(0,0,0,0.22)',
             }}
@@ -467,7 +466,7 @@ export default function ArtistsPerformers() {
                       py: { xs: 0.25, md: 0.4 },
                       borderRight: {
                         xs: 'none',
-                        md: index < highlights.length - 1 ? '1px solid rgba(232,184,74,0.22)' : 'none',
+                        md: index < highlights.length - 1 ? '1px solid rgba(255, 179, 0,0.22)' : 'none',
                       },
                     }}
                   >
@@ -477,7 +476,7 @@ export default function ArtistsPerformers() {
                         height: 34,
                         flexShrink: 0,
                         borderRadius: '50%',
-                        border: '1px solid rgba(232,184,74,0.55)',
+                        border: '1px solid rgba(255, 179, 0,0.55)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -489,7 +488,7 @@ export default function ArtistsPerformers() {
                     <Box sx={{ minWidth: 0 }}>
                       <Typography
                         sx={{
-                          color: '#FFD87A',
+                          color: '#F0E8E0',
                           fontWeight: 700,
                           fontSize: '0.74rem',
                           letterSpacing: '0.4px',
@@ -518,8 +517,8 @@ export default function ArtistsPerformers() {
               startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
               endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
               sx={{
-                background: 'linear-gradient(135deg, #FFD76A 0%, #E8B84A 50%, #C98B2E 100%)',
-                color: '#1A0A12',
+                background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
+                color: '#3A1C00',
                 px: { xs: 2.4, md: 3 },
                 py: { xs: 0.9, md: 1 },
                 minWidth: 'auto',
@@ -531,14 +530,14 @@ export default function ArtistsPerformers() {
                 fontSize: { xs: '0.86rem', md: '0.92rem' },
                 textTransform: 'none',
                 letterSpacing: '0.15px',
-                boxShadow: '0 10px 26px rgba(201, 139, 46, 0.32)',
+                boxShadow: '0 10px 26px rgba(255, 179, 0, 0.32)',
                 '& .MuiButton-startIcon': { mr: 0.7 },
                 '& .MuiButton-endIcon': { ml: 0.7 },
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #FFD76A 0%, #E8B84A 50%, #C98B2E 100%)',
+                  background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
                   filter: 'brightness(1.05)',
                   transform: 'translateY(-2px)',
-                  boxShadow: '0 14px 30px rgba(201, 139, 46, 0.4)',
+                  boxShadow: '0 14px 30px rgba(255, 179, 0, 0.4)',
                 },
               }}
             >

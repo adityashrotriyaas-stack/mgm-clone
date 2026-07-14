@@ -22,16 +22,17 @@ export default function StickyCTA() {
         left: 0,
         right: 0,
         zIndex: 60,
-        bgcolor: colors.bgSoft,
-        backdropFilter: 'blur(12px)',
+        bgcolor: 'rgba(42, 14, 0, 0.82)',
+        backdropFilter: 'blur(20px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
         px: 2,
         py: 1.25,
         pb: 'calc(12px + env(safe-area-inset-bottom, 0px))',
         display: { xs: 'flex', lg: 'none' },
         gap: 1.25,
         alignItems: 'center',
-        boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.35)',
-        borderTop: `1px solid ${colors.border}`,
+        boxShadow: '0 -8px 32px rgba(0, 0, 0, 0.45), 0 0 24px rgba(255, 179, 0, 0.08)',
+        borderTop: '1px solid rgba(255, 179, 0, 0.3)',
       }}
     >
       <Box sx={{ flex: 1, minWidth: 0, pr: 1 }}>
@@ -78,8 +79,8 @@ export default function StickyCTA() {
       <Button
         onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
-          background: gradients.primary,
-          color: colors.night,
+          background: gradients.button,
+          color: colors.textLight,
           px: { xs: 2.5, sm: 3 },
           py: 1.35,
           minHeight: 48,
@@ -88,8 +89,10 @@ export default function StickyCTA() {
           fontWeight: 700,
           borderRadius: '50px',
           flexShrink: 0,
-          boxShadow: '0 8px 20px rgba(184,134,11,0.28)',
-          '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+          boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
+          transition: 'transform 0.15s ease, box-shadow 0.2s ease',
+          '&:hover': { background: gradients.buttonHover, transform: 'scale(1.03) translateY(-2px)', boxShadow: '0 14px 30px rgba(234, 90, 0, 0.45)' },
+          '&:active': { transform: 'scale(0.97)' },
         }}
       >
         Book Now

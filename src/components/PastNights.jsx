@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
@@ -20,6 +21,7 @@ import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
 import { contactInfo } from '../data/contactInfo'
 import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
+import logoImg from '../assets/logo.jpeg'
 import wowslyLogo from '../assets/wowsly-logo.png'
 
 const highlightIcons = [
@@ -44,7 +46,7 @@ function ThrowbackHeader() {
           mb: 1,
         }}
       >
-        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(255, 179, 0, 0.45)' }} />
         <Typography
           sx={{
             fontSize: { xs: '0.7rem', md: '0.8rem' },
@@ -55,7 +57,7 @@ function ThrowbackHeader() {
         >
           Throwback
         </Typography>
-        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(232, 184, 74, 0.45)' }} />
+        <Box sx={{ width: { xs: 24, md: 34 }, height: 1, bgcolor: 'rgba(255, 179, 0, 0.45)' }} />
       </Box>
 
       <Typography
@@ -76,7 +78,7 @@ function ThrowbackHeader() {
           component="span"
           sx={{
             display: 'block',
-            background: 'linear-gradient(180deg, #FFD87A 0%, #E8B84A 55%, #C98B2E 100%)',
+            background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
@@ -136,9 +138,9 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
         borderRadius: '22px',
         overflow: 'hidden',
         flexShrink: 0,
-        border: active ? '1px solid rgba(255, 216, 122, 0.88)' : '1px solid rgba(232, 184, 74, 0.45)',
+        border: active ? '1px solid rgba(234, 90, 0, 0.88)' : '1px solid rgba(255, 179, 0, 0.45)',
         boxShadow: active
-          ? '0 0 0 1px rgba(232, 184, 74, 0.16), 0 18px 44px rgba(0,0,0,0.34), 0 0 24px rgba(232,184,74,0.18)'
+          ? '0 0 0 1px rgba(255, 179, 0, 0.16), 0 18px 44px rgba(0,0,0,0.34), 0 0 24px rgba(255, 179, 0,0.18)'
           : absOffset === 1
             ? '0 12px 28px rgba(0,0,0,0.24)'
             : '0 10px 22px rgba(0,0,0,0.18)',
@@ -168,7 +170,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
               content: '""',
               position: 'absolute',
               inset: 0,
-              boxShadow: 'inset 0 0 0 1px rgba(255, 216, 122, 0.25)',
+              boxShadow: 'inset 0 0 0 1px rgba(234, 90, 0, 0.25)',
               borderRadius: '22px',
             }
           : undefined,
@@ -188,8 +190,8 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
             py: 0.7,
             borderRadius: '999px',
             bgcolor: 'rgba(36, 21, 16, 0.86)',
-            border: '1px solid rgba(255, 216, 122, 0.18)',
-            color: '#FFD76A',
+            border: '1px solid rgba(234, 90, 0, 0.18)',
+color: '#F0E8E0',
             fontSize: '0.72rem',
             fontWeight: 700,
             letterSpacing: '0.4px',
@@ -209,7 +211,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
           width: active ? 58 : 52,
           height: active ? 58 : 52,
           borderRadius: '50%',
-          border: '1px solid rgba(255, 216, 122, 0.72)',
+          border: '1px solid rgba(234, 90, 0, 0.72)',
           bgcolor: 'rgba(28, 12, 16, 0.38)',
           backdropFilter: 'blur(6px)',
           display: 'flex',
@@ -217,7 +219,7 @@ function HighlightCard({ item, meta, active = false, offset = 0 }) {
           justifyContent: 'center',
           color: colors.gold,
           zIndex: 2,
-          boxShadow: active ? '0 0 18px rgba(232, 184, 74, 0.16)' : 'none',
+          boxShadow: active ? '0 0 18px rgba(255, 179, 0, 0.16)' : 'none',
         }}
       >
         <Icon sx={{ fontSize: active ? '1.7rem' : '1.55rem' }} />
@@ -279,8 +281,8 @@ function MemoryLightbox({ item, onClose }) {
           maxWidth: 760,
           borderRadius: { xs: '18px', md: '22px' },
           overflow: 'hidden',
-          border: '1px solid rgba(255, 216, 122, 0.42)',
-          boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(232, 184, 74, 0.14)',
+          border: '1px solid rgba(234, 90, 0, 0.42)',
+          boxShadow: '0 22px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 179, 0, 0.14)',
           bgcolor: '#12070D',
           maxHeight: 'calc(100vh - 24px)',
         }}
@@ -297,7 +299,7 @@ function MemoryLightbox({ item, onClose }) {
             width: { xs: 38, md: 42 },
             height: { xs: 38, md: 42 },
             bgcolor: 'rgba(20, 10, 12, 0.82)',
-            border: '1px solid rgba(255, 216, 122, 0.5)',
+            border: '1px solid rgba(234, 90, 0, 0.5)',
             boxShadow: '0 8px 22px rgba(0, 0, 0, 0.3)',
             '&:hover': { bgcolor: 'rgba(20, 10, 12, 0.95)' },
           }}
@@ -316,6 +318,7 @@ function MemoryLightbox({ item, onClose }) {
             component="img"
             src={item.image}
             alt={item.label}
+            loading="lazy"
             sx={{
               width: '100%',
               maxHeight: 'calc(100vh - 24px)',
@@ -452,15 +455,10 @@ export default function PastNights() {
       showAccent={false}
       sx={{
         py: { xs: 5.5, md: 7.5 },
-        backgroundImage: `
-          radial-gradient(circle at 50% 16%, rgba(232,184,74,0.1), transparent 20%),
-          radial-gradient(circle at 20% 22%, rgba(168,50,72,0.14), transparent 18%),
-          radial-gradient(circle at 80% 20%, rgba(168,50,72,0.14), transparent 18%),
-          linear-gradient(180deg, ${colors.night} 0%, #15070D 100%),
-          ${patternDiya},
-          ${patternMandala},
-          ${patternGarland}
-        `,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.65) 0%, rgba(234,90,0,0.35) 50%, rgba(10,6,0,0.9) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box
@@ -478,7 +476,7 @@ export default function PastNights() {
             top: 0,
             width: '36%',
             height: 54,
-            borderTop: '3px solid rgba(232, 184, 74, 0.16)',
+            borderTop: '3px solid rgba(255, 179, 0, 0.16)',
           },
           '&::before': { left: 0, borderTopRightRadius: 120 },
           '&::after': { right: 0, borderTopLeftRadius: 120 },
@@ -497,7 +495,7 @@ export default function PastNights() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                bgcolor: '#FFD76A',
+                bgcolor: '#FFB300',
                 boxShadow: '0 0 8px rgba(255, 215, 106, 0.95), 0 0 18px rgba(255, 176, 74, 0.45)',
               }}
             />
@@ -527,12 +525,12 @@ export default function PastNights() {
             sx={{
               width: { xs: 40, lg: 56 },
               height: { xs: 40, lg: 56 },
-              border: '1px solid rgba(232, 184, 74, 0.5)',
+              border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
               transition: 'transform 0.25s ease, border-color 0.25s ease',
               '&:hover': {
-                borderColor: 'rgba(255, 216, 122, 0.9)',
+                borderColor: 'rgba(234, 90, 0, 0.9)',
                 transform: 'translateX(-2px)',
               },
             }}
@@ -558,7 +556,7 @@ export default function PastNights() {
               width: '100%',
               '&::-webkit-scrollbar': { height: 6 },
               '&::-webkit-scrollbar-thumb': {
-                background: 'rgba(232, 184, 74, 0.25)',
+                background: 'rgba(255, 179, 0, 0.25)',
                 borderRadius: 999,
               },
             }}
@@ -588,12 +586,12 @@ export default function PastNights() {
             sx={{
               width: { xs: 40, lg: 56 },
               height: { xs: 40, lg: 56 },
-              border: '1px solid rgba(232, 184, 74, 0.5)',
+              border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
               transition: 'transform 0.25s ease, border-color 0.25s ease',
               '&:hover': {
-                borderColor: 'rgba(255, 216, 122, 0.9)',
+                borderColor: 'rgba(234, 90, 0, 0.9)',
                 transform: 'translateX(2px)',
               },
             }}
@@ -615,7 +613,7 @@ export default function PastNights() {
               mx: 'auto',
             }}
           >
-            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(232, 184, 74, 0.42)' }} />
+            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(255, 179, 0, 0.42)' }} />
             <Typography sx={{ fontSize: '0.95rem', lineHeight: 1 }}>❀</Typography>
             {showcase.map((_, dot) => (
               <Box
@@ -624,14 +622,14 @@ export default function PastNights() {
                   width: dot === activeIndex ? 28 : 7,
                   height: 7,
                   borderRadius: 999,
-                  bgcolor: dot === activeIndex ? colors.gold : 'rgba(232, 184, 74, 0.55)',
-                  boxShadow: dot === activeIndex ? '0 0 12px rgba(232, 184, 74, 0.4)' : 'none',
+                  bgcolor: dot === activeIndex ? colors.gold : 'rgba(255, 179, 0, 0.55)',
+                  boxShadow: dot === activeIndex ? '0 0 12px rgba(255, 179, 0, 0.4)' : 'none',
                   transition: 'all 0.25s ease',
                 }}
               />
             ))}
             <Typography sx={{ fontSize: '0.95rem', lineHeight: 1 }}>❀</Typography>
-            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(232, 184, 74, 0.42)' }} />
+            <Box sx={{ width: 42, height: 1, bgcolor: 'rgba(255, 179, 0, 0.42)' }} />
           </Stack>
         </RevealBox>
       </Container>
@@ -642,6 +640,7 @@ export default function PastNights() {
 }
 
 export function Footer() {
+  const navigate = useNavigate()
   return (
     <FestiveSection
       component="footer"
@@ -652,6 +651,12 @@ export function Footer() {
         pb: { xs: 'calc(24px + env(safe-area-inset-bottom, 0px))', md: 3 },
         mt: 0,
         color: 'rgba(255, 245, 230, 0.72)',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
@@ -692,7 +697,7 @@ export function Footer() {
                     justifyContent: 'center',
                     fontSize: '0.85rem',
                     '&:hover': {
-                      background: gradients.primary,
+                      background: gradients.button,
                       color: colors.bg,
                     },
                   }}
@@ -762,38 +767,23 @@ export function Footer() {
             </Typography>
             <Stack component="ul" spacing={1.1} sx={{ listStyle: 'none', m: 0, p: 0, fontSize: '0.88rem' }}>
               <Box component="li">{contactInfo.phone}</Box>
+              <Box component="li">{contactInfo.phone2}</Box>
               <Box component="li">{contactInfo.email}</Box>
+              <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/privacy-policy')}>Privacy Policy</Box>
+              <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/refund-policy')}>Refund Policy</Box>
               <Box component="li">Organiser Login</Box>
             </Stack>
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            mt: 3.75,
-            pt: 2.25,
-            borderTop: '1px solid rgba(255,255,255,0.06)',
-            textAlign: 'center',
-          }}
-        >
+        <Box sx={{ textAlign: 'center', mt: 1.5 }}>
           <Box
             component="img"
             src={wowslyLogo}
             alt="Wowsly"
-            sx={{
-              width: { xs: 82, md: 94 },
-              height: 'auto',
-              display: 'block',
-              mx: 'auto',
-              mb: 0.9,
-            }}
+            sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.4 }}
           />
-          <Typography
-            sx={{
-              fontSize: '0.78rem',
-              opacity: 0.72,
-            }}
-          >
+          <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>
             Powered by Wowsly
           </Typography>
         </Box>

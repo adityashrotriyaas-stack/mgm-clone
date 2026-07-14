@@ -16,12 +16,12 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
+import logoImg from '../assets/logo.jpeg'
 
 export default function Header() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-
   const closeMenu = () => setOpen(false)
 
   useEffect(() => {
@@ -41,17 +41,17 @@ export default function Header() {
       sx={{
         top: 0,
         zIndex: 1200,
-        bgcolor: scrolled ? 'rgba(26, 10, 18, 0.62)' : colors.night,
+        bgcolor: scrolled ? 'rgba(42, 14, 0, 0.72)' : 'rgba(26, 8, 0, 0.95)',
         borderBottom: scrolled
-          ? '1px solid rgba(232, 184, 74, 0.22)'
-          : '1px solid rgba(232, 184, 74, 0.15)',
+          ? '1px solid rgba(255, 179, 0, 0.3)'
+          : '1px solid rgba(255, 179, 0, 0.12)',
         boxShadow: scrolled
-          ? '0 8px 28px rgba(10, 4, 8, 0.28)'
-          : '0 4px 24px rgba(26, 10, 18, 0.4)',
+          ? '0 8px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 179, 0, 0.06)'
+          : '0 4px 24px rgba(0, 0, 0, 0.4)',
         color: colors.textLight,
         overflow: 'hidden',
-        backdropFilter: scrolled ? 'blur(14px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        backdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
         transition:
           'background-color 0.28s ease, backdrop-filter 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease',
         '&::before': {
@@ -59,7 +59,7 @@ export default function Header() {
           position: 'absolute',
           inset: 0,
           backgroundImage: patternNight,
-          opacity: scrolled ? 0.35 : 0.7,
+          opacity: scrolled ? 0.3 : 0.6,
           pointerEvents: 'none',
           transition: 'opacity 0.28s ease',
         },
@@ -76,35 +76,20 @@ export default function Header() {
             transition: 'padding 0.28s ease',
           }}
         >
-          <Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none' }}>
-            <Box
-              sx={{
-                width: { xs: 52, md: 60 },
-                height: { xs: 52, md: 60 },
-                borderRadius: '50%',
-                border: '2px solid #F7C76B',
-                background: 'radial-gradient(circle at 30% 30%, #F5E6B8, #D4AF37)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+<Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none', flexShrink: 0 }}>
+            <img
+              src={logoImg}
+              alt="MGM Navratri"
+              width="60"
+              height="60"
+              style={{
+                width: '60px',
+                height: '60px',
+                maxWidth: '60px',
+                maxHeight: '60px',
                 flexShrink: 0,
-                boxShadow: '0 4px 14px rgba(247, 199, 107, 0.35)',
               }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: '"Playfair Display", serif',
-                  fontSize: { xs: '0.55rem', md: '0.62rem' },
-                  fontWeight: 700,
-                  color: '#2C1F10',
-                  textAlign: 'center',
-                  lineHeight: 1.15,
-                  px: 0.5,
-                }}
-              >
-                MGM
-              </Typography>
-            </Box>
+            />
             <Box sx={{ display: { xs: 'block', sm: 'none' }, minWidth: 0 }}>
               <Typography
                 sx={{
@@ -157,6 +142,14 @@ export default function Header() {
               <Link
                 key={link.label}
                 href={link.href}
+                onClick={(e) => {
+                  e.preventDefault()
+                  if (link.href.startsWith('/')) {
+                    navigate(link.href)
+                  } else {
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                }}
                 sx={{
                   color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.72)',
                   fontWeight: link.active ? 700 : 500,
@@ -170,11 +163,12 @@ export default function Header() {
                       content: '""',
                       position: 'absolute',
                       bottom: 0,
-                      left: '20%',
-                      right: '20%',
-                      height: 2,
-                      bgcolor: '#F7C76B',
+                      left: '15%',
+                      right: '15%',
+                      height: 3,
+                      bgcolor: '#FFB300',
                       borderRadius: 1,
+                      boxShadow: '0 0 10px rgba(255,179,0,0.5)',
                     },
                   }),
                 }}
@@ -189,17 +183,22 @@ export default function Header() {
             startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
-              background: gradients.primary,
+              background: gradients.button,
               color: '#231509',
               px: 2.5,
               py: 1.2,
               fontSize: '0.86rem',
               fontWeight: 700,
               borderRadius: '50px',
-              boxShadow: '0 8px 22px rgba(230, 149, 75, 0.32)',
+              boxShadow: '0 8px 22px rgba(234, 90, 0, 0.35)',
+              transition: 'transform 0.15s ease, box-shadow 0.2s ease',
               '&:hover': {
-                background: gradients.primary,
-                filter: 'brightness(1.05)',
+                background: gradients.buttonHover,
+                transform: 'scale(1.03) translateY(-2px)',
+                boxShadow: '0 14px 30px rgba(234, 90, 0, 0.50)',
+              },
+              '&:active': {
+                transform: 'scale(0.97) translateY(0)',
               },
             }}
           >
@@ -224,7 +223,7 @@ export default function Header() {
         <Collapse in={open} sx={{ display: { xs: 'block', lg: 'none' } }}>
           <Box
             sx={{
-              bgcolor: scrolled ? 'rgba(26, 10, 18, 0.72)' : 'rgba(45, 16, 24, 0.95)',
+              bgcolor: scrolled ? 'rgba(26, 14, 0, 0.80)' : 'rgba(42, 22, 0, 0.95)',
               backdropFilter: scrolled ? 'blur(14px)' : 'none',
               WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
               px: 2,
@@ -237,15 +236,25 @@ export default function Header() {
                 <Box component="li" key={link.label}>
                   <Link
                     href={link.href}
-                    onClick={closeMenu}
+                    onClick={(e) => {
+                      closeMenu()
+                      e.preventDefault()
+                      if (link.href.startsWith('/')) {
+                        navigate(link.href)
+                      } else {
+                        document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                      }
+                    }}
                     sx={{
                       display: 'block',
                       py: 1.4,
-                      color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.82)',
+                      color: link.active ? '#FFF8F0' : 'rgba(255,248,240,0.80)',
                       fontWeight: link.active ? 700 : 600,
                       fontSize: '0.95rem',
-                      borderBottom: '1px solid rgba(255,255,255,0.06)',
+                      borderBottom: link.active ? '2px solid rgba(255,179,0,0.5)' : '1px solid rgba(255,255,255,0.06)',
                       textDecoration: 'none',
+                      pl: link.active ? 1 : 0,
+                      borderLeft: link.active ? '3px solid #FFB300' : '3px solid transparent',
                     }}
                   >
                     {link.mobileLabel || link.label}
@@ -253,28 +262,33 @@ export default function Header() {
                 </Box>
               ))}
               <Box component="li" sx={{ mt: 1.25 }}>
-                <Button
-                  onClick={() => {
-                    closeMenu()
-                    navigate('/event/1')
-                  }}
-                  fullWidth
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 1,
-                    borderRadius: '50px',
-                    py: 1.4,
-                    fontWeight: 700,
-                    background: gradients.primary,
-                    color: '#231509',
-                    '&:hover': {
-                      background: gradients.primary,
-                      filter: 'brightness(1.04)',
-                    },
-                  }}
-                >
+                  <Button
+                    onClick={() => {
+                      closeMenu()
+                      navigate('/event/1')
+                    }}
+                    fullWidth
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 1,
+                      borderRadius: '50px',
+                      py: 1.4,
+                      fontWeight: 700,
+                      background: gradients.button,
+                      color: '#3A1C00',
+                      transition: 'transform 0.15s ease, box-shadow 0.2s ease',
+                      '&:hover': {
+                        background: gradients.buttonHover,
+                        transform: 'scale(1.02) translateY(-2px)',
+                        boxShadow: '0 14px 30px rgba(234, 90, 0, 0.45)',
+                      },
+                      '&:active': {
+                        transform: 'scale(0.97)',
+                      },
+                    }}
+                  >
                   <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
                   Get Your Pass
                 </Button>

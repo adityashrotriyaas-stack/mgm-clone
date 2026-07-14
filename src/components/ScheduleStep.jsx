@@ -6,11 +6,11 @@ import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
-import { colors } from '../constants/colors'
+import { colors, gradients } from '../constants/colors'
 import { registrationBackButtonSx } from '../constants/registrationFormTheme'
 import { buildDefaultSlotSelection, buildSlotSelection, formatShowTimeRange } from '../utils/schedule'
 
-const accentFestive = '#C98B2E'
+const accentFestive = '#EA5A00'
 const ui = {
   card: colors.bgCard,
   surfaceMuted: colors.bgWarm,
@@ -43,7 +43,7 @@ function SelectionSummary({ selection }) {
       >
         YOUR SELECTION
       </Typography>
-      <Stack direction="row" flexWrap="wrap" useFlexGap gap={0.75} sx={{ mb: selection?.timeLabel ? 0.75 : 0 }}>
+      <Stack direction="row" useFlexGap gap={0.75} sx={{ mb: selection?.timeLabel ? 0.75 : 0, flexWrap: 'wrap' }}>
         {chips.map((chip) => (
           <Box
             key={chip}
@@ -101,12 +101,12 @@ function SelectableCard({ selected, onClick, disabled, children, sx = {} }) {
         py: 1.35,
         borderRadius: '12px',
         border: selected ? `2px solid ${accentFestive}` : `1px solid ${ui.border}`,
-        bgcolor: selected ? 'rgba(201, 139, 46, 0.12)' : ui.card,
+        bgcolor: selected ? 'rgba(255, 179, 0, 0.12)' : ui.card,
         color: ui.text,
         textTransform: 'none',
         boxShadow: selected ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.08)',
         '&:hover': {
-          bgcolor: selected ? 'rgba(201, 139, 46, 0.16)' : ui.surfaceMuted,
+          bgcolor: selected ? 'rgba(255, 179, 0, 0.18)' : ui.surfaceMuted,
         },
         ...sx,
       }}
@@ -172,7 +172,7 @@ export default function ScheduleStep({
 
   if (loading) {
     return (
-      <Stack alignItems="center" spacing={2} sx={{ py: 4 }}>
+      <Stack spacing={2} sx={{ py: 4, alignItems: 'center' }}>
         <CircularProgress size={28} sx={{ color: accentFestive }} />
         <Typography sx={{ fontSize: '0.88rem', color: ui.muted }}>Loading schedule…</Typography>
       </Stack>
@@ -281,12 +281,13 @@ export default function ScheduleStep({
             py: 1.5,
             minHeight: 48,
             borderRadius: '8px',
-            background: accentFestive,
+            background: gradients.button,
             color: '#fff',
             fontWeight: 700,
             fontSize: '0.9375rem',
             textTransform: 'none',
-            '&:hover': { background: '#b07a28' },
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            '&:hover': { transform: 'scale(1.02)', background: gradients.buttonHover, boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)' },
             '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
           }}
         >

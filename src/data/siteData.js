@@ -9,22 +9,21 @@ import pastNight07 from '../assets/past-nights/past-night-07.png'
 export const navLinks = [
   { label: 'Home', href: '#home', active: true },
   { label: 'About', href: '#about' },
-  { label: 'Schedule', href: '#upcoming', mobileLabel: 'Schedule' },
-  { label: 'Highlights', href: '#past' },
-  { label: 'Gallery', href: '#past', mobileLabel: 'Gallery' },
-  { label: 'Contact', href: '#contact', mobileLabel: 'Contact' },
+  { label: 'Gallery', href: '#past' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Refund Policy', href: '/refund-policy' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export const aboutContent = {
-  eyebrow: 'About The Celebration',
+  eyebrow: 'About MGM Cultural',
   titleLine1: 'MGM CULTURAL',
   titleLine2: 'Navratri 2026',
-  subtitle: 'A Grand Celebration Beyond Navratri',
+  subtitle: 'Leading Event Management Since 2023',
   paragraphs: [
-    'This year, MGM Cultural Navratri 2026 presents a spectacular 10-day cultural festival led by Amit Dhorda, celebrating the true essence of Gujarat through music, devotion, and tradition.',
-    'Every evening from 9:00 PM onwards, the festival will begin with a grand cultural presentation and authentic live Garba performed by Amit Dhorda & Team. Following the Garba session, audiences will enjoy special performances by renowned artists from across India, with a different featured artist each day, creating a unique experience throughout the festival.',
-    'As the night progresses, the celebration continues with the energetic and traditional Mandli Garba, keeping the festive spirit alive late into the night.',
-    'MGM Cultural Navratri 2026 is more than a Garba festival—it is a celebration of Indian culture, bringing together Amit Dhorda’s signature folk music, renowned artists from across the country, devotion to Maa Ambe, and an unforgettable cultural experience in the heart of Rajkot.',
+    'MGM Cultural is a leading event management firm delivering top cultural and entertainment experiences.',
+    'We organize large-scale events and platforms for renowned artists.',
+    'Since 2023, we have been successfully hosting Navratri celebrations at Seasons Hotel, Rajkot, and live shows across Gujarat with a secure and seamless online booking system.',
   ],
   highlights: [
     '10-Day Cultural Festival',
@@ -33,7 +32,7 @@ export const aboutContent = {
     'Mandli Garba Nights',
   ],
   footerTagline:
-    'A 10-day cultural festival in Rajkot — Garba, devotion, and India’s finest artists, led by Amit Dhorda.',
+    'A 10-day cultural festival in Rajkot — Garba, devotion, and India\'s finest artists, led by Amit Dhorda.',
   featuredSummary:
     'A spectacular 10-day cultural festival celebrating Gujarat through music, devotion, and tradition—with live Garba from 9:00 PM, star performers each evening, and Mandli Garba late into the night.',
 }
@@ -81,26 +80,26 @@ export const nightTracker = [
 ]
 
 export const navratriNights = [
-  { id: 1, label: 'Night 1', date: 'Oct 10, Fri', theme: 'Grand Opening' },
-  { id: 2, label: 'Night 2', date: 'Oct 11, Sat', theme: 'Traditional Raas' },
-  { id: 3, label: 'Night 3', date: 'Oct 12, Sun', theme: 'Rangeeli Raat' },
-  { id: 4, label: 'Night 4', date: 'Oct 13, Mon', theme: 'Dhoom Dhamaka' },
-  { id: 5, label: 'Night 5', date: 'Oct 14, Tue', theme: 'Bollywood Beats' },
-  { id: 6, label: 'Night 6', date: 'Oct 15, Wed', theme: 'Folk Fusion' },
-  { id: 7, label: 'Night 7', date: 'Oct 16, Thu', theme: 'Dandiya Dhamal' },
-  { id: 8, label: 'Night 8', date: 'Oct 17, Fri', theme: 'Celebration Night' },
-  { id: 9, label: 'Night 9', date: 'Oct 18, Sat', theme: 'Rhythm of Raas' },
-  { id: 10, label: 'Night 10', date: 'Oct 19, Mon', theme: 'Maha Aarti & Finale' },
+  { id: 1, label: 'Night 1', date: 'Oct 10, Fri', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 2, label: 'Night 2', date: 'Oct 11, Sat', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 3, label: 'Night 3', date: 'Oct 12, Sun', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 4, label: 'Night 4', date: 'Oct 13, Mon', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 5, label: 'Night 5', date: 'Oct 14, Tue', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 6, label: 'Night 6', date: 'Oct 15, Wed', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 7, label: 'Night 7', date: 'Oct 16, Thu', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 8, label: 'Night 8', date: 'Oct 17, Fri', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 9, label: 'Night 9', date: 'Oct 18, Sat', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 10, label: 'Night 10', date: 'Oct 19, Mon', theme: 'MGM CULTURAL NAVRATRI' },
 ]
 
 export const upcomingEvents = [
   {
     id: 1,
-    title: 'Rangeeli Raat',
+    title: 'MGM Cultural Navratri',
     badge: 'Selling Fast',
     night: 'Night 3',
-    date: '🗓️ Oct 13, Tue',
-    time: '🕰️ 7:30 PM',
+    date: 'Oct 13, Tue',
+    time: '7:30 PM',
     price: '₹499',
     priceUnit: '/ stag',
     image: 'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=600',
@@ -110,8 +109,8 @@ export const upcomingEvents = [
     title: 'Dhoom Dhamaka',
     badge: 'Couple Special',
     night: 'Night 4',
-    date: '🗓️ Oct 14, Wed',
-    time: '🕰️ 7:30 PM',
+    date: 'Oct 14, Wed',
+    time: '7:30 PM',
     price: '₹899',
     priceUnit: '/ couple',
     image: 'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=600',
@@ -121,8 +120,8 @@ export const upcomingEvents = [
     title: 'Bollywood Beats',
     badge: 'Live DJ',
     night: 'Night 5',
-    date: '🗓️ Oct 15, Thu',
-    time: '🕰️ 7:30 PM',
+    date: 'Oct 15, Thu',
+    time: '7:30 PM',
     price: '₹599',
     priceUnit: '/ stag',
     image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600',
@@ -132,8 +131,8 @@ export const upcomingEvents = [
     title: 'Maha Aarti & Finale',
     badge: 'Grand Finale',
     night: 'Night 10',
-    date: '🗓️ Oct 20, Tue',
-    time: '🕰️ 7:00 PM',
+    date: 'Oct 20, Tue',
+    time: '7:00 PM',
     price: '₹1299',
     priceUnit: '/ stag',
     image: 'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=600',

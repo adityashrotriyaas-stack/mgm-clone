@@ -281,6 +281,8 @@ export async function completeWowslyPayment(registration, session) {
     throw new Error('Booking session expired. Please register again.')
   }
 
+  console.log('[wowslyBooking] completeWowslyPayment started with session:', session)
+
   const guest = extractGuestFromRegistration(registration)
   const notes = buildCheckoutOrderNotes({
     userId: session.userId,
@@ -294,6 +296,7 @@ export async function completeWowslyPayment(registration, session) {
     sendToWhatsapp: 1,
   })
 
+  console.log('[wowslyBooking] Creating checkout order...')
   const orderResponse = await createCheckoutOrder({
     guestUuid: session.uuid,
     ticketId: session.ticketId,
@@ -303,12 +306,17 @@ export async function completeWowslyPayment(registration, session) {
     sendToWhatsapp: 1,
   })
 
+  console.log('[wowslyBooking] Order response:', orderResponse)
+
   const { orderId, amount, currency, razorpayKey } = extractOrderDetails(orderResponse)
+
+  console.log('[wowslyBooking] Extracted order details:', { orderId, amount, currency, razorpayKey })
 
   if (!orderId || !razorpayKey) {
     throw new Error('Could not start payment. Please try again.')
   }
 
+  console.log('[wowslyBooking] Opening Razorpay checkout...')
   const paymentResponse = await openRazorpayCheckout({
     key: razorpayKey,
     order_id: orderId,
@@ -324,7 +332,10 @@ export async function completeWowslyPayment(registration, session) {
     },
   })
 
+  console.log('[wowslyBooking] Payment response:', paymentResponse)
+
   if (shouldVerifyPayment()) {
+    console.log('[wowslyBooking] Verifying payment...')
     await verifyPayment({
       guestUuid: session.uuid,
       userId: session.userId,

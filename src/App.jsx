@@ -9,7 +9,6 @@ import Hero from './components/Hero'
 import UpcomingNights from './components/UpcomingNights'
 import UpcomingNightsTimeline from './components/UpcomingNightsTimeline'
 import PastNights, { Footer } from './components/PastNights'
-import ArtistsPerformers from './components/ArtistsPerformers'
 import StickyCTA from './components/StickyCTA'
 import { colors } from './constants/colors'
 
@@ -27,7 +26,6 @@ function App() {
       <Hero />
       <UpcomingNights />
       <UpcomingNightsTimeline />
-      <ArtistsPerformers />
       <AboutSection />
       <BookingWorkflowSection />
       <LegacySection />

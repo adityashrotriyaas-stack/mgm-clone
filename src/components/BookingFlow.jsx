@@ -45,7 +45,7 @@ const stepShortLabels = ['Book', 'Pass', 'Category', 'Details', 'Pay', 'QR']
 
 function StepDots({ activeStep }) {
   return (
-    <Stack direction="row" spacing={0.75} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: 3, gap: 0.75 }}>
+    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: 3, gap: 0.75, justifyContent: 'center', flexWrap: 'wrap' }}>
       {steps.map((label, index) => (
         <Box
           key={label}
@@ -55,7 +55,7 @@ function StepDots({ activeStep }) {
             borderRadius: '50px',
             fontSize: { xs: '0.62rem', sm: '0.68rem' },
             fontWeight: 700,
-            bgcolor: index <= activeStep ? colors.gold : 'rgba(184,134,11,0.1)',
+            bgcolor: index <= activeStep ? colors.gold : 'rgba(234, 90, 0,0.1)',
             color: index <= activeStep ? '#fff' : colors.muted,
             whiteSpace: 'nowrap',
           }}
@@ -70,12 +70,19 @@ function StepDots({ activeStep }) {
 export default function BookingFlow() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const eventId = searchParams.get('event') || '1'
-  const registration = location.state?.registration
+  const stepParam = parseInt(searchParams.get('step') || '4', 10)
+  const registration = location.state?.registration || (() => { try { return JSON.parse(sessionStorage.getItem('bookingFlowRegistration')) } catch { return null } })()
   const wowslySession = location.state?.wowslySession || loadWowslySession()
 
-  const [activeStep, setActiveStep] = useState(4)
+  useEffect(() => {
+    if (registration) {
+      try { sessionStorage.setItem('bookingFlowRegistration', JSON.stringify(registration)) } catch {}
+    }
+  }, [registration])
+
+  const [activeStep, setActiveStep] = useState(isNaN(stepParam) ? 4 : Math.min(stepParam, steps.length - 1))
   const [paymentMethod, setPaymentMethod] = useState('upi')
   const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
   const [paying, setPaying] = useState(false)
@@ -88,6 +95,10 @@ export default function BookingFlow() {
       navigate(`/event/${eventId}`, { replace: true })
     }
   }, [registration, eventId, navigate])
+
+  useEffect(() => {
+    setSearchParams({ event: eventId, step: activeStep }, { replace: true })
+  }, [activeStep, eventId, setSearchParams])
 
   const progress = useMemo(() => ((activeStep + 1) / steps.length) * 100, [activeStep])
 
@@ -104,16 +115,20 @@ export default function BookingFlow() {
       setPaymentError('')
       setPaying(true)
       try {
+        console.log('[BookingFlow] Starting payment with session:', wowslySession)
         await completeWowslyPayment(registration, wowslySession)
+        console.log('[BookingFlow] Payment completed successfully')
         setActiveStep(5)
       } catch (error) {
-        setPaymentError(error?.message || 'Payment failed. Please try again.')
+        console.error('[BookingFlow] Payment error:', error)
+        setPaymentError(error?.message || error?.toString() || 'Payment failed. Please try again.')
       } finally {
         setPaying(false)
       }
       return
     }
 
+    console.log('[BookingFlow] Demo mode - skipping payment, going to next step')
     handleNext()
   }
 
@@ -170,7 +185,7 @@ export default function BookingFlow() {
                 mb: 2,
                 height: 6,
                 borderRadius: 3,
-                bgcolor: 'rgba(184,134,11,0.12)',
+                bgcolor: 'rgba(234, 90, 0,0.12)',
                 '& .MuiLinearProgress-bar': { background: gradients.primary },
               }}
             />
@@ -224,8 +239,8 @@ export default function BookingFlow() {
                       px: 2,
                       py: 1.5,
                       borderRadius: '14px',
-                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(184,134,11,0.18)',
-                      bgcolor: paymentMethod === id ? 'rgba(201, 139, 46, 0.12)' : colors.bgWarm,
+                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(234, 90, 0,0.18)',
+                      bgcolor: paymentMethod === id ? 'rgba(255, 179, 0, 0.12)' : colors.bgWarm,
                       color: colors.ivory,
                       textTransform: 'none',
                     }}
@@ -260,7 +275,7 @@ export default function BookingFlow() {
                     width: 180,
                     height: 180,
                     borderRadius: '16px',
-                    border: '2px solid rgba(184,134,11,0.25)',
+                    border: '2px solid rgba(234, 90, 0,0.25)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -302,10 +317,11 @@ export default function BookingFlow() {
                     py: 1.4,
                     minHeight: 48,
                     borderRadius: '12px',
-                    background: gradients.primary,
-                    color: '#fff',
+                    background: gradients.button,
+                    color: '#3A1C00',
                     fontWeight: 700,
-                    '&:hover': { background: gradients.primary, filter: 'brightness(1.05)' },
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    '&:hover': { background: gradients.buttonHover, transform: 'scale(1.02)', boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)' },
                     '&.Mui-disabled': { bgcolor: '#ccc', color: '#fff' },
                   }}
                 >
@@ -320,7 +336,7 @@ export default function BookingFlow() {
                     py: 1.4,
                     minHeight: 48,
                     borderRadius: '12px',
-                    background: gradients.primary,
+                    background: gradients.button,
                     color: '#fff',
                     fontWeight: 700,
                   }}

@@ -1,0 +1,16 @@
+{
+  "name": "MGM Cultural Navratri 2026",
+  "short_name": "MGM Navratri",
+  "description": "Ten nights of Garba, Dandiya and devotion at Seasons Hotel, Rajkot.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFBF5",
+  "theme_color": "#B8860B",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

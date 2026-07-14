@@ -12,7 +12,7 @@ export default function NonRefundableCheckbox({ checked, onChange }) {
         borderRadius: '14px',
         bgcolor: 'rgba(30, 18, 16, 0.55)',
         border: `1px solid ${colors.border}`,
-        backgroundImage: 'linear-gradient(135deg, rgba(201, 139, 46, 0.06), transparent 60%)',
+        backgroundImage: 'linear-gradient(135deg, rgba(255, 179, 0, 0.06), transparent 60%)',
       }}
     >
       <FormControlLabel
@@ -21,13 +21,13 @@ export default function NonRefundableCheckbox({ checked, onChange }) {
             checked={checked}
             onChange={(e) => onChange(e.target.checked)}
             sx={{
-              color: 'rgba(232, 184, 74, 0.45)',
+              color: 'rgba(255, 179, 0, 0.45)',
               pt: 0.25,
               '&.Mui-checked': {
                 color: colors.gold,
               },
               '&.Mui-checked .MuiSvgIcon-root': {
-                filter: 'drop-shadow(0 0 6px rgba(232, 184, 74, 0.45))',
+                filter: 'drop-shadow(0 0 6px rgba(255, 179, 0, 0.45))',
               },
             }}
           />
