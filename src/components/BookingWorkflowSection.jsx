@@ -263,7 +263,12 @@ export default function BookingWorkflowSection() {
         position: 'relative',
         py: { xs: 6, md: 9 },
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #3C1C00 0%, #1A0800 100%)',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box

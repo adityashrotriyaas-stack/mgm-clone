@@ -20,8 +20,6 @@ import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 import WhatsAppIcon from './WhatsAppIcon'
 import MobileNumberField from './MobileNumberField'
-import helpBg from '../assets/help-bg.png'
-
 const infoLines = [
   { icon: CallOutlinedIcon, label: 'Phone', value: contactInfo.phone, href: contactInfo.phoneHref },
   { icon: CallOutlinedIcon, label: 'Phone 2', value: contactInfo.phone2, href: contactInfo.phone2Href },
@@ -351,8 +349,7 @@ export default function ContactSection() {
         py: { xs: 5, md: 7 },
         backgroundColor: '#3A1C00',
         backgroundImage: `
-          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%),
-          url(${helpBg})
+          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%)
         `,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

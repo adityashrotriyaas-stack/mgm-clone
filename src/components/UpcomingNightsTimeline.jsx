@@ -387,12 +387,10 @@ export default function UpcomingNightsTimeline() {
         position: 'relative',
         pt: { xs: 2, md: 2.5 },
         pb: { xs: 5, md: 6 },
-        bgcolor: colors.night,
-        backgroundImage: `
-          radial-gradient(circle at 50% 20%, rgba(255,179,0,0.10), transparent 40%),
-          radial-gradient(circle at 15% 80%, rgba(234,90,0,0.08), transparent 30%),
-          repeating-linear-gradient(45deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 24px)
-        `,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.70) 0%, rgba(234,90,0,0.25) 50%, rgba(10,6,0,0.85) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
       }}
       onMouseEnter={() => setIsPaused(true)}

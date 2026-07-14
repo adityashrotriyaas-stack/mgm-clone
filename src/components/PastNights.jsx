@@ -24,7 +24,6 @@ import FestiveSection from './FestiveSection'
 import logoImg from '../assets/logo.jpeg'
 import wowslyLogo from '../assets/wowsly-logo.png'
 
-
 const highlightIcons = [
   SelfImprovementOutlinedIcon,
   CelebrationOutlinedIcon,
@@ -456,15 +455,10 @@ export default function PastNights() {
       showAccent={false}
       sx={{
         py: { xs: 5.5, md: 7.5 },
-        backgroundImage: `
-          radial-gradient(circle at 50% 16%, rgba(255, 179, 0,0.12), transparent 20%),
-          radial-gradient(circle at 20% 22%, rgba(234, 90, 0,0.14), transparent 18%),
-          radial-gradient(circle at 80% 20%, rgba(234, 90, 0,0.14), transparent 18%),
-          linear-gradient(180deg, ${colors.night} 0%, #3A1C00 100%),
-          ${patternDiya},
-          ${patternMandala},
-          ${patternGarland}
-        `,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.65) 0%, rgba(234,90,0,0.35) 50%, rgba(10,6,0,0.9) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box
@@ -657,7 +651,12 @@ export function Footer() {
         pb: { xs: 'calc(24px + env(safe-area-inset-bottom, 0px))', md: 3 },
         mt: 0,
         color: 'rgba(255, 245, 230, 0.72)',
-        backgroundColor: colors.night,
+        backgroundImage: `
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>

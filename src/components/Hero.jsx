@@ -82,7 +82,10 @@ export default function Hero() {
       id="home"
       sx={{
         position: 'relative',
-        bgcolor: colors.night,
+        backgroundImage: `linear-gradient(180deg, rgba(42,14,0,0.88) 0%, rgba(255,179,0,0.15) 50%, rgba(42,14,0,0.92) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
         '&::before': {
           content: '""',

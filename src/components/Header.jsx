@@ -151,7 +151,11 @@ export default function Header() {
                 href={link.href}
                 onClick={(e) => {
                   e.preventDefault()
-                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                  if (link.href.startsWith('/')) {
+                    navigate(link.href)
+                  } else {
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                  }
                 }}
                 sx={{
                   color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.72)',
@@ -290,7 +294,11 @@ export default function Header() {
                     onClick={(e) => {
                       closeMenu()
                       e.preventDefault()
-                      document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                      if (link.href.startsWith('/')) {
+                        navigate(link.href)
+                      } else {
+                        document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                      }
                     }}
                     sx={{
                       display: 'block',

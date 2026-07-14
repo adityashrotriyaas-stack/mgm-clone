@@ -175,7 +175,12 @@ export default function AboutSection() {
       sx={{
         py: { xs: 6, md: 9 },
         backgroundColor: '#3A1C00',
-        background: 'linear-gradient(180deg, #3C1C00 0%, #1A0800 100%)',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%)
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         '&::before': { display: 'none' },
       }}
     >

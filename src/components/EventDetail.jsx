@@ -600,22 +600,80 @@ export default function EventDetail() {
   const id = Number(eventId)
   const event = upcomingEvents.find((e) => e.id === id) || buildFallbackEvent(id)
   const info = eventInfo[id] || buildFallbackInfo(id)
-  const [regStep, setRegStep] = useState(0)
-  const [passMode, setPassMode] = useState('')
-  const [category, setCategory] = useState('')
-  const [slotSelection, setSlotSelection] = useState(null)
+  const SESSION_KEY = `eventDetailForm_${eventId}`
+
+  const stripPreview = (obj) => {
+    if (!obj) return obj
+    const { selfiePreview, ...rest } = obj
+    return rest
+  }
+
+  const ss = (key) => sessionStorage.getItem(`${SESSION_KEY}_${key}`)
+  const ssJSON = (key) => { try { return JSON.parse(ss(key)) } catch { return null } }
+
+  function saveFormState() {
+    try {
+      sessionStorage.setItem(`${SESSION_KEY}_step`, String(regStep))
+      sessionStorage.setItem(`${SESSION_KEY}_pm`, passMode)
+      sessionStorage.setItem(`${SESSION_KEY}_cat`, category)
+      sessionStorage.setItem(`${SESSION_KEY}_slot`, JSON.stringify(slotSelection))
+      sessionStorage.setItem(`${SESSION_KEY}_pf`, JSON.stringify(stripPreview(personForm)))
+      sessionStorage.setItem(`${SESSION_KEY}_spf`, JSON.stringify(stripPreview(secondPersonForm)))
+      sessionStorage.setItem(`${SESSION_KEY}_mf`, JSON.stringify(stripPreview(maleForm)))
+      sessionStorage.setItem(`${SESSION_KEY}_ff`, JSON.stringify(stripPreview(femaleForm)))
+      sessionStorage.setItem(`${SESSION_KEY}_tc`, ticketCount)
+      sessionStorage.setItem(`${SESSION_KEY}_anr`, String(acceptedNonRefundable))
+      sessionStorage.setItem(`${SESSION_KEY}_ap`, String(acceptedPolicies))
+    } catch {}
+  }
+
+  function clearFormState() {
+    try {
+      sessionStorage.removeItem(`${SESSION_KEY}_step`)
+      sessionStorage.removeItem(`${SESSION_KEY}_pm`)
+      sessionStorage.removeItem(`${SESSION_KEY}_cat`)
+      sessionStorage.removeItem(`${SESSION_KEY}_slot`)
+      sessionStorage.removeItem(`${SESSION_KEY}_pf`)
+      sessionStorage.removeItem(`${SESSION_KEY}_spf`)
+      sessionStorage.removeItem(`${SESSION_KEY}_mf`)
+      sessionStorage.removeItem(`${SESSION_KEY}_ff`)
+      sessionStorage.removeItem(`${SESSION_KEY}_tc`)
+      sessionStorage.removeItem(`${SESSION_KEY}_anr`)
+      sessionStorage.removeItem(`${SESSION_KEY}_ap`)
+    } catch {}
+  }
+
+  const initialStep = (() => {
+    const s = new URLSearchParams(window.location.search).get('step')
+    return s ? Math.min(parseInt(s, 10), 3) : 0
+  })()
+  const [regStep, setRegStep] = useState(() => {
+    const s = parseInt(ss('step'), 10)
+    return !isNaN(s) ? s : (isNaN(initialStep) ? 0 : initialStep)
+  })
+  const [passMode, setPassMode] = useState(() => ss('pm') || '')
+  const [category, setCategory] = useState(() => ss('cat') || '')
+  const [slotSelection, setSlotSelection] = useState(() => ssJSON('slot'))
   const [schedule, setSchedule] = useState(null)
   const [scheduleLoading, setScheduleLoading] = useState(false)
   const [scheduleError, setScheduleError] = useState('')
-  const [personForm, setPersonForm] = useState(emptyPerson)
-  const [secondPersonForm, setSecondPersonForm] = useState(emptyPerson)
-  const [maleForm, setMaleForm] = useState(emptyPerson)
-  const [femaleForm, setFemaleForm] = useState(emptyPerson)
-  const [ticketCount, setTicketCount] = useState('1')
-  const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
-  const [acceptedPolicies, setAcceptedPolicies] = useState(false)
+  const [personForm, setPersonForm] = useState(() => ssJSON('pf') || emptyPerson())
+  const [secondPersonForm, setSecondPersonForm] = useState(() => ssJSON('spf') || emptyPerson())
+  const [maleForm, setMaleForm] = useState(() => ssJSON('mf') || emptyPerson())
+  const [femaleForm, setFemaleForm] = useState(() => ssJSON('ff') || emptyPerson())
+  const [ticketCount, setTicketCount] = useState(() => ss('tc') || '1')
+  const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(() => ss('anr') === 'true')
+  const [acceptedPolicies, setAcceptedPolicies] = useState(() => ss('ap') === 'true')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+
+  const changeStep = (step) => {
+    setRegStep(step)
+    const url = new URL(window.location.href)
+    url.searchParams.set('step', step)
+    window.history.replaceState(null, '', url.toString())
+  }
+
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
   const isSeasonalPass = passMode === 'seasonal'
@@ -678,7 +736,7 @@ export default function EventDetail() {
   const selectCategory = (key) => {
     setCategory(key)
     setTicketCount(key === 'couple' ? '2' : '1')
-    setRegStep(2)
+    changeStep(2)
   }
 
   const handleSubmit = async (e) => {
@@ -736,6 +794,7 @@ export default function EventDetail() {
         registration = applyQuotedPriceToRegistration(registration, wowslySession)
       }
 
+      clearFormState()
       navigate(`/book?event=${eventId}`, { state: { registration, wowslySession } })
     } catch (error) {
       setSubmitError(error?.message || 'Registration failed. Please try again.')
@@ -796,7 +855,7 @@ export default function EventDetail() {
                       onSelect={() => {
                         setPassMode(item.id)
                         if (item.id === 'seasonal') setSlotSelection(null)
-                        setRegStep(1)
+                        changeStep(1)
                       }}
                     />
                   ))}
@@ -834,7 +893,7 @@ export default function EventDetail() {
                   </Stack>
 
                   <Button
-                    onClick={() => setRegStep(0)}
+                    onClick={() => changeStep(0)}
                     fullWidth
                     startIcon={<ChevronLeftRoundedIcon />}
                     sx={{ ...registrationBackButtonSx, flex: 'unset', width: '100%' }}
@@ -852,8 +911,8 @@ export default function EventDetail() {
                   selection={slotSelection}
                   onSelectionChange={setSlotSelection}
                   defaultNightId={id}
-                  onBack={() => setRegStep(1)}
-                  onContinue={() => setRegStep(detailsStep)}
+                  onBack={() => changeStep(1)}
+                  onContinue={() => changeStep(detailsStep)}
                 />
               )}
 
@@ -976,11 +1035,11 @@ export default function EventDetail() {
                       label={
                         <Typography sx={{ fontSize: '0.88rem', color: colors.muted, lineHeight: 1.65 }}>
                           I agree to the{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => navigate('/privacy-policy')}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => { saveFormState(); navigate('/privacy-policy') }}>
                             Privacy Policy
                           </Box>{' '}
                           and{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => navigate('/refund-policy')}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => { saveFormState(); navigate('/refund-policy') }}>
                             Refund Policy
                           </Box>
                         </Typography>
@@ -998,7 +1057,7 @@ export default function EventDetail() {
                   <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5 }}>
                     <Button
                       type="button"
-                      onClick={() => setRegStep(isSeasonalPass ? 1 : scheduleStep)}
+                      onClick={() => changeStep(isSeasonalPass ? 1 : scheduleStep)}
                       sx={registrationBackButtonSx}
                     >
                       Back
