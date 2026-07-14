@@ -660,17 +660,6 @@ export function Footer() {
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
-        <Box sx={{ textAlign: 'center', mb: 3 }}>
-          <Box
-            component="img"
-            src={wowslyLogo}
-            alt="Wowsly"
-            sx={{ width: 64, height: 'auto', display: 'block', mx: 'auto', mb: 0.4 }}
-          />
-          <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>
-            Powered by Wowsly
-          </Typography>
-        </Box>
         <Box
           sx={{
             display: 'grid',
@@ -787,7 +776,17 @@ export function Footer() {
           </Box>
         </Box>
 
-
+        <Box sx={{ textAlign: 'center', mt: 1.5 }}>
+          <Box
+            component="img"
+            src={wowslyLogo}
+            alt="Wowsly"
+            sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.4 }}
+          />
+          <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>
+            Powered by Wowsly
+          </Typography>
+        </Box>
       </Container>
     </FestiveSection>
   )
