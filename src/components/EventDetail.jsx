@@ -1072,20 +1072,20 @@ export default function EventDetail() {
                   </Stack>
                 </Box>
               )}
-              <Box sx={{ textAlign: 'center', mt: 2.5 }}>
-                <Box
-                  component="img"
-                  src={wowslyLogo}
-                  alt="Wowsly"
-                  sx={{ width: 44, height: 'auto', display: 'block', mx: 'auto', mb: 0.3 }}
-                />
-                <Typography sx={{ color: colors.muted, fontSize: '0.68rem' }}>
-                  Powered by Wowsly
-                </Typography>
-              </Box>
             </Box>
           </Box>
       </Container>
+      <Box sx={{ textAlign: 'center', py: 1, borderTop: '1px solid rgba(255,179,0,0.12)' }}>
+        <Box
+          component="img"
+          src={wowslyLogo}
+          alt="Wowsly"
+           sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.3 }}
+        />
+        <Typography sx={{ color: colors.muted, fontSize: '0.78rem' }}>
+          Powered by Wowsly
+        </Typography>
+      </Box>
     </FestiveSection>
   )
 }
