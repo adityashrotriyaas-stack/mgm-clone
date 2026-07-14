@@ -47,7 +47,7 @@ function AccordionItem({ question, answer, open, onToggle }) {
   return (
     <Box
       sx={{
-        borderBottom: '1px solid rgba(234, 90, 0,0.08)',
+        borderBottom: '1px solid rgba(255, 179, 0, 0.08)',
         '&:last-child': { borderBottom: 'none' },
       }}
     >
@@ -57,14 +57,15 @@ function AccordionItem({ question, answer, open, onToggle }) {
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2,
           py: { xs: 1.75, md: 2 },
           cursor: 'pointer',
-          transition: 'color 0.2s ease',
-          '&:hover': { color: colors.gold },
+          transition: 'color 0.2s ease, padding-left 0.2s ease',
+          pl: open ? 1 : 0,
+          '&:hover': { color: colors.gold, pl: 1 },
         }}
       >
         <Typography sx={{ fontWeight: 600, fontSize: '0.92rem', color: 'inherit', flex: 1, lineHeight: 1.4 }}>
           {question}
         </Typography>
-        <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: open ? gradients.primary : 'rgba(234, 90, 0,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.25s ease' }}>
+        <Box sx={{ width: 30, height: 30, borderRadius: '50%', bgcolor: open ? gradients.primary : 'rgba(255, 179, 0, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.25s ease', boxShadow: open ? '0 4px 14px rgba(234, 90, 0, 0.35)' : 'none' }}>
           {open ? <RemoveRoundedIcon sx={{ color: '#fff', fontSize: '0.85rem' }} /> : <AddRoundedIcon sx={{ color: colors.gold, fontSize: '0.85rem' }} />}
         </Box>
       </Box>
@@ -77,7 +78,7 @@ function AccordionItem({ question, answer, open, onToggle }) {
           pb: open ? 1.5 : 0,
         }}
       >
-        <Typography sx={{ fontSize: '0.85rem', color: colors.mutedLight, lineHeight: 1.7 }}>
+        <Typography sx={{ fontSize: '0.85rem', color: 'rgba(255, 248, 240, 0.72)', lineHeight: 1.7 }}>
           {answer}
         </Typography>
       </Box>
@@ -91,14 +92,14 @@ export default function FAQSection() {
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i)
 
   return (
-    <Box component="section" id="faq" sx={{ py: { xs: 5, md: 7 }, position: 'relative', overflow: 'hidden', bgcolor: colors.heroCream }}>
+    <Box component="section" id="faq" sx={{ py: { xs: 5, md: 7 }, position: 'relative', overflow: 'hidden', bgcolor: colors.bgSoft }}>
       <Container maxWidth="md" sx={{ px: { xs: 2, sm: 2.5, md: 3 }, position: 'relative', zIndex: 1 }}>
         <SectionHead
           eyebrow="FAQs"
           title="Frequently Asked Questions"
           description="Everything you need to know about MGM Cultural Navratri 2026."
         />
-        <Box sx={{ bgcolor: colors.bg, borderRadius: '16px', border: '1px solid rgba(234, 90, 0,0.08)', boxShadow: '0 8px 24px rgba(26, 14, 0,0.04)', px: { xs: 2, md: 3 } }}>
+        <Box sx={{ bgcolor: 'rgba(26, 8, 0, 0.85)', borderRadius: '16px', border: '1px solid rgba(255, 179, 0, 0.15)', boxShadow: '0 12px 36px rgba(0, 0, 0, 0.25), 0 0 20px rgba(255, 179, 0, 0.04)', px: { xs: 2, md: 3 }, backdropFilter: 'blur(8px)' }}>
           {faqs.map((faq, i) => (
             <AccordionItem key={i} question={faq.q} answer={faq.a} open={openIndex === i} onToggle={() => toggle(i)} />
           ))}

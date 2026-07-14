@@ -57,7 +57,7 @@ function AboutCopy({ visible }) {
   const blocks = aboutContent.paragraphs
 
   return (
-    <Box sx={{ flex: 1, maxWidth: { lg: '48%' } }}>
+    <Box sx={{ flex: 1, maxWidth: { lg: '48%' }, bgcolor: 'rgba(26, 8, 0, 0.35)', borderRadius: '24px', p: { xs: 2, md: 3 }, backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 179, 0, 0.1)' }}>
       <Box
         sx={{
           opacity: visible ? 1 : 0,

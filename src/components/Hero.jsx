@@ -8,6 +8,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
 import heroBanner from '../assets/hero-banner.jpeg'
 import { colors } from '../constants/colors'
+import bookingWorkflowBg from '../assets/booking-workflow-bg.png'
 import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
 
@@ -36,19 +37,18 @@ function HeroFeatureCard({ icon, title, subtitle, index }) {
         sx={{
           width: { xs: 38, sm: 42 },
           height: { xs: 38, sm: 42 },
-          borderRadius: '12px',
-          bgcolor: 'rgba(26, 26, 26, 0.85)',
-          border: `1px solid ${colors.border}`,
+          borderRadius: '14px',
+          bgcolor: 'rgba(42, 14, 0, 0.75)',
+          border: '1px solid rgba(255, 179, 0, 0.3)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
-          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
+          boxShadow: '0 6px 18px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 179, 0, 0.15)',
+          backdropFilter: 'blur(12px)',
         }}
       >
-
-
-        <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: colors.maroon }} />
+        <Icon sx={{ fontSize: { xs: '1.15rem', md: '1.3rem' }, color: colors.gold }} />
       </Box>
       <Box sx={{ minWidth: 0 }}>
         <Typography
@@ -64,7 +64,7 @@ function HeroFeatureCard({ icon, title, subtitle, index }) {
         <Typography
           sx={{
             fontSize: { xs: '0.68rem', sm: '0.72rem' },
-            color: 'rgba(255, 255, 255, 0.72)',
+            color: 'rgba(255, 245, 230, 0.65)',
             lineHeight: 1.35,
             mt: 0.15,
           }}
@@ -83,15 +83,11 @@ export default function Hero() {
       id="home"
       sx={{
         position: 'relative',
-        bgcolor: colors.night,
+        backgroundImage: `linear-gradient(180deg, rgba(42,14,0,0.88) 0%, rgba(255,179,0,0.15) 50%, rgba(42,14,0,0.92) 100%), url(${bookingWorkflowBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: patternNight,
-          pointerEvents: 'none',
-        },
       }}
     >
       <Container
@@ -109,8 +105,8 @@ export default function Hero() {
             position: 'relative',
             borderRadius: { xs: '20px', md: '28px' },
             overflow: 'hidden',
-            border: `1px solid ${colors.border}`,
-            boxShadow: '0 24px 60px rgba(26, 10, 18, 0.45)',
+            border: '1px solid rgba(255, 179, 0, 0.35)',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 179, 0, 0.12)',
             bgcolor: colors.nightMid,
             opacity: 0,
             animation: 'mgm-hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
@@ -123,6 +119,7 @@ export default function Hero() {
             component="img"
             src={heroBanner}
             alt="MGM Navratri 2026"
+            loading="eager"
             sx={{
               width: '100%',
               height: 'auto',

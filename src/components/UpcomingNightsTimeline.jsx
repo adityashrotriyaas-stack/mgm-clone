@@ -13,6 +13,7 @@ import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
 import { useNavigate } from 'react-router-dom'
 import dandiyaDeco from '../assets/dandiya-deco.png'
+import artistsBg from '../assets/artists-bg.png'
 import { colors } from '../constants/colors'
 import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
@@ -387,12 +388,10 @@ export default function UpcomingNightsTimeline() {
         position: 'relative',
         pt: { xs: 2, md: 2.5 },
         pb: { xs: 5, md: 6 },
-        bgcolor: colors.night,
-        backgroundImage: `
-          radial-gradient(circle at 50% 20%, rgba(255,179,0,0.10), transparent 40%),
-          radial-gradient(circle at 15% 80%, rgba(234,90,0,0.08), transparent 30%),
-          repeating-linear-gradient(45deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 24px)
-        `,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.70) 0%, rgba(234,90,0,0.25) 50%, rgba(10,6,0,0.85) 100%), url(${artistsBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
       }}
       onMouseEnter={() => setIsPaused(true)}
@@ -623,6 +622,7 @@ export default function UpcomingNightsTimeline() {
               component="img"
               src={dandiyaDeco}
               alt=""
+              loading="lazy"
               aria-hidden
               sx={{
                 display: { xs: 'none', md: 'block' },

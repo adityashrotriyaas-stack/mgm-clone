@@ -42,17 +42,17 @@ export default function Header() {
       sx={{
         top: 0,
         zIndex: 1200,
-        bgcolor: scrolled ? 'rgba(26, 10, 18, 0.62)' : colors.night,
+        bgcolor: scrolled ? 'rgba(42, 14, 0, 0.72)' : 'rgba(26, 8, 0, 0.95)',
         borderBottom: scrolled
-          ? '1px solid rgba(255, 179, 0, 0.22)'
-          : '1px solid rgba(255, 179, 0, 0.15)',
+          ? '1px solid rgba(255, 179, 0, 0.3)'
+          : '1px solid rgba(255, 179, 0, 0.12)',
         boxShadow: scrolled
-          ? '0 8px 28px rgba(10, 4, 8, 0.28)'
-          : '0 4px 24px rgba(26, 10, 18, 0.4)',
+          ? '0 8px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 179, 0, 0.06)'
+          : '0 4px 24px rgba(0, 0, 0, 0.4)',
         color: colors.textLight,
         overflow: 'hidden',
-        backdropFilter: scrolled ? 'blur(14px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        backdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
         transition:
           'background-color 0.28s ease, backdrop-filter 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease',
         '&::before': {
@@ -60,7 +60,7 @@ export default function Header() {
           position: 'absolute',
           inset: 0,
           backgroundImage: patternNight,
-          opacity: scrolled ? 0.35 : 0.7,
+          opacity: scrolled ? 0.3 : 0.6,
           pointerEvents: 'none',
           transition: 'opacity 0.28s ease',
         },
@@ -143,6 +143,10 @@ export default function Header() {
               <Link
                 key={link.label}
                 href={link.href}
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                }}
                 sx={{
                   color: link.active ? '#FFF8E7' : 'rgba(255,248,231,0.72)',
                   fontWeight: link.active ? 700 : 500,
@@ -184,11 +188,14 @@ export default function Header() {
               fontWeight: 700,
               borderRadius: '50px',
               boxShadow: '0 8px 22px rgba(234, 90, 0, 0.35)',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              transition: 'transform 0.15s ease, box-shadow 0.2s ease',
               '&:hover': {
                 background: gradients.buttonHover,
-                transform: 'scale(1.03)',
-                boxShadow: '0 12px 28px rgba(234, 90, 0, 0.50)',
+                transform: 'scale(1.03) translateY(-2px)',
+                boxShadow: '0 14px 30px rgba(234, 90, 0, 0.50)',
+              },
+              '&:active': {
+                transform: 'scale(0.97) translateY(0)',
               },
             }}
           >
@@ -226,7 +233,11 @@ export default function Header() {
                 <Box component="li" key={link.label}>
                   <Link
                     href={link.href}
-                    onClick={closeMenu}
+                    onClick={(e) => {
+                      closeMenu()
+                      e.preventDefault()
+                      document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
+                    }}
                     sx={{
                       display: 'block',
                       py: 1.4,
@@ -244,30 +255,33 @@ export default function Header() {
                 </Box>
               ))}
               <Box component="li" sx={{ mt: 1.25 }}>
-                <Button
-                  onClick={() => {
-                    closeMenu()
-                    navigate('/event/1')
-                  }}
-                  fullWidth
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 1,
-                    borderRadius: '50px',
-                    py: 1.4,
-                    fontWeight: 700,
-                    background: gradients.button,
-                    color: '#3A1C00',
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    '&:hover': {
-                      background: gradients.buttonHover,
-                      transform: 'scale(1.02)',
-                      boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)',
-                    },
-                  }}
-                >
+                  <Button
+                    onClick={() => {
+                      closeMenu()
+                      navigate('/event/1')
+                    }}
+                    fullWidth
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 1,
+                      borderRadius: '50px',
+                      py: 1.4,
+                      fontWeight: 700,
+                      background: gradients.button,
+                      color: '#3A1C00',
+                      transition: 'transform 0.15s ease, box-shadow 0.2s ease',
+                      '&:hover': {
+                        background: gradients.buttonHover,
+                        transform: 'scale(1.02) translateY(-2px)',
+                        boxShadow: '0 14px 30px rgba(234, 90, 0, 0.45)',
+                      },
+                      '&:active': {
+                        transform: 'scale(0.97)',
+                      },
+                    }}
+                  >
                   <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
                   Get Your Pass
                 </Button>
