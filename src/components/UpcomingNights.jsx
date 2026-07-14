@@ -1,6 +1,11 @@
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
+import { useNavigate } from 'react-router-dom'
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
+import { colors } from '../constants/colors'
 
 const section = {
   bg: '#1A0800',
@@ -9,6 +14,7 @@ const section = {
 }
 
 export default function UpcomingNights() {
+  const navigate = useNavigate()
   return (
     <Box
       component="section"
@@ -108,7 +114,37 @@ export default function UpcomingNights() {
           animation: 'mgm-float 6.5s ease-in-out infinite reverse',
         }}
       />
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }} />
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <Button
+            onClick={() => navigate('/event/1')}
+            startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
+            endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
+            sx={{
+              background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
+              color: '#3A1C00',
+              px: { xs: 2.4, md: 3 },
+              py: { xs: 0.9, md: 1 },
+              borderRadius: '999px',
+              fontWeight: 800,
+              fontSize: { xs: '0.86rem', md: '0.92rem' },
+              textTransform: 'none',
+              letterSpacing: '0.15px',
+              boxShadow: '0 10px 26px rgba(255, 179, 0, 0.32)',
+              '& .MuiButton-startIcon': { mr: 0.7 },
+              '& .MuiButton-endIcon': { ml: 0.7 },
+              '&:hover': {
+                background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
+                filter: 'brightness(1.05)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 14px 30px rgba(255, 179, 0, 0.4)',
+              },
+            }}
+          >
+            Start Booking Now
+          </Button>
+        </Box>
+      </Container>
     </Box>
   )
 }
