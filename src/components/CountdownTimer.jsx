@@ -67,11 +67,11 @@ export default function CountdownTimer() {
         Starts in
       </Typography>
       <TimeUnit value={timeLeft.days} label="Days" />
-      <Typography sx={{ color: colors.glassBorder, fontSize: '1rem', fontWeight: 300 }}>:</Typography>
+      <Typography sx={{ color: colors.gold, fontSize: '1rem', fontWeight: 300 }}>:</Typography>
       <TimeUnit value={timeLeft.hours} label="Hrs" />
-      <Typography sx={{ color: colors.glassBorder, fontSize: '1rem', fontWeight: 300 }}>:</Typography>
+      <Typography sx={{ color: colors.gold, fontSize: '1rem', fontWeight: 300 }}>:</Typography>
       <TimeUnit value={timeLeft.minutes} label="Min" />
-      <Typography sx={{ color: colors.glassBorder, fontSize: '1rem', fontWeight: 300 }}>:</Typography>
+      <Typography sx={{ color: colors.gold, fontSize: '1rem', fontWeight: 300 }}>:</Typography>
       <TimeUnit value={timeLeft.seconds} label="Sec" />
     </Box>
   )

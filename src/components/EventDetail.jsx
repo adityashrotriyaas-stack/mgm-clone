@@ -976,11 +976,11 @@ export default function EventDetail() {
                       label={
                         <Typography sx={{ fontSize: '0.88rem', color: colors.muted, lineHeight: 1.65 }}>
                           I agree to the{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline' }}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => navigate('/privacy-policy')}>
                             Privacy Policy
                           </Box>{' '}
                           and{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline' }}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => navigate('/refund-policy')}>
                             Refund Policy
                           </Box>
                         </Typography>

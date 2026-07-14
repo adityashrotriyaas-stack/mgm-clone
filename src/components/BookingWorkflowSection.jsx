@@ -12,6 +12,7 @@ import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
 import { useNavigate } from 'react-router-dom'
 import { patternMandala } from '../constants/navratriTheme'
+import bookingWorkflowBg from '../assets/booking-workflow-bg.png'
 
 const workflowSteps = [
   {
@@ -193,9 +194,10 @@ function WorkflowStep({ step, index, visible }) {
           px: 1.5,
           textAlign: 'center',
           borderRadius: '72px 72px 16px 16px',
-          border: '1px solid rgba(255, 196, 78, 0.45)',
-          bgcolor: 'rgba(255, 255, 255, 0.03)',
-          backdropFilter: 'blur(6px)',
+          border: '1px solid rgba(255, 179, 0, 0.35)',
+          bgcolor: 'rgba(42, 14, 0, 0.45)',
+          backdropFilter: 'blur(14px)',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 179, 0, 0.12)',
           minHeight: { xs: 220, lg: 240 },
           display: 'flex',
           flexDirection: 'column',
@@ -262,7 +264,13 @@ export default function BookingWorkflowSection() {
         position: 'relative',
         py: { xs: 6, md: 9 },
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #3C1C00 0%, #1A0800 100%)',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%),
+          url(${bookingWorkflowBg})
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box
@@ -272,14 +280,6 @@ export default function BookingWorkflowSection() {
           backgroundImage: patternMandala,
           backgroundSize: 'cover',
           opacity: 0.06,
-          pointerEvents: 'none',
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.45) 100%)',
           pointerEvents: 'none',
         }}
       />

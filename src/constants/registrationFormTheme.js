@@ -46,12 +46,12 @@ export const registrationFieldSx = {
 }
 
 export const registrationCardSx = {
-  border: `1px solid ${registrationUi.border}`,
+  border: `1px solid rgba(255, 179, 0, 0.2)`,
   borderRadius: '20px',
   p: { xs: 2, sm: 2.25, md: 3 },
-  bgcolor: registrationUi.card,
-  boxShadow: '0 16px 48px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 235, 210, 0.06)',
-  backdropFilter: 'blur(8px)',
+  bgcolor: 'rgba(26, 8, 0, 0.85)',
+  boxShadow: '0 20px 52px rgba(0, 0, 0, 0.4), 0 0 24px rgba(255, 179, 0, 0.06), inset 0 1px 0 rgba(255, 235, 210, 0.06)',
+  backdropFilter: 'blur(12px)',
 }
 
 export const registrationSummarySx = {
@@ -94,12 +94,15 @@ export const registrationSubmitButtonSx = {
   fontWeight: 800,
   fontSize: '0.9375rem',
   textTransform: 'none',
-  boxShadow: '0 10px 24px rgba(255, 179, 0, 0.30)',
-  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  boxShadow: '0 8px 24px rgba(255, 179, 0, 0.30)',
+  transition: 'transform 0.15s ease, box-shadow 0.2s ease',
   '&:hover': {
     background: gradients.primaryHover,
-    transform: 'scale(1.02)',
-    boxShadow: '0 14px 32px rgba(255, 179, 0, 0.45)',
+    transform: 'scale(1.03) translateY(-2px)',
+    boxShadow: '0 16px 36px rgba(255, 179, 0, 0.45)',
+  },
+  '&:active': {
+    transform: 'scale(0.98) translateY(0)',
   },
   '&.Mui-disabled': {
     bgcolor: 'rgba(60, 40, 0, 0.5)',

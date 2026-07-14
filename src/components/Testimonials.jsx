@@ -45,6 +45,7 @@ const testimonials = [
 
 export default function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [touchStart, setTouchStart] = useState(null)
   const intervalRef = useRef(null)
 
   const next = () => setActiveIndex((prev) => (prev + 1) % testimonials.length)
@@ -54,6 +55,17 @@ export default function Testimonials() {
     intervalRef.current = setInterval(next, 4500)
     return () => clearInterval(intervalRef.current)
   }, [])
+
+  const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX)
+  const handleTouchEnd = (e) => {
+    if (touchStart === null) return
+    const diff = touchStart - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) next()
+      else prev()
+    }
+    setTouchStart(null)
+  }
 
   const t = testimonials[activeIndex]
 
@@ -65,13 +77,19 @@ export default function Testimonials() {
           title="What People Say"
           description="Hear from those who have danced the nights away."
         />
-        <Box sx={{ position: 'relative' }}>
+        <Box
+          sx={{ position: 'relative' }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <Box
             key={activeIndex}
             sx={{
-              bgcolor: colors.heroCream, borderRadius: '20px',
-              border: '1px solid rgba(234, 90, 0,0.08)',
-              boxShadow: '0 8px 28px rgba(26, 14, 0,0.04)',
+              bgcolor: 'rgba(26, 8, 0, 0.85)',
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 179, 0, 0.15)',
+              boxShadow: '0 12px 36px rgba(0, 0, 0, 0.25), 0 0 20px rgba(255, 179, 0, 0.04)',
+              backdropFilter: 'blur(8px)',
               px: { xs: 2.5, md: 4 },
               py: { xs: 3, md: 3.5 },
               textAlign: 'center',
@@ -99,7 +117,7 @@ export default function Testimonials() {
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1.5, mt: 2.5 }}>
             <IconButton
               onClick={prev}
-              sx={{ width: 36, height: 36, bgcolor: 'rgba(234, 90, 0,0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(234, 90, 0,0.15)' } }}
+              sx={{ width: 36, height: 36, bgcolor: 'rgba(255, 179, 0, 0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(255, 179, 0, 0.18)' } }}
             >
               <ChevronLeftRoundedIcon sx={{ fontSize: '1.1rem' }} />
             </IconButton>
@@ -111,7 +129,7 @@ export default function Testimonials() {
                   sx={{
                     width: i === activeIndex ? 20 : 8, height: 8,
                     borderRadius: '4px',
-                    bgcolor: i === activeIndex ? colors.marigold : colors.glassBorder,
+                    bgcolor: i === activeIndex ? colors.gold : 'rgba(255, 179, 0, 0.15)',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                   }}
@@ -120,7 +138,7 @@ export default function Testimonials() {
             </Box>
             <IconButton
               onClick={next}
-              sx={{ width: 36, height: 36, bgcolor: 'rgba(234, 90, 0,0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(234, 90, 0,0.15)' } }}
+              sx={{ width: 36, height: 36, bgcolor: 'rgba(255, 179, 0, 0.08)', color: colors.ivory, '&:hover': { bgcolor: 'rgba(255, 179, 0, 0.18)' } }}
             >
               <ChevronRightRoundedIcon sx={{ fontSize: '1.1rem' }} />
             </IconButton>

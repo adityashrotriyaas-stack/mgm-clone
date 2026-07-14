@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
@@ -22,6 +23,8 @@ import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 import logoImg from '../assets/logo.jpeg'
 import wowslyLogo from '../assets/wowsly-logo.png'
+import pastNightsBg from '../assets/past-nights-bg.png'
+import legacyBg from '../assets/artists-bg.png'
 
 const highlightIcons = [
   SelfImprovementOutlinedIcon,
@@ -317,6 +320,7 @@ function MemoryLightbox({ item, onClose }) {
             component="img"
             src={item.image}
             alt={item.label}
+            loading="lazy"
             sx={{
               width: '100%',
               maxHeight: 'calc(100vh - 24px)',
@@ -453,15 +457,10 @@ export default function PastNights() {
       showAccent={false}
       sx={{
         py: { xs: 5.5, md: 7.5 },
-        backgroundImage: `
-          radial-gradient(circle at 50% 16%, rgba(255, 179, 0,0.12), transparent 20%),
-          radial-gradient(circle at 20% 22%, rgba(234, 90, 0,0.14), transparent 18%),
-          radial-gradient(circle at 80% 20%, rgba(234, 90, 0,0.14), transparent 18%),
-          linear-gradient(180deg, ${colors.night} 0%, #3A1C00 100%),
-          ${patternDiya},
-          ${patternMandala},
-          ${patternGarland}
-        `,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.65) 0%, rgba(234,90,0,0.35) 50%, rgba(10,6,0,0.9) 100%), url(${pastNightsBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box
@@ -643,6 +642,7 @@ export default function PastNights() {
 }
 
 export function Footer() {
+  const navigate = useNavigate()
   return (
     <FestiveSection
       component="footer"
@@ -653,6 +653,13 @@ export function Footer() {
         pb: { xs: 'calc(24px + env(safe-area-inset-bottom, 0px))', md: 3 },
         mt: 0,
         color: 'rgba(255, 245, 230, 0.72)',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%),
+          url(${legacyBg})
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 2.5, md: 3 } }}>
@@ -776,6 +783,8 @@ export function Footer() {
               <Box component="li">{contactInfo.phone}</Box>
               <Box component="li">{contactInfo.phone2}</Box>
               <Box component="li">{contactInfo.email}</Box>
+              <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/privacy-policy')}>Privacy Policy</Box>
+              <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/refund-policy')}>Refund Policy</Box>
               <Box component="li">Organiser Login</Box>
             </Stack>
           </Box>

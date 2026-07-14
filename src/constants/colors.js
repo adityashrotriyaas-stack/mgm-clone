@@ -15,6 +15,7 @@ export const colors = {
   ivory: '#FFF8F0',
   textLight: '#FFF8F0',
   muted: 'rgba(255, 248, 240, 0.78)',
+  mutedLight: 'rgba(255, 248, 240, 0.58)',
   marigold: '#EA5A00',
   marigoldSoft: '#FF8A30',
   coral: '#EA5A00',
@@ -27,7 +28,7 @@ export const colors = {
   heroCream: '#3A1C00',
   navy: '#1A0800',
   navyDark: '#0E0400',
-  border: 'rgba(234, 90, 0, 0.25)',
+  border: 'rgba(255, 179, 0, 0.25)',
 }
 
 export const gradients = {
