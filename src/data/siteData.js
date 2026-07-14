@@ -9,7 +9,6 @@ import pastNight07 from '../assets/past-nights/past-night-07.png'
 export const navLinks = [
   { label: 'Home', href: '#home', active: true },
   { label: 'About', href: '#about' },
-  { label: 'Schedule', href: '#upcoming', mobileLabel: 'Schedule' },
   { label: 'Gallery', href: '#past' },
   { label: 'Privacy Policy', href: '/privacy-policy' },
   { label: 'Refund Policy', href: '/refund-policy' },
