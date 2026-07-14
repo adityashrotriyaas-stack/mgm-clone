@@ -66,8 +66,9 @@ export function extractGuestFromRegistration(registration) {
 
 export function resolveTicketSelection(registration) {
   const ticket = resolveTicketFromPassMode(registration.passMode)
-  const quantity = Number(registration.ticketCount || 1)
   const isSeasonal = registration.passMode === 'seasonal'
+  // Seasonal pass includes entry for 2 people, so quantity is 1 for up to 2 guests.
+  const quantity = isSeasonal ? 1 : Number(registration.ticketCount || 1)
 
   let eventSlotId = null
   if (!isSeasonal) {
