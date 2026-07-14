@@ -1,4 +1,4 @@
-import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment, QUESTION_MAP, mapFormFields, updateFormId } from '../config/wowsly'
+import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment, QUESTION_MAP, mapFormFields } from '../config/wowsly'
 import { resolveTicketFromPassMode } from '../data/wowslyCatalog'
 import { openRazorpayCheckout, sanitizeNotesForRazorpay } from '../utils/razorpay'
 import {
@@ -93,23 +93,6 @@ function formatRupees(amount) {
   return `₹${value.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`
 }
 
-export function resolveDynamicTicketId(ticketsResponse, passMode) {
-  const tickets = ticketsResponse?.data?.tickets || ticketsResponse?.tickets || ticketsResponse?.data || ticketsResponse || []
-  if (!Array.isArray(tickets)) return null
-
-  if (passMode === 'seasonal') {
-    const ticket = tickets.find((t) => String(t.name || t.ticket_name || '').toLowerCase().includes('season'))
-    return ticket ? ticket.id : null
-  } else {
-    const ticket = tickets.find(
-      (t) =>
-        String(t.name || t.ticket_name || '').toLowerCase().includes('single') ||
-        String(t.name || t.ticket_name || '').toLowerCase().includes('daily')
-    )
-    return ticket ? ticket.id : null
-  }
-}
-
 export async function prepareWowslyBooking(registration) {
   if (!isWowslyConfigured()) {
     return null
@@ -122,11 +105,7 @@ export async function prepareWowslyBooking(registration) {
   let activeQuestionMap = { ...QUESTION_MAP }
   try {
     const formResponse = await fetchRegistrationForm()
-    const formObj = formResponse?.form?.[0] || formResponse?.data?.form?.[0]
-    if (formObj?.id) {
-      updateFormId(formObj.id)
-    }
-    const fields = formObj?.fields || []
+    const fields = formResponse?.form?.[0]?.fields || formResponse?.data?.form?.[0]?.fields || []
     if (fields.length > 0) {
       const dynamicMap = mapFormFields(fields)
       if (dynamicMap.NAME) activeQuestionMap.NAME = String(dynamicMap.NAME)
@@ -149,11 +128,109 @@ export async function prepareWowslyBooking(registration) {
     throw new Error('Registration failed. Please check your details and try again.')
   }
 
-  const ticketsResponse = await getEventTickets(uuid)
-  const dynamicTicketId = resolveDynamicTicketId(ticketsResponse, registration.passMode)
-  const activeTicketId = dynamicTicketId || ticketId
+  // Retrieve S3 URL of Holder 1's photo from registration answers
+  const regReplies = regResponse?.QAs || regResponse?.data?.QAs || regResponse?.additional_form_replies || regResponse?.data?.additional_form_replies || []
+  const holder1PhotoQA = regReplies.find(
+    (qa) =>
+      String(qa.question_id || qa.id) === String(activeQuestionMap.PHOTO) ||
+      String(qa.question || '').toLowerCase() === 'pass photo'
+  )
+  const holder1PhotoUrl = holder1PhotoQA?.answer || guest.photo || ''
 
-  const quote = await getPricingQuote({ ticketId: activeTicketId, quantity, eventSlotId })
+  // Register/upload Holder 2 details to get S3 link
+  let holder2PhotoUrl = ''
+  let holder2Data = null
+
+  if (registration.secondGuest || registration.female) {
+    const secondGuestRaw = registration.secondGuest || registration.female
+    const secondGuestFormatted = {
+      name: secondGuestRaw.name,
+      mobile: secondGuestRaw.mobile,
+      email: secondGuestRaw.email,
+      countryCode: '91',
+      aadhaar: secondGuestRaw.aadhaar,
+      photo: secondGuestRaw.selfiePreview,
+    }
+
+    try {
+      const regResponse2 = await submitRegistration(secondGuestFormatted, activeQuestionMap)
+      const regReplies2 = regResponse2?.QAs || regResponse2?.data?.QAs || regResponse2?.additional_form_replies || regResponse2?.data?.additional_form_replies || []
+      const holder2PhotoQA = regReplies2.find(
+        (qa) =>
+          String(qa.question_id || qa.id) === String(activeQuestionMap.PHOTO) ||
+          String(qa.question || '').toLowerCase() === 'pass photo'
+      )
+      holder2PhotoUrl = holder2PhotoQA?.answer || secondGuestFormatted.photo || ''
+      holder2Data = secondGuestFormatted
+    } catch (err) {
+      console.warn('Failed to upload Holder 2 details, continuing with raw fields:', err)
+      holder2PhotoUrl = secondGuestFormatted.photo || ''
+      holder2Data = secondGuestFormatted
+    }
+  }
+
+  // Construct holders payload
+  const holders = [
+    {
+      holder_index: 1,
+      name: guest.name,
+      email: guest.email,
+      phone: guest.mobile,
+      dialing_code: guest.countryCode || '91',
+      answers: [
+        { question_id: Number(activeQuestionMap.NAME), answer: guest.name },
+        { question_id: Number(activeQuestionMap.COUNTRY_CODE), answer: guest.countryCode || '91' },
+        { question_id: Number(activeQuestionMap.MOBILE), answer: guest.mobile },
+        { question_id: Number(activeQuestionMap.EMAIL), answer: guest.email },
+      ],
+    },
+  ]
+
+  if (guest.aadhaar && activeQuestionMap.AADHAAR) {
+    holders[0].answers.push({ question_id: Number(activeQuestionMap.AADHAAR), answer: guest.aadhaar })
+  }
+  if (holder1PhotoUrl && activeQuestionMap.PHOTO) {
+    holders[0].answers.push({ question_id: Number(activeQuestionMap.PHOTO), answer: holder1PhotoUrl })
+  }
+
+  if (holder2Data) {
+    const holder2 = {
+      holder_index: 2,
+      name: holder2Data.name,
+      email: holder2Data.email,
+      phone: holder2Data.mobile,
+      dialing_code: holder2Data.countryCode || '91',
+      answers: [
+        { question_id: Number(activeQuestionMap.NAME), answer: holder2Data.name },
+        { question_id: Number(activeQuestionMap.COUNTRY_CODE), answer: holder2Data.countryCode || '91' },
+        { question_id: Number(activeQuestionMap.MOBILE), answer: holder2Data.mobile },
+        { question_id: Number(activeQuestionMap.EMAIL), answer: holder2Data.email },
+      ],
+    }
+
+    if (holder2Data.aadhaar && activeQuestionMap.AADHAAR) {
+      holder2.answers.push({ question_id: Number(activeQuestionMap.AADHAAR), answer: holder2Data.aadhaar })
+    }
+    if (holder2PhotoUrl && activeQuestionMap.PHOTO) {
+      holder2.answers.push({ question_id: Number(activeQuestionMap.PHOTO), answer: holder2PhotoUrl })
+    }
+    holders.push(holder2)
+  }
+
+  // Format selected facilities
+  const selectedFacilities = registration.selectedFacilities || []
+  const facilityIds = selectedFacilities.map((f) => f.id)
+  const facilitiesPayload = selectedFacilities.map((f) => ({
+    id: f.id,
+    is_included: 1,
+    selected: true,
+    name: f.name,
+    ticket_id: ticketId,
+  }))
+
+  await getEventTickets(uuid)
+
+  const quote = await getPricingQuote({ ticketId, quantity, eventSlotId, facilityIds })
   const finalPayable = extractFinalPayable(quote)
 
   if (!finalPayable) {
@@ -163,11 +240,14 @@ export async function prepareWowslyBooking(registration) {
   const selectResponse = await selectTicket(
     buildTicketSelectPayload({
       guestUuid: uuid,
-      ticketId: activeTicketId,
+      ticketId,
       ticketTitle,
       quantity,
       finalPayable,
       eventSlotId,
+      holders,
+      facilities: facilitiesPayload,
+      facilityIds,
     }),
   )
 
