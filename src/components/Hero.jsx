@@ -8,7 +8,6 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
 import heroBanner from '../assets/hero-banner.jpeg'
 import { colors } from '../constants/colors'
-import bookingWorkflowBg from '../assets/booking-workflow-bg.png'
 import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
 
@@ -83,11 +82,15 @@ export default function Hero() {
       id="home"
       sx={{
         position: 'relative',
-        backgroundImage: `linear-gradient(180deg, rgba(42,14,0,0.88) 0%, rgba(255,179,0,0.15) 50%, rgba(42,14,0,0.92) 100%), url(${bookingWorkflowBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        bgcolor: colors.night,
         overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: patternNight,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container

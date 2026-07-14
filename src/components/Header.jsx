@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -7,13 +7,16 @@ import Collapse from '@mui/material/Collapse'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import Link from '@mui/material/Link'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 import Stack from '@mui/material/Stack'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
-import { navLinks } from '../data/siteData'
+import { navLinks, policyLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
 import logoImg from '../assets/logo.jpeg'
@@ -22,6 +25,9 @@ export default function Header() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const policyButtonRef = useRef(null)
+  const policyOpen = Boolean(anchorEl)
 
   const closeMenu = () => setOpen(false)
 
@@ -173,6 +179,54 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <Box>
+              <Box
+                ref={policyButtonRef}
+                onClick={(e) => setAnchorEl(e.currentTarget)}
+                sx={{
+                  color: 'rgba(255,248,231,0.72)',
+                  fontWeight: 500,
+                  fontSize: '0.88rem',
+                  cursor: 'pointer',
+                  pb: 0.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.25,
+                  '&:hover': { color: '#FFF8E7' },
+                }}
+              >
+                Policies
+                <KeyboardArrowDownRoundedIcon sx={{ fontSize: '1rem', transition: 'transform 0.2s', transform: policyOpen ? 'rotate(180deg)' : 'none' }} />
+              </Box>
+              <Menu
+                anchorEl={anchorEl}
+                open={policyOpen}
+                onClose={() => setAnchorEl(null)}
+                onClick={() => setAnchorEl(null)}
+                transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+                sx={{
+                  '& .MuiPaper-root': {
+                    bgcolor: 'rgba(42, 14, 0, 0.95)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255, 179, 0, 0.2)',
+                    borderRadius: '12px',
+                    mt: 0.5,
+                    minWidth: 180,
+                  },
+                }}
+              >
+                {policyLinks.map((p) => (
+                  <MenuItem
+                    key={p.label}
+                    onClick={() => navigate(p.href)}
+                    sx={{ color: colors.textLight, fontSize: '0.88rem', py: 1.2, '&:hover': { bgcolor: 'rgba(255, 179, 0, 0.12)' } }}
+                  >
+                    {p.label}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Stack>
 
           <Button
@@ -254,6 +308,21 @@ export default function Header() {
                   </Link>
                 </Box>
               ))}
+              <Box component="li" sx={{ borderTop: '1px solid rgba(255,179,0,0.15)', mt: 1, pt: 1 }}>
+                <Typography sx={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '1.5px', color: colors.muted, px: 0.5, mb: 0.5 }}>
+                  Policies
+                </Typography>
+                {policyLinks.map((p) => (
+                  <Box component="li" key={p.label}>
+                    <Link
+                      onClick={() => { closeMenu(); navigate(p.href) }}
+                      sx={{ display: 'block', py: 1.2, color: 'rgba(255,248,240,0.80)', fontWeight: 600, fontSize: '0.88rem', borderBottom: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none', cursor: 'pointer', '&:hover': { color: colors.gold } }}
+                    >
+                      {p.label}
+                    </Link>
+                  </Box>
+                ))}
+              </Box>
               <Box component="li" sx={{ mt: 1.25 }}>
                   <Button
                     onClick={() => {
