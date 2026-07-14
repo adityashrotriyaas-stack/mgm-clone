@@ -123,8 +123,8 @@ export default function UpcomingNights() {
             sx={{
               background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
               color: '#3A1C00',
-              px: { xs: 2.4, md: 3 },
-              py: { xs: 0.9, md: 1 },
+              px: { xs: 3, md: 3 },
+              py: { xs: 1.2, md: 1 },
               borderRadius: '999px',
               fontWeight: 800,
               fontSize: { xs: '0.86rem', md: '0.92rem' },

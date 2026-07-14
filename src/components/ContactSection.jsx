@@ -318,7 +318,7 @@ function ContactForm() {
         endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1.1rem !important' }} />}
         sx={{
           mt: 0.5,
-          py: 1.3,
+          py: { xs: 1.6, sm: 1.3 },
           borderRadius: '999px',
           background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
           color: '#3A1C00',

@@ -102,7 +102,7 @@ export const upcomingEvents = [
     time: '7:30 PM',
     price: '₹499',
     priceUnit: '/ stag',
-    image: 'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=600',
+    image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600',
   },
   {
     id: 2,
@@ -113,7 +113,7 @@ export const upcomingEvents = [
     time: '7:30 PM',
     price: '₹899',
     priceUnit: '/ couple',
-    image: 'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=600',
+    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600',
   },
   {
     id: 3,
@@ -124,7 +124,7 @@ export const upcomingEvents = [
     time: '7:30 PM',
     price: '₹599',
     priceUnit: '/ stag',
-    image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600',
+    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600',
   },
   {
     id: 4,
@@ -135,7 +135,7 @@ export const upcomingEvents = [
     time: '7:00 PM',
     price: '₹1299',
     priceUnit: '/ stag',
-    image: 'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=600',
+    image: 'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=600',
   },
 ]
 

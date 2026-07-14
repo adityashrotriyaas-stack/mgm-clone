@@ -312,7 +312,7 @@ const categoryMeta = {
 
 function RegistrationStepPills({ activeStep, stepLabels }) {
   return (
-    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap' }}>
+    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap', px: { xs: 0.5, sm: 0 } }}>
       {stepLabels.map((label, index) => {
         const isCompleted = index < activeStep
         const isActive = index === activeStep
@@ -332,6 +332,7 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
               bgcolor: isActive ? accentFestive : ui.surfaceMuted,
               color: isActive ? colors.night : ui.muted,
               whiteSpace: 'nowrap',
+              minWidth: 0,
             }}
           >
             {isCompleted ? (
@@ -348,7 +349,7 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '0.65rem',
+                  fontSize: { xs: '0.7rem', sm: '0.65rem' },
                   fontWeight: 800,
                   lineHeight: 1,
                 }}

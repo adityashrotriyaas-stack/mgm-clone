@@ -201,7 +201,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             borderRadius: '999px',
             border: '1px solid rgba(234, 90, 0, 0.7)',
             color: '#F0E8E0',
-            fontSize: active ? '0.62rem' : '0.54rem',
+            fontSize: active ? { xs: '0.62rem', sm: '0.7rem' } : { xs: '0.58rem', sm: '0.65rem' },
             fontWeight: 700,
             letterSpacing: '0.6px',
             textTransform: 'uppercase',
@@ -373,8 +373,8 @@ export default function ArtistsPerformers() {
             aria-label="Previous artist"
             onClick={goPrev}
             sx={{
-              width: { xs: 40, lg: 52 },
-              height: { xs: 40, lg: 52 },
+              width: { xs: 48, lg: 52 },
+              height: { xs: 48, lg: 52 },
               border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -421,8 +421,8 @@ export default function ArtistsPerformers() {
             aria-label="Next artist"
             onClick={goNext}
             sx={{
-              width: { xs: 40, lg: 52 },
-              height: { xs: 40, lg: 52 },
+              width: { xs: 48, lg: 52 },
+              height: { xs: 48, lg: 52 },
               border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',

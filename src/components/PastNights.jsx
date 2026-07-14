@@ -523,8 +523,8 @@ export default function PastNights() {
             aria-label="Previous highlights"
             onClick={goPrev}
             sx={{
-              width: { xs: 40, lg: 56 },
-              height: { xs: 40, lg: 56 },
+              width: { xs: 48, lg: 56 },
+              height: { xs: 48, lg: 56 },
               border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -584,8 +584,8 @@ export default function PastNights() {
             aria-label="Next highlights"
             onClick={goNext}
             sx={{
-              width: { xs: 40, lg: 56 },
-              height: { xs: 40, lg: 56 },
+              width: { xs: 48, lg: 56 },
+              height: { xs: 48, lg: 56 },
               border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',

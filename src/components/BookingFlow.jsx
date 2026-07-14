@@ -53,7 +53,7 @@ function StepDots({ activeStep }) {
             px: { xs: 0.9, sm: 1.25 },
             py: 0.5,
             borderRadius: '50px',
-            fontSize: { xs: '0.62rem', sm: '0.68rem' },
+            fontSize: { xs: '0.65rem', sm: '0.72rem' },
             fontWeight: 700,
             bgcolor: index <= activeStep ? colors.gold : 'rgba(234, 90, 0,0.1)',
             color: index <= activeStep ? '#fff' : colors.muted,

@@ -18,16 +18,16 @@ import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
 
 const nightImages = [
-  'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=800',
-  'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=800',
-  'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=800',
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
+  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
+  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
   'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=800',
-  'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=800',
-  'https://images.unsplash.com/photo-1601122210027-a3082d6f9a99?w=800',
-  'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=800',
-  'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=800',
+  'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=800',
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
+  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
+  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
   'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=800',
-  'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=800',
+  'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=800',
 ]
 
 const cardDetails = [
