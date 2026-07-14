@@ -65,7 +65,7 @@ export function extractGuestFromRegistration(registration) {
 }
 
 export function resolveTicketSelection(registration) {
-  const ticket = resolveTicketFromPassMode(registration.passMode)
+  const ticket = resolveTicketFromPassMode(registration.passMode, registration.category)
   const isSeasonal = registration.passMode === 'seasonal'
   // A Couple ticket includes entry for 2 people. So if the category is couple, the quantity to buy is 1.
   // Otherwise, the quantity is the exact number of tickets selected (e.g. 2 Male tickets = quantity 2).
