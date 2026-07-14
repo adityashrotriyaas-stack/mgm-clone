@@ -7,13 +7,7 @@ export const ENABLE_LIVE_PAYMENT = import.meta.env.VITE_ENABLE_LIVE_PAYMENT === 
 export const WOWSLY_VERIFY_PATH = import.meta.env.VITE_WOWSLY_VERIFY_PATH || '/v2/checkout/verify-payment'
 export const WOWSLY_REQUIRE_PAYMENT_VERIFY = import.meta.env.VITE_WOWSLY_REQUIRE_PAYMENT_VERIFY === 'true'
 
-export let FORM_ID = 122
-
-export function updateFormId(id) {
-  if (id) {
-    FORM_ID = Number(id)
-  }
-}
+export const FORM_ID = 122
 
 // export const QUESTION_MAP = {
 //   name: '622',
