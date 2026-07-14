@@ -11,7 +11,6 @@ import { Eyebrow } from './shared'
 import FestiveSection from './FestiveSection'
 import AboutDeviArt from './AboutDeviArt'
 import { useEffect, useRef, useState } from 'react'
-import aboutBg from '../assets/about-bg.png'
 import { aboutContent } from '../data/siteData'
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
@@ -177,8 +176,7 @@ export default function AboutSection() {
         py: { xs: 6, md: 9 },
         backgroundColor: '#3A1C00',
         backgroundImage: `
-          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%),
-          url(${aboutBg})
+          linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 40%, rgba(10,6,0,0.60) 100%)
         `,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

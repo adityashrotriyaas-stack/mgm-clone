@@ -13,7 +13,6 @@ import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
 import { useNavigate } from 'react-router-dom'
 import dandiyaDeco from '../assets/dandiya-deco.png'
-import artistsBg from '../assets/artists-bg.png'
 import { colors } from '../constants/colors'
 import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
@@ -388,7 +387,7 @@ export default function UpcomingNightsTimeline() {
         position: 'relative',
         pt: { xs: 2, md: 2.5 },
         pb: { xs: 5, md: 6 },
-        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.70) 0%, rgba(234,90,0,0.25) 50%, rgba(10,6,0,0.85) 100%), url(${artistsBg})`,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.70) 0%, rgba(234,90,0,0.25) 50%, rgba(10,6,0,0.85) 100%)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

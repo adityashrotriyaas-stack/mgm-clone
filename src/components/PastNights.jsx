@@ -23,8 +23,6 @@ import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 import logoImg from '../assets/logo.jpeg'
 import wowslyLogo from '../assets/wowsly-logo.png'
-import pastNightsBg from '../assets/past-nights-bg.png'
-import legacyBg from '../assets/artists-bg.png'
 
 const highlightIcons = [
   SelfImprovementOutlinedIcon,
@@ -457,7 +455,7 @@ export default function PastNights() {
       showAccent={false}
       sx={{
         py: { xs: 5.5, md: 7.5 },
-        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.65) 0%, rgba(234,90,0,0.35) 50%, rgba(10,6,0,0.9) 100%), url(${pastNightsBg})`,
+        backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.65) 0%, rgba(234,90,0,0.35) 50%, rgba(10,6,0,0.9) 100%)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -654,8 +652,7 @@ export function Footer() {
         mt: 0,
         color: 'rgba(255, 245, 230, 0.72)',
         backgroundImage: `
-          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%),
-          url(${legacyBg})
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
         `,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

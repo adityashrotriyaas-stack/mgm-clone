@@ -12,8 +12,6 @@ import { patternDiya, patternGarland, patternMandala } from '../constants/navrat
 import { legacyMoments } from '../data/siteData'
 import { RevealBox, RevealStagger, RevealStaggerItem } from './shared'
 import FestiveSection from './FestiveSection'
-import legacyBg from '../assets/artists-bg.png'
-
 const icons = [
   AccessTimeOutlinedIcon,
   CelebrationOutlinedIcon,
@@ -309,8 +307,7 @@ export default function LegacySection() {
       sx={{
         py: { xs: 6, md: 9 },
         backgroundImage: `
-          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%),
-          url(${legacyBg})
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
         `,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

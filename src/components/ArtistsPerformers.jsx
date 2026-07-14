@@ -14,7 +14,6 @@ import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded'
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import { useNavigate } from 'react-router-dom'
-import artistsBg from '../assets/artists-bg.png'
 import amitDhorda from '../assets/amit-dhorda.png'
 import { colors } from '../constants/colors'
 import { RevealBox, RevealGroup } from './shared'
@@ -290,7 +289,7 @@ export default function ArtistsPerformers() {
         overflow: 'hidden',
         color: colors.ivory,
         backgroundColor: '#3A1C00',
-        backgroundImage: `linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 35%, rgba(10,6,0,0.60) 100%), url(${artistsBg})`,
+        backgroundImage: `linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 35%, rgba(10,6,0,0.60) 100%)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center top',
         backgroundRepeat: 'no-repeat',

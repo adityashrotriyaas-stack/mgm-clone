@@ -12,7 +12,6 @@ import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
 import { useNavigate } from 'react-router-dom'
 import { patternMandala } from '../constants/navratriTheme'
-import bookingWorkflowBg from '../assets/booking-workflow-bg.png'
 
 const workflowSteps = [
   {
@@ -265,8 +264,7 @@ export default function BookingWorkflowSection() {
         py: { xs: 6, md: 9 },
         overflow: 'hidden',
         backgroundImage: `
-          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%),
-          url(${bookingWorkflowBg})
+          linear-gradient(180deg, rgba(42,14,0,0.85) 0%, rgba(255,179,0,0.12) 100%)
         `,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
