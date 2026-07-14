@@ -87,6 +87,13 @@ export default function Hero() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: patternNight,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Container
