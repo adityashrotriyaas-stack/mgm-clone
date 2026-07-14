@@ -281,6 +281,14 @@ export default function BookingWorkflowSection() {
           pointerEvents: 'none',
         }}
       />
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.45) 100%)',
+          pointerEvents: 'none',
+        }}
+      />
 
       <CornerOrnament sx={{ top: 16, left: 16 }} />
       <CornerOrnament sx={{ top: 16, right: 16, transform: 'scaleX(-1)' }} />
