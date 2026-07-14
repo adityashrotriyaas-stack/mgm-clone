@@ -1,14 +1,17 @@
 export const TICKET_MAP = {
   daily: {
-    ticketId: 263,
-    title: 'SINGLE DAY TICKET',
+    male: { ticketId: 263, title: 'Day Pass - Male' },
+    female: { ticketId: 287, title: 'Day Pass - Female' },
+    couple: { ticketId: 289, title: 'Day Pass - Couple' },
   },
   seasonal: {
-    ticketId: 265,
-    title: 'Season Pass',
+    male: { ticketId: 286, title: 'Season Pass - Male' },
+    female: { ticketId: 288, title: 'Season Pass - Female' },
+    couple: { ticketId: 265, title: 'Season Pass - Couple' },
   },
 }
 
-export function resolveTicketFromPassMode(passMode) {
-  return passMode === 'seasonal' ? TICKET_MAP.seasonal : TICKET_MAP.daily
+export function resolveTicketFromPassMode(passMode, category) {
+  const mode = passMode === 'seasonal' ? 'seasonal' : 'daily'
+  return TICKET_MAP[mode]?.[category] || TICKET_MAP[mode]?.male
 }
