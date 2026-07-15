@@ -16,14 +16,8 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { useNavigate } from 'react-router-dom'
 import amitDhorda from '../assets/amit-dhorda.png'
-import artistBg1 from '../assets/artist-bg-1.jpeg'
-import artistBg2 from '../assets/artist-bg-2.jpeg'
-import artistBg3 from '../assets/artist-bg-3.jpeg'
-import artistBg4 from '../assets/artist-bg-4.jpeg'
 import { colors } from '../constants/colors'
 import { RevealBox, RevealGroup } from './shared'
-
-const artistBgImages = [artistBg1, artistBg2, artistBg3, artistBg4]
 
 const artists = [
   {
@@ -252,7 +246,6 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
 export default function ArtistsPerformers() {
   const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(0)
-  const [bgIndex, setBgIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
 
@@ -261,13 +254,6 @@ export default function ArtistsPerformers() {
     update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
-  }, [])
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setBgIndex((prev) => (prev + 1) % artistBgImages.length)
-    }, 5000)
-    return () => clearInterval(timer)
   }, [])
 
   const slides = useMemo(() => {
@@ -310,33 +296,13 @@ export default function ArtistsPerformers() {
         overflow: 'hidden',
         color: colors.ivory,
         backgroundColor: '#3A1C00',
+        backgroundImage: `linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 35%, rgba(10,6,0,0.60) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'no-repeat',
       }}
     >
-      {artistBgImages.map((img, i) => (
-        <Box
-          key={i}
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${img})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            backgroundRepeat: 'no-repeat',
-            opacity: i === bgIndex ? 1 : 0,
-            transition: 'opacity 1.2s ease-in-out',
-            zIndex: i === bgIndex ? 1 : 0,
-          }}
-        />
-      ))}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 2,
-          background: `linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 35%, rgba(10,6,0,0.60) 100%)`,
-        }}
-      />
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 3, px: { xs: 2, sm: 2.5, md: 4 } }}>
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
         <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 3.75 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.9, color: colors.gold, mb: 0.85 }}>

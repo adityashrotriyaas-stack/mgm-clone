@@ -13,22 +13,17 @@ import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
 import { useNavigate } from 'react-router-dom'
 import dandiyaDeco from '../assets/dandiya-deco.png'
+import artistBg1 from '../assets/artist-bg-1.jpeg'
+import artistBg2 from '../assets/artist-bg-2.jpeg'
+import artistBg3 from '../assets/artist-bg-3.jpeg'
+import artistBg4 from '../assets/artist-bg-4.jpeg'
 import { colors } from '../constants/colors'
 import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
 
-const nightImages = [
-  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
-  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
-  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
-  'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=800',
-  'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=800',
-  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
-  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
-  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
-  'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=800',
-  'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=800',
-]
+const bgImgs = [artistBg1, artistBg2, artistBg3, artistBg4]
+
+const nightImages = Array.from({ length: 10 }, (_, i) => bgImgs[i % bgImgs.length])
 
 const cardDetails = [
   {},
@@ -104,7 +99,7 @@ const arrowBtnSx = {
   },
 }
 
-function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPlay, isTransitioning, compact = false }) {
+function NightStoryCard({ night, image, detail, offset, isActive, onSelect, isTransitioning, compact = false }) {
   const { opacity, zIndex, transform, pointerEvents } = getCardTransform(offset, compact)
 
   return (
@@ -114,10 +109,10 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
         position: 'absolute',
         left: '50%',
         top: '50%',
-        width: { xs: 210, sm: 230, md: 260 },
-        height: { xs: 320, sm: 390, md: 430 },
-        ml: { xs: '-105px', sm: '-115px', md: '-130px' },
-        mt: { xs: '-160px', sm: '-195px', md: '-215px' },
+        width: { xs: 260, sm: 320, md: 400 },
+        height: { xs: 146, sm: 180, md: 225 },
+        ml: { xs: '-130px', sm: '-160px', md: '-200px' },
+        mt: { xs: '-73px', sm: '-90px', md: '-112px' },
         borderRadius: '22px',
         overflow: 'hidden',
         cursor: 'pointer',
@@ -184,11 +179,11 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
         <Box
           sx={{
             position: 'absolute',
-            top: '18%',
+            top: '25%',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '70%',
-            height: '40%',
+            width: '60%',
+            height: '60%',
             background: 'radial-gradient(ellipse, rgba(255,179,0,0.15) 0%, transparent 70%)',
             pointerEvents: 'none',
             animation: 'cardGlow 3s ease-in-out infinite',
@@ -216,37 +211,6 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
         >
           {night.theme}
         </Typography>
-
-        <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation()
-              onPlay()
-            }}
-            aria-label={`Explore ${night.theme}`}
-            sx={{
-              width: 58,
-              height: 58,
-              border: '2px solid rgba(255, 190, 90, 0.85)',
-              bgcolor: 'rgba(12, 8, 20, 0.5)',
-              backdropFilter: 'blur(8px)',
-color: '#F0E8E0',
-              boxShadow: '0 0 28px rgba(255, 170, 60, 0.3)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              animation: isActive ? 'playPulse 2s ease-in-out infinite' : 'none',
-              '@keyframes playPulse': {
-                '0%, 100%': { boxShadow: '0 0 28px rgba(255, 170, 60, 0.3)' },
-                '50%': { boxShadow: '0 0 42px rgba(255, 170, 60, 0.55)' },
-              },
-              '&:hover': {
-                bgcolor: 'rgba(12, 8, 20, 0.7)',
-                transform: 'scale(1.1)',
-              },
-            }}
-          >
-            <PlayArrowRoundedIcon sx={{ fontSize: '1.9rem' }} />
-          </IconButton>
-        </Box>
       </Box>
     </Box>
   )
@@ -557,7 +521,7 @@ export default function UpcomingNightsTimeline() {
           alignItems="center"
           sx={{
             width: '100%',
-            height: { xs: 360, sm: 420, md: 500 },
+            height: { xs: 280, sm: 340, md: 400 },
             mx: 'auto',
           }}
         >
@@ -614,7 +578,6 @@ export default function UpcomingNightsTimeline() {
                     isTransitioning={isTransitioning}
                     compact={isMobile}
                     onSelect={() => goTo(index)}
-                    onPlay={() => navigate(`/event/${night.id}`)}
                   />
                 )
               })}
