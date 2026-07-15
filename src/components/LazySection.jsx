@@ -20,17 +20,9 @@ export const LazyUpcomingNightsTimeline = lazySection(() => import('./UpcomingNi
 export const LazyAboutSection = lazySection(() => import('./AboutSection'))
 export const LazyBookingWorkflowSection = lazySection(() => import('./BookingWorkflowSection'))
 export const LazyLegacySection = lazySection(() => import('./LegacySection'))
-export const LazyPastNightsBlock = lazy(async () => {
-  const mod = await import('./PastNights')
-  return {
-    default: function PastNightsBlock() {
-      return (
-        <>
-          <mod.default />
-          <mod.Footer />
-        </>
-      )
-    },
-  }
-})
+export const LazyPastNights = lazySection(() => import('./PastNights'))
 export const LazyContactSection = lazySection(() => import('./ContactSection'))
+export const LazyFooter = lazySection(async () => {
+  const mod = await import('./PastNights')
+  return { default: mod.Footer }
+})

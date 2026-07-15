@@ -7,8 +7,9 @@ import {
   LazyAboutSection,
   LazyBookingWorkflowSection,
   LazyContactSection,
+  LazyFooter,
   LazyLegacySection,
-  LazyPastNightsBlock,
+  LazyPastNights,
   LazyUpcomingNightsTimeline,
 } from './components/LazySection'
 import { colors } from './constants/colors'
@@ -31,8 +32,9 @@ function App() {
       <LazyAboutSection />
       <LazyBookingWorkflowSection />
       <LazyLegacySection />
-      <LazyPastNightsBlock />
+      <LazyPastNights />
       <LazyContactSection />
+      <LazyFooter />
       <StickyCTA />
     </Box>
   )
