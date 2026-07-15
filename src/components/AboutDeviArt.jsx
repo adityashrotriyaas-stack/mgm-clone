@@ -39,6 +39,7 @@ function MataRaniReveal({ active }) {
         component="img"
         src={mataRaniArt}
         alt="Mata Rani — divine Navratri art"
+        loading="lazy"
         sx={{
           ...imageBaseSx,
           opacity: active ? 0.42 : 0.22,
@@ -61,6 +62,7 @@ function MataRaniReveal({ active }) {
           src={mataRaniArt}
           alt=""
           aria-hidden
+          loading="lazy"
           sx={{
             ...imageBaseSx,
             filter: 'brightness(1.12) saturate(1.2)',
@@ -82,6 +84,7 @@ function MataRaniReveal({ active }) {
           src={mataRaniArt}
           alt=""
           aria-hidden
+          loading="lazy"
           sx={{
             ...imageBaseSx,
             filter: 'brightness(1.08) saturate(1.15)',

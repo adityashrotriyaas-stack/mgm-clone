@@ -178,6 +178,9 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             fontSize: active ? { xs: '0.95rem', md: '1.12rem' } : { xs: '0.74rem', md: '0.86rem' },
             lineHeight: 1.15,
             mb: 0.35,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           {artist.name}
@@ -208,6 +211,9 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             mb: active ? 1.1 : 0.85,
             bgcolor: 'transparent',
             whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: '100%',
           }}
         >
           {artist.tag}

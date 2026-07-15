@@ -331,7 +331,6 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
               fontWeight: 700,
               bgcolor: isActive ? accentFestive : ui.surfaceMuted,
               color: isActive ? colors.night : ui.muted,
-              whiteSpace: 'nowrap',
               minWidth: 0,
             }}
           >
@@ -1081,6 +1080,7 @@ export default function EventDetail() {
           component="img"
           src={wowslyLogo}
           alt="Wowsly"
+          loading="lazy"
            sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.3 }}
         />
         <Typography sx={{ color: colors.muted, fontSize: '0.78rem' }}>

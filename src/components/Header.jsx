@@ -49,7 +49,6 @@ export default function Header() {
           ? '0 8px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 179, 0, 0.06)'
           : '0 4px 24px rgba(0, 0, 0, 0.4)',
         color: colors.textLight,
-        overflow: 'hidden',
         backdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
         WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
         transition:
