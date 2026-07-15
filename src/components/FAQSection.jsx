@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     q: 'What types of passes are available?',
-    a: 'We offer Daily Passes (₹1,500/stag onwards) for individual nights and a Seasonal Pass (₹5,000/person) that grants entry to all 10 nights with priority access and reserved seating.',
+    a: 'We offer Daily Passes (₹1,500/stag) for individual nights and a Seasonal Pass (₹5,000/person) that grants entry to all 10 nights with priority access and reserved seating.',
   },
   {
     q: 'Can I buy a pass at the venue?',

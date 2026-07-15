@@ -96,11 +96,11 @@ export const upcomingEvents = [
   {
     id: 1,
     title: 'MGM Cultural Navratri',
-    badge: 'Selling Fast',
-    night: 'Night 4',
-    date: 'Oct 13, Tue',
-    time: '7:30 PM',
-    price: '₹3,000',
+    badge: 'Opening Night',
+    night: 'Night 1',
+    date: 'Oct 10, Sat',
+    time: '9:00 PM',
+    price: '₹2,000',
     priceUnit: '/ stag',
     image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600',
   },
@@ -108,10 +108,10 @@ export const upcomingEvents = [
     id: 2,
     title: 'Dhoom Dhamaka',
     badge: 'Couple Special',
-    night: 'Night 8',
-    date: 'Oct 17, Sat',
-    time: '7:30 PM',
-    price: '₹3,000',
+    night: 'Night 4',
+    date: 'Oct 13, Tue',
+    time: '9:00 PM',
+    price: '₹4,000',
     priceUnit: '/ couple',
     image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600',
   },
@@ -119,10 +119,10 @@ export const upcomingEvents = [
     id: 3,
     title: 'Bollywood Beats',
     badge: 'Live DJ',
-    night: 'Night 9',
-    date: 'Oct 18, Sun',
-    time: '7:30 PM',
-    price: '₹2,000',
+    night: 'Night 5',
+    date: 'Oct 14, Wed',
+    time: '9:00 PM',
+    price: '₹1,500',
     priceUnit: '/ stag',
     image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600',
   },
@@ -132,7 +132,7 @@ export const upcomingEvents = [
     badge: 'Grand Finale',
     night: 'Night 10',
     date: 'Oct 19, Mon',
-    time: '7:00 PM',
+    time: '9:00 PM',
     price: '₹1,500',
     priceUnit: '/ stag',
     image: 'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=600',
@@ -161,7 +161,7 @@ export const passOptions = {
       'Entry to all ten nights — no rebooking',
       'Priority entry lane, every night',
       'Reserved seating zone access',
-      'Save up to 50% vs booking nightly',
+      'Save ~60% vs booking nightly',
     ],
     cta: 'Get Seasonal Pass',
     featured: true,
@@ -170,9 +170,9 @@ export const passOptions = {
 }
 
 export const seasonalPhases = [
-  { label: 'Phase 1', dateRange: '15 Jul — 14 Aug', male: 5000, female: 4000, couple: 8000 },
-  { label: 'Phase 2', dateRange: '15 Aug — 14 Sep', male: 7000, female: 6000, couple: 10000 },
-  { label: 'Phase 3', dateRange: '15 Sep — 9 Oct', male: 9000, female: 8000, couple: 12000 },
+  { id: 1, label: 'Phase 1', dateRange: '15 Jul – 14 Aug', male: 5000, female: 4000, couple: 8000 },
+  { id: 2, label: 'Phase 2', dateRange: '15 Aug – 14 Sep', male: 7000, female: 6000, couple: 10000 },
+  { id: 3, label: 'Phase 3', dateRange: '15 Sep – 9 Oct', male: 9000, female: 8000, couple: 12000 },
 ]
 
 export const registrationCategories = {
@@ -182,7 +182,7 @@ export const registrationCategories = {
     price: '₹1,500',
     priceUnit: '/ night',
     perks: [
-      'Entry to Rangeeli Raat grounds',
+      'Entry to Garba grounds',
       'Welcome tilak & kalash blessing',
       'Access to food & handicraft stalls',
     ],
@@ -193,7 +193,7 @@ export const registrationCategories = {
     price: '₹1,000',
     priceUnit: '/ night',
     perks: [
-      'Entry to Rangeeli Raat grounds',
+      'Entry to Garba grounds',
       'Welcome tilak & kalash blessing',
       'Priority queue at entry gates',
     ],
@@ -213,10 +213,10 @@ export const registrationCategories = {
 }
 
 export const passTypeOptions = [
-  'Daily — Night 4, Tue (Oct 13)',
-  'Daily — Night 8, Sat (Oct 17)',
-  'Daily — Night 9, Sun (Oct 18)',
-  'Daily — Night 10, Mon (Oct 19)',
+  'Daily — Night 1, Opening Night (Oct 10)',
+  'Daily — Night 4, Dhoom Dhamaka (Oct 13)',
+  'Daily — Night 5, Bollywood Beats (Oct 14)',
+  'Daily — Night 10, Grand Finale (Oct 19)',
   'Seasonal Pass — All 10 Nights',
 ]
 
