@@ -3,7 +3,6 @@ import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
 import LocalActivityOutlinedIcon from '@mui/icons-material/LocalActivityOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
@@ -217,28 +216,9 @@ function TimelineCard({ item, index }) {
           {item.description}
         </Typography>
 
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1.5}>
-          <Typography sx={{ fontSize: '0.94rem', color: colors.gold, fontWeight: 700, lineHeight: 1.45 }}>
-            {item.highlight}
-          </Typography>
-
-          <Box
-            sx={{
-              width: 48,
-              height: 48,
-              borderRadius: '50%',
-              border: '1px solid rgba(255, 179, 0, 0.65)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: colors.gold,
-              boxShadow: '0 0 16px rgba(255, 179, 0, 0.12)',
-              flexShrink: 0,
-            }}
-          >
-            <ArrowForwardRoundedIcon sx={{ fontSize: '1.35rem' }} />
-          </Box>
-        </Stack>
+        <Typography sx={{ fontSize: '0.94rem', color: colors.gold, fontWeight: 700, lineHeight: 1.45 }}>
+          {item.highlight}
+        </Typography>
       </Box>
     </Box>
   )
