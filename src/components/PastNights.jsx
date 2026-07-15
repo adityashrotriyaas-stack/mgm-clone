@@ -745,8 +745,7 @@ export function Footer() {
               <Box component="li">{contactInfo.email}</Box>
               <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/privacy-policy')}>Privacy Policy</Box>
               <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/refund-policy')}>Refund Policy</Box>
-              <Box component="li">Organiser Login</Box>
-            </Stack>
+              </Stack>
           </Box>
         </Box>
 
