@@ -179,7 +179,6 @@ export default function Header() {
           </Stack>
 
           <Button
-            onClick={() => navigate('/event/1')}
             startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
             sx={{
               display: { xs: 'none', md: 'inline-flex' },
@@ -263,10 +262,6 @@ export default function Header() {
               ))}
               <Box component="li" sx={{ mt: 1.25 }}>
                   <Button
-                    onClick={() => {
-                      closeMenu()
-                      navigate('/event/1')
-                    }}
                     fullWidth
                     sx={{
                       display: 'flex',
