@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { isWowslyConfigured } from '../config/wowsly'
+import { isWowslyConfigured, updateNightSlotMap } from '../config/wowsly'
 import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
 } from '../services/wowslyBooking'
-
+import { getPublicSchedule, getEventTickets } from '../services/wowslyApi'
 import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
 import ScheduleStep from './ScheduleStep'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
@@ -666,6 +666,8 @@ export default function EventDetail() {
   const [acceptedPolicies, setAcceptedPolicies] = useState(() => ss('ap') === 'true')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [ticketsList, setTicketsList] = useState([])
+  const [holder2Expanded, setHolder2Expanded] = useState(false)
 
   const changeStep = (step) => {
     setRegStep(step)
@@ -689,8 +691,57 @@ export default function EventDetail() {
     : ['Pass Type', 'Category', 'Date & Time', 'Details']
 
   useEffect(() => {
-    setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+    let cancelled = false
+
+    async function loadSchedule() {
+      setScheduleLoading(true)
+      setScheduleError('')
+      try {
+        const response = isWowslyConfigured() ? await getPublicSchedule() : null
+        if (response) {
+          updateNightSlotMap(response)
+        }
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(response || buildFallbackSchedule()))
+        }
+      } catch {
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+          setScheduleError('')
+        }
+      } finally {
+        if (!cancelled) setScheduleLoading(false)
+      }
+    }
+
+    loadSchedule()
+    return () => {
+      cancelled = true
+    }
   }, [])
+
+  useEffect(() => {
+    async function loadTickets() {
+      try {
+        const res = isWowslyConfigured() ? await getEventTickets('') : null
+        const tickets = res?.data?.tickets || res?.tickets || res?.data || res || []
+        if (Array.isArray(tickets)) {
+          setTicketsList(tickets)
+        }
+      } catch (err) {
+        console.warn('Failed to load tickets list:', err)
+      }
+    }
+    loadTickets()
+  }, [])
+
+  const activeTicketObj = ticketsList.find((t) => {
+    const isSeasonal = passMode === 'seasonal'
+    const name = String(t.name || t.ticket_name || '').toLowerCase()
+    return isSeasonal ? name.includes('season') : (name.includes('single') || name.includes('daily'))
+  })
+
+  const ticketFacilities = activeTicketObj?.facilities || []
 
   if (!event || !info) return <Navigate to="/" replace />
 
@@ -769,6 +820,7 @@ export default function EventDetail() {
             name: `${maleForm.name} & ${femaleForm.name}`,
             mobile: maleForm.mobile,
             email: maleForm.email,
+            selectedFacilities: ticketFacilities,
             ...scheduleDetails,
           }
         : {
@@ -781,6 +833,7 @@ export default function EventDetail() {
             eventId: id,
             ...personForm,
             secondGuest: ticketCount === '2' ? secondPersonForm : null,
+            selectedFacilities: ticketFacilities,
             ...scheduleDetails,
           }
 
@@ -969,13 +1022,39 @@ export default function EventDetail() {
                         onFieldChange={makeFieldUpdater(setMaleForm)}
                         onPhotoChange={makePhotoUpdater(setMaleForm)}
                       />
-                      <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
-                      <PersonFields
-                        title="Female Details"
-                        person={femaleForm}
-                        onFieldChange={makeFieldUpdater(setFemaleForm)}
-                        onPhotoChange={makePhotoUpdater(setFemaleForm)}
-                      />
+                      <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
+                      <Box>
+                        <Button
+                          type="button"
+                          onClick={() => setHolder2Expanded(!holder2Expanded)}
+                          fullWidth
+                          sx={{
+                            justifyContent: 'space-between',
+                            color: colors.gold,
+                            textTransform: 'none',
+                            fontWeight: 700,
+                            py: 1.5,
+                            px: 2,
+                            borderRadius: '12px',
+                            border: '1px solid rgba(232, 184, 74, 0.3)',
+                            bgcolor: 'rgba(232, 184, 74, 0.04)',
+                            '&:hover': { bgcolor: 'rgba(232, 184, 74, 0.08)' }
+                          }}
+                        >
+                          <span>Female Details (Guest 2)</span>
+                          <span>{holder2Expanded ? 'Collapse ▲' : 'Add Details ▼'}</span>
+                        </Button>
+                        {holder2Expanded && (
+                          <Box sx={{ mt: 3 }}>
+                            <PersonFields
+                              title=""
+                              person={femaleForm}
+                              onFieldChange={makeFieldUpdater(setFemaleForm)}
+                              onPhotoChange={makePhotoUpdater(setFemaleForm)}
+                            />
+                          </Box>
+                        )}
+                      </Box>
                     </Stack>
                   ) : (
                     <Stack spacing={3}>
@@ -987,16 +1066,57 @@ export default function EventDetail() {
                       />
                       {ticketCount === '2' && (
                         <>
-                          <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
-                          <PersonFields
-                            title="Ticket 2 Details"
-                            person={secondPersonForm}
-                            onFieldChange={makeFieldUpdater(setSecondPersonForm)}
-                            onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
-                          />
+                          <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
+                          <Box>
+                            <Button
+                              type="button"
+                              onClick={() => setHolder2Expanded(!holder2Expanded)}
+                              fullWidth
+                              sx={{
+                                justifyContent: 'space-between',
+                                color: colors.gold,
+                                textTransform: 'none',
+                                fontWeight: 700,
+                                py: 1.5,
+                                px: 2,
+                                borderRadius: '12px',
+                                border: '1px solid rgba(232, 184, 74, 0.3)',
+                                bgcolor: 'rgba(232, 184, 74, 0.04)',
+                                '&:hover': { bgcolor: 'rgba(232, 184, 74, 0.08)' }
+                              }}
+                            >
+                              <span>Ticket 2 Details</span>
+                              <span>{holder2Expanded ? 'Collapse ▲' : 'Add Details ▼'}</span>
+                            </Button>
+                            {holder2Expanded && (
+                              <Box sx={{ mt: 3 }}>
+                                <PersonFields
+                                  title=""
+                                  person={secondPersonForm}
+                                  onFieldChange={makeFieldUpdater(setSecondPersonForm)}
+                                  onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
+                                />
+                              </Box>
+                            )}
+                          </Box>
                         </>
                       )}
                     </Stack>
+                  )}
+
+                  {ticketFacilities.length > 0 && (
+                    <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(255, 255, 255, 0.04)', borderRadius: '12px', border: '1px solid rgba(232, 184, 74, 0.15)' }}>
+                      <Typography sx={{ fontWeight: 700, color: colors.gold, fontSize: '0.9rem', mb: 1 }}>
+                        Included Access & Facilities:
+                      </Typography>
+                      <Stack spacing={0.75}>
+                        {ticketFacilities.map((fac) => (
+                          <Typography key={fac.id} sx={{ fontSize: '0.8rem', color: registrationUi.text, display: 'flex', alignItems: 'center', gap: 1 }}>
+                            • {fac.name}
+                          </Typography>
+                        ))}
+                      </Stack>
+                    </Box>
                   )}
 
                   <Box sx={{ mt: 2.5 }}>

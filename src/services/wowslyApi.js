@@ -86,28 +86,62 @@ export function buildFacilityNameMap(ticketsResponse) {
   return map
 }
 
-export async function submitRegistration({ name, countryCode, mobile, email }) {
+async function getBlobFromUrl(url) {
+  if (!url) return null
+  if (!url.startsWith('blob:')) return url
+  try {
+    const response = await fetch(url)
+    return await response.blob()
+  } catch (err) {
+    console.error('Failed to get blob from URL:', err)
+    return null
+  }
+}
+
+export async function submitRegistration({ name, countryCode, mobile, email, aadhaar, photo }, questionMap = QUESTION_MAP) {
   const formData = new FormData()
   formData.append('form_id', String(FORM_ID))
   formData.append('dialing_code', DEFAULT_DIALING_CODE)
   formData.append('mobile', mobile)
 
   const answers = [
-    { question_id: QUESTION_MAP.name, answer: name },
-    { question_id: QUESTION_MAP.countryCode, answer: countryCode || DEFAULT_DIALING_CODE },
-    { question_id: QUESTION_MAP.mobile, answer: mobile },
-    { question_id: QUESTION_MAP.email, answer: email },
+    { question_id: questionMap.NAME, answer: name },
+    { question_id: questionMap.COUNTRY_CODE, answer: countryCode || DEFAULT_DIALING_CODE },
+    { question_id: questionMap.MOBILE, answer: mobile },
+    { question_id: questionMap.EMAIL, answer: email },
   ]
+
+  if (aadhaar && questionMap.AADHAAR) {
+    answers.push({ question_id: questionMap.AADHAAR, answer: aadhaar })
+  }
+
+  if (photo && questionMap.PHOTO) {
+    let photoBlob = photo
+    if (typeof photo === 'string' && photo.startsWith('blob:')) {
+      photoBlob = await getBlobFromUrl(photo)
+    }
+    if (photoBlob) {
+      answers.push({ question_id: questionMap.PHOTO, answer: photoBlob, isFile: true })
+    }
+  }
 
   answers.forEach((qa, index) => {
     formData.append(`QAs[${index}][question_id]`, qa.question_id)
-    formData.append(`QAs[${index}][answer]`, qa.answer)
+    if (qa.isFile) {
+      formData.append(`QAs[${index}][answer]`, qa.answer, 'selfie.jpg')
+    } else {
+      formData.append(`QAs[${index}][answer]`, qa.answer)
+    }
   })
 
   return wowslyFetch(
     `/events/${WOWSLY_EVENT_ID}/commonEvent/registrationform/answer${COMMON_EVENT_QUERY}`,
     { method: 'POST', body: formData },
   )
+}
+
+export async function fetchRegistrationForm() {
+  return wowslyFetch(`/events/${WOWSLY_EVENT_ID}/registration/status${COMMON_EVENT_QUERY}`)
 }
 
 export async function getPublicSchedule() {
@@ -152,6 +186,8 @@ export function buildTicketSelectPayload({
   quantity,
   finalPayable,
   eventSlotId,
+  holders = [],
+  facilities = [],
   facilityIds = [],
 }) {
   const unitPrice = finalPayable / quantity
@@ -165,13 +201,15 @@ export function buildTicketSelectPayload({
         ticket_count: quantity,
         ticket_price: unitPrice,
         amount: finalPayable,
-        facilities: [],
+        holders,
+        facilities,
         razor_pay_fee: 0,
         system_charges: 0,
         wowsly_gst: 0,
       },
     ],
     facility_details: facilityIds,
+    facility_ids: facilityIds.join(','),
     amount_currency: 'rupees',
     send_to_whatsapp: 0,
     is_event_poster_selected: false,

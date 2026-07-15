@@ -1,4 +1,4 @@
-import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment } from '../config/wowsly'
+import { isWowslyConfigured, NIGHT_SLOT_MAP, shouldVerifyPayment, QUESTION_MAP, mapFormFields } from '../config/wowsly'
 import { resolveTicketFromPassMode } from '../data/wowslyCatalog'
 import { openRazorpayCheckout, sanitizeNotesForRazorpay } from '../utils/razorpay'
 import {
@@ -9,6 +9,7 @@ import {
   extractFinalPayable,
   extractGuestTicketId,
   extractOrderDetails,
+  fetchRegistrationForm,
   getEventTickets,
   getPricingQuote,
   selectTicket,
@@ -48,6 +49,8 @@ export function extractGuestFromRegistration(registration) {
       mobile: registration.male.mobile,
       email: registration.male.email,
       countryCode: '91',
+      aadhaar: registration.male.aadhaar,
+      photo: registration.male.selfiePreview,
     }
   }
 
@@ -56,13 +59,17 @@ export function extractGuestFromRegistration(registration) {
     mobile: registration.mobile,
     email: registration.email,
     countryCode: '91',
+    aadhaar: registration.aadhaar,
+    photo: registration.selfiePreview,
   }
 }
 
 export function resolveTicketSelection(registration) {
-  const ticket = resolveTicketFromPassMode(registration.passMode)
-  const quantity = Number(registration.ticketCount || 1)
+  const ticket = resolveTicketFromPassMode(registration.passMode, registration.category)
   const isSeasonal = registration.passMode === 'seasonal'
+  // A Couple ticket includes entry for 2 people. So if the category is couple, the quantity to buy is 1.
+  // Otherwise, the quantity is the exact number of tickets selected (e.g. 2 Male tickets = quantity 2).
+  const quantity = registration.category === 'couple' ? 1 : Number(registration.ticketCount || 1)
 
   let eventSlotId = null
   if (!isSeasonal) {
@@ -96,7 +103,25 @@ export async function prepareWowslyBooking(registration) {
   const guest = extractGuestFromRegistration(registration)
   const { ticketId, ticketTitle, quantity, eventSlotId } = resolveTicketSelection(registration)
 
-  const regResponse = await submitRegistration(guest)
+  // Fetch form dynamically to resolve field mappings
+  let activeQuestionMap = { ...QUESTION_MAP }
+  try {
+    const formResponse = await fetchRegistrationForm()
+    const fields = formResponse?.form?.[0]?.fields || formResponse?.data?.form?.[0]?.fields || []
+    if (fields.length > 0) {
+      const dynamicMap = mapFormFields(fields)
+      if (dynamicMap.NAME) activeQuestionMap.NAME = String(dynamicMap.NAME)
+      if (dynamicMap.COUNTRY_CODE) activeQuestionMap.COUNTRY_CODE = String(dynamicMap.COUNTRY_CODE)
+      if (dynamicMap.MOBILE) activeQuestionMap.MOBILE = String(dynamicMap.MOBILE)
+      if (dynamicMap.EMAIL) activeQuestionMap.EMAIL = String(dynamicMap.EMAIL)
+      if (dynamicMap.AADHAAR) activeQuestionMap.AADHAAR = String(dynamicMap.AADHAAR)
+      if (dynamicMap.PHOTO) activeQuestionMap.PHOTO = String(dynamicMap.PHOTO)
+    }
+  } catch (err) {
+    console.warn('Failed to fetch dynamic form fields, using static fallback:', err)
+  }
+
+  const regResponse = await submitRegistration(guest, activeQuestionMap)
   const guestData = regResponse?.guest_data ?? regResponse?.data?.guest_data ?? {}
   const uuid = guestData.uuid
   const userId = guestData.user_id
@@ -105,9 +130,109 @@ export async function prepareWowslyBooking(registration) {
     throw new Error('Registration failed. Please check your details and try again.')
   }
 
+  // Retrieve S3 URL of Holder 1's photo from registration answers
+  const regReplies = regResponse?.QAs || regResponse?.data?.QAs || regResponse?.additional_form_replies || regResponse?.data?.additional_form_replies || []
+  const holder1PhotoQA = regReplies.find(
+    (qa) =>
+      String(qa.question_id || qa.id) === String(activeQuestionMap.PHOTO) ||
+      String(qa.question || '').toLowerCase() === 'pass photo'
+  )
+  const holder1PhotoUrl = holder1PhotoQA?.answer || guest.photo || ''
+
+  // Register/upload Holder 2 details to get S3 link
+  let holder2PhotoUrl = ''
+  let holder2Data = null
+
+  if (registration.secondGuest || registration.female) {
+    const secondGuestRaw = registration.secondGuest || registration.female
+    const secondGuestFormatted = {
+      name: secondGuestRaw.name,
+      mobile: secondGuestRaw.mobile,
+      email: secondGuestRaw.email,
+      countryCode: '91',
+      aadhaar: secondGuestRaw.aadhaar,
+      photo: secondGuestRaw.selfiePreview,
+    }
+
+    try {
+      const regResponse2 = await submitRegistration(secondGuestFormatted, activeQuestionMap)
+      const regReplies2 = regResponse2?.QAs || regResponse2?.data?.QAs || regResponse2?.additional_form_replies || regResponse2?.data?.additional_form_replies || []
+      const holder2PhotoQA = regReplies2.find(
+        (qa) =>
+          String(qa.question_id || qa.id) === String(activeQuestionMap.PHOTO) ||
+          String(qa.question || '').toLowerCase() === 'pass photo'
+      )
+      holder2PhotoUrl = holder2PhotoQA?.answer || secondGuestFormatted.photo || ''
+      holder2Data = secondGuestFormatted
+    } catch (err) {
+      console.warn('Failed to upload Holder 2 details, continuing with raw fields:', err)
+      holder2PhotoUrl = secondGuestFormatted.photo || ''
+      holder2Data = secondGuestFormatted
+    }
+  }
+
+  // Construct holders payload
+  const holders = [
+    {
+      holder_index: 1,
+      name: guest.name,
+      email: guest.email,
+      phone: guest.mobile,
+      dialing_code: guest.countryCode || '91',
+      answers: [
+        { question_id: Number(activeQuestionMap.NAME), answer: guest.name },
+        { question_id: Number(activeQuestionMap.COUNTRY_CODE), answer: guest.countryCode || '91' },
+        { question_id: Number(activeQuestionMap.MOBILE), answer: guest.mobile },
+        { question_id: Number(activeQuestionMap.EMAIL), answer: guest.email },
+      ],
+    },
+  ]
+
+  if (guest.aadhaar && activeQuestionMap.AADHAAR) {
+    holders[0].answers.push({ question_id: Number(activeQuestionMap.AADHAAR), answer: guest.aadhaar })
+  }
+  if (holder1PhotoUrl && activeQuestionMap.PHOTO) {
+    holders[0].answers.push({ question_id: Number(activeQuestionMap.PHOTO), answer: holder1PhotoUrl })
+  }
+
+  if (holder2Data) {
+    const holder2 = {
+      holder_index: 2,
+      name: holder2Data.name,
+      email: holder2Data.email,
+      phone: holder2Data.mobile,
+      dialing_code: holder2Data.countryCode || '91',
+      answers: [
+        { question_id: Number(activeQuestionMap.NAME), answer: holder2Data.name },
+        { question_id: Number(activeQuestionMap.COUNTRY_CODE), answer: holder2Data.countryCode || '91' },
+        { question_id: Number(activeQuestionMap.MOBILE), answer: holder2Data.mobile },
+        { question_id: Number(activeQuestionMap.EMAIL), answer: holder2Data.email },
+      ],
+    }
+
+    if (holder2Data.aadhaar && activeQuestionMap.AADHAAR) {
+      holder2.answers.push({ question_id: Number(activeQuestionMap.AADHAAR), answer: holder2Data.aadhaar })
+    }
+    if (holder2PhotoUrl && activeQuestionMap.PHOTO) {
+      holder2.answers.push({ question_id: Number(activeQuestionMap.PHOTO), answer: holder2PhotoUrl })
+    }
+    holders.push(holder2)
+  }
+
+  // Format selected facilities
+  const selectedFacilities = registration.selectedFacilities || []
+  const facilityIds = selectedFacilities.map((f) => f.id)
+  const facilitiesPayload = selectedFacilities.map((f) => ({
+    id: f.id,
+    is_included: 1,
+    selected: true,
+    name: f.name,
+    ticket_id: ticketId,
+  }))
+
   await getEventTickets(uuid)
 
-  const quote = await getPricingQuote({ ticketId, quantity, eventSlotId })
+  const quote = await getPricingQuote({ ticketId, quantity, eventSlotId, facilityIds })
   const finalPayable = extractFinalPayable(quote)
 
   if (!finalPayable) {
@@ -122,6 +247,9 @@ export async function prepareWowslyBooking(registration) {
       quantity,
       finalPayable,
       eventSlotId,
+      holders,
+      facilities: facilitiesPayload,
+      facilityIds,
     }),
   )
 

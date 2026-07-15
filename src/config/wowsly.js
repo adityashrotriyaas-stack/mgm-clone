@@ -9,27 +9,66 @@ export const WOWSLY_REQUIRE_PAYMENT_VERIFY = import.meta.env.VITE_WOWSLY_REQUIRE
 
 export const FORM_ID = 122
 
+// export const QUESTION_MAP = {
+//   name: '622',
+//   countryCode: '623',
+//   mobile: '624',
+//   email: '625',
+// }
+
+/** Semantic keys mapped to the exact question strings in the API */
 export const QUESTION_MAP = {
-  name: '622',
-  countryCode: '623',
-  mobile: '624',
-  email: '625',
+  NAME: 'Name',
+  COUNTRY_CODE: 'Country Code',
+  MOBILE: 'Mobile Number',
+  EMAIL: 'Email',
+  AADHAAR: 'Aadhaar Card Number',
+  PHOTO: 'Pass Photo',
+}
+
+/** Maps API fields array to semantic map of IDs */
+export const mapFormFields = (fields) => {
+  if (!fields || !Array.isArray(fields)) return {}
+
+  const map = {}
+  Object.entries(QUESTION_MAP).forEach(([key, label]) => {
+    const field = fields.find((f) => {
+      const q = String(f.question || '').trim().toLowerCase()
+      const l = String(label || '').trim().toLowerCase()
+      return q === l
+    })
+    if (field) {
+      map[key] = field.id
+    }
+  })
+  return map
 }
 
 export const COMMON_EVENT_QUERY = '?common_event_link=true'
 
 /** Local night id (1–10) → Wowsly event_slot_id */
-export const NIGHT_SLOT_MAP = {
-  1: 715,
-  2: 716,
-  3: 717,
-  4: 718,
-  5: 719,
-  6: 720,
-  7: 721,
-  8: 722,
-  9: 723,
-  10: 724,
+export let NIGHT_SLOT_MAP = {}
+
+/** Dynamically populates NIGHT_SLOT_MAP from schedule public response */
+export function updateNightSlotMap(scheduleData) {
+  const data = scheduleData?.data ?? scheduleData ?? {}
+  const dates = Array.isArray(data.dates) ? [...data.dates].sort((a, b) => String(a.date || '').localeCompare(String(b.date || ''))) : []
+  const slots = Array.isArray(data.slots) ? data.slots : []
+
+  if (dates.length === 0 || slots.length === 0) return
+
+  const newMap = {}
+  dates.forEach((dateObj, index) => {
+    const nightNumber = index + 1
+    const matchingSlot = slots.find((s) => s.event_date_id === dateObj.id || s.date_id === dateObj.id)
+    if (matchingSlot) {
+      newMap[nightNumber] = matchingSlot.id
+    }
+  })
+
+  if (Object.keys(newMap).length > 0) {
+    NIGHT_SLOT_MAP = { ...NIGHT_SLOT_MAP, ...newMap }
+  }
 }
 
 export function isWowslyConfigured() {
