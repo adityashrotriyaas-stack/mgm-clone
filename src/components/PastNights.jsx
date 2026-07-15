@@ -15,6 +15,9 @@ import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepart
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
 import SelfImprovementOutlinedIcon from '@mui/icons-material/SelfImprovementOutlined'
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded'
+import YouTubeIcon from '@mui/icons-material/YouTube'
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
@@ -243,6 +246,9 @@ color: '#F0E8E0',
             fontWeight: 700,
             fontSize: active ? { xs: '1rem', md: '1.16rem' } : { xs: '0.92rem', md: '1rem' },
             mb: 0.55,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           {item.label}
@@ -682,11 +688,18 @@ export function Footer() {
               {aboutContent.footerTagline}
             </Typography>
             <Stack direction="row" spacing={1.5} sx={{ mt: 1.75 }}>
-              {['IG', 'FB', 'YT'].map((label) => (
-                <Link
-                  key={label}
-                  href="#"
-                  aria-label={label}
+              {[
+                { label: 'IG', href: contactInfo.social.instagram, icon: <InstagramIcon /> },
+                { label: 'FB', href: contactInfo.social.facebook, icon: <FacebookRoundedIcon /> },
+                { label: 'YT', href: contactInfo.social.youtube, icon: <YouTubeIcon /> },
+              ].map((item) => (
+                <Box
+                  component="a"
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.label}
                   sx={{
                     width: 44,
                     height: 44,
@@ -695,15 +708,18 @@ export function Footer() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    color: '#fff',
+                    fontSize: '1.3rem',
                     '&:hover': {
                       background: gradients.button,
                       color: colors.bg,
                     },
                   }}
                 >
-                  {label}
-                </Link>
+                  {item.icon}
+                </Box>
               ))}
             </Stack>
           </Box>
@@ -781,6 +797,7 @@ export function Footer() {
             component="img"
             src={wowslyLogo}
             alt="Wowsly"
+            loading="lazy"
             sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.4 }}
           />
           <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>

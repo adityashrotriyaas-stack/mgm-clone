@@ -209,6 +209,9 @@ function NightStoryCard({ night, image, detail, offset, isActive, onSelect, onPl
             fontWeight: 700,
             color: '#FFF8E7',
             lineHeight: 1.2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           {night.theme}
