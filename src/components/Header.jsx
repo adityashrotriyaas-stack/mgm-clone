@@ -16,7 +16,6 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
-import logoImg from '../assets/logo.jpeg'
 
 export default function Header() {
   const navigate = useNavigate()
@@ -77,10 +76,12 @@ export default function Header() {
         >
 <Link href="#home" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textDecoration: 'none', flexShrink: 0 }}>
             <img
-              src={logoImg}
+              src="/logo.jpeg"
               alt="MGM Navratri"
               width="60"
               height="60"
+              decoding="async"
+              fetchPriority="high"
               style={{
                 width: '60px',
                 height: '60px',

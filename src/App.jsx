@@ -1,15 +1,16 @@
 import Box from '@mui/material/Box'
-import AboutSection from './components/AboutSection'
-import BookingWorkflowSection from './components/BookingWorkflowSection'
-import ContactSection from './components/ContactSection'
-import LegacySection from './components/LegacySection'
-import ProgressBar from './components/ProgressBar'
 import Header from './components/Header'
 import Hero from './components/Hero'
-import UpcomingNights from './components/UpcomingNights'
-import UpcomingNightsTimeline from './components/UpcomingNightsTimeline'
-import PastNights, { Footer } from './components/PastNights'
 import StickyCTA from './components/StickyCTA'
+import UpcomingNights from './components/UpcomingNights'
+import {
+  LazyAboutSection,
+  LazyBookingWorkflowSection,
+  LazyContactSection,
+  LazyLegacySection,
+  LazyPastNightsBlock,
+  LazyUpcomingNightsTimeline,
+} from './components/LazySection'
 import { colors } from './constants/colors'
 
 function App() {
@@ -23,17 +24,15 @@ function App() {
         pb: { xs: 'calc(96px + env(safe-area-inset-bottom, 0px))', lg: 0 },
       }}
     >
-      <ProgressBar />
       <Header />
       <Hero />
       <UpcomingNights />
-      <UpcomingNightsTimeline />
-      <AboutSection />
-      <BookingWorkflowSection />
-      <LegacySection />
-      <PastNights />
-      <ContactSection />
-      <Footer />
+      <LazyUpcomingNightsTimeline />
+      <LazyAboutSection />
+      <LazyBookingWorkflowSection />
+      <LazyLegacySection />
+      <LazyPastNightsBlock />
+      <LazyContactSection />
       <StickyCTA />
     </Box>
   )

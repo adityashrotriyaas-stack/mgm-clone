@@ -17,19 +17,6 @@ import { colors } from '../constants/colors'
 import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
 
-const nightImages = [
-  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
-  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
-  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
-  'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=800',
-  'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=800',
-  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
-  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
-  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
-  'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=800',
-  'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=800',
-]
-
 const cardDetails = [
   {},
   {},
@@ -313,10 +300,25 @@ export default function UpcomingNightsTimeline() {
   const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
+  const [hoverPaused, setHoverPaused] = useState(false)
+  const [inView, setInView] = useState(true)
+  const isPaused = hoverPaused || !inView
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
   const carouselRef = useRef(null)
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const node = sectionRef.current
+    if (!node) return undefined
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.15 },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const update = () => setIsMobile(window.innerWidth < 900)
@@ -330,7 +332,7 @@ export default function UpcomingNightsTimeline() {
       navratriNights.map((night, index) => ({
         ...night,
         ...cardDetails[index],
-        image: nightImages[index] || pastHighlights[index % pastHighlights.length]?.image,
+        image: pastHighlights[index % pastHighlights.length]?.image,
       })),
     [],
   )
@@ -384,6 +386,7 @@ export default function UpcomingNightsTimeline() {
 
   return (
     <Box
+      ref={sectionRef}
       component="section"
       id="artists"
       sx={{
@@ -396,8 +399,8 @@ export default function UpcomingNightsTimeline() {
         backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
       }}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onMouseEnter={() => setHoverPaused(true)}
+      onMouseLeave={() => setHoverPaused(false)}
     >
       <Box
         sx={{
