@@ -30,7 +30,7 @@ import PhotoCaptureField from './PhotoCaptureField'
 import NonRefundableCheckbox from './NonRefundableCheckbox'
 import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
-import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
+import { upcomingEvents, registrationCategories, passOptions, navratriNights, seasonalPhases } from '../data/siteData'
 import promoBanner from '../assets/image.png'
 import wowslyLogo from '../assets/wowsly-logo.png'
 import FestiveSection from './FestiveSection'
@@ -48,13 +48,14 @@ import {
 
 const eventInfo = {
   1: {
-    dateRange: '13 Oct 2026',
-    time: '7:30 PM – 1:00 AM',
-    ticketInfo: 'Stag ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    dateRange: '10 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹2,000 | Female ₹1,500 | Couple ₹3,000 | Seasonal Pass ₹5,000',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹499',
-    description: `About Rangeeli Raat
+    price: '₹2,000',
+    description: `About Opening Night
+
 
 The third night of MGM Cultural Navratri is where the energy peaks. Rangeeli Raat — the colourful night — brings together devotion, dance, and dandiya under one open sky.
 
@@ -89,12 +90,12 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
     cta: 'Book Stag Pass',
   },
   2: {
-    dateRange: '14 Oct 2026',
-    time: '7:30 PM – 1:00 AM',
-    ticketInfo: 'Couple ₹899 | Includes Complimentary Mocktail',
+    dateRange: '13 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹3,000 | Female ₹2,000 | Couple ₹4,000 | Seasonal Pass Valid',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹899',
+    price: '₹3,000',
     description: `About Dhoom Dhamaka
 
 Night four is made for two. Dhoom Dhamaka is a celebration of togetherness — where love and tradition meet on the dance floor.
@@ -128,12 +129,12 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
     cta: 'Book Couple Pass',
   },
   3: {
-    dateRange: '15 Oct 2026',
-    time: '7:30 PM – 2:00 AM',
-    ticketInfo: 'Stag ₹599 | Entry to All Stalls Included',
+    dateRange: '14 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹1,500 | Female ₹1,000 | Couple ₹2,000 | Seasonal Pass Valid',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹599',
+    price: '₹1,500',
     description: `About Bollywood Beats
 
 Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition with the pulse of contemporary music — creating a high-energy night that keeps the ground moving until 2 AM.`,
@@ -165,12 +166,12 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
     cta: 'Book Your Pass',
   },
   4: {
-    dateRange: '20 Oct 2026',
-    time: '7:00 PM – 1:00 AM',
-    ticketInfo: 'Premium ₹1,299 | Includes Welcome Gift Pack',
+    dateRange: '19 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹1,500 | Female ₹1,000 | Couple ₹2,000 | Seasonal Pass Valid',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹1,299',
+    price: '₹1,500',
     description: `About Maha Aarti & Grand Finale
 
 Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri begins with a sacred Maha Aarti — a powerful ceremony of light, sound, and collective prayer that fills the entire venue with devotion.`,
@@ -242,8 +243,8 @@ function buildFallbackEvent(id) {
     badge: 'Now Booking',
     night: night.label,
     date: `🗓️ ${night.date}`,
-    time: '🕰️ 9:00 PM',
-    price: '₹499',
+    time: '9:00 PM',
+    price: '₹1,500',
     priceUnit: '/ pass',
     image: promoBanner,
   }
@@ -256,10 +257,10 @@ function buildFallbackInfo(id) {
   return {
     dateRange: night.date.replace(',', ' 2026'),
     time: '9:00 PM – Late Night',
-    ticketInfo: 'Daily Pass ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    ticketInfo: 'Stag ₹1,500 | Couple ₹2,000 | Seasonal Pass ₹5,000',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹499',
+    price: '₹1,500',
     description: `About ${night.theme}
 
 ${night.label} of MGM Cultural Navratri 2026 celebrates ${night.theme.toLowerCase()} with live Garba, festive performances, and a vibrant cultural atmosphere in Rajkot.
@@ -683,11 +684,23 @@ export default function EventDetail() {
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
   const isSeasonalPass = passMode === 'seasonal'
-  const pricingSource = isSeasonalPass ? selectedPass?.data : selected
   const isCoupleCategory = category === 'couple'
   const pricingMultiplier = isCoupleCategory ? 1 : Number(ticketCount || 1)
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
-  const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
+
+  const getNightPrice = () => {
+    if (!slotSelection?.eventSlotId || !category) return null
+    const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
+    return night ? night[category] : null
+  }
+  const effectiveUnitPrice = isSeasonalPass
+    ? (category ? seasonalPhases[0][category] : 0)
+    : (getNightPrice() || getPriceAmount(selected?.price))
+  const effectiveUnitPriceStr = effectiveUnitPrice ? formatRupees(effectiveUnitPrice) : '₹0'
+  const effectivePriceUnit = isSeasonalPass ? '/ person' : (selected?.priceUnit || '/ ticket')
+
+  const pricingSource = { price: effectiveUnitPriceStr, priceUnit: effectivePriceUnit }
+  const totalPrice = formatRupees(effectiveUnitPrice * pricingMultiplier)
   const scheduleStep = 2
   const detailsStep = isSeasonalPass ? 2 : 3
   const registrationStepLabels = isSeasonalPass
@@ -924,7 +937,10 @@ export default function EventDetail() {
                   <Stack spacing={1.25}>
                     {categoryKeys.map((key) => {
                       const cat = registrationCategories[key]
-                      const optionPrice = isSeasonalPass ? selectedPass.data : cat
+                      const phasePrice = isSeasonalPass ? seasonalPhases[0][key] : null
+                      const optionPrice = isSeasonalPass
+                        ? { price: formatRupees(phasePrice), priceUnit: '/ person' }
+                        : cat
                       return (
                         <CategoryOption
                           key={key}
