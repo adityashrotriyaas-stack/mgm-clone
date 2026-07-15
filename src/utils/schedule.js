@@ -27,13 +27,18 @@ const FALLBACK_SCHEDULE = {
   shows: [
     { id: 177, show_name: 'Show 1', name: 'Show 1', start_time: '21:00:00', end_time: '14:00:00', status: 'active' },
   ],
-  slots: Object.entries(NIGHT_SLOT_MAP).map(([nightId, slotId]) => ({
-    id: slotId,
-    event_date_id: 1866 + Number(nightId),
-    event_venue_id: 174,
-    event_show_id: 177,
-    status: 'active',
-  })),
+  slots: [
+    { id: 715, event_date_id: 1867, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 716, event_date_id: 1868, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 717, event_date_id: 1869, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 718, event_date_id: 1870, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 719, event_date_id: 1871, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 720, event_date_id: 1872, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 721, event_date_id: 1873, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 722, event_date_id: 1874, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 723, event_date_id: 1875, event_venue_id: 174, event_show_id: 177, status: 'active' },
+    { id: 724, event_date_id: 1876, event_venue_id: 174, event_show_id: 177, status: 'active' },
+  ],
 }
 
 export function normalizeScheduleResponse(response) {
