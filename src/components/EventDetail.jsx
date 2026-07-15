@@ -48,12 +48,12 @@ import {
 
 const eventInfo = {
   1: {
-    dateRange: '13 Oct 2026',
+    dateRange: '12 Oct 2026',
     time: '7:30 PM – 1:00 AM',
-    ticketInfo: 'Stag ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    ticketInfo: 'Stag ₹1,500 | Couple ₹2,000 | Seasonal Pass Valid for All 10 Nights',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹499',
+    price: '₹1,500',
     description: `About Rangeeli Raat
 
 The third night of MGM Cultural Navratri is where the energy peaks. Rangeeli Raat — the colourful night — brings together devotion, dance, and dandiya under one open sky.
@@ -89,12 +89,12 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
     cta: 'Book Stag Pass',
   },
   2: {
-    dateRange: '14 Oct 2026',
+    dateRange: '13 Oct 2026',
     time: '7:30 PM – 1:00 AM',
-    ticketInfo: 'Couple ₹899 | Includes Complimentary Mocktail',
+    ticketInfo: 'Stag ₹3,000 | Couple ₹4,000 | Seasonal Pass Valid for All 10 Nights',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹899',
+    price: '₹3,000',
     description: `About Dhoom Dhamaka
 
 Night four is made for two. Dhoom Dhamaka is a celebration of togetherness — where love and tradition meet on the dance floor.
@@ -128,12 +128,12 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
     cta: 'Book Couple Pass',
   },
   3: {
-    dateRange: '15 Oct 2026',
+    dateRange: '14 Oct 2026',
     time: '7:30 PM – 2:00 AM',
-    ticketInfo: 'Stag ₹599 | Entry to All Stalls Included',
+    ticketInfo: 'Stag ₹1,500 | Couple ₹2,000 | Seasonal Pass Valid for All 10 Nights',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹599',
+    price: '₹1,500',
     description: `About Bollywood Beats
 
 Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition with the pulse of contemporary music — creating a high-energy night that keeps the ground moving until 2 AM.`,
@@ -165,12 +165,12 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
     cta: 'Book Your Pass',
   },
   4: {
-    dateRange: '20 Oct 2026',
+    dateRange: '19 Oct 2026',
     time: '7:00 PM – 1:00 AM',
-    ticketInfo: 'Premium ₹1,299 | Includes Welcome Gift Pack',
+    ticketInfo: 'Stag ₹1,500 | Couple ₹2,000 | Seasonal Pass Valid for All 10 Nights',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹1,299',
+    price: '₹1,500',
     description: `About Maha Aarti & Grand Finale
 
 Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri begins with a sacred Maha Aarti — a powerful ceremony of light, sound, and collective prayer that fills the entire venue with devotion.`,
@@ -243,7 +243,7 @@ function buildFallbackEvent(id) {
     night: night.label,
     date: `🗓️ ${night.date}`,
     time: '🕰️ 9:00 PM',
-    price: '₹499',
+    price: '₹1,500',
     priceUnit: '/ pass',
     image: promoBanner,
   }
@@ -256,10 +256,10 @@ function buildFallbackInfo(id) {
   return {
     dateRange: night.date.replace(',', ' 2026'),
     time: '9:00 PM – Late Night',
-    ticketInfo: 'Daily Pass ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    ticketInfo: 'Daily Pass ₹1,500 | Couple ₹2,000 | Seasonal Pass Valid for All 10 Nights',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹499',
+    price: '₹1,500',
     description: `About ${night.theme}
 
 ${night.label} of MGM Cultural Navratri 2026 celebrates ${night.theme.toLowerCase()} with live Garba, festive performances, and a vibrant cultural atmosphere in Rajkot.
@@ -648,6 +648,8 @@ export default function EventDetail() {
     return s ? Math.min(parseInt(s, 10), 3) : 0
   })()
   const [regStep, setRegStep] = useState(() => {
+    const pm = ss('pm')
+    if (!pm) return 0
     const s = parseInt(ss('step'), 10)
     return !isNaN(s) ? s : (isNaN(initialStep) ? 0 : initialStep)
   })
@@ -721,6 +723,10 @@ export default function EventDetail() {
   }, [])
 
   useEffect(() => {
+    saveFormState()
+  }, [regStep, passMode, category, slotSelection, personForm, secondPersonForm, maleForm, femaleForm, ticketCount, acceptedNonRefundable, acceptedPolicies])
+
+  useEffect(() => {
     async function loadTickets() {
       try {
         const res = isWowslyConfigured() ? await getEventTickets('') : null
@@ -776,7 +782,7 @@ export default function EventDetail() {
     if (!acceptedNonRefundable || !acceptedPolicies) return false
     if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
     if (isCoupleCategory) {
-      return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
+      return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && maleForm.mobile !== femaleForm.mobile
     }
     if (ticketCount === '2') {
       return isPersonComplete(personForm) && isPersonComplete(secondPersonForm)
@@ -789,6 +795,10 @@ export default function EventDetail() {
     setTicketCount(key === 'couple' ? '2' : '1')
     changeStep(2)
   }
+
+  const mobileMatchError = isCoupleCategory && maleForm.mobile && femaleForm.mobile && maleForm.mobile === femaleForm.mobile
+    ? 'Both persons must have different mobile numbers'
+    : ''
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -1023,38 +1033,12 @@ export default function EventDetail() {
                         onPhotoChange={makePhotoUpdater(setMaleForm)}
                       />
                       <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
-                      <Box>
-                        <Button
-                          type="button"
-                          onClick={() => setHolder2Expanded(!holder2Expanded)}
-                          fullWidth
-                          sx={{
-                            justifyContent: 'space-between',
-                            color: colors.gold,
-                            textTransform: 'none',
-                            fontWeight: 700,
-                            py: 1.5,
-                            px: 2,
-                            borderRadius: '12px',
-                            border: '1px solid rgba(232, 184, 74, 0.3)',
-                            bgcolor: 'rgba(232, 184, 74, 0.04)',
-                            '&:hover': { bgcolor: 'rgba(232, 184, 74, 0.08)' }
-                          }}
-                        >
-                          <span>Female Details (Guest 2)</span>
-                          <span>{holder2Expanded ? 'Collapse ▲' : 'Add Details ▼'}</span>
-                        </Button>
-                        {holder2Expanded && (
-                          <Box sx={{ mt: 3 }}>
-                            <PersonFields
-                              title=""
-                              person={femaleForm}
-                              onFieldChange={makeFieldUpdater(setFemaleForm)}
-                              onPhotoChange={makePhotoUpdater(setFemaleForm)}
-                            />
-                          </Box>
-                        )}
-                      </Box>
+                      <PersonFields
+                        title="Female Details"
+                        person={femaleForm}
+                        onFieldChange={makeFieldUpdater(setFemaleForm)}
+                        onPhotoChange={makePhotoUpdater(setFemaleForm)}
+                      />
                     </Stack>
                   ) : (
                     <Stack spacing={3}>
@@ -1171,6 +1155,11 @@ export default function EventDetail() {
                   {submitError && (
                     <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
                       {submitError}
+                    </Typography>
+                  )}
+                  {mobileMatchError && (
+                    <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
+                      {mobileMatchError}
                     </Typography>
                   )}
 
