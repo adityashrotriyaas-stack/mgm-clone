@@ -8,13 +8,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
-import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
-import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined'
-import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
-import SelfImprovementOutlinedIcon from '@mui/icons-material/SelfImprovementOutlined'
-import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded'
 import YouTubeIcon from '@mui/icons-material/YouTube'
@@ -26,16 +20,6 @@ import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 import logoImg from '../assets/logo.jpeg'
 import wowslyLogo from '../assets/wowsly-logo.png'
-
-const highlightIcons = [
-  SelfImprovementOutlinedIcon,
-  CelebrationOutlinedIcon,
-  FavoriteBorderRoundedIcon,
-  MilitaryTechOutlinedIcon,
-  LocalFireDepartmentOutlinedIcon,
-  CelebrationOutlinedIcon,
-  StarsRoundedIcon,
-]
 
 function ThrowbackHeader() {
   return (
@@ -123,7 +107,6 @@ function ThrowbackHeader() {
 }
 
 function HighlightCard({ item, meta, active = false, offset = 0 }) {
-  const Icon = meta.icon
   const absOffset = Math.abs(offset)
   const scale = active ? 0.95 : absOffset === 1 ? 0.9 : 0.82
   const rotateY = active ? 0 : offset < 0 ? 14 : -14
@@ -200,33 +183,9 @@ color: '#F0E8E0',
             letterSpacing: '0.4px',
           }}
         >
-          <StarsRoundedIcon sx={{ fontSize: '0.9rem' }} />
           Highlight
         </Box>
       )}
-
-      <Box
-        sx={{
-          position: 'absolute',
-          left: '50%',
-          bottom: active ? 82 : 70,
-          transform: 'translateX(-50%)',
-          width: active ? 58 : 52,
-          height: active ? 58 : 52,
-          borderRadius: '50%',
-          border: '1px solid rgba(234, 90, 0, 0.72)',
-          bgcolor: 'rgba(28, 12, 16, 0.38)',
-          backdropFilter: 'blur(6px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: colors.gold,
-          zIndex: 2,
-          boxShadow: active ? '0 0 18px rgba(255, 179, 0, 0.16)' : 'none',
-        }}
-      >
-        <Icon sx={{ fontSize: active ? '1.7rem' : '1.55rem' }} />
-      </Box>
 
       <Box
         sx={{
@@ -421,7 +380,6 @@ export default function PastNights() {
       return {
         item,
         meta: {
-          icon: highlightIcons[originalIndex % highlightIcons.length],
           date: item.date,
           highlight: originalIndex === Math.floor(showcase.length / 2),
         },

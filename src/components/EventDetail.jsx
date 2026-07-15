@@ -654,6 +654,8 @@ export default function EventDetail() {
     return s ? Math.min(parseInt(s, 10), 3) : 0
   })()
   const [regStep, setRegStep] = useState(() => {
+    const pm = ss('pm')
+    if (!pm) return 0
     const s = parseInt(ss('step'), 10)
     return !isNaN(s) ? s : (isNaN(initialStep) ? 0 : initialStep)
   })
@@ -777,7 +779,7 @@ export default function EventDetail() {
     if (!acceptedNonRefundable || !acceptedPolicies) return false
     if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
     if (isCoupleCategory) {
-      return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
+      return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && maleForm.mobile !== femaleForm.mobile
     }
     if (ticketCount === '2') {
       return isPersonComplete(personForm) && isPersonComplete(secondPersonForm)
@@ -790,6 +792,10 @@ export default function EventDetail() {
     setTicketCount(key === 'couple' ? '2' : '1')
     changeStep(2)
   }
+
+  const mobileMatchError = isCoupleCategory && maleForm.mobile && femaleForm.mobile && maleForm.mobile === femaleForm.mobile
+    ? 'Both persons must have different mobile numbers'
+    : ''
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -1119,6 +1125,11 @@ export default function EventDetail() {
                   {submitError && (
                     <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
                       {submitError}
+                    </Typography>
+                  )}
+                  {mobileMatchError && (
+                    <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
+                      {mobileMatchError}
                     </Typography>
                   )}
 
