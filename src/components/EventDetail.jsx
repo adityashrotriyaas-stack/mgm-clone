@@ -490,7 +490,7 @@ function getNightLabel(nightId) {
   return `${night.label} · ${night.date} · ${night.theme}`
 }
 
-function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
+function PersonFields({ title, person, onFieldChange, onPhotoChange, errors }) {
   return (
     <Box sx={personSectionSx}>
       {title && (
@@ -499,11 +499,16 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
         </Typography>
       )}
       <Box sx={{ display: 'grid', gap: 1.5 }}>
-        <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
-        <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} />
-        <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
-        <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
-        <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} />
+        <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} error={!!errors?.name} helperText={errors?.name || ' '} fullWidth />
+        <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} error={!!errors?.mobile} helperText={errors?.mobile || ' '} />
+        <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} error={!!errors?.email} helperText={errors?.email || ' '} fullWidth />
+        <Box>
+          <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
+          {errors?.selfiePreview && (
+            <Typography sx={{ color: '#ef4444', fontSize: '0.75rem', mt: 0.5, ml: 0.5 }}>{errors.selfiePreview}</Typography>
+          )}
+        </Box>
+        <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} error={!!errors?.aadhaar} helperText={errors?.aadhaar || ' '} />
       </Box>
     </Box>
   )
@@ -666,6 +671,7 @@ export default function EventDetail() {
   const [acceptedPolicies, setAcceptedPolicies] = useState(() => ss('ap') === 'true')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [formErrors, setFormErrors] = useState({})
 
   const changeStep = (step) => {
     setRegStep(step)
@@ -694,7 +700,7 @@ export default function EventDetail() {
 
   if (!event || !info) return <Navigate to="/" replace />
 
-  const makeFieldUpdater = (setter) => (field) => (event) => {
+  const makeFieldUpdater = (setter, formKey) => (field) => (event) => {
     let value = event.target.value
     if (field === 'mobile') {
       value = value.replace(/\D/g, '').slice(0, 10)
@@ -703,6 +709,9 @@ export default function EventDetail() {
       value = value.replace(/\D/g, '').slice(0, 12)
     }
     setter((prev) => ({ ...prev, [field]: value }))
+    if (formErrors[formKey]?.[field] !== undefined) {
+      clearFieldError(formKey, field)
+    }
   }
 
   const makePhotoUpdater = (setter) => (previewUrl) => {
@@ -720,6 +729,36 @@ export default function EventDetail() {
     person.email &&
     person.aadhaar.length === 12 &&
     person.selfiePreview
+
+  const getPersonErrors = (person) => ({
+    name: !person.name ? 'Full name is required' : '',
+    mobile: person.mobile.length !== 10 ? 'Enter a valid 10-digit mobile number' : '',
+    email: !person.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email) ? 'Valid email address is required' : '',
+    aadhaar: person.aadhaar.length !== 12 ? 'Enter a valid 12-digit Aadhaar number' : '',
+    selfiePreview: !person.selfiePreview ? 'Photo is required for pass verification' : '',
+  })
+
+  const validateAllForms = () => {
+    const errors = {}
+    if (isCoupleCategory) {
+      errors.maleForm = getPersonErrors(maleForm)
+      errors.femaleForm = getPersonErrors(femaleForm)
+    } else {
+      errors.personForm = getPersonErrors(personForm)
+      if (ticketCount === '2') {
+        errors.secondPersonForm = getPersonErrors(secondPersonForm)
+      }
+    }
+    setFormErrors(errors)
+    return !Object.values(errors).some((form) => Object.values(form).some((msg) => msg))
+  }
+
+  const clearFieldError = (formKey, field) => {
+    setFormErrors((prev) => {
+      if (!prev[formKey]) return prev
+      return { ...prev, [formKey]: { ...prev[formKey], [field]: '' } }
+    })
+  }
 
   const canSubmitForm = () => {
     if (!acceptedNonRefundable || !acceptedPolicies) return false
@@ -741,7 +780,16 @@ export default function EventDetail() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!canSubmitForm() || submitting) return
+    if (submitting) return
+    if (!validateAllForms()) return
+    if (!acceptedNonRefundable || !acceptedPolicies) {
+      setSubmitError('Please accept the non-refundable policy and the privacy/refund policy to proceed.')
+      return
+    }
+    if (!isSeasonalPass && !slotSelection?.eventSlotId) {
+      setSubmitError('Please select a date and time slot before proceeding.')
+      return
+    }
 
     const passLabel = selectedPass?.data.title || passMode
     const scheduleDetails = !isSeasonalPass && slotSelection?.eventSlotId
@@ -966,15 +1014,17 @@ export default function EventDetail() {
                       <PersonFields
                         title="Male Details"
                         person={maleForm}
-                        onFieldChange={makeFieldUpdater(setMaleForm)}
+                        onFieldChange={makeFieldUpdater(setMaleForm, 'maleForm')}
                         onPhotoChange={makePhotoUpdater(setMaleForm)}
+                        errors={formErrors.maleForm}
                       />
                       <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
                       <PersonFields
                         title="Female Details"
                         person={femaleForm}
-                        onFieldChange={makeFieldUpdater(setFemaleForm)}
+                        onFieldChange={makeFieldUpdater(setFemaleForm, 'femaleForm')}
                         onPhotoChange={makePhotoUpdater(setFemaleForm)}
+                        errors={formErrors.femaleForm}
                       />
                     </Stack>
                   ) : (
@@ -982,8 +1032,9 @@ export default function EventDetail() {
                       <PersonFields
                         title={ticketCount === '2' ? 'Ticket 1 Details' : category === 'male' ? 'Male Details' : 'Female Details'}
                         person={personForm}
-                        onFieldChange={makeFieldUpdater(setPersonForm)}
+                        onFieldChange={makeFieldUpdater(setPersonForm, 'personForm')}
                         onPhotoChange={makePhotoUpdater(setPersonForm)}
+                        errors={formErrors.personForm}
                       />
                       {ticketCount === '2' && (
                         <>
@@ -991,8 +1042,9 @@ export default function EventDetail() {
                           <PersonFields
                             title="Ticket 2 Details"
                             person={secondPersonForm}
-                            onFieldChange={makeFieldUpdater(setSecondPersonForm)}
+                            onFieldChange={makeFieldUpdater(setSecondPersonForm, 'secondPersonForm')}
                             onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
+                            errors={formErrors.secondPersonForm}
                           />
                         </>
                       )}
@@ -1064,7 +1116,7 @@ export default function EventDetail() {
                     </Button>
                     <Button
                       type="submit"
-                      disabled={!canSubmitForm() || submitting}
+                      disabled={submitting}
                       sx={registrationSubmitButtonSx}
                     >
                       {submitting ? 'Processing…' : 'Proceed to Payment'}
