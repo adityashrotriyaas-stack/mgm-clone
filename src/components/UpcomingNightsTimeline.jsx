@@ -391,6 +391,7 @@ export default function UpcomingNightsTimeline() {
           background: 'radial-gradient(circle, rgba(255,170,60,0.1) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
+        
       />
 
       <Container maxWidth="xl" sx={{ px: { xs: 1.5, sm: 2.5, md: 4 } }}>
