@@ -12,12 +12,14 @@ import NightsStayOutlinedIcon from '@mui/icons-material/NightsStayOutlined'
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
 import { useNavigate } from 'react-router-dom'
+import artistsBg from '../assets/artists-bg.png'
 import dandiyaDeco from '../assets/dandiya-deco.png'
 import artistBg1 from '../assets/artist-bg-1.jpeg'
 import artistBg2 from '../assets/artist-bg-2.jpeg'
 import artistBg3 from '../assets/artist-bg-3.jpeg'
 import artistBg4 from '../assets/artist-bg-4.jpeg'
 import { colors } from '../constants/colors'
+import { patternDiya, patternGarland, patternMandala, patternNight } from '../constants/navratriTheme'
 import { navratriNights, pastHighlights } from '../data/siteData'
 import { RevealBox } from './shared'
 
@@ -277,10 +279,25 @@ export default function UpcomingNightsTimeline() {
   const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
+  const [hoverPaused, setHoverPaused] = useState(false)
+  const [inView, setInView] = useState(true)
+  const isPaused = hoverPaused || !inView
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
   const carouselRef = useRef(null)
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const node = sectionRef.current
+    if (!node) return undefined
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.15 },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const update = () => setIsMobile(window.innerWidth < 900)
@@ -294,7 +311,7 @@ export default function UpcomingNightsTimeline() {
       navratriNights.map((night, index) => ({
         ...night,
         ...cardDetails[index],
-        image: nightImages[index] || pastHighlights[index % pastHighlights.length]?.image,
+        image: pastHighlights[index % pastHighlights.length]?.image,
       })),
     [],
   )

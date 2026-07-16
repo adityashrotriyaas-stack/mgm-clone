@@ -1,4 +1,5 @@
 {
+  "name": "mgm-navratri",
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "rewrites": [
