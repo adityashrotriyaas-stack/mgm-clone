@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
-import { getWhatsAppUrl } from '../data/contactInfo'
+import { useEnquiryModal } from './EnquiryModal'
 
 const featuredEvent = upcomingEvents[0]
 
@@ -12,6 +12,7 @@ function cleanLabel(value = '') {
 }
 
 export default function StickyCTA() {
+  const openEnquiryModal = useEnquiryModal()
   return (
     <Box
       sx={{
@@ -75,7 +76,7 @@ export default function StickyCTA() {
         </Typography>
       </Box>
       <Button
-        onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+        onClick={openEnquiryModal}
         sx={{
           background: gradients.button,
           color: colors.textLight,

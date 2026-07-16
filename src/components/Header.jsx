@@ -16,7 +16,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
-import { getWhatsAppUrl } from '../data/contactInfo'
+import { useEnquiryModal } from './EnquiryModal'
 import logoImg from '../assets/logo.webp'
 
 export default function Header() {
@@ -24,6 +24,7 @@ const navigate = useNavigate()
 const [open, setOpen] = useState(false)
 const [scrolled, setScrolled] = useState(false)
 const closeMenu = () => setOpen(false)
+const openEnquiryModal = useEnquiryModal()
 
 useEffect(() => {
   const onScroll = () => {
@@ -177,7 +178,7 @@ useEffect(() => {
         </Stack>
 
         <Button
-          onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+          onClick={() => { closeMenu(); openEnquiryModal() }}
           sx={{
             display: { xs: 'none', md: 'inline-flex' },
             background: gradients.button,
@@ -250,7 +251,7 @@ useEffect(() => {
             ))}
             <Box component="li" sx={{ mt: 1.25 }}>
 <Button
-                  onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+                  onClick={() => { closeMenu(); openEnquiryModal() }}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',

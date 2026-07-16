@@ -11,6 +11,7 @@ import App from './App.jsx'
 import ErrorBoundary from './components/ErrorBoundary'
 import ProgressBar from './components/ProgressBar'
 import { ToastProvider } from './components/Toast'
+import { EnquiryProvider } from './components/EnquiryModal'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import NotFound from './components/NotFound'
 import theme from './theme.js'
@@ -108,7 +109,9 @@ createRoot(document.getElementById('root')).render(
       <CssBaseline />
       <ErrorBoundary>
         <ToastProvider>
-          <RouterProvider router={router} />
+          <EnquiryProvider>
+            <RouterProvider router={router} />
+          </EnquiryProvider>
         </ToastProvider>
       </ErrorBoundary>
     </ThemeProvider>

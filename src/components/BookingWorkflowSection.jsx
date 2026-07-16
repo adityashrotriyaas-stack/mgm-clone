@@ -11,7 +11,7 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
 import { patternMandala } from '../constants/navratriTheme'
-import { getWhatsAppUrl } from '../data/contactInfo'
+import { useEnquiryModal } from './EnquiryModal'
 
 const workflowSteps = [
   {
@@ -252,6 +252,7 @@ function WorkflowStep({ step, index, visible }) {
 }
 
 export default function BookingWorkflowSection() {
+  const openEnquiryModal = useEnquiryModal()
   const { ref: timelineRef, visible } = useRevealStagger()
 
   return (
@@ -421,7 +422,7 @@ export default function BookingWorkflowSection() {
 
         <Stack alignItems="center" sx={{ width: '100%', mt: { xs: 5, md: 7 } }}>
           <Button
-            onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+            onClick={openEnquiryModal}
             sx={{
               width: { xs: '100%', sm: 320 },
               maxWidth: 360,
