@@ -5,6 +5,7 @@ import {
   prepareWowslyBooking,
 } from '../services/wowslyBooking'
 import { getPublicSchedule, getEventTickets } from '../services/wowslyApi'
+import { buildTicketMap } from '../data/wowslyCatalog'
 import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
 import ScheduleStep from './ScheduleStep'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
@@ -667,7 +668,12 @@ export default function EventDetail() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [ticketsList, setTicketsList] = useState([])
+  const [ticketMap, setTicketMap] = useState(null)
   const [holder2Expanded, setHolder2Expanded] = useState(false)
+
+  useEffect(() => {
+    saveFormState()
+  }, [regStep, passMode, category, slotSelection, personForm, secondPersonForm, maleForm, femaleForm, ticketCount, acceptedNonRefundable, acceptedPolicies])
 
   const changeStep = (step) => {
     setRegStep(step)
@@ -727,6 +733,7 @@ export default function EventDetail() {
         const tickets = res?.data?.tickets || res?.tickets || res?.data || res || []
         if (Array.isArray(tickets)) {
           setTicketsList(tickets)
+          setTicketMap(buildTicketMap(tickets))
         }
       } catch (err) {
         console.warn('Failed to load tickets list:', err)
@@ -843,7 +850,7 @@ export default function EventDetail() {
     try {
       let wowslySession = null
       if (isWowslyConfigured()) {
-        wowslySession = await prepareWowslyBooking(registration)
+        wowslySession = await prepareWowslyBooking(registration, ticketMap)
         registration = applyQuotedPriceToRegistration(registration, wowslySession)
       }
 
@@ -934,7 +941,7 @@ export default function EventDetail() {
                         <CategoryOption
                           key={key}
                           categoryKey={key}
-                          label={key}
+                          label={ticketMap?.[passMode]?.[key]?.displayName || key}
                           subtitle={cat.title}
                           price={optionPrice.price}
                           priceUnit={optionPrice.priceUnit}
