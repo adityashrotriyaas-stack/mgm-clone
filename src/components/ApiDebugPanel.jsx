@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { colors, gradients } from '../constants/colors'
 
 
+
 const MAX_LOGS = 100
 const methodColor = (method) => {
   const colors = { GET: '#22c55e', POST: '#3b82f6', PUT: '#f59e0b', DELETE: '#ef4444', PATCH: '#8b5cf6' }
