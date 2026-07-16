@@ -126,6 +126,8 @@ export default function Hero() {
             src={heroBanner}
             alt="MGM Navratri 2026"
             loading="eager"
+            decoding="async"
+            fetchPriority="high"
             sx={{
               width: '100%',
               height: 'auto',
