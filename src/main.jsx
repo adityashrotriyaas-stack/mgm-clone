@@ -82,10 +82,6 @@ const router = createBrowserRouter([
         element: <BookingFlow />,
       },
       {
-        path: '/event/:eventId',
-        element: <EventDetail />,
-      },
-      {
         path: '/privacy-policy',
         element: <PrivacyPolicy />,
       },
@@ -93,6 +89,11 @@ const router = createBrowserRouter([
         path: '/refund-policy',
         element: <RefundPolicy />,
       },
+      // Temporarily disabled - EventDetail route
+      // {
+      //   path: '/event/:eventId',
+      //   element: <EventDetail />,
+      // },
       {
         path: '*',
         element: <NotFound />,
