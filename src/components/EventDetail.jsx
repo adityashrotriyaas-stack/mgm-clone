@@ -4,7 +4,8 @@ import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
 } from '../services/wowslyBooking'
-
+import { getPublicSchedule, getEventTickets } from '../services/wowslyApi'
+import { buildTicketMap } from '../data/wowslyCatalog'
 import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
 import ScheduleStep from './ScheduleStep'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
@@ -674,7 +675,13 @@ export default function EventDetail() {
   const [acceptedPolicies, setAcceptedPolicies] = useState(() => ss('ap') === 'true')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
-  const [formErrors, setFormErrors] = useState({})
+  const [ticketsList, setTicketsList] = useState([])
+  const [ticketMap, setTicketMap] = useState(null)
+  const [holder2Expanded, setHolder2Expanded] = useState(false)
+
+  useEffect(() => {
+    saveFormState()
+  }, [regStep, passMode, category, slotSelection, personForm, secondPersonForm, maleForm, femaleForm, ticketCount, acceptedNonRefundable, acceptedPolicies])
 
   const changeStep = (step) => {
     setRegStep(step)
@@ -710,7 +717,49 @@ export default function EventDetail() {
     : ['Pass Type', 'Category', 'Date & Time', 'Details']
 
   useEffect(() => {
-    setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+    let cancelled = false
+
+    async function loadSchedule() {
+      setScheduleLoading(true)
+      setScheduleError('')
+      try {
+        const response = isWowslyConfigured() ? await getPublicSchedule() : null
+        if (response) {
+          updateNightSlotMap(response)
+        }
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(response || buildFallbackSchedule()))
+        }
+      } catch {
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+          setScheduleError('')
+        }
+      } finally {
+        if (!cancelled) setScheduleLoading(false)
+      }
+    }
+
+    loadSchedule()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
+    async function loadTickets() {
+      try {
+        const res = isWowslyConfigured() ? await getEventTickets('') : null
+        const tickets = res?.data?.tickets || res?.tickets || res?.data || res || []
+        if (Array.isArray(tickets)) {
+          setTicketsList(tickets)
+          setTicketMap(buildTicketMap(tickets))
+        }
+      } catch (err) {
+        console.warn('Failed to load tickets list:', err)
+      }
+    }
+    loadTickets()
   }, [])
 
   if (!event || !info) return <Navigate to="/" replace />
@@ -857,7 +906,7 @@ export default function EventDetail() {
     try {
       let wowslySession = null
       if (isWowslyConfigured()) {
-        wowslySession = await prepareWowslyBooking(registration)
+        wowslySession = await prepareWowslyBooking(registration, ticketMap)
         registration = applyQuotedPriceToRegistration(registration, wowslySession)
       }
 
@@ -950,7 +999,7 @@ export default function EventDetail() {
                         <CategoryOption
                           key={key}
                           categoryKey={key}
-                          label={key}
+                          label={ticketMap?.[passMode]?.[key]?.displayName || key}
                           subtitle={cat.title}
                           price={optionPrice.price}
                           priceUnit={optionPrice.priceUnit}
