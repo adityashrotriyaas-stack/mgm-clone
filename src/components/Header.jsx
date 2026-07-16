@@ -16,6 +16,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
+import logoImg from '../assets/logo.jpeg'
 
 export default function Header() {
 const navigate = useNavigate()
