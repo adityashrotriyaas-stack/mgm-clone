@@ -1,10 +1,10 @@
-import pastNight01 from '../assets/past-nights/past-night-01.png'
-import pastNight02 from '../assets/past-nights/past-night-02.png'
-import pastNight03 from '../assets/past-nights/past-night-03.png'
-import pastNight04 from '../assets/past-nights/past-night-04.png'
-import pastNight05 from '../assets/past-nights/past-night-05.png'
-import pastNight06 from '../assets/past-nights/past-night-06.png'
-import pastNight07 from '../assets/past-nights/past-night-07.png'
+import pastNight01 from '../assets/past-nights/past-night-01.webp'
+import pastNight02 from '../assets/past-nights/past-night-02.webp'
+import pastNight03 from '../assets/past-nights/past-night-03.webp'
+import pastNight04 from '../assets/past-nights/past-night-04.webp'
+import pastNight05 from '../assets/past-nights/past-night-05.webp'
+import pastNight06 from '../assets/past-nights/past-night-06.webp'
+import pastNight07 from '../assets/past-nights/past-night-07.webp'
 
 export const navLinks = [
   { label: 'Home', href: '#home', active: true },
@@ -54,7 +54,7 @@ export const heroFeatures = [
     subtitle: 'Live Garba from 9 PM',
   },
   {
-    icon: 'food',
+    icon: 'star',
     title: 'Star Artists',
     subtitle: 'A new performer each night',
   },
@@ -80,69 +80,69 @@ export const nightTracker = [
 ]
 
 export const navratriNights = [
-  { id: 1, label: 'Night 1', date: 'Oct 10, Fri', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 2, label: 'Night 2', date: 'Oct 11, Sat', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 3, label: 'Night 3', date: 'Oct 12, Sun', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 4, label: 'Night 4', date: 'Oct 13, Mon', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 5, label: 'Night 5', date: 'Oct 14, Tue', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 6, label: 'Night 6', date: 'Oct 15, Wed', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 7, label: 'Night 7', date: 'Oct 16, Thu', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 8, label: 'Night 8', date: 'Oct 17, Fri', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 9, label: 'Night 9', date: 'Oct 18, Sat', theme: 'MGM CULTURAL NAVRATRI' },
-  { id: 10, label: 'Night 10', date: 'Oct 19, Mon', theme: 'MGM CULTURAL NAVRATRI' },
+  { id: 1, label: 'Night 1', date: 'Oct 10, Sat', theme: 'MGM CULTURAL NAVRATRI', male: 2000, female: 1500, couple: 3000 },
+  { id: 2, label: 'Night 2', date: 'Oct 11, Sun', theme: 'MGM CULTURAL NAVRATRI', male: 2000, female: 1500, couple: 3000 },
+  { id: 3, label: 'Night 3', date: 'Oct 12, Mon', theme: 'MGM CULTURAL NAVRATRI', male: 1500, female: 1000, couple: 2000 },
+  { id: 4, label: 'Night 4', date: 'Oct 13, Tue', theme: 'MGM CULTURAL NAVRATRI', male: 3000, female: 2000, couple: 4000 },
+  { id: 5, label: 'Night 5', date: 'Oct 14, Wed', theme: 'MGM CULTURAL NAVRATRI', male: 1500, female: 1000, couple: 2000 },
+  { id: 6, label: 'Night 6', date: 'Oct 15, Thu', theme: 'MGM CULTURAL NAVRATRI', male: 1500, female: 1000, couple: 2000 },
+  { id: 7, label: 'Night 7', date: 'Oct 16, Fri', theme: 'MGM CULTURAL NAVRATRI', male: 1500, female: 1000, couple: 2000 },
+  { id: 8, label: 'Night 8', date: 'Oct 17, Sat', theme: 'MGM CULTURAL NAVRATRI', male: 2000, female: 1500, couple: 3000 },
+  { id: 9, label: 'Night 9', date: 'Oct 18, Sun', theme: 'MGM CULTURAL NAVRATRI', male: 2000, female: 1500, couple: 3000 },
+  { id: 10, label: 'Night 10', date: 'Oct 19, Mon', theme: 'MGM CULTURAL NAVRATRI', male: 1500, female: 1000, couple: 2000 },
 ]
 
 export const upcomingEvents = [
   {
     id: 1,
     title: 'MGM Cultural Navratri',
-    badge: 'Selling Fast',
-    night: 'Night 3',
-    date: 'Oct 13, Tue',
-    time: '7:30 PM',
-    price: '₹499',
+    badge: 'Opening Night',
+    night: 'Night 1',
+    date: 'Oct 10, Sat',
+    time: '9:00 PM',
+    price: '₹2,000',
     priceUnit: '/ stag',
-    image: 'https://images.unsplash.com/photo-1604608672516-f1a8f9b94c6f?w=600',
+    image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600',
   },
   {
     id: 2,
     title: 'Dhoom Dhamaka',
     badge: 'Couple Special',
     night: 'Night 4',
-    date: 'Oct 14, Wed',
-    time: '7:30 PM',
-    price: '₹899',
+    date: 'Oct 13, Tue',
+    time: '9:00 PM',
+    price: '₹4,000',
     priceUnit: '/ couple',
-    image: 'https://images.unsplash.com/photo-1576487248805-cf45f6bdc67c?w=600',
+    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600',
   },
   {
     id: 3,
     title: 'Bollywood Beats',
     badge: 'Live DJ',
     night: 'Night 5',
-    date: 'Oct 15, Thu',
-    time: '7:30 PM',
-    price: '₹599',
+    date: 'Oct 14, Wed',
+    time: '9:00 PM',
+    price: '₹1,500',
     priceUnit: '/ stag',
-    image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600',
+    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600',
   },
   {
     id: 4,
     title: 'Maha Aarti & Finale',
     badge: 'Grand Finale',
     night: 'Night 10',
-    date: 'Oct 20, Tue',
-    time: '7:00 PM',
-    price: '₹1299',
+    date: 'Oct 19, Mon',
+    time: '9:00 PM',
+    price: '₹1,500',
     priceUnit: '/ stag',
-    image: 'https://images.unsplash.com/photo-1572014652523-cb71e1f5e5d4?w=600',
+    image: 'https://images.unsplash.com/photo-1514320291840-75f0a710a6ad?w=600',
   },
 ]
 
 export const passOptions = {
   daily: {
     title: 'Daily Pass',
-    price: '₹499',
+    price: '₹1,500',
     priceUnit: '/ person / night',
     perks: [
       'Entry to any single night',
@@ -150,18 +150,18 @@ export const passOptions = {
       'Access to food & handicraft stalls',
       'Choose your night at checkout',
     ],
-    cta: 'Book a Single Night',
+    cta: 'Get Your Pass',
     ghost: true,
   },
   seasonal: {
     title: 'Seasonal Pass',
-    price: '₹2,999',
+    price: '₹5,000',
     priceUnit: '/ person / all 10 nights',
     perks: [
       'Entry to all ten nights — no rebooking',
       'Priority entry lane, every night',
       'Reserved seating zone access',
-      'Save ~33% vs booking nightly',
+      'Save ~60% vs booking nightly',
     ],
     cta: 'Get Seasonal Pass',
     featured: true,
@@ -169,14 +169,20 @@ export const passOptions = {
   },
 }
 
+export const seasonalPhases = [
+  { id: 1, label: 'Phase 1', dateRange: '15 Jul – 14 Aug', male: 5000, female: 4000, couple: 8000 },
+  { id: 2, label: 'Phase 2', dateRange: '15 Aug – 14 Sep', male: 7000, female: 6000, couple: 10000 },
+  { id: 3, label: 'Phase 3', dateRange: '15 Sep – 9 Oct', male: 9000, female: 8000, couple: 12000 },
+]
+
 export const registrationCategories = {
   male: {
     title: 'Male Pass',
     eyebrow: 'Stag Entry',
-    price: '₹499',
+    price: '₹1,500',
     priceUnit: '/ night',
     perks: [
-      'Entry to Rangeeli Raat grounds',
+      'Entry to Garba grounds',
       'Welcome tilak & kalash blessing',
       'Access to food & handicraft stalls',
     ],
@@ -184,10 +190,10 @@ export const registrationCategories = {
   female: {
     title: 'Female Pass',
     eyebrow: 'Stag Entry',
-    price: '₹399',
+    price: '₹1,000',
     priceUnit: '/ night',
     perks: [
-      'Entry to Rangeeli Raat grounds',
+      'Entry to Garba grounds',
       'Welcome tilak & kalash blessing',
       'Priority queue at entry gates',
     ],
@@ -195,7 +201,7 @@ export const registrationCategories = {
   couple: {
     title: 'Couple Pass',
     eyebrow: 'Couple Entry',
-    price: '₹899',
+    price: '₹2,000',
     priceUnit: '/ night',
     perks: [
       'Entry for 2 guests',
@@ -207,10 +213,10 @@ export const registrationCategories = {
 }
 
 export const passTypeOptions = [
-  'Daily — Night 3, Rangeeli Raat (Oct 13)',
-  'Daily — Night 4, Dhoom Dhamaka (Oct 14)',
-  'Daily — Night 5, Bollywood Beats (Oct 15)',
-  'Daily — Night 10, Grand Finale (Oct 20)',
+  'Daily — Night 1, Opening Night (Oct 10)',
+  'Daily — Night 4, Dhoom Dhamaka (Oct 13)',
+  'Daily — Night 5, Bollywood Beats (Oct 14)',
+  'Daily — Night 10, Grand Finale (Oct 19)',
   'Seasonal Pass — All 10 Nights',
 ]
 

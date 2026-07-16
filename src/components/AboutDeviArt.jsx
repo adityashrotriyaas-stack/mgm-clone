@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import { keyframes } from '@mui/material/styles'
-import mataRaniArt from '../assets/mata-rani.png'
+import mataRaniArt from '../assets/mata-rani.webp'
 
 const orbit = keyframes`
   from { transform: rotate(0deg); }
@@ -39,6 +39,7 @@ function MataRaniReveal({ active }) {
         component="img"
         src={mataRaniArt}
         alt="Mata Rani — divine Navratri art"
+        loading="lazy"
         sx={{
           ...imageBaseSx,
           opacity: active ? 0.42 : 0.22,
@@ -61,6 +62,7 @@ function MataRaniReveal({ active }) {
           src={mataRaniArt}
           alt=""
           aria-hidden
+          loading="lazy"
           sx={{
             ...imageBaseSx,
             filter: 'brightness(1.12) saturate(1.2)',
@@ -82,6 +84,7 @@ function MataRaniReveal({ active }) {
           src={mataRaniArt}
           alt=""
           aria-hidden
+          loading="lazy"
           sx={{
             ...imageBaseSx,
             filter: 'brightness(1.08) saturate(1.15)',

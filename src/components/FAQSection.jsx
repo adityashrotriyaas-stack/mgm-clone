@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     q: 'What types of passes are available?',
-    a: 'We offer Daily Passes (₹499/stag) for individual nights and a Seasonal Pass (₹2,999/person) that grants entry to all 10 nights with priority access and reserved seating.',
+    a: 'We offer Daily Passes (₹1,500/stag) for individual nights and a Seasonal Pass (₹5,000/person) that grants entry to all 10 nights with priority access and reserved seating.',
   },
   {
     q: 'Can I buy a pass at the venue?',
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     q: 'Is there a couple pass?',
-    a: 'Yes! The Couple Pass (₹899/night) includes entry for two, reserved couple seating, and a complimentary mocktail coupon.',
+    a: 'Yes! The Couple Pass (₹2,000/night) includes entry for two, reserved couple seating, and a complimentary mocktail coupon.',
   },
   {
     q: 'What should I bring to the event?',

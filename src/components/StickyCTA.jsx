@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -12,8 +11,6 @@ function cleanLabel(value = '') {
 }
 
 export default function StickyCTA() {
-  const navigate = useNavigate()
-
   return (
     <Box
       sx={{
@@ -77,7 +74,7 @@ export default function StickyCTA() {
         </Typography>
       </Box>
       <Button
-        onClick={() => navigate(`/event/${featuredEvent.id}`)}
+        onClick={() => window.location.href = '/event/1'}
         sx={{
           background: gradients.button,
           color: colors.textLight,
@@ -90,12 +87,9 @@ export default function StickyCTA() {
           borderRadius: '50px',
           flexShrink: 0,
           boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
-          transition: 'transform 0.15s ease, box-shadow 0.2s ease',
-          '&:hover': { background: gradients.buttonHover, transform: 'scale(1.03) translateY(-2px)', boxShadow: '0 14px 30px rgba(234, 90, 0, 0.45)' },
-          '&:active': { transform: 'scale(0.97)' },
         }}
       >
-        Book Now
+        Get Your Pass
       </Button>
     </Box>
   )

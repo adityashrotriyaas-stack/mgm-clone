@@ -20,6 +20,7 @@ import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
 import WhatsAppIcon from './WhatsAppIcon'
 import MobileNumberField from './MobileNumberField'
+import CircularProgress from '@mui/material/CircularProgress'
 const infoLines = [
   { icon: CallOutlinedIcon, label: 'Phone', value: contactInfo.phone, href: contactInfo.phoneHref },
   { icon: CallOutlinedIcon, label: 'Phone 2', value: contactInfo.phone2, href: contactInfo.phone2Href },
@@ -209,25 +210,40 @@ const fieldSx = {
 
 function ContactForm() {
   const [mobile, setMobile] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const name = data.get('name')
-    const mobileValue = data.get('mobile')
-    const message = data.get('message')
+    setLoading(true)
+    try {
+      const data = new FormData(event.currentTarget)
+      const name = data.get('name')
+      const mobileValue = data.get('mobile')
+      const message = data.get('message')
 
-    const text = [
-      'Hi MGM Cultural Navratri,',
-      '',
-      `Name: ${name}`,
-      `Mobile: +91 ${mobileValue}`,
-      `Message: ${message}`,
-    ].join('\n')
+      const text = [
+        'Hi MGM Cultural Navratri,',
+        '',
+        `Name: ${name}`,
+        `Mobile: +91 ${mobileValue}`,
+        `Message: ${message}`,
+      ].join('\n')
 
-    window.open(getWhatsAppUrl(text), '_blank', 'noopener,noreferrer')
-    event.currentTarget.reset()
-    setMobile('')
+      // Submit to Google Sheets
+      await fetch('https://script.google.com/macros/s/AKfycbzz3WXD3m5YbIrHooZrx5hUvoPWWNxtpOkSJGeUgMvAzutwvmwckBi2Kt0mF6vZ37BT/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, mobile: mobileValue, message }),
+      })
+
+      // Open WhatsApp
+      window.open(getWhatsAppUrl(text), '_blank', 'noopener,noreferrer')
+      event.currentTarget.reset()
+      setMobile('')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -314,11 +330,12 @@ function ContactForm() {
       <Button
         type="submit"
         fullWidth
-        startIcon={<WhatsAppIcon size={18} />}
-        endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1.1rem !important' }} />}
+        disabled={loading}
+        startIcon={loading ? <CircularProgress size={18} color="inherit" /> : <WhatsAppIcon size={18} />}
+        endIcon={loading ? null : <ArrowForwardRoundedIcon sx={{ fontSize: '1.1rem !important' }} />}
         sx={{
           mt: 0.5,
-          py: 1.3,
+          py: { xs: 1.6, sm: 1.3 },
           borderRadius: '999px',
           background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
           color: '#3A1C00',
@@ -331,9 +348,14 @@ function ContactForm() {
             filter: 'brightness(1.05)',
             transform: 'translateY(-1px)',
           },
+          '&.Mui-disabled': {
+            background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
+            color: '#3A1C00',
+            opacity: 0.8,
+          },
         }}
       >
-        Continue on WhatsApp
+        {loading ? 'Sending...' : 'Continue on WhatsApp'}
       </Button>
     </Box>
   )

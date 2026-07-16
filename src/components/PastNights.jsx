@@ -8,31 +8,15 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
-import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
-import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined'
-import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
-import SelfImprovementOutlinedIcon from '@mui/icons-material/SelfImprovementOutlined'
-import StarsRoundedIcon from '@mui/icons-material/StarsRounded'
+import InstagramIcon from '@mui/icons-material/Instagram'
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
 import { contactInfo } from '../data/contactInfo'
 import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
-import logoImg from '../assets/logo.jpeg'
-import wowslyLogo from '../assets/wowsly-logo.png'
-
-const highlightIcons = [
-  SelfImprovementOutlinedIcon,
-  CelebrationOutlinedIcon,
-  FavoriteBorderRoundedIcon,
-  MilitaryTechOutlinedIcon,
-  LocalFireDepartmentOutlinedIcon,
-  CelebrationOutlinedIcon,
-  StarsRoundedIcon,
-]
+import wowslyLogo from '../assets/wowsly-logo.webp'
 
 function ThrowbackHeader() {
   return (
@@ -120,7 +104,6 @@ function ThrowbackHeader() {
 }
 
 function HighlightCard({ item, meta, active = false, offset = 0 }) {
-  const Icon = meta.icon
   const absOffset = Math.abs(offset)
   const scale = active ? 0.95 : absOffset === 1 ? 0.9 : 0.82
   const rotateY = active ? 0 : offset < 0 ? 14 : -14
@@ -197,33 +180,9 @@ color: '#F0E8E0',
             letterSpacing: '0.4px',
           }}
         >
-          <StarsRoundedIcon sx={{ fontSize: '0.9rem' }} />
           Highlight
         </Box>
       )}
-
-      <Box
-        sx={{
-          position: 'absolute',
-          left: '50%',
-          bottom: active ? 82 : 70,
-          transform: 'translateX(-50%)',
-          width: active ? 58 : 52,
-          height: active ? 58 : 52,
-          borderRadius: '50%',
-          border: '1px solid rgba(234, 90, 0, 0.72)',
-          bgcolor: 'rgba(28, 12, 16, 0.38)',
-          backdropFilter: 'blur(6px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: colors.gold,
-          zIndex: 2,
-          boxShadow: active ? '0 0 18px rgba(255, 179, 0, 0.16)' : 'none',
-        }}
-      >
-        <Icon sx={{ fontSize: active ? '1.7rem' : '1.55rem' }} />
-      </Box>
 
       <Box
         sx={{
@@ -243,6 +202,9 @@ color: '#F0E8E0',
             fontWeight: 700,
             fontSize: active ? { xs: '1rem', md: '1.16rem' } : { xs: '0.92rem', md: '1rem' },
             mb: 0.55,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           {item.label}
@@ -415,7 +377,6 @@ export default function PastNights() {
       return {
         item,
         meta: {
-          icon: highlightIcons[originalIndex % highlightIcons.length],
           date: item.date,
           highlight: originalIndex === Math.floor(showcase.length / 2),
         },
@@ -523,8 +484,8 @@ export default function PastNights() {
             aria-label="Previous highlights"
             onClick={goPrev}
             sx={{
-              width: { xs: 40, lg: 56 },
-              height: { xs: 40, lg: 56 },
+              width: { xs: 48, lg: 56 },
+              height: { xs: 48, lg: 56 },
               border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -584,8 +545,8 @@ export default function PastNights() {
             aria-label="Next highlights"
             onClick={goNext}
             sx={{
-              width: { xs: 40, lg: 56 },
-              height: { xs: 40, lg: 56 },
+              width: { xs: 48, lg: 56 },
+              height: { xs: 48, lg: 56 },
               border: '1px solid rgba(255, 179, 0, 0.5)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -682,11 +643,16 @@ export function Footer() {
               {aboutContent.footerTagline}
             </Typography>
             <Stack direction="row" spacing={1.5} sx={{ mt: 1.75 }}>
-              {['IG', 'FB', 'YT'].map((label) => (
-                <Link
-                  key={label}
-                  href="#"
-                  aria-label={label}
+              {[
+                { label: 'IG', href: contactInfo.social.instagram, icon: <InstagramIcon /> },
+              ].map((item) => (
+                <Box
+                  component="a"
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.label}
                   sx={{
                     width: 44,
                     height: 44,
@@ -695,15 +661,18 @@ export function Footer() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    color: '#fff',
+                    fontSize: '1.3rem',
                     '&:hover': {
                       background: gradients.button,
                       color: colors.bg,
                     },
                   }}
                 >
-                  {label}
-                </Link>
+                  {item.icon}
+                </Box>
               ))}
             </Stack>
           </Box>
@@ -771,8 +740,7 @@ export function Footer() {
               <Box component="li">{contactInfo.email}</Box>
               <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/privacy-policy')}>Privacy Policy</Box>
               <Box component="li" sx={{ color: colors.gold, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => navigate('/refund-policy')}>Refund Policy</Box>
-              <Box component="li">Organiser Login</Box>
-            </Stack>
+              </Stack>
           </Box>
         </Box>
 
@@ -781,6 +749,7 @@ export function Footer() {
             component="img"
             src={wowslyLogo}
             alt="Wowsly"
+            loading="lazy"
             sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.4 }}
           />
           <Typography sx={{ fontSize: '0.85rem', color: colors.muted }}>

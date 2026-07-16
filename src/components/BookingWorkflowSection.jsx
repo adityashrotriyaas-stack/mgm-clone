@@ -10,7 +10,6 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
-import { useNavigate } from 'react-router-dom'
 import { patternMandala } from '../constants/navratriTheme'
 
 const workflowSteps = [
@@ -252,7 +251,6 @@ function WorkflowStep({ step, index, visible }) {
 }
 
 export default function BookingWorkflowSection() {
-  const navigate = useNavigate()
   const { ref: timelineRef, visible } = useRevealStagger()
 
   return (
@@ -422,7 +420,7 @@ export default function BookingWorkflowSection() {
 
         <Stack alignItems="center" sx={{ width: '100%', mt: { xs: 5, md: 7 } }}>
           <Button
-            onClick={() => navigate('/event/1')}
+            onClick={() => window.location.href = '/event/1'}
             sx={{
               width: { xs: '100%', sm: 320 },
               maxWidth: 360,
@@ -435,15 +433,9 @@ export default function BookingWorkflowSection() {
               fontSize: '1.15rem',
               letterSpacing: '0.02em',
               boxShadow: '0 12px 32px rgba(255, 196, 78, 0.28)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              '&:hover': {
-                background: goldGradient,
-                transform: 'scale(1.03)',
-                boxShadow: '0 16px 40px rgba(255, 196, 78, 0.42)',
-              },
             }}
           >
-            Start Booking Now →
+            Get Your Pass →
           </Button>
         </Stack>
       </Container>

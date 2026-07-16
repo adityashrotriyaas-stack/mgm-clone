@@ -53,7 +53,7 @@ function StepDots({ activeStep }) {
             px: { xs: 0.9, sm: 1.25 },
             py: 0.5,
             borderRadius: '50px',
-            fontSize: { xs: '0.62rem', sm: '0.68rem' },
+            fontSize: { xs: '0.65rem', sm: '0.72rem' },
             fontWeight: 700,
             bgcolor: index <= activeStep ? colors.gold : 'rgba(234, 90, 0,0.1)',
             color: index <= activeStep ? '#fff' : colors.muted,
@@ -173,7 +173,7 @@ export default function BookingFlow() {
                 mb: 0.5,
               }}
             >
-              Complete Your Booking
+              Get Your Pass
             </Typography>
             <Typography sx={{ textAlign: 'center', fontSize: '0.82rem', color: colors.muted, mb: 2 }}>
               Registration done — finish payment to get your QR pass
@@ -268,7 +268,7 @@ export default function BookingFlow() {
               <Stack spacing={2} alignItems="center" textAlign="center">
                 <CheckCircleRoundedIcon sx={{ color: '#22c55e', fontSize: '3rem' }} />
                 <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: colors.ivory }}>
-                  Booking Confirmed!
+                  Enquiry Sent!
                 </Typography>
                 <Box
                   sx={{
@@ -330,7 +330,6 @@ export default function BookingFlow() {
               )}
               {activeStep === 5 && (
                 <Button
-                  onClick={() => navigate('/')}
                   fullWidth
                   sx={{
                     py: 1.4,
