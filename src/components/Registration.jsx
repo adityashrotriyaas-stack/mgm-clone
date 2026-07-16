@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
@@ -10,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { Eyebrow, RevealBox } from './shared'
 import { colors, gradients } from '../constants/colors'
+import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
 import { passTypeOptions, registrationCategories } from '../data/siteData'
 import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
@@ -17,7 +17,6 @@ import AadhaarNumberField from './AadhaarNumberField'
 const categoryKeys = ['male', 'female', 'couple']
 
 export default function Registration() {
-  const navigate = useNavigate()
   const [category, setCategory] = useState('male')
   const [passType, setPassType] = useState('')
   const [mobile, setMobile] = useState('')
@@ -26,7 +25,6 @@ export default function Registration() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    navigate('/event/1')
   }
 
   return (
@@ -245,9 +243,8 @@ export default function Registration() {
               fullWidth
             />
             <Button
-              type="submit"
-              fullWidth
-              sx={{
+              type="button"
+              {...visualOnlyCtaProps({
                 mt: 1,
                 py: 1.9,
                 borderRadius: '14px',
@@ -255,13 +252,8 @@ export default function Registration() {
                 color: '#3A1C00',
                 fontWeight: 800,
                 fontSize: '1rem',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                '&:hover': {
-                  background: gradients.buttonHover,
-                  transform: 'scale(1.02)',
-                  boxShadow: '0 12px 28px rgba(234, 90, 0, 0.45)',
-                },
-              }}
+              })}
+              fullWidth
             >
               Proceed to Payment
             </Button>

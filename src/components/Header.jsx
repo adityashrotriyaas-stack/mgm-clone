@@ -16,6 +16,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
+import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
 import logoImg from '../assets/logo.jpeg'
 
 export default function Header() {
@@ -176,8 +177,7 @@ useEffect(() => {
         </Stack>
 
         <Button
-          startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
-          sx={{
+          {...visualOnlyCtaProps({
             display: { xs: 'none', md: 'inline-flex' },
             background: gradients.button,
             color: '#231509',
@@ -187,16 +187,8 @@ useEffect(() => {
             fontWeight: 700,
             borderRadius: '50px',
             boxShadow: '0 8px 22px rgba(234, 90, 0, 0.35)',
-            transition: 'transform 0.15s ease, box-shadow 0.2s ease',
-            '&:hover': {
-              background: gradients.buttonHover,
-              transform: 'scale(1.03) translateY(-2px)',
-              boxShadow: '0 14px 30px rgba(234, 90, 0, 0.50)',
-            },
-            '&:active': {
-              transform: 'scale(0.97) translateY(0)',
-            },
-          }}
+          })}
+          startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
         >
           Get Your Pass
         </Button>
@@ -257,8 +249,7 @@ useEffect(() => {
             ))}
             <Box component="li" sx={{ mt: 1.25 }}>
                 <Button
-                  fullWidth
-                  sx={{
+                  {...visualOnlyCtaProps({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -268,16 +259,8 @@ useEffect(() => {
                     fontWeight: 700,
                     background: gradients.button,
                     color: '#3A1C00',
-                    transition: 'transform 0.15s ease, box-shadow 0.2s ease',
-                    '&:hover': {
-                      background: gradients.buttonHover,
-                      transform: 'scale(1.02) translateY(-2px)',
-                      boxShadow: '0 14px 30px rgba(234, 90, 0, 0.45)',
-                    },
-                    '&:active': {
-                      transform: 'scale(0.97)',
-                    },
-                  }}
+                  })}
+                  fullWidth
                 >
                 <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
                 Get Your Pass

@@ -11,7 +11,6 @@ import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
 import NightsStayOutlinedIcon from '@mui/icons-material/NightsStayOutlined'
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
-import { useNavigate } from 'react-router-dom'
 import artistsBg from '../assets/artists-bg.png'
 import dandiyaDeco from '../assets/dandiya-deco.png'
 import artistBg1 from '../assets/artist-bg-1.jpeg'
@@ -276,7 +275,6 @@ function NightThumb({ night, image, isActive, onClick }) {
 }
 
 export default function UpcomingNightsTimeline() {
-  const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [hoverPaused, setHoverPaused] = useState(false)

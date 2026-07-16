@@ -1,21 +1,19 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
-import { useNavigate } from 'react-router-dom'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
-import { colors } from '../constants/colors'
+import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
 
 const section = {
-bg: '#1A0800',
-bgSoft: '#3A1C00',
-chipBorder: 'rgba(255,179,0,.25)',
+  bg: '#1A0800',
+  bgSoft: '#3A1C00',
+  chipBorder: 'rgba(255,179,0,.25)',
 }
 
 export default function UpcomingNights() {
-const navigate = useNavigate()
-return (
+  return (
   <Box
     component="section"
     id="featured-event"
@@ -117,9 +115,7 @@ return (
     <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
       <Box sx={{ textAlign: 'center' }}>
         <Button
-          startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
-          endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
-          sx={{
+          {...visualOnlyCtaProps({
             background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
             color: '#3A1C00',
             px: { xs: 3, md: 3 },
@@ -132,13 +128,9 @@ return (
             boxShadow: '0 10px 26px rgba(255, 179, 0, 0.32)',
             '& .MuiButton-startIcon': { mr: 0.7 },
             '& .MuiButton-endIcon': { ml: 0.7 },
-            '&:hover': {
-              background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
-              filter: 'brightness(1.05)',
-              transform: 'translateY(-2px)',
-              boxShadow: '0 14px 30px rgba(255, 179, 0, 0.4)',
-            },
-          }}
+          })}
+          startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
+          endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
         >
           Start Booking Now
         </Button>
