@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
-import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
+import { getWhatsAppUrl } from '../data/contactInfo'
 
 const featuredEvent = upcomingEvents[0]
 
@@ -75,7 +75,8 @@ export default function StickyCTA() {
         </Typography>
       </Box>
       <Button
-        {...visualOnlyCtaProps({
+        onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+        sx={{
           background: gradients.button,
           color: colors.textLight,
           px: { xs: 2.5, sm: 3 },
@@ -87,7 +88,7 @@ export default function StickyCTA() {
           borderRadius: '50px',
           flexShrink: 0,
           boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
-        })}
+        }}
       >
         Enquire Now
       </Button>

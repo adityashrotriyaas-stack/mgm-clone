@@ -17,7 +17,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import amitDhorda from '../assets/amit-dhorda.webp'
 import artistsBg from '../assets/artists-bg.webp'
 import { colors } from '../constants/colors'
-import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
+import { getWhatsAppUrl } from '../data/contactInfo'
 import { patternDiya, patternGarland, patternMandala, patternNight } from '../constants/navratriTheme'
 import { RevealBox, RevealGroup } from './shared'
 
@@ -601,7 +601,8 @@ export default function ArtistsPerformers() {
         <RevealBox variant="fadeUp" delay={0.28} sx={{ width: '100%' }}>
           <Stack alignItems="center" justifyContent="center" spacing={1.4} sx={{ width: '100%' }}>
             <Button
-              {...visualOnlyCtaProps({
+              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              sx={{
                 background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
                 color: '#3A1C00',
                 px: { xs: 2.4, md: 3 },
@@ -618,7 +619,7 @@ export default function ArtistsPerformers() {
                 boxShadow: '0 10px 26px rgba(255, 179, 0, 0.32)',
                 '& .MuiButton-startIcon': { mr: 0.7 },
                 '& .MuiButton-endIcon': { ml: 0.7 },
-              })}
+              }}
               startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
               endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
             >
