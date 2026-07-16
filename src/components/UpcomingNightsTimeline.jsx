@@ -104,174 +104,174 @@ const arrowBtnSx = {
 function NightStoryCard({ night, image, detail, offset, isActive, onSelect, isTransitioning, compact = false }) {
   const { opacity, zIndex, transform, pointerEvents } = getCardTransform(offset, compact)
 
-  return (
+return (
+  <Box
+    onClick={onSelect}
+    sx={{
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      width: { xs: 260, sm: 320, md: 400 },
+      height: { xs: 146, sm: 180, md: 225 },
+      ml: { xs: '-130px', sm: '-160px', md: '-200px' },
+      mt: { xs: '-73px', sm: '-90px', md: '-112px' },
+      borderRadius: '22px',
+      overflow: 'hidden',
+      cursor: 'pointer',
+      transformStyle: 'preserve-3d',
+      transform,
+      opacity,
+      zIndex,
+      pointerEvents,
+      transition: isTransitioning
+        ? 'transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease, box-shadow 0.5s ease'
+        : 'none',
+      border: isActive
+        ? '2px solid rgba(255, 180, 80, 0.95)'
+        : '1.5px solid rgba(255, 180, 80, 0.4)',
+      boxShadow: isActive
+        ? '0 0 40px rgba(255, 160, 60, 0.4), 0 28px 56px rgba(0, 0, 0, 0.5)'
+        : '0 0 16px rgba(255, 160, 60, 0.12), 0 14px 28px rgba(0, 0, 0, 0.35)',
+      '&::before': isActive
+        ? {
+            content: '""',
+            position: 'absolute',
+            inset: -1,
+            borderRadius: '23px',
+            padding: '1px',
+            background: 'linear-gradient(160deg, rgba(255,220,140,0.9), rgba(255,140,40,0.3), rgba(255,220,140,0.7))',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+            pointerEvents: 'none',
+            zIndex: 2,
+            animation: 'borderPulse 2.5s ease-in-out infinite',
+          }
+        : {},
+      '@keyframes borderPulse': {
+        '0%, 100%': { opacity: 0.7 },
+        '50%': { opacity: 1 },
+      },
+      '&:hover': {
+        borderColor: 'rgba(255, 190, 90, 1)',
+      },
+    }}
+  >
     <Box
-      onClick={onSelect}
       sx={{
         position: 'absolute',
-        left: '50%',
-        top: '50%',
-        width: { xs: 260, sm: 320, md: 400 },
-        height: { xs: 146, sm: 180, md: 225 },
-        ml: { xs: '-130px', sm: '-160px', md: '-200px' },
-        mt: { xs: '-73px', sm: '-90px', md: '-112px' },
-        borderRadius: '22px',
-        overflow: 'hidden',
-        cursor: 'pointer',
-        transformStyle: 'preserve-3d',
-        transform,
-        opacity,
-        zIndex,
-        pointerEvents,
-        transition: isTransitioning
-          ? 'transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease, box-shadow 0.5s ease'
-          : 'none',
-        border: isActive
-          ? '2px solid rgba(255, 180, 80, 0.95)'
-          : '1.5px solid rgba(255, 180, 80, 0.4)',
-        boxShadow: isActive
-          ? '0 0 40px rgba(255, 160, 60, 0.4), 0 28px 56px rgba(0, 0, 0, 0.5)'
-          : '0 0 16px rgba(255, 160, 60, 0.12), 0 14px 28px rgba(0, 0, 0, 0.35)',
-        '&::before': isActive
-          ? {
-              content: '""',
-              position: 'absolute',
-              inset: -1,
-              borderRadius: '23px',
-              padding: '1px',
-              background: 'linear-gradient(160deg, rgba(255,220,140,0.9), rgba(255,140,40,0.3), rgba(255,220,140,0.7))',
-              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude',
-              pointerEvents: 'none',
-              zIndex: 2,
-              animation: 'borderPulse 2.5s ease-in-out infinite',
-            }
-          : {},
-        '@keyframes borderPulse': {
-          '0%, 100%': { opacity: 0.7 },
-          '50%': { opacity: 1 },
-        },
-        '&:hover': {
-          borderColor: 'rgba(255, 190, 90, 1)',
-        },
+        inset: 0,
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        transform: isActive ? 'scale(1.08)' : 'scale(1)',
+        transition: 'transform 0.7s ease',
       }}
-    >
+    />
+    <Box
+      sx={{
+        position: 'absolute',
+        inset: 0,
+        background:
+          'linear-gradient(180deg, rgba(8,6,18,0.1) 0%, rgba(8,6,18,0.2) 38%, rgba(8,6,18,0.88) 100%)',
+      }}
+    />
+
+    {isActive && (
       <Box
         sx={{
           position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: isActive ? 'scale(1.08)' : 'scale(1)',
-          transition: 'transform 0.7s ease',
+          top: '25%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '60%',
+          height: '60%',
+          background: 'radial-gradient(ellipse, rgba(255,179,0,0.15) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          animation: 'cardGlow 3s ease-in-out infinite',
+          '@keyframes cardGlow': {
+            '0%, 100%': { opacity: 0.5 },
+            '50%': { opacity: 1 },
+          },
         }}
       />
-      <Box
+    )}
+
+    <Box sx={{ position: 'relative', zIndex: 1, height: '100%', p: 2, display: 'flex', flexDirection: 'column' }}>
+      <Typography
         sx={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(180deg, rgba(8,6,18,0.1) 0%, rgba(8,6,18,0.2) 38%, rgba(8,6,18,0.88) 100%)',
+          mt: 0.5,
+          fontFamily: '"Playfair Display", serif',
+          fontSize: { xs: '1.05rem', md: '1.18rem' },
+          fontWeight: 700,
+          color: '#FFF8E7',
+          lineHeight: 1.2,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         }}
-      />
-
-      {isActive && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '60%',
-            height: '60%',
-            background: 'radial-gradient(ellipse, rgba(255,179,0,0.15) 0%, transparent 70%)',
-            pointerEvents: 'none',
-            animation: 'cardGlow 3s ease-in-out infinite',
-            '@keyframes cardGlow': {
-              '0%, 100%': { opacity: 0.5 },
-              '50%': { opacity: 1 },
-            },
-          }}
-        />
-      )}
-
-      <Box sx={{ position: 'relative', zIndex: 1, height: '100%', p: 2, display: 'flex', flexDirection: 'column' }}>
-        <Typography
-          sx={{
-            mt: 0.5,
-            fontFamily: '"Playfair Display", serif',
-            fontSize: { xs: '1.05rem', md: '1.18rem' },
-            fontWeight: 700,
-            color: '#FFF8E7',
-            lineHeight: 1.2,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {night.theme}
-        </Typography>
-      </Box>
+      >
+        {night.theme}
+      </Typography>
     </Box>
-  )
+  </Box>
+)
 }
 
 function NightThumb({ night, image, isActive, onClick }) {
   return (
+  <Box
+    onClick={onClick}
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => e.key === 'Enter' && onClick()}
+    aria-label={night.label}
+    sx={{
+      position: 'relative',
+      flexShrink: 0,
+      width: isActive ? 56 : 44,
+      height: isActive ? 56 : 44,
+      borderRadius: '12px',
+      overflow: 'hidden',
+      cursor: 'pointer',
+      border: isActive ? `2px solid ${colors.gold}` : '1.5px solid rgba(255,255,255,0.15)',
+      boxShadow: isActive ? '0 0 16px rgba(255, 179, 0,0.35)' : 'none',
+      transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+      opacity: isActive ? 1 : 0.55,
+      transform: isActive ? 'translateY(-4px) scale(1.05)' : 'none',
+      '&:hover': { opacity: 1, borderColor: colors.gold },
+    }}
+  >
     <Box
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick()}
-      aria-label={night.label}
       sx={{
-        position: 'relative',
-        flexShrink: 0,
-        width: isActive ? 56 : 44,
-        height: isActive ? 56 : 44,
-        borderRadius: '12px',
-        overflow: 'hidden',
-        cursor: 'pointer',
-        border: isActive ? `2px solid ${colors.gold}` : '1.5px solid rgba(255,255,255,0.15)',
-        boxShadow: isActive ? '0 0 16px rgba(255, 179, 0,0.35)' : 'none',
-        transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
-        opacity: isActive ? 1 : 0.55,
-        transform: isActive ? 'translateY(-4px) scale(1.05)' : 'none',
-        '&:hover': { opacity: 1, borderColor: colors.gold },
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    />
+    <Box
+      sx={{
+        position: 'absolute',
+        inset: 0,
+        bgcolor: 'rgba(0,0,0,0.35)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      <Box
+      <Typography
         sx={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          bgcolor: 'rgba(0,0,0,0.35)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          fontSize: isActive ? '0.72rem' : '0.62rem',
+          fontWeight: 700,
+          color: '#FFF8E7',
         }}
       >
-        <Typography
-          sx={{
-            fontSize: isActive ? '0.72rem' : '0.62rem',
-            fontWeight: 700,
-            color: '#FFF8E7',
-          }}
-        >
-          {night.id}
-        </Typography>
-      </Box>
+        {night.id}
+      </Typography>
     </Box>
+  </Box>
   )
 }
 
@@ -364,487 +364,371 @@ export default function UpcomingNightsTimeline() {
   const activeNight = nights[activeIndex]
 
   return (
+  <Box
+    component="section"
+    id="artists"
+    sx={{
+      position: 'relative',
+      pt: { xs: 2, md: 2.5 },
+      pb: { xs: 5, md: 6 },
+      backgroundImage: `linear-gradient(180deg, rgba(10,6,0,0.70) 0%, rgba(234,90,0,0.25) 50%, rgba(10,6,0,0.85) 100%)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      overflow: 'hidden',
+    }}
+    onMouseEnter={() => setIsPaused(true)}
+    onMouseLeave={() => setIsPaused(false)}
+  >
     <Box
-      ref={sectionRef}
-      component="section"
-      id="artists"
       sx={{
-        position: 'relative',
-        pt: { xs: 3, md: 4 },
-        pb: { xs: 5.5, md: 7 },
-        overflow: 'hidden',
-        color: colors.ivory,
-        bgcolor: '#140800',
-        backgroundImage: `
-          linear-gradient(180deg, rgba(12,6,0,0.82) 0%, rgba(42,14,0,0.72) 38%, rgba(18,8,0,0.88) 100%),
-          url(${artistsBg}),
-          ${patternNight},
-          ${patternDiya},
-          ${patternMandala},
-          ${patternGarland}
-        `,
-        backgroundSize: 'cover, cover, auto, auto, auto, auto',
-        backgroundPosition: 'center, center top, center, center, center, center',
-        backgroundRepeat: 'no-repeat, no-repeat, repeat, no-repeat, no-repeat, repeat',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          inset: 0,
-          background: `
-            radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255,179,0,0.22), transparent 58%),
-            radial-gradient(circle at 12% 72%, rgba(234,90,0,0.18), transparent 32%),
-            radial-gradient(circle at 88% 28%, rgba(255,140,40,0.16), transparent 28%),
-            radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.42) 100%)
-          `,
-          pointerEvents: 'none',
-          zIndex: 0,
-        },
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          inset: 0,
-          background:
-            'repeating-linear-gradient(135deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 28px)',
-          opacity: 0.35,
-          pointerEvents: 'none',
-          zIndex: 0,
-        },
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: { xs: 280, md: 360 },
+        height: { xs: 280, md: 360 },
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(255,170,60,0.1) 0%, transparent 70%)',
+        pointerEvents: 'none',
       }}
-      onMouseEnter={() => setHoverPaused(true)}
-      onMouseLeave={() => setHoverPaused(false)}
-    >
-      {/* Stage light washes */}
-      <Box
-        aria-hidden
-        sx={{
-          position: 'absolute',
-          top: { xs: '8%', md: '4%' },
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: { xs: 280, md: 520 },
-          height: { xs: 280, md: 420 },
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,190,80,0.2) 0%, rgba(234,90,0,0.08) 42%, transparent 70%)',
-          filter: 'blur(8px)',
-          animation: 'mgm-pulse-gold 5.5s ease-in-out infinite',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        aria-hidden
-        sx={{
-          position: 'absolute',
-          bottom: { xs: '12%', md: '8%' },
-          left: { xs: '-8%', md: '4%' },
-          width: { xs: 180, md: 280 },
-          height: { xs: 180, md: 280 },
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(192,78,0,0.28) 0%, transparent 68%)',
-          filter: 'blur(20px)',
-          animation: 'mgm-float-slow 9s ease-in-out infinite',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        aria-hidden
-        sx={{
-          position: 'absolute',
-          top: { xs: '28%', md: '22%' },
-          right: { xs: '-6%', md: '2%' },
-          width: { xs: 160, md: 260 },
-          height: { xs: 160, md: 260 },
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,179,0,0.2) 0%, transparent 70%)',
-          filter: 'blur(18px)',
-          animation: 'mgm-float 7s ease-in-out infinite',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
+    />
 
-      {/* Floating sparkles */}
-      {[
-        { top: '14%', left: '10%', delay: '0s', size: 5 },
-        { top: '22%', left: '84%', delay: '0.8s', size: 4 },
-        { top: '58%', left: '8%', delay: '1.4s', size: 3 },
-        { top: '68%', left: '90%', delay: '0.4s', size: 5 },
-        { top: '38%', left: '74%', delay: '1.8s', size: 3 },
-        { top: '78%', left: '48%', delay: '1.1s', size: 4 },
-      ].map((dot) => (
+    <Container maxWidth="xl" sx={{ px: { xs: 1.5, sm: 2.5, md: 4 } }}>
+      <RevealBox variant="blurUp" duration={0.85}>
+      <Box sx={{ textAlign: 'center', mb: { xs: 2.25, md: 2.75 } }}>
         <Box
-          key={`${dot.top}-${dot.left}`}
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: { xs: 0.8, md: 1.2 },
+            mb: 1,
+          }}
+        >
+          <Box
+            sx={{
+              width: { xs: 28, md: 44 },
+              height: 1,
+              background: `linear-gradient(90deg, transparent, ${colors.gold})`,
+            }}
+          />
+          <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
+          <Typography
+            sx={{
+              fontSize: { xs: '0.66rem', md: '0.76rem' },
+              textTransform: 'uppercase',
+              letterSpacing: { xs: '2.5px', md: '4px' },
+              fontWeight: 600,
+              color: colors.gold,
+            }}
+          >
+            What's On
+          </Typography>
+          <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
+          <Box
+            sx={{
+              width: { xs: 28, md: 44 },
+              height: 1,
+              background: `linear-gradient(90deg, ${colors.gold}, transparent)`,
+            }}
+          />
+        </Box>
+
+        <Typography
+          component="h2"
+          sx={{
+            fontFamily: '"Playfair Display", serif',
+            fontSize: { xs: '1.95rem', sm: '2.55rem', md: '3.15rem' },
+            lineHeight: 1.06,
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+            mb: 0.9,
+          }}
+        >
+          <Box component="span" sx={{ color: '#FFFFFF' }}>
+            Artists &{' '}
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Performers
+          </Box>
+        </Typography>
+
+        <Typography
+          sx={{
+            maxWidth: 520,
+            mx: 'auto',
+            fontSize: { xs: '0.86rem', md: '0.96rem' },
+            color: 'rgba(255, 255, 255, 0.88)',
+            lineHeight: 1.6,
+            mb: 1.5,
+          }}
+        >
+          Swipe through our lineup — each night features a different artist.
+        </Typography>
+
+        <Box
           aria-hidden
           sx={{
-            position: 'absolute',
-            top: dot.top,
-            left: dot.left,
-            width: dot.size,
-            height: dot.size,
-            borderRadius: '50%',
-            bgcolor: '#FFD27A',
-            boxShadow: '0 0 10px rgba(255, 210, 122, 0.9), 0 0 22px rgba(255, 179, 0, 0.45)',
-            animation: `mgm-sparkle 3.2s ease-in-out ${dot.delay} infinite`,
-            pointerEvents: 'none',
-            zIndex: 0,
-            display: { xs: 'none', sm: 'block' },
-          }}
-        />
-      ))}
-
-      {/* Top rim light */}
-      <Box
-        aria-hidden
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '70%',
-          height: 2,
-          background: 'linear-gradient(90deg, transparent, rgba(255,179,0,0.55), transparent)',
-          boxShadow: '0 0 24px rgba(255,179,0,0.35)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 1.5, sm: 2.5, md: 4 } }}>
-        <RevealBox variant="blurUp" duration={0.85}>
-        <Box sx={{ textAlign: 'center', mb: { xs: 2.25, md: 2.75 } }}>
-          <Box
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: { xs: 0.8, md: 1.2 },
-              mb: 1,
-            }}
-          >
-            <Box
-              sx={{
-                width: { xs: 28, md: 44 },
-                height: 1,
-                background: `linear-gradient(90deg, transparent, ${colors.gold})`,
-              }}
-            />
-            <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
-            <Typography
-              sx={{
-                fontSize: { xs: '0.66rem', md: '0.76rem' },
-                textTransform: 'uppercase',
-                letterSpacing: { xs: '2.5px', md: '4px' },
-                fontWeight: 600,
-                color: colors.gold,
-              }}
-            >
-              What's On
-            </Typography>
-            <Box sx={{ color: colors.gold, fontSize: { xs: '0.62rem', md: '0.72rem' }, lineHeight: 1 }}>◈</Box>
-            <Box
-              sx={{
-                width: { xs: 28, md: 44 },
-                height: 1,
-                background: `linear-gradient(90deg, ${colors.gold}, transparent)`,
-              }}
-            />
-          </Box>
-
-          <Typography
-            component="h2"
-            sx={{
-              fontFamily: '"Playfair Display", serif',
-              fontSize: { xs: '1.95rem', sm: '2.55rem', md: '3.15rem' },
-              lineHeight: 1.06,
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              mb: 0.9,
-            }}
-          >
-            <Box component="span" sx={{ color: '#FFFFFF' }}>
-              Artists &{' '}
-            </Box>
-            <Box
-              component="span"
-              sx={{
-                background: 'linear-gradient(180deg, #FFB300 0%, #EA5A00 55%, #C04E00 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Performers
-            </Box>
-          </Typography>
-
-          <Typography
-            sx={{
-              maxWidth: 520,
-              mx: 'auto',
-              fontSize: { xs: '0.86rem', md: '0.96rem' },
-              color: 'rgba(255, 255, 255, 0.88)',
-              lineHeight: 1.6,
-              mb: 1.5,
-            }}
-          >
-            Swipe through our lineup — each night features a different artist.
-          </Typography>
-
-          <Box
-            aria-hidden
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 1,
-              maxWidth: 260,
-              mx: 'auto',
-            }}
-          >
-            <Box
-              sx={{
-                flex: 1,
-                height: 1,
-                background: `linear-gradient(90deg, transparent, ${colors.gold})`,
-                position: 'relative',
-                '&::after': {
-                  content: '"◆"',
-                  position: 'absolute',
-                  right: 0,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  fontSize: '0.35rem',
-                  color: colors.gold,
-                },
-              }}
-            />
-            <Box
-              sx={{
-                color: colors.gold,
-                fontSize: { xs: '1rem', md: '1.15rem' },
-                lineHeight: 1,
-                opacity: 0.95,
-              }}
-            >
-              ❀
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                height: 1,
-                background: `linear-gradient(90deg, ${colors.gold}, transparent)`,
-                position: 'relative',
-                '&::before': {
-                  content: '"◆"',
-                  position: 'absolute',
-                  left: 0,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  fontSize: '0.35rem',
-                  color: colors.gold,
-                },
-              }}
-            />
-          </Box>
-        </Box>
-        </RevealBox>
-
-        <RevealBox variant="scaleUp" delay={0.15} duration={0.9}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{
-            width: '100%',
-            height: { xs: 280, sm: 340, md: 400 },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 1,
+            maxWidth: 260,
             mx: 'auto',
           }}
         >
           <Box
             sx={{
-              width: { xs: 40, sm: 52, md: 64 },
-              flexShrink: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              flex: 1,
+              height: 1,
+              background: `linear-gradient(90deg, transparent, ${colors.gold})`,
+              position: 'relative',
+              '&::after': {
+                content: '"◆"',
+                position: 'absolute',
+                right: 0,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: '0.35rem',
+                color: colors.gold,
+              },
+            }}
+          />
+          <Box
+            sx={{
+              color: colors.gold,
+              fontSize: { xs: '1rem', md: '1.15rem' },
+              lineHeight: 1,
+              opacity: 0.95,
             }}
           >
-            <IconButton onClick={goPrev} aria-label="Previous night" sx={arrowBtnSx}>
-              <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.15rem', md: '1.4rem' } }} />
-            </IconButton>
+            ❀
           </Box>
-
           <Box
+            sx={{
+              flex: 1,
+              height: 1,
+              background: `linear-gradient(90deg, ${colors.gold}, transparent)`,
+              position: 'relative',
+              '&::before': {
+                content: '"◆"',
+                position: 'absolute',
+                left: 0,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: '0.35rem',
+                color: colors.gold,
+              },
+            }}
+          />
+        </Box>
+      </Box>
+      </RevealBox>
+
+      <RevealBox variant="scaleUp" delay={0.15} duration={0.9}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        sx={{
+          width: '100%',
+          height: { xs: 280, sm: 340, md: 400 },
+          mx: 'auto',
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: 40, sm: 52, md: 64 },
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <IconButton onClick={goPrev} aria-label="Previous night" sx={arrowBtnSx}>
+            <ArrowBackRoundedIcon sx={{ fontSize: { xs: '1.15rem', md: '1.4rem' } }} />
+          </IconButton>
+        </Box>
+
+        <Box
+          sx={{
+            position: 'relative',
+            flex: 1,
+            minWidth: 0,
+            height: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            ref={carouselRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            tabIndex={0}
             sx={{
               position: 'relative',
-              flex: 1,
-              minWidth: 0,
+              width: '100%',
               height: '100%',
-              overflow: 'hidden',
+              perspective: { xs: '900px', md: '1600px' },
+              perspectiveOrigin: '50% 50%',
+              outline: 'none',
+              zIndex: 2,
+              touchAction: 'pan-y',
             }}
           >
-            <Box
-              ref={carouselRef}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-              tabIndex={0}
-              sx={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                perspective: { xs: '900px', md: '1600px' },
-                perspectiveOrigin: '50% 50%',
-                outline: 'none',
-                zIndex: 2,
-                touchAction: 'pan-y',
-              }}
-            >
-              {nights.map((night, index) => {
-                const offset = getCircularOffset(index, activeIndex, TOTAL)
-                if (Math.abs(offset) > (isMobile ? 1 : VISIBLE_RANGE)) return null
-                return (
-                  <NightStoryCard
-                    key={night.id}
-                    night={night}
-                    image={night.image}
-                    detail={night}
-                    offset={offset}
-                    isActive={index === activeIndex}
-                    isTransitioning={isTransitioning}
-                    compact={isMobile}
-                    onSelect={() => goTo(index)}
-                  />
-                )
-              })}
-            </Box>
-
-            <Box
-              component="img"
-              src={dandiyaDeco}
-              alt=""
-              loading="lazy"
-              aria-hidden
-              sx={{
-                display: { xs: 'none', md: 'block' },
-                position: 'absolute',
-                left: { md: '11%', lg: '13%' },
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: { md: 200, lg: 250 },
-                height: 'auto',
-                maxHeight: { md: 300, lg: 360 },
-                objectFit: 'contain',
-                mixBlendMode: 'screen',
-                pointerEvents: 'none',
-                userSelect: 'none',
-                zIndex: 1,
-              }}
-            />
-          </Box>
-
-          <Box
-            sx={{
-              width: { xs: 40, sm: 52, md: 64 },
-              flexShrink: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <IconButton onClick={goNext} aria-label="Next night" sx={arrowBtnSx}>
-              <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.15rem', md: '1.4rem' } }} />
-            </IconButton>
-          </Box>
-        </Stack>
-        </RevealBox>
-
-        <RevealBox variant="fadeUp" delay={0.22} duration={0.75}>
-          <Box
-            sx={{
-              mt: 3,
-              mx: 'auto',
-              maxWidth: 680,
-              overflowX: 'auto',
-              pb: 1,
-              px: 1,
-              '&::-webkit-scrollbar': { height: 4 },
-              '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255, 179, 0,0.3)', borderRadius: 4 },
-            }}
-          >
-            <Stack direction="row" spacing={1} justifyContent="center" sx={{ minWidth: 'max-content', py: 1 }}>
-              {nights.map((night, index) => (
-                <NightThumb
+            {nights.map((night, index) => {
+              const offset = getCircularOffset(index, activeIndex, TOTAL)
+              if (Math.abs(offset) > (isMobile ? 1 : VISIBLE_RANGE)) return null
+              return (
+                <NightStoryCard
                   key={night.id}
                   night={night}
                   image={night.image}
+                  detail={night}
+                  offset={offset}
                   isActive={index === activeIndex}
-                  onClick={() => goTo(index)}
+                  isTransitioning={isTransitioning}
+                  compact={isMobile}
+                  onSelect={() => goTo(index)}
                 />
-              ))}
-            </Stack>
+              )
+            })}
           </Box>
 
-          <Stack alignItems="center" sx={{ mt: 2.5, width: '100%' }}>
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-                gap: 1.5,
-                width: '100%',
-                maxWidth: 900,
-                mx: 'auto',
-              }}
-            >
-              {features.map(({ icon: Icon, title, subtitle }) => (
+          <Box
+            component="img"
+            src={dandiyaDeco}
+            alt=""
+            loading="lazy"
+            aria-hidden
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              position: 'absolute',
+              left: { md: '11%', lg: '13%' },
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: { md: 200, lg: 250 },
+              height: 'auto',
+              maxHeight: { md: 300, lg: 360 },
+              objectFit: 'contain',
+              mixBlendMode: 'screen',
+              pointerEvents: 'none',
+              userSelect: 'none',
+              zIndex: 1,
+            }}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            width: { xs: 40, sm: 52, md: 64 },
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <IconButton onClick={goNext} aria-label="Next night" sx={arrowBtnSx}>
+            <ArrowForwardRoundedIcon sx={{ fontSize: { xs: '1.15rem', md: '1.4rem' } }} />
+          </IconButton>
+        </Box>
+      </Stack>
+      </RevealBox>
+
+      <RevealBox variant="fadeUp" delay={0.22} duration={0.75}>
+        <Box
+          sx={{
+            mt: 3,
+            mx: 'auto',
+            maxWidth: 680,
+            overflowX: 'auto',
+            pb: 1,
+            px: 1,
+            '&::-webkit-scrollbar': { height: 4 },
+            '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255, 179, 0,0.3)', borderRadius: 4 },
+          }}
+        >
+          <Stack direction="row" spacing={1} justifyContent="center" sx={{ minWidth: 'max-content', py: 1 }}>
+            {nights.map((night, index) => (
+              <NightThumb
+                key={night.id}
+                night={night}
+                image={night.image}
+                isActive={index === activeIndex}
+                onClick={() => goTo(index)}
+              />
+            ))}
+          </Stack>
+        </Box>
+
+        <Stack alignItems="center" sx={{ mt: 2.5, width: '100%' }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+              gap: 1.5,
+              width: '100%',
+              maxWidth: 900,
+              mx: 'auto',
+            }}
+          >
+            {features.map(({ icon: Icon, title, subtitle }) => (
+              <Box
+                key={title}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.25,
+                  px: { xs: 1.4, md: 1.6 },
+                  py: { xs: 1.35, md: 1.55 },
+                  borderRadius: '18px',
+                  bgcolor: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,179,0,.25)',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: '0 12px 24px rgba(0,0,0,0.16)',
+                  height: '100%',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 16px 32px rgba(0,0,0,0.22)',
+                  },
+                }}
+              >
                 <Box
-                  key={title}
                   sx={{
+                    width: 38,
+                    height: 38,
+                    minWidth: 38,
+                    borderRadius: '12px',
+                    border: '1px solid rgba(234, 90, 0,0.28)',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 1.25,
-                    px: { xs: 1.4, md: 1.6 },
-                    py: { xs: 1.35, md: 1.55 },
-                    borderRadius: '18px',
-                    bgcolor: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,179,0,.25)',
-                    backdropFilter: 'blur(8px)',
-                    boxShadow: '0 12px 24px rgba(0,0,0,0.16)',
-                    height: '100%',
-                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 16px 32px rgba(0,0,0,0.22)',
-                    },
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    bgcolor: 'rgba(255,255,255,0.03)',
                   }}
                 >
-                  <Box
-                    sx={{
-                      width: 38,
-                      height: 38,
-                      minWidth: 38,
-                      borderRadius: '12px',
-                      border: '1px solid rgba(234, 90, 0,0.28)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                      bgcolor: 'rgba(255,255,255,0.03)',
-                    }}
-                  >
-                    <Icon sx={{ color: '#FFFFFF', fontSize: '1.1rem' }} />
-                  </Box>
-                  <Box sx={{ minWidth: 0 }}>
-                    <Typography sx={{ color: '#FFF8F0', fontWeight: 700, fontSize: '0.9rem', mb: 0.2 }}>
-                      {title}
-                    </Typography>
-                    <Typography sx={{ color: '#D7C5B8', fontSize: '0.75rem', lineHeight: 1.55 }}>
-                      {subtitle}
-                    </Typography>
-                  </Box>
+                  <Icon sx={{ color: '#FFFFFF', fontSize: '1.1rem' }} />
                 </Box>
-              ))}
-            </Box>
-          </Stack>
-        </RevealBox>
-        </Container>
-    </Box>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography sx={{ color: '#FFF8F0', fontWeight: 700, fontSize: '0.9rem', mb: 0.2 }}>
+                    {title}
+                  </Typography>
+                  <Typography sx={{ color: '#D7C5B8', fontSize: '0.75rem', lineHeight: 1.55 }}>
+                    {subtitle}
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Stack>
+      </RevealBox>
+      </Container>
+  </Box>
   )
 }
