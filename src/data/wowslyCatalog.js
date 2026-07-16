@@ -1,37 +1,17 @@
-export function buildTicketMap(apiTickets) {
-  const map = {
-    daily: { male: null, female: null, couple: null },
-    seasonal: { male: null, female: null, couple: null },
-  }
-
-  if (!Array.isArray(apiTickets)) return map
-
-  apiTickets.forEach((ticket) => {
-    const rawName = String(ticket.ticket_display_name || ticket.title || ticket.name || '').toLowerCase()
-    const name = rawName.replace(/<[^>]*>?/gm, '')
-
-    const isSeasonal = name.includes('season')
-    const type = isSeasonal ? 'seasonal' : 'daily'
-
-    let category = null
-    if (name.includes('male') && !name.includes('female')) category = 'male'
-    else if (name.includes('female')) category = 'female'
-    else if (name.includes('couple')) category = 'couple'
-
-    if (category) {
-      map[type][category] = {
-        ticketId: ticket.id,
-        title: ticket.title || ticket.name,
-        displayName: ticket.title || ticket.name || String(ticket.ticket_display_name || '').replace(/<[^>]*>?/gm, ''),
-      }
-    }
-  })
-
-  return map
+export const TICKET_MAP = {
+  daily: {
+    male: { ticketId: 263, title: 'Day Pass - Male' },
+    female: { ticketId: 287, title: 'Day Pass - Female' },
+    couple: { ticketId: 289, title: 'Day Pass - Couple' },
+  },
+  seasonal: {
+    male: { ticketId: 286, title: 'Season Pass - Male' },
+    female: { ticketId: 288, title: 'Season Pass - Female' },
+    couple: { ticketId: 265, title: 'Season Pass - Couple' },
+  },
 }
 
-export function resolveTicketFromPassMode(ticketMap, passMode, category) {
+export function resolveTicketFromPassMode(passMode, category) {
   const mode = passMode === 'seasonal' ? 'seasonal' : 'daily'
-  if (!ticketMap) return null
-  return ticketMap[mode]?.[category] || ticketMap[mode]?.male
+  return TICKET_MAP[mode]?.[category] || TICKET_MAP[mode]?.male
 }

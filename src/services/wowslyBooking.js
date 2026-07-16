@@ -64,11 +64,8 @@ export function extractGuestFromRegistration(registration) {
   }
 }
 
-export function resolveTicketSelection(registration, ticketMap) {
-  const ticket = resolveTicketFromPassMode(ticketMap, registration.passMode, registration.category)
-  if (!ticket) {
-    throw new Error('Ticket mapping is not loaded yet. Please try again.')
-  }
+export function resolveTicketSelection(registration) {
+  const ticket = resolveTicketFromPassMode(registration.passMode, registration.category)
   const isSeasonal = registration.passMode === 'seasonal'
   // A Couple ticket includes entry for 2 people. So if the category is couple, the quantity to buy is 1.
   // Otherwise, the quantity is the exact number of tickets selected (e.g. 2 Male tickets = quantity 2).
@@ -98,13 +95,13 @@ function formatRupees(amount) {
   return `₹${value.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`
 }
 
-export async function prepareWowslyBooking(registration, ticketMap) {
+export async function prepareWowslyBooking(registration) {
   if (!isWowslyConfigured()) {
     return null
   }
 
   const guest = extractGuestFromRegistration(registration)
-  const { ticketId, ticketTitle, quantity, eventSlotId } = resolveTicketSelection(registration, ticketMap)
+  const { ticketId, ticketTitle, quantity, eventSlotId } = resolveTicketSelection(registration)
 
   // Fetch form dynamically to resolve field mappings
   let activeQuestionMap = { ...QUESTION_MAP }

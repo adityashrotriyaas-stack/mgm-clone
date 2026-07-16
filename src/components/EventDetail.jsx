@@ -4,8 +4,7 @@ import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
 } from '../services/wowslyBooking'
-import { getPublicSchedule, getEventTickets } from '../services/wowslyApi'
-import { buildTicketMap } from '../data/wowslyCatalog'
+
 import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
 import ScheduleStep from './ScheduleStep'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
@@ -675,14 +674,7 @@ export default function EventDetail() {
   const [acceptedPolicies, setAcceptedPolicies] = useState(() => ss('ap') === 'true')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
-  const [ticketsList, setTicketsList] = useState([])
-  const [ticketMap, setTicketMap] = useState(null)
-  const [holder2Expanded, setHolder2Expanded] = useState(false)
   const [formErrors, setFormErrors] = useState({})
-
-  useEffect(() => {
-    saveFormState()
-  }, [regStep, passMode, category, slotSelection, personForm, secondPersonForm, maleForm, femaleForm, ticketCount, acceptedNonRefundable, acceptedPolicies])
 
   const changeStep = (step) => {
     setRegStep(step)
@@ -721,29 +713,6 @@ export default function EventDetail() {
     setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
   }, [])
 
-  useEffect(() => {
-    async function loadTickets() {
-      try {
-        const res = isWowslyConfigured() ? await getEventTickets('') : null
-        const tickets = res?.data?.tickets || res?.tickets || res?.data || res || []
-        if (Array.isArray(tickets)) {
-          setTicketsList(tickets)
-          setTicketMap(buildTicketMap(tickets))
-        }
-      } catch (err) {
-        console.warn('Failed to load tickets list:', err)
-      }
-    }
-    loadTickets()
-  }, [])
-
-  const activeTicketObj = ticketsList.find((t) => {
-    const isSeasonal = passMode === 'seasonal'
-    const name = String(t.name || t.ticket_name || '').toLowerCase()
-    return isSeasonal ? name.includes('season') : (name.includes('single') || name.includes('daily'))
-  })
-
-  const ticketFacilities = activeTicketObj?.facilities || []
   if (!event || !info) return <Navigate to="/" replace />
 
   const makeFieldUpdater = (setter, formKey) => (field) => (event) => {
@@ -888,7 +857,7 @@ export default function EventDetail() {
     try {
       let wowslySession = null
       if (isWowslyConfigured()) {
-        wowslySession = await prepareWowslyBooking(registration, ticketMap)
+        wowslySession = await prepareWowslyBooking(registration)
         registration = applyQuotedPriceToRegistration(registration, wowslySession)
       }
 
@@ -981,7 +950,7 @@ export default function EventDetail() {
                         <CategoryOption
                           key={key}
                           categoryKey={key}
-                          label={ticketMap?.[passMode]?.[key]?.displayName || key}
+                          label={key}
                           subtitle={cat.title}
                           price={optionPrice.price}
                           priceUnit={optionPrice.priceUnit}
