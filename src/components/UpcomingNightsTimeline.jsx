@@ -643,7 +643,6 @@ export default function UpcomingNightsTimeline() {
                 night={night}
                 image={night.image}
                 isActive={index === activeIndex}
-                onClick={() => goTo(index)}
               />
             ))}
           </Stack>

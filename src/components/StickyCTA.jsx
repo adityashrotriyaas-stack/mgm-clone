@@ -77,7 +77,6 @@ export default function StickyCTA() {
         </Typography>
       </Box>
       <Button
-        onClick={() => navigate(`/event/${featuredEvent.id}`)}
         sx={{
           background: gradients.button,
           color: colors.textLight,

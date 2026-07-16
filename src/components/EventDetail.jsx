@@ -874,7 +874,7 @@ export default function EventDetail() {
     return (
       <Box sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
         <Typography variant="h4">Event not found</Typography>
-        <Button onClick={() => navigate('/')} variant="contained">Back to Home</Button>
+        <Button variant="contained">Back to Home</Button>
       </Box>
     )
   }
@@ -885,7 +885,6 @@ export default function EventDetail() {
         <Container maxWidth="lg">
           <Stack direction="row" sx={{ py: 1, alignItems: 'center' }}>
             <Button
-              onClick={() => navigate('/')}
               startIcon={<ChevronLeftRoundedIcon />}
               sx={{ color: ui.text, fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
             >
@@ -1109,11 +1108,11 @@ export default function EventDetail() {
                       label={
                         <Typography sx={{ fontSize: '0.88rem', color: colors.muted, lineHeight: 1.65 }}>
                           I agree to the{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => { saveFormState(); navigate('/privacy-policy') }}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }}>
                             Privacy Policy
                           </Box>{' '}
                           and{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => { saveFormState(); navigate('/refund-policy') }}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }}>
                             Refund Policy
                           </Box>
                         </Typography>
