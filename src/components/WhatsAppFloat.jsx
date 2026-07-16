@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton'
 import { keyframes } from '@mui/material/styles'
 import { useLocation } from 'react-router-dom'
 import WhatsAppIcon from './WhatsAppIcon'
-import { getWhatsAppUrl } from '../data/contactInfo'
+import { useEnquiryModal } from './EnquiryModal'
 
 const pulse = keyframes`
   0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
@@ -12,6 +12,7 @@ const pulse = keyframes`
 `
 
 export default function WhatsAppFloat() {
+  const openEnquiryModal = useEnquiryModal()
   const { pathname } = useLocation()
   const isHome = pathname === '/'
 
@@ -31,11 +32,8 @@ export default function WhatsAppFloat() {
       }}
     >
       <IconButton
-        component="a"
-        href={getWhatsAppUrl()}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
+        onClick={openEnquiryModal}
+        aria-label="Send an enquiry"
         sx={{
           width: 52,
           height: 52,
