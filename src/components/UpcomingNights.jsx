@@ -4,7 +4,6 @@ import Container from '@mui/material/Container'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
-import { getWhatsAppUrl } from '../data/contactInfo'
 
 const section = {
   bg: '#1A0800',
@@ -115,7 +114,7 @@ export default function UpcomingNights() {
     <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
       <Box sx={{ textAlign: 'center' }}>
         <Button
-          onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+          onClick={() => window.location.href = '/event/1'}
           sx={{
             background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
             color: '#3A1C00',
@@ -133,7 +132,7 @@ export default function UpcomingNights() {
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
           endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
         >
-          Enquire Now
+          Get Your Pass
         </Button>
       </Box>
     </Container>

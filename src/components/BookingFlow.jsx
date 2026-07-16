@@ -173,7 +173,7 @@ export default function BookingFlow() {
                 mb: 0.5,
               }}
             >
-              Enquire Now
+              Get Your Pass
             </Typography>
             <Typography sx={{ textAlign: 'center', fontSize: '0.82rem', color: colors.muted, mb: 2 }}>
               Registration done — finish payment to get your QR pass

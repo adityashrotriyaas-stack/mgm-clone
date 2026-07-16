@@ -3,7 +3,6 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
-import { getWhatsAppUrl } from '../data/contactInfo'
 
 const featuredEvent = upcomingEvents[0]
 
@@ -75,7 +74,7 @@ export default function StickyCTA() {
         </Typography>
       </Box>
       <Button
-        onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+        onClick={() => window.location.href = '/event/1'}
         sx={{
           background: gradients.button,
           color: colors.textLight,
@@ -90,7 +89,7 @@ export default function StickyCTA() {
           boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
         }}
       >
-        Enquire Now
+        Get Your Pass
       </Button>
     </Box>
   )

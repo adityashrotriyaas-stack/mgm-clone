@@ -16,7 +16,6 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
-import { getWhatsAppUrl } from '../data/contactInfo'
 import logoImg from '../assets/logo.webp'
 
 export default function Header() {
@@ -177,7 +176,7 @@ useEffect(() => {
         </Stack>
 
         <Button
-          onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+          onClick={() => navigate('/event/1')}
           sx={{
             display: { xs: 'none', md: 'inline-flex' },
             background: gradients.button,
@@ -191,7 +190,7 @@ useEffect(() => {
           }}
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
         >
-          Enquire Now
+          Get Your Pass
         </Button>
 
         <IconButton
@@ -250,7 +249,7 @@ useEffect(() => {
             ))}
             <Box component="li" sx={{ mt: 1.25 }}>
 <Button
-                  onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+                  onClick={() => window.location.href = '/event/1'}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -265,7 +264,7 @@ useEffect(() => {
                   fullWidth
                 >
                 <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
-          Enquire Now
+          Get Your Pass
               </Button>
             </Box>
           </Stack>
