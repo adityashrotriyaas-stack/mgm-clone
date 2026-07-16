@@ -16,7 +16,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
-import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
+import { getWhatsAppUrl } from '../data/contactInfo'
 import logoImg from '../assets/logo.webp'
 
 export default function Header() {
