@@ -61,7 +61,7 @@ const arrowBtnSx = {
   },
 }
 
-function NightStoryCard({ night, image, isActive }) {
+function NightStoryCard({ night, image, isActive, imageAlign = 'center' }) {
   return (
     <Box
       sx={{
@@ -106,7 +106,7 @@ function NightStoryCard({ night, image, isActive }) {
           inset: 0,
           backgroundImage: `url(${image})`,
           backgroundSize: 'contain',
-          backgroundPosition: 'center',
+          backgroundPosition: imageAlign,
           backgroundRepeat: 'no-repeat',
         }}
       />
@@ -365,6 +365,7 @@ export default function UpcomingNightsTimeline() {
                 night={night}
                 image={night.image}
                 isActive={index === activeIndex}
+                imageAlign={index % 5 === 3 ? 'center' : 'left center'}
               />
             ))}
           </Box>
@@ -387,14 +388,14 @@ export default function UpcomingNightsTimeline() {
           >
 <Stack direction="row" spacing={1} sx={{ py: 1 }}>
               {nights.slice(0, 5).map((night, index) => {
-                const isThumbActive = index === Math.floor(activeIndex / 2)
+                const isThumbActive = index === activeIndex % 5
                 return (
                   <Box
                     key={night.id}
-                    onClick={() => setActiveIndex(index * 2)}
+                    onClick={() => setActiveIndex(index)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index * 2)}
+                    onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index)}
                     aria-label={night.label}
                     sx={{
                       position: 'relative',
@@ -417,7 +418,7 @@ export default function UpcomingNightsTimeline() {
                         position: 'absolute',
                         inset: 0,
                         backgroundImage: `url(${night.image})`,
-                        backgroundSize: 'cover',
+backgroundSize: 'contain',
                         backgroundPosition: 'center',
                       }}
                     />
