@@ -177,7 +177,8 @@ useEffect(() => {
         </Stack>
 
         <Button
-          {...visualOnlyCtaProps({
+          onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+          sx={{
             display: { xs: 'none', md: 'inline-flex' },
             background: gradients.button,
             color: '#231509',
@@ -187,7 +188,7 @@ useEffect(() => {
             fontWeight: 700,
             borderRadius: '50px',
             boxShadow: '0 8px 22px rgba(234, 90, 0, 0.35)',
-          })}
+          }}
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
         >
           Enquire Now
@@ -248,8 +249,9 @@ useEffect(() => {
               </Box>
             ))}
             <Box component="li" sx={{ mt: 1.25 }}>
-                <Button
-                  {...visualOnlyCtaProps({
+<Button
+                  onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+                  sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -259,7 +261,7 @@ useEffect(() => {
                     fontWeight: 700,
                     background: gradients.button,
                     color: '#3A1C00',
-                  })}
+                  }}
                   fullWidth
                 >
                 <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />

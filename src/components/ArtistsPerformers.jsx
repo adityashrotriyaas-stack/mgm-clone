@@ -17,7 +17,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import amitDhorda from '../assets/amit-dhorda.webp'
 import artistsBg from '../assets/artists-bg.webp'
 import { colors } from '../constants/colors'
-import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
+import { getWhatsAppUrl } from '../data/contactInfo'
 import { patternDiya, patternGarland, patternMandala, patternNight } from '../constants/navratriTheme'
 import { RevealBox, RevealGroup } from './shared'
 
