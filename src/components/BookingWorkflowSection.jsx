@@ -11,7 +11,7 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
 import { patternMandala } from '../constants/navratriTheme'
-import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
+import { getWhatsAppUrl } from '../data/contactInfo'
 
 const workflowSteps = [
   {
@@ -421,7 +421,8 @@ export default function BookingWorkflowSection() {
 
         <Stack alignItems="center" sx={{ width: '100%', mt: { xs: 5, md: 7 } }}>
           <Button
-            {...visualOnlyCtaProps({
+            onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+            sx={{
               width: { xs: '100%', sm: 320 },
               maxWidth: 360,
               mx: 'auto',
@@ -433,7 +434,7 @@ export default function BookingWorkflowSection() {
               fontSize: '1.15rem',
               letterSpacing: '0.02em',
               boxShadow: '0 12px 32px rgba(255, 196, 78, 0.28)',
-            })}
+            }}
           >
             Enquire Now →
           </Button>

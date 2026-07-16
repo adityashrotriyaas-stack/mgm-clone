@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { Eyebrow, RevealBox } from './shared'
 import { colors, gradients } from '../constants/colors'
-import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
+import { getWhatsAppUrl } from '../data/contactInfo'
 import { passTypeOptions, registrationCategories } from '../data/siteData'
 import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
@@ -244,7 +244,8 @@ export default function Registration() {
             />
             <Button
               type="button"
-              {...visualOnlyCtaProps({
+              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              sx={{
                 mt: 1,
                 py: 1.9,
                 borderRadius: '14px',
@@ -252,7 +253,7 @@ export default function Registration() {
                 color: '#3A1C00',
                 fontWeight: 800,
                 fontSize: '1rem',
-              })}
+              }}
               fullWidth
             >
               Proceed to Payment
