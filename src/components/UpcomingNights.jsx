@@ -132,7 +132,7 @@ export default function UpcomingNights() {
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
           endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
         >
-          Start Booking Now
+          Enquire Now
         </Button>
       </Box>
     </Container>

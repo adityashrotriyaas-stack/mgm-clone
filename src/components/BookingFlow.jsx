@@ -173,7 +173,7 @@ export default function BookingFlow() {
                 mb: 0.5,
               }}
             >
-              Complete Your Booking
+              Enquire Now
             </Typography>
             <Typography sx={{ textAlign: 'center', fontSize: '0.82rem', color: colors.muted, mb: 2 }}>
               Registration done — finish payment to get your QR pass
@@ -268,7 +268,7 @@ export default function BookingFlow() {
               <Stack spacing={2} alignItems="center" textAlign="center">
                 <CheckCircleRoundedIcon sx={{ color: '#22c55e', fontSize: '3rem' }} />
                 <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: colors.ivory }}>
-                  Booking Confirmed!
+                  Enquiry Sent!
                 </Typography>
                 <Box
                   sx={{

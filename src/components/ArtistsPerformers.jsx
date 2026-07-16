@@ -622,7 +622,7 @@ export default function ArtistsPerformers() {
               startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
               endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
             >
-              Book Your Pass Now
+              Enquire Now
             </Button>
             <Box
               aria-hidden

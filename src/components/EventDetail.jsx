@@ -87,7 +87,7 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Fanpit Zone', 'VIP Lounge', 'Food Court', 'Entry Gate'],
-    cta: 'Book Stag Pass',
+    cta: 'Enquire Now',
   },
   2: {
     dateRange: '13 Oct 2026',
@@ -126,7 +126,7 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
       mark: 'R',
     },
     layoutZones: ['Couple Zone', 'Main Stage', 'Mocktail Bar', 'Photo Booth', 'Entry Gate'],
-    cta: 'Book Couple Pass',
+    cta: 'Enquire Now',
   },
   3: {
     dateRange: '14 Oct 2026',
@@ -163,7 +163,7 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
       mark: 'R',
     },
     layoutZones: ['LED Dance Floor', 'Main Stage', 'Food Court', 'Lounge Deck', 'Entry Gate'],
-    cta: 'Book Your Pass',
+    cta: 'Enquire Now',
   },
   4: {
     dateRange: '19 Oct 2026',
@@ -200,7 +200,7 @@ Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri be
       mark: 'R',
     },
     layoutZones: ['Maha Aarti Stage', 'Premium Deck', 'Garba Arena', 'Food Court', 'Entry Gate'],
-    cta: 'Book Premium Pass',
+    cta: 'Enquire Now',
   },
 }
 
@@ -291,7 +291,7 @@ From the opening aarti to the late-night Mandli Garba session, guests can enjoy 
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Garba Arena', 'Food Court', 'Entry Gate', 'Seating Zone'],
-    cta: `Book ${night.theme}`,
+    cta: 'Enquire Now',
   }
 }
 

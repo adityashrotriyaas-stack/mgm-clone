@@ -52,7 +52,7 @@ export default function Registration() {
         }}
       >
         <Box sx={{ position: 'relative', zIndex: 1, textAlign: 'center', mb: 2.75 }}>
-          <Eyebrow>Book Now</Eyebrow>
+          <Eyebrow>Enquire Now</Eyebrow>
           <Typography
             variant="h2"
             sx={{ color: colors.ivory, fontSize: '1.6rem' }}
