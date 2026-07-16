@@ -1,10 +1,10 @@
-import pastNight01 from '../assets/past-nights/past-night-01.png'
-import pastNight02 from '../assets/past-nights/past-night-02.png'
-import pastNight03 from '../assets/past-nights/past-night-03.png'
-import pastNight04 from '../assets/past-nights/past-night-04.png'
-import pastNight05 from '../assets/past-nights/past-night-05.png'
-import pastNight06 from '../assets/past-nights/past-night-06.png'
-import pastNight07 from '../assets/past-nights/past-night-07.png'
+import pastNight01 from '../assets/past-nights/past-night-01.webp'
+import pastNight02 from '../assets/past-nights/past-night-02.webp'
+import pastNight03 from '../assets/past-nights/past-night-03.webp'
+import pastNight04 from '../assets/past-nights/past-night-04.webp'
+import pastNight05 from '../assets/past-nights/past-night-05.webp'
+import pastNight06 from '../assets/past-nights/past-night-06.webp'
+import pastNight07 from '../assets/past-nights/past-night-07.webp'
 
 export const navLinks = [
   { label: 'Home', href: '#home', active: true },

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import { keyframes } from '@mui/material/styles'
-import mataRaniArt from '../assets/mata-rani.png'
+import mataRaniArt from '../assets/mata-rani.webp'
 
 const orbit = keyframes`
   from { transform: rotate(0deg); }

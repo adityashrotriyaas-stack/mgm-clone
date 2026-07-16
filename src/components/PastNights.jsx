@@ -16,7 +16,7 @@ import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
 import { contactInfo } from '../data/contactInfo'
 import { RevealBox } from './shared'
 import FestiveSection from './FestiveSection'
-import wowslyLogo from '../assets/wowsly-logo.png'
+import wowslyLogo from '../assets/wowsly-logo.webp'
 
 function ThrowbackHeader() {
   return (

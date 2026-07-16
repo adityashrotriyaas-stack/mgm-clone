@@ -17,7 +17,7 @@ import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
 import { visualOnlyCtaProps } from '../constants/visualOnlyCta'
-import logoImg from '../assets/logo.jpeg'
+import logoImg from '../assets/logo.webp'
 
 export default function Header() {
 const navigate = useNavigate()
