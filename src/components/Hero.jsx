@@ -6,7 +6,9 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
-import heroBanner from '../assets/hero-banner.jpeg'
+import { useState, useEffect } from 'react'
+import heroSlide1 from '../assets/hero-slide-1.png'
+import heroSlide2 from '../assets/hero-slide-2.png'
 import { colors } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
 import { heroFeatures } from '../data/siteData'
@@ -75,7 +77,16 @@ function HeroFeatureCard({ icon, title, subtitle, index }) {
   )
 }
 
+const slides = [heroSlide1, heroSlide2]
+
 export default function Hero() {
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => setActive((p) => (p + 1) % slides.length), 4000)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <Box
       component="section"
@@ -111,6 +122,7 @@ export default function Hero() {
             position: 'relative',
             borderRadius: { xs: '20px', md: '28px' },
             overflow: 'hidden',
+            aspectRatio: '3 / 2',
             border: '1px solid rgba(255, 179, 0, 0.35)',
             boxShadow: '0 24px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 179, 0, 0.12)',
             bgcolor: colors.nightMid,
@@ -121,19 +133,26 @@ export default function Hero() {
             mx: 'auto',
           }}
         >
-          <Box
-            component="img"
-            src={heroBanner}
-            alt="MGM Navratri 2026"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-            sx={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-            }}
-          />
+          {slides.map((src, i) => (
+            <Box
+              key={i}
+              component="img"
+              src={src}
+              alt={`MGM Navratri 2026 ${i + 1}`}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                opacity: i === active ? 1 : 0,
+                transition: 'opacity 1.2s ease-in-out',
+                zIndex: i === active ? 1 : 0,
+              }}
+            />
+          ))}
           <Box
             sx={{
               position: 'absolute',
