@@ -70,7 +70,7 @@ function EnquiryForm({ onClose }) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, mobile: mobileValue, message }),
+        body: JSON.stringify({ name, mobile: mobileValue, message, submittedAt: new Date().toISOString() }),
       })
 
       window.open(getWhatsAppUrl(text), '_blank', 'noopener,noreferrer')
