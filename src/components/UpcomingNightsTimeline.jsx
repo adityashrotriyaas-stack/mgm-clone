@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
@@ -162,22 +162,6 @@ function NightStoryCard({ night, image, isActive }) {
 
 export default function UpcomingNightsTimeline() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [hoverPaused, setHoverPaused] = useState(false)
-  const [inView, setInView] = useState(true)
-  const isPaused = hoverPaused || !inView
-  const sectionRef = useRef(null)
-
-  useEffect(() => {
-    const node = sectionRef.current
-    if (!node) return undefined
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.15 },
-    )
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
 
   const nights = useMemo(
     () =>
@@ -190,16 +174,14 @@ export default function UpcomingNightsTimeline() {
   )
 
   useEffect(() => {
-    if (isPaused) return undefined
     const timer = setInterval(() => setActiveIndex((i) => (i + 1) % nights.length), 4000)
     return () => clearInterval(timer)
-  }, [isPaused, nights.length])
+  }, [nights.length])
 
   return (
     <Box
       component="section"
       id="artists"
-      ref={sectionRef}
       sx={{
         position: 'relative',
         pt: { xs: 2, md: 2.5 },
@@ -210,8 +192,6 @@ export default function UpcomingNightsTimeline() {
         backgroundRepeat: 'no-repeat',
         overflow: 'hidden',
       }}
-      onMouseEnter={() => setHoverPaused(true)}
-      onMouseLeave={() => setHoverPaused(false)}
     >
       <Box
         sx={{
