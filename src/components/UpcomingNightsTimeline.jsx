@@ -379,20 +379,22 @@ export default function UpcomingNightsTimeline() {
               overflowX: 'auto',
               pb: 1,
               px: 1,
+              display: 'flex',
+              justifyContent: 'center',
               '&::-webkit-scrollbar': { height: 4 },
               '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255, 179, 0,0.3)', borderRadius: 4 },
             }}
           >
-<Stack direction="row" spacing={1} justifyContent="center" sx={{ py: 1 }}>
-              {nights.map((night, index) => {
-                const isThumbActive = index === activeIndex
+<Stack direction="row" spacing={1} sx={{ py: 1 }}>
+              {nights.slice(0, 5).map((night, index) => {
+                const isThumbActive = index === Math.floor(activeIndex / 2)
                 return (
                   <Box
                     key={night.id}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => setActiveIndex(index * 2)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index)}
+                    onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index * 2)}
                     aria-label={night.label}
                     sx={{
                       position: 'relative',
@@ -419,26 +421,6 @@ export default function UpcomingNightsTimeline() {
                         backgroundPosition: 'center',
                       }}
                     />
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        inset: 0,
-                        bgcolor: 'rgba(0,0,0,0.35)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: isThumbActive ? '0.72rem' : '0.62rem',
-                          fontWeight: 700,
-                          color: '#FFF8E7',
-                        }}
-                      >
-                        {night.id}
-                      </Typography>
-                    </Box>
                   </Box>
                 )
               })}
