@@ -379,35 +379,46 @@ export default function UpcomingNightsTimeline() {
               '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255, 179, 0,0.3)', borderRadius: 4 },
             }}
           >
-<Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                py: 1,
-              }}
-            >
-              <Box
-                sx={{
-                  position: 'relative',
-                  width: 56,
-                  height: 56,
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  border: `2px solid ${colors.gold}`,
-                  boxShadow: '0 0 16px rgba(255, 179, 0,0.35)',
-                }}
-              >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage: `url(${nights[activeIndex % 5].image})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                  }}
-                />
-              </Box>
-            </Box>
+<Stack direction="row" spacing={1} sx={{ py: 1, justifyContent: 'center' }}>
+              {nights.slice(0, 5).map((night, index) => {
+                const isThumbActive = index === activeIndex % 5
+                return (
+                  <Box
+                    key={night.id}
+                    onClick={() => setActiveIndex(index)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index)}
+                    aria-label={night.label}
+                    sx={{
+                      position: 'relative',
+                      flexShrink: 0,
+                      width: isThumbActive ? 56 : 44,
+                      height: isThumbActive ? 56 : 44,
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      border: isThumbActive ? `2px solid ${colors.gold}` : '1.5px solid rgba(255,255,255,0.15)',
+                      boxShadow: isThumbActive ? '0 0 16px rgba(255, 179, 0,0.35)' : 'none',
+                      transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+                      opacity: isThumbActive ? 1 : 0.55,
+                      transform: isThumbActive ? 'translateY(-4px) scale(1.05)' : 'none',
+                      '&:hover': { opacity: 1, borderColor: colors.gold },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `url(${night.image})`,
+                        backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                  </Box>
+                )
+              })}
+            </Stack>
           </Box>
         </RevealBox>
 
