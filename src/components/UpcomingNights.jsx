@@ -117,7 +117,6 @@ return (
     <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
       <Box sx={{ textAlign: 'center' }}>
         <Button
-          onClick={() => navigate('/event/1')}
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
           endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
           sx={{

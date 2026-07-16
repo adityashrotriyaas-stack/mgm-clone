@@ -141,10 +141,8 @@ useEffect(() => {
               key={link.label}
               href={link.href}
               onClick={(e) => {
-                e.preventDefault()
-                if (link.href.startsWith('/')) {
-                  navigate(link.href)
-                } else {
+                if (!link.href.startsWith('/')) {
+                  e.preventDefault()
                   document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
                 }
               }}
@@ -235,10 +233,8 @@ useEffect(() => {
                   href={link.href}
                   onClick={(e) => {
                     closeMenu()
-                    e.preventDefault()
-                    if (link.href.startsWith('/')) {
-                      navigate(link.href)
-                    } else {
+                    if (!link.href.startsWith('/')) {
+                      e.preventDefault()
                       document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })
                     }
                   }}

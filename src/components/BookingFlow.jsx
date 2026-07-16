@@ -330,7 +330,6 @@ export default function BookingFlow() {
               )}
               {activeStep === 5 && (
                 <Button
-                  onClick={() => navigate('/')}
                   fullWidth
                   sx={{
                     py: 1.4,
