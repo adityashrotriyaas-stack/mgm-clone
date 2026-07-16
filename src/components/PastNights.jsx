@@ -10,8 +10,6 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import InstagramIcon from '@mui/icons-material/Instagram'
-import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded'
-import YouTubeIcon from '@mui/icons-material/YouTube'
 import { colors, gradients } from '../constants/colors'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
 import { navLinks, pastHighlights, aboutContent } from '../data/siteData'
@@ -647,8 +645,6 @@ export function Footer() {
             <Stack direction="row" spacing={1.5} sx={{ mt: 1.75 }}>
               {[
                 { label: 'IG', href: contactInfo.social.instagram, icon: <InstagramIcon /> },
-                { label: 'FB', href: contactInfo.social.facebook, icon: <FacebookRoundedIcon /> },
-                { label: 'YT', href: contactInfo.social.youtube, icon: <YouTubeIcon /> },
               ].map((item) => (
                 <Box
                   component="a"
