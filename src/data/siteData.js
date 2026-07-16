@@ -54,7 +54,7 @@ export const heroFeatures = [
     subtitle: 'Live Garba from 9 PM',
   },
   {
-    icon: 'food',
+    icon: 'star',
     title: 'Star Artists',
     subtitle: 'A new performer each night',
   },

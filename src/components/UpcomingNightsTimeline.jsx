@@ -61,25 +61,23 @@ const arrowBtnSx = {
   },
 }
 
-function NightStoryCard({ night, image, isActive, imageAlign = 'center' }) {
+function NightStoryCard({ night, image, imageAlign = 'center' }) {
   return (
     <Box
+      key={night.id}
       sx={{
         position: 'absolute',
         inset: 0,
         borderRadius: '22px',
         overflow: 'hidden',
-        opacity: isActive ? 1 : 0,
-        transition: 'opacity 0.5s ease-in-out',
-        zIndex: isActive ? 1 : 0,
-        border: isActive
-          ? '2px solid rgba(255, 180, 80, 0.95)'
-          : '1.5px solid rgba(255, 180, 80, 0.4)',
-        boxShadow: isActive
-          ? '0 0 40px rgba(255, 160, 60, 0.4), 0 28px 56px rgba(0, 0, 0, 0.5)'
-          : '0 0 16px rgba(255, 160, 60, 0.12), 0 14px 28px rgba(0, 0, 0, 0.35)',
-        '&::before': isActive
-          ? {
+        border: '2px solid rgba(255, 180, 80, 0.95)',
+        boxShadow: '0 0 40px rgba(255, 160, 60, 0.4), 0 28px 56px rgba(0, 0, 0, 0.5)',
+        animation: 'cardFadeIn 0.5s ease-in-out',
+        '@keyframes cardFadeIn': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        '&::before': {
               content: '""',
               position: 'absolute',
               inset: -1,
@@ -92,8 +90,7 @@ function NightStoryCard({ night, image, isActive, imageAlign = 'center' }) {
               pointerEvents: 'none',
               zIndex: 2,
               animation: 'borderPulse 2.5s ease-in-out infinite',
-            }
-          : {},
+            },
         '@keyframes borderPulse': {
           '0%, 100%': { opacity: 0.7 },
           '50%': { opacity: 1 },
@@ -119,25 +116,23 @@ function NightStoryCard({ night, image, isActive, imageAlign = 'center' }) {
         }}
       />
 
-      {isActive && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '25%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '60%',
-            height: '60%',
-            background: 'radial-gradient(ellipse, rgba(255,179,0,0.15) 0%, transparent 70%)',
-            pointerEvents: 'none',
-            animation: 'cardGlow 3s ease-in-out infinite',
-            '@keyframes cardGlow': {
-              '0%, 100%': { opacity: 0.5 },
-              '50%': { opacity: 1 },
-            },
-          }}
-        />
-      )}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '25%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '60%',
+          height: '60%',
+          background: 'radial-gradient(ellipse, rgba(255,179,0,0.15) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          animation: 'cardGlow 3s ease-in-out infinite',
+          '@keyframes cardGlow': {
+            '0%, 100%': { opacity: 0.5 },
+            '50%': { opacity: 1 },
+          },
+        }}
+      />
 
       <Box sx={{ position: 'relative', zIndex: 1, height: '100%', p: 2, display: 'flex', flexDirection: 'column' }}>
         <Typography
@@ -359,15 +354,13 @@ export default function UpcomingNightsTimeline() {
               boxShadow: '0 0 16px rgba(255, 160, 60, 0.12), 0 14px 28px rgba(0, 0, 0, 0.35)',
             }}
           >
-            {nights.map((night, index) => (
-              <NightStoryCard
-                key={night.id}
-                night={night}
-                image={night.image}
-                isActive={index === activeIndex}
-                imageAlign={index % 5 === 3 ? 'center' : 'left center'}
-              />
-            ))}
+            <NightStoryCard
+              key={nights[activeIndex].id}
+              night={nights[activeIndex]}
+              image={nights[activeIndex].image}
+              isActive
+              imageAlign={activeIndex % 5 === 3 ? 'center' : 'left center'}
+            />
           </Box>
         </RevealBox>
 
@@ -386,46 +379,35 @@ export default function UpcomingNightsTimeline() {
               '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255, 179, 0,0.3)', borderRadius: 4 },
             }}
           >
-<Stack direction="row" spacing={1} sx={{ py: 1 }}>
-              {nights.slice(0, 5).map((night, index) => {
-                const isThumbActive = index === activeIndex % 5
-                return (
-                  <Box
-                    key={night.id}
-                    onClick={() => setActiveIndex(index)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index)}
-                    aria-label={night.label}
-                    sx={{
-                      position: 'relative',
-                      flexShrink: 0,
-                      width: isThumbActive ? 56 : 44,
-                      height: isThumbActive ? 56 : 44,
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      cursor: 'pointer',
-                      border: isThumbActive ? `2px solid ${colors.gold}` : '1.5px solid rgba(255,255,255,0.15)',
-                      boxShadow: isThumbActive ? '0 0 16px rgba(255, 179, 0,0.35)' : 'none',
-                      transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
-                      opacity: isThumbActive ? 1 : 0.55,
-                      transform: isThumbActive ? 'translateY(-4px) scale(1.05)' : 'none',
-                      '&:hover': { opacity: 1, borderColor: colors.gold },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        inset: 0,
-                        backgroundImage: `url(${night.image})`,
-backgroundSize: 'contain',
-                        backgroundPosition: 'center',
-                      }}
-                    />
-                  </Box>
-                )
-              })}
-            </Stack>
+<Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                py: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  position: 'relative',
+                  width: 56,
+                  height: 56,
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  border: `2px solid ${colors.gold}`,
+                  boxShadow: '0 0 16px rgba(255, 179, 0,0.35)',
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${nights[activeIndex % 5].image})`,
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                  }}
+                />
+              </Box>
+            </Box>
           </Box>
         </RevealBox>
 
