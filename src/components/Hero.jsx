@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined'
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { useState, useEffect } from 'react'
 import heroSlide1 from '../assets/hero-slide-1.webp'
 import heroSlide2 from '../assets/hero-slide-2.webp'
@@ -17,7 +17,7 @@ const iconMap = {
   calendar: CalendarMonthOutlinedIcon,
   location: LocationOnOutlinedIcon,
   people: GroupsOutlinedIcon,
-  food: RestaurantOutlinedIcon,
+  star: StarRoundedIcon,
 }
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
