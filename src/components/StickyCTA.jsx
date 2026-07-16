@@ -89,7 +89,7 @@ export default function StickyCTA() {
           boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
         })}
       >
-        Book Now
+        Enquire Now
       </Button>
     </Box>
   )

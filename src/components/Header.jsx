@@ -190,7 +190,7 @@ useEffect(() => {
           })}
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
         >
-          Get Your Pass
+          Enquire Now
         </Button>
 
         <IconButton
@@ -263,7 +263,7 @@ useEffect(() => {
                   fullWidth
                 >
                 <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
-                Get Your Pass
+          Enquire Now
               </Button>
             </Box>
           </Stack>

@@ -150,7 +150,7 @@ export const passOptions = {
       'Access to food & handicraft stalls',
       'Choose your night at checkout',
     ],
-    cta: 'Book a Single Night',
+    cta: 'Enquire Now',
     ghost: true,
   },
   seasonal: {
