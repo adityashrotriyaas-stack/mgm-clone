@@ -171,6 +171,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               component="img"
               src={preview}
               alt="Pass photo preview"
+              loading="lazy"
               sx={{
                 width: 128,
                 height: 128,

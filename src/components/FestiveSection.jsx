@@ -8,7 +8,6 @@ export default function FestiveSection({
   showAccent = true,
   component = 'section',
   sx,
-  ...props
 }) {
   const theme = sectionVariants[variant] || sectionVariants.cream
 
@@ -45,7 +44,6 @@ export default function FestiveSection({
         }),
         ...sx,
       }}
-      {...props}
     >
       <Box sx={{ position: 'relative', zIndex: 1 }}>{children}</Box>
     </Box>

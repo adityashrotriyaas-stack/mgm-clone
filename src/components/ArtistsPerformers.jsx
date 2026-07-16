@@ -13,9 +13,12 @@ import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined'
 import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded'
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
-import { useNavigate } from 'react-router-dom'
-import amitDhorda from '../assets/amit-dhorda.png'
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import amitDhorda from '../assets/amit-dhorda.webp'
+import artistsBg from '../assets/artists-bg.webp'
 import { colors } from '../constants/colors'
+import { useEnquiryModal } from './EnquiryModal'
+import { patternDiya, patternGarland, patternMandala, patternNight } from '../constants/navratriTheme'
 import { RevealBox, RevealGroup } from './shared'
 
 const artists = [
@@ -177,6 +180,9 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             fontSize: active ? { xs: '0.95rem', md: '1.12rem' } : { xs: '0.74rem', md: '0.86rem' },
             lineHeight: 1.15,
             mb: 0.35,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           {artist.name}
@@ -200,13 +206,16 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
             borderRadius: '999px',
             border: '1px solid rgba(234, 90, 0, 0.7)',
             color: '#F0E8E0',
-            fontSize: active ? '0.62rem' : '0.54rem',
+            fontSize: active ? { xs: '0.62rem', sm: '0.7rem' } : { xs: '0.58rem', sm: '0.65rem' },
             fontWeight: 700,
             letterSpacing: '0.6px',
             textTransform: 'uppercase',
             mb: active ? 1.1 : 0.85,
             bgcolor: 'transparent',
             whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: '100%',
           }}
         >
           {artist.tag}
@@ -237,7 +246,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
 }
 
 export default function ArtistsPerformers() {
-  const navigate = useNavigate()
+  const openEnquiryModal = useEnquiryModal()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
@@ -282,24 +291,104 @@ export default function ArtistsPerformers() {
   return (
     <Box
       component="section"
-      id="artists"
+      id="artists-lineup"
       sx={{
         position: 'relative',
         py: { xs: 6, md: 8.5 },
         overflow: 'hidden',
         color: colors.ivory,
-        backgroundColor: '#3A1C00',
-        backgroundImage: `linear-gradient(180deg, rgba(234,90,0,0.12) 0%, rgba(10,6,0,0.40) 35%, rgba(10,6,0,0.60) 100%)`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center top',
-        backgroundRepeat: 'no-repeat',
+        bgcolor: '#140800',
+        backgroundImage: `
+          linear-gradient(180deg, rgba(12,6,0,0.82) 0%, rgba(42,14,0,0.72) 38%, rgba(18,8,0,0.88) 100%),
+          url(${artistsBg}),
+          ${patternNight},
+          ${patternDiya},
+          ${patternMandala},
+          ${patternGarland}
+        `,
+        backgroundSize: 'cover, cover, auto, auto, auto, auto',
+        backgroundPosition: 'center, center top, center, center, center, center',
+        backgroundRepeat: 'no-repeat, no-repeat, repeat, no-repeat, no-repeat, repeat',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: `
+            radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255,179,0,0.22), transparent 58%),
+            radial-gradient(circle at 12% 72%, rgba(234,90,0,0.18), transparent 32%),
+            radial-gradient(circle at 88% 28%, rgba(255,140,40,0.16), transparent 28%),
+            radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.42) 100%)
+          `,
+          pointerEvents: 'none',
+          zIndex: 0,
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background:
+            'repeating-linear-gradient(135deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 28px)',
+          opacity: 0.35,
+          pointerEvents: 'none',
+          zIndex: 0,
+        },
       }}
     >
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          top: { xs: '8%', md: '4%' },
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: { xs: 280, md: 520 },
+          height: { xs: 280, md: 420 },
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,190,80,0.2) 0%, rgba(234,90,0,0.08) 42%, transparent 70%)',
+          filter: 'blur(8px)',
+          animation: 'mgm-pulse-gold 5.5s ease-in-out infinite',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          bottom: { xs: '12%', md: '8%' },
+          left: { xs: '-8%', md: '4%' },
+          width: { xs: 180, md: 280 },
+          height: { xs: 180, md: 280 },
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(192,78,0,0.28) 0%, transparent 68%)',
+          filter: 'blur(20px)',
+          animation: 'mgm-float-slow 9s ease-in-out infinite',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          top: { xs: '28%', md: '22%' },
+          right: { xs: '-6%', md: '2%' },
+          width: { xs: 160, md: 260 },
+          height: { xs: 160, md: 260 },
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,179,0,0.2) 0%, transparent 70%)',
+          filter: 'blur(18px)',
+          animation: 'mgm-float 7s ease-in-out infinite',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 2.5, md: 4 } }}>
         <RevealBox variant="blurUp" duration={0.85}>
           <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 3.75 } }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.9, color: colors.gold, mb: 0.85 }}>
-              <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
+              <StarRoundedIcon sx={{ fontSize: '0.85rem', color: colors.gold }} />
               <Typography
                 sx={{
                   fontSize: { xs: '0.62rem', md: '0.7rem' },
@@ -308,9 +397,9 @@ export default function ArtistsPerformers() {
                   fontWeight: 700,
                 }}
               >
-                The Stars of Navratri
+                Star Artists
               </Typography>
-              <Box sx={{ fontSize: '0.55rem', lineHeight: 1 }}>◈</Box>
+              <StarRoundedIcon sx={{ fontSize: '0.85rem', color: colors.gold }} />
             </Box>
 
             <Typography
@@ -349,7 +438,7 @@ export default function ArtistsPerformers() {
                 mb: 1.4,
               }}
             >
-              Led by Amit Dhorda with renowned artists — bringing energy, music and tradition together
+              A new performer each night
             </Typography>
 
             <LotusDivider maxWidth={240} />
@@ -372,8 +461,8 @@ export default function ArtistsPerformers() {
             aria-label="Previous artist"
             onClick={goPrev}
             sx={{
-              width: { xs: 40, lg: 52 },
-              height: { xs: 40, lg: 52 },
+              width: { xs: 48, lg: 52 },
+              height: { xs: 48, lg: 52 },
               border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -420,8 +509,8 @@ export default function ArtistsPerformers() {
             aria-label="Next artist"
             onClick={goNext}
             sx={{
-              width: { xs: 40, lg: 52 },
-              height: { xs: 40, lg: 52 },
+              width: { xs: 48, lg: 52 },
+              height: { xs: 48, lg: 52 },
               border: '1px solid rgba(255, 179, 0,0.55)',
               color: '#FFF8EE',
               justifySelf: 'center',
@@ -513,9 +602,7 @@ export default function ArtistsPerformers() {
         <RevealBox variant="fadeUp" delay={0.28} sx={{ width: '100%' }}>
           <Stack alignItems="center" justifyContent="center" spacing={1.4} sx={{ width: '100%' }}>
             <Button
-              onClick={() => navigate('/event/1')}
-              startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
-              endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
+              onClick={openEnquiryModal}
               sx={{
                 background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
                 color: '#3A1C00',
@@ -533,15 +620,11 @@ export default function ArtistsPerformers() {
                 boxShadow: '0 10px 26px rgba(255, 179, 0, 0.32)',
                 '& .MuiButton-startIcon': { mr: 0.7 },
                 '& .MuiButton-endIcon': { ml: 0.7 },
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #FFB300 0%, #EA5A00 50%, #C04E00 100%)',
-                  filter: 'brightness(1.05)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 14px 30px rgba(255, 179, 0, 0.4)',
-                },
               }}
+              startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
+              endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
             >
-              Book Your Pass Now
+              Enquire Now
             </Button>
             <Box
               aria-hidden

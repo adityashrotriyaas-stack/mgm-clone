@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { isWowslyConfigured, updateNightSlotMap } from '../config/wowsly'
+import { isWowslyConfigured } from '../config/wowsly'
 import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
@@ -31,9 +31,9 @@ import PhotoCaptureField from './PhotoCaptureField'
 import NonRefundableCheckbox from './NonRefundableCheckbox'
 import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
-import { upcomingEvents, registrationCategories, passOptions, navratriNights } from '../data/siteData'
-import promoBanner from '../assets/image.png'
-import wowslyLogo from '../assets/wowsly-logo.png'
+import { upcomingEvents, registrationCategories, passOptions, navratriNights, seasonalPhases } from '../data/siteData'
+import promoBanner from '../assets/image.webp'
+import wowslyLogo from '../assets/wowsly-logo.webp'
 import FestiveSection from './FestiveSection'
 import { colors } from '../constants/colors'
 import {
@@ -49,13 +49,14 @@ import {
 
 const eventInfo = {
   1: {
-    dateRange: '13 Oct 2026',
-    time: '7:30 PM – 1:00 AM',
-    ticketInfo: 'Stag ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    dateRange: '10 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹2,000 | Female ₹1,500 | Couple ₹3,000 | Seasonal Pass ₹5,000',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹499',
-    description: `About Rangeeli Raat
+    price: '₹2,000',
+    description: `About Opening Night
+
 
 The third night of MGM Cultural Navratri is where the energy peaks. Rangeeli Raat — the colourful night — brings together devotion, dance, and dandiya under one open sky.
 
@@ -87,15 +88,15 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Fanpit Zone', 'VIP Lounge', 'Food Court', 'Entry Gate'],
-    cta: 'Book Stag Pass',
+    cta: 'Enquire Now',
   },
   2: {
-    dateRange: '14 Oct 2026',
-    time: '7:30 PM – 1:00 AM',
-    ticketInfo: 'Couple ₹899 | Includes Complimentary Mocktail',
+    dateRange: '13 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹3,000 | Female ₹2,000 | Couple ₹4,000 | Seasonal Pass Valid',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹899',
+    price: '₹3,000',
     description: `About Dhoom Dhamaka
 
 Night four is made for two. Dhoom Dhamaka is a celebration of togetherness — where love and tradition meet on the dance floor.
@@ -126,15 +127,15 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
       mark: 'R',
     },
     layoutZones: ['Couple Zone', 'Main Stage', 'Mocktail Bar', 'Photo Booth', 'Entry Gate'],
-    cta: 'Book Couple Pass',
+    cta: 'Enquire Now',
   },
   3: {
-    dateRange: '15 Oct 2026',
-    time: '7:30 PM – 2:00 AM',
-    ticketInfo: 'Stag ₹599 | Entry to All Stalls Included',
+    dateRange: '14 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹1,500 | Female ₹1,000 | Couple ₹2,000 | Seasonal Pass Valid',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹599',
+    price: '₹1,500',
     description: `About Bollywood Beats
 
 Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition with the pulse of contemporary music — creating a high-energy night that keeps the ground moving until 2 AM.`,
@@ -163,15 +164,15 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
       mark: 'R',
     },
     layoutZones: ['LED Dance Floor', 'Main Stage', 'Food Court', 'Lounge Deck', 'Entry Gate'],
-    cta: 'Book Your Pass',
+    cta: 'Enquire Now',
   },
   4: {
-    dateRange: '20 Oct 2026',
-    time: '7:00 PM – 1:00 AM',
-    ticketInfo: 'Premium ₹1,299 | Includes Welcome Gift Pack',
+    dateRange: '19 Oct 2026',
+    time: '9:00 PM – Late Night',
+    ticketInfo: 'Stag ₹1,500 | Female ₹1,000 | Couple ₹2,000 | Seasonal Pass Valid',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹1,299',
+    price: '₹1,500',
     description: `About Maha Aarti & Grand Finale
 
 Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri begins with a sacred Maha Aarti — a powerful ceremony of light, sound, and collective prayer that fills the entire venue with devotion.`,
@@ -200,7 +201,7 @@ Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri be
       mark: 'R',
     },
     layoutZones: ['Maha Aarti Stage', 'Premium Deck', 'Garba Arena', 'Food Court', 'Entry Gate'],
-    cta: 'Book Premium Pass',
+    cta: 'Enquire Now',
   },
 }
 
@@ -243,8 +244,8 @@ function buildFallbackEvent(id) {
     badge: 'Now Booking',
     night: night.label,
     date: `🗓️ ${night.date}`,
-    time: '🕰️ 9:00 PM',
-    price: '₹499',
+    time: '9:00 PM',
+    price: '₹1,500',
     priceUnit: '/ pass',
     image: promoBanner,
   }
@@ -257,10 +258,10 @@ function buildFallbackInfo(id) {
   return {
     dateRange: night.date.replace(',', ' 2026'),
     time: '9:00 PM – Late Night',
-    ticketInfo: 'Daily Pass ₹499 | Couple ₹899 | Seasonal Pass Valid for All 10 Nights',
+    ticketInfo: 'Stag ₹1,500 | Couple ₹2,000 | Seasonal Pass ₹5,000',
     venue: 'Seasons Hotel',
     location: 'Rajkot, Gujarat',
-    price: '₹499',
+    price: '₹1,500',
     description: `About ${night.theme}
 
 ${night.label} of MGM Cultural Navratri 2026 celebrates ${night.theme.toLowerCase()} with live Garba, festive performances, and a vibrant cultural atmosphere in Rajkot.
@@ -291,7 +292,7 @@ From the opening aarti to the late-night Mandli Garba session, guests can enjoy 
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Garba Arena', 'Food Court', 'Entry Gate', 'Seating Zone'],
-    cta: `Book ${night.theme}`,
+    cta: 'Enquire Now',
   }
 }
 
@@ -313,7 +314,7 @@ const categoryMeta = {
 
 function RegistrationStepPills({ activeStep, stepLabels }) {
   return (
-    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap' }}>
+    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap', px: { xs: 0.5, sm: 0 } }}>
       {stepLabels.map((label, index) => {
         const isCompleted = index < activeStep
         const isActive = index === activeStep
@@ -332,7 +333,7 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
               fontWeight: 700,
               bgcolor: isActive ? accentFestive : ui.surfaceMuted,
               color: isActive ? colors.night : ui.muted,
-              whiteSpace: 'nowrap',
+              minWidth: 0,
             }}
           >
             {isCompleted ? (
@@ -349,7 +350,7 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '0.65rem',
+                  fontSize: { xs: '0.7rem', sm: '0.65rem' },
                   fontWeight: 800,
                   lineHeight: 1,
                 }}
@@ -491,7 +492,7 @@ function getNightLabel(nightId) {
   return `${night.label} · ${night.date} · ${night.theme}`
 }
 
-function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
+function PersonFields({ title, person, onFieldChange, onPhotoChange, errors }) {
   return (
     <Box sx={personSectionSx}>
       {title && (
@@ -500,11 +501,16 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange }) {
         </Typography>
       )}
       <Box sx={{ display: 'grid', gap: 1.5 }}>
-        <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} fullWidth />
-        <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} />
-        <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} fullWidth />
-        <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
-        <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} />
+        <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} error={!!errors?.name} helperText={errors?.name || ' '} fullWidth />
+        <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} error={!!errors?.mobile} helperText={errors?.mobile || ' '} />
+        <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} error={!!errors?.email} helperText={errors?.email || ' '} fullWidth />
+        <Box>
+          <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
+          {errors?.selfiePreview && (
+            <Typography sx={{ color: '#ef4444', fontSize: '0.75rem', mt: 0.5, ml: 0.5 }}>{errors.selfiePreview}</Typography>
+          )}
+        </Box>
+        <AadhaarNumberField value={person.aadhaar} onChange={onFieldChange('aadhaar')} error={!!errors?.aadhaar} helperText={errors?.aadhaar || ' '} />
       </Box>
     </Box>
   )
@@ -649,6 +655,8 @@ export default function EventDetail() {
     return s ? Math.min(parseInt(s, 10), 3) : 0
   })()
   const [regStep, setRegStep] = useState(() => {
+    const pm = ss('pm')
+    if (!pm) return 0
     const s = parseInt(ss('step'), 10)
     return !isNaN(s) ? s : (isNaN(initialStep) ? 0 : initialStep)
   })
@@ -685,11 +693,23 @@ export default function EventDetail() {
   const selected = category ? registrationCategories[category] : null
   const selectedPass = passModes.find((item) => item.id === passMode)
   const isSeasonalPass = passMode === 'seasonal'
-  const pricingSource = isSeasonalPass ? selectedPass?.data : selected
   const isCoupleCategory = category === 'couple'
   const pricingMultiplier = isCoupleCategory ? 1 : Number(ticketCount || 1)
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
-  const totalPrice = formatRupees(getPriceAmount(pricingSource?.price) * pricingMultiplier)
+
+  const getNightPrice = () => {
+    if (!slotSelection?.eventSlotId || !category) return null
+    const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
+    return night ? night[category] : null
+  }
+  const effectiveUnitPrice = isSeasonalPass
+    ? (category ? seasonalPhases[0][category] : 0)
+    : (getNightPrice() || getPriceAmount(selected?.price))
+  const effectiveUnitPriceStr = effectiveUnitPrice ? formatRupees(effectiveUnitPrice) : '₹0'
+  const effectivePriceUnit = isSeasonalPass ? '/ person' : (selected?.priceUnit || '/ ticket')
+
+  const pricingSource = { price: effectiveUnitPriceStr, priceUnit: effectivePriceUnit }
+  const totalPrice = formatRupees(effectiveUnitPrice * pricingMultiplier)
   const scheduleStep = 2
   const detailsStep = isSeasonalPass ? 2 : 3
   const registrationStepLabels = isSeasonalPass
@@ -742,17 +762,9 @@ export default function EventDetail() {
     loadTickets()
   }, [])
 
-  const activeTicketObj = ticketsList.find((t) => {
-    const isSeasonal = passMode === 'seasonal'
-    const name = String(t.name || t.ticket_name || '').toLowerCase()
-    return isSeasonal ? name.includes('season') : (name.includes('single') || name.includes('daily'))
-  })
-
-  const ticketFacilities = activeTicketObj?.facilities || []
-
   if (!event || !info) return <Navigate to="/" replace />
 
-  const makeFieldUpdater = (setter) => (field) => (event) => {
+  const makeFieldUpdater = (setter, formKey) => (field) => (event) => {
     let value = event.target.value
     if (field === 'mobile') {
       value = value.replace(/\D/g, '').slice(0, 10)
@@ -761,6 +773,9 @@ export default function EventDetail() {
       value = value.replace(/\D/g, '').slice(0, 12)
     }
     setter((prev) => ({ ...prev, [field]: value }))
+    if (formErrors[formKey]?.[field] !== undefined) {
+      clearFieldError(formKey, field)
+    }
   }
 
   const makePhotoUpdater = (setter) => (previewUrl) => {
@@ -779,11 +794,41 @@ export default function EventDetail() {
     person.aadhaar.length === 12 &&
     person.selfiePreview
 
+  const getPersonErrors = (person) => ({
+    name: !person.name ? 'Full name is required' : '',
+    mobile: person.mobile.length !== 10 ? 'Enter a valid 10-digit mobile number' : '',
+    email: !person.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email) ? 'Valid email address is required' : '',
+    aadhaar: person.aadhaar.length !== 12 ? 'Enter a valid 12-digit Aadhaar number' : '',
+    selfiePreview: !person.selfiePreview ? 'Photo is required for pass verification' : '',
+  })
+
+  const validateAllForms = () => {
+    const errors = {}
+    if (isCoupleCategory) {
+      errors.maleForm = getPersonErrors(maleForm)
+      errors.femaleForm = getPersonErrors(femaleForm)
+    } else {
+      errors.personForm = getPersonErrors(personForm)
+      if (ticketCount === '2') {
+        errors.secondPersonForm = getPersonErrors(secondPersonForm)
+      }
+    }
+    setFormErrors(errors)
+    return !Object.values(errors).some((form) => Object.values(form).some((msg) => msg))
+  }
+
+  const clearFieldError = (formKey, field) => {
+    setFormErrors((prev) => {
+      if (!prev[formKey]) return prev
+      return { ...prev, [formKey]: { ...prev[formKey], [field]: '' } }
+    })
+  }
+
   const canSubmitForm = () => {
     if (!acceptedNonRefundable || !acceptedPolicies) return false
     if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
     if (isCoupleCategory) {
-      return isPersonComplete(maleForm) && isPersonComplete(femaleForm)
+      return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && maleForm.mobile !== femaleForm.mobile
     }
     if (ticketCount === '2') {
       return isPersonComplete(personForm) && isPersonComplete(secondPersonForm)
@@ -797,9 +842,22 @@ export default function EventDetail() {
     changeStep(2)
   }
 
+  const mobileMatchError = isCoupleCategory && maleForm.mobile && femaleForm.mobile && maleForm.mobile === femaleForm.mobile
+    ? 'Both persons must have different mobile numbers'
+    : ''
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!canSubmitForm() || submitting) return
+    if (submitting) return
+    if (!validateAllForms()) return
+    if (!acceptedNonRefundable || !acceptedPolicies) {
+      setSubmitError('Please accept the non-refundable policy and the privacy/refund policy to proceed.')
+      return
+    }
+    if (!isSeasonalPass && !slotSelection?.eventSlotId) {
+      setSubmitError('Please select a date and time slot before proceeding.')
+      return
+    }
 
     const passLabel = selectedPass?.data.title || passMode
     const scheduleDetails = !isSeasonalPass && slotSelection?.eventSlotId
@@ -827,7 +885,6 @@ export default function EventDetail() {
             name: `${maleForm.name} & ${femaleForm.name}`,
             mobile: maleForm.mobile,
             email: maleForm.email,
-            selectedFacilities: ticketFacilities,
             ...scheduleDetails,
           }
         : {
@@ -840,7 +897,6 @@ export default function EventDetail() {
             eventId: id,
             ...personForm,
             secondGuest: ticketCount === '2' ? secondPersonForm : null,
-            selectedFacilities: ticketFacilities,
             ...scheduleDetails,
           }
 
@@ -867,7 +923,7 @@ export default function EventDetail() {
     return (
       <Box sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
         <Typography variant="h4">Event not found</Typography>
-        <Button onClick={() => navigate('/')} variant="contained">Back to Home</Button>
+        <Button variant="contained">Back to Home</Button>
       </Box>
     )
   }
@@ -878,7 +934,6 @@ export default function EventDetail() {
         <Container maxWidth="lg">
           <Stack direction="row" sx={{ py: 1, alignItems: 'center' }}>
             <Button
-              onClick={() => navigate('/')}
               startIcon={<ChevronLeftRoundedIcon />}
               sx={{ color: ui.text, fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
             >
@@ -936,7 +991,10 @@ export default function EventDetail() {
                   <Stack spacing={1.25}>
                     {categoryKeys.map((key) => {
                       const cat = registrationCategories[key]
-                      const optionPrice = isSeasonalPass ? selectedPass.data : cat
+                      const phasePrice = isSeasonalPass ? seasonalPhases[0][key] : null
+                      const optionPrice = isSeasonalPass
+                        ? { price: formatRupees(phasePrice), priceUnit: '/ person' }
+                        : cat
                       return (
                         <CategoryOption
                           key={key}
@@ -1026,104 +1084,41 @@ export default function EventDetail() {
                       <PersonFields
                         title="Male Details"
                         person={maleForm}
-                        onFieldChange={makeFieldUpdater(setMaleForm)}
+                        onFieldChange={makeFieldUpdater(setMaleForm, 'maleForm')}
                         onPhotoChange={makePhotoUpdater(setMaleForm)}
+                        errors={formErrors.maleForm}
                       />
-                      <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
-                      <Box>
-                        <Button
-                          type="button"
-                          onClick={() => setHolder2Expanded(!holder2Expanded)}
-                          fullWidth
-                          sx={{
-                            justifyContent: 'space-between',
-                            color: colors.gold,
-                            textTransform: 'none',
-                            fontWeight: 700,
-                            py: 1.5,
-                            px: 2,
-                            borderRadius: '12px',
-                            border: '1px solid rgba(232, 184, 74, 0.3)',
-                            bgcolor: 'rgba(232, 184, 74, 0.04)',
-                            '&:hover': { bgcolor: 'rgba(232, 184, 74, 0.08)' }
-                          }}
-                        >
-                          <span>Female Details (Guest 2)</span>
-                          <span>{holder2Expanded ? 'Collapse ▲' : 'Add Details ▼'}</span>
-                        </Button>
-                        {holder2Expanded && (
-                          <Box sx={{ mt: 3 }}>
-                            <PersonFields
-                              title=""
-                              person={femaleForm}
-                              onFieldChange={makeFieldUpdater(setFemaleForm)}
-                              onPhotoChange={makePhotoUpdater(setFemaleForm)}
-                            />
-                          </Box>
-                        )}
-                      </Box>
+                      <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
+                      <PersonFields
+                        title="Female Details"
+                        person={femaleForm}
+                        onFieldChange={makeFieldUpdater(setFemaleForm, 'femaleForm')}
+                        onPhotoChange={makePhotoUpdater(setFemaleForm)}
+                        errors={formErrors.femaleForm}
+                      />
                     </Stack>
                   ) : (
                     <Stack spacing={3}>
                       <PersonFields
                         title={ticketCount === '2' ? 'Ticket 1 Details' : category === 'male' ? 'Male Details' : 'Female Details'}
                         person={personForm}
-                        onFieldChange={makeFieldUpdater(setPersonForm)}
+                        onFieldChange={makeFieldUpdater(setPersonForm, 'personForm')}
                         onPhotoChange={makePhotoUpdater(setPersonForm)}
+                        errors={formErrors.personForm}
                       />
                       {ticketCount === '2' && (
                         <>
-                          <Divider sx={{ borderColor: 'rgba(232, 184, 74, 0.18)' }} />
-                          <Box>
-                            <Button
-                              type="button"
-                              onClick={() => setHolder2Expanded(!holder2Expanded)}
-                              fullWidth
-                              sx={{
-                                justifyContent: 'space-between',
-                                color: colors.gold,
-                                textTransform: 'none',
-                                fontWeight: 700,
-                                py: 1.5,
-                                px: 2,
-                                borderRadius: '12px',
-                                border: '1px solid rgba(232, 184, 74, 0.3)',
-                                bgcolor: 'rgba(232, 184, 74, 0.04)',
-                                '&:hover': { bgcolor: 'rgba(232, 184, 74, 0.08)' }
-                              }}
-                            >
-                              <span>Ticket 2 Details</span>
-                              <span>{holder2Expanded ? 'Collapse ▲' : 'Add Details ▼'}</span>
-                            </Button>
-                            {holder2Expanded && (
-                              <Box sx={{ mt: 3 }}>
-                                <PersonFields
-                                  title=""
-                                  person={secondPersonForm}
-                                  onFieldChange={makeFieldUpdater(setSecondPersonForm)}
-                                  onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
-                                />
-                              </Box>
-                            )}
-                          </Box>
+                          <Divider sx={{ borderColor: 'rgba(255, 179, 0, 0.18)' }} />
+                          <PersonFields
+                            title="Ticket 2 Details"
+                            person={secondPersonForm}
+                            onFieldChange={makeFieldUpdater(setSecondPersonForm, 'secondPersonForm')}
+                            onPhotoChange={makePhotoUpdater(setSecondPersonForm)}
+                            errors={formErrors.secondPersonForm}
+                          />
                         </>
                       )}
                     </Stack>
-                  )}
-
-                  {ticketFacilities.length > 0 && (
-                    <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(255, 255, 255, 0.04)', borderRadius: '12px', border: '1px solid rgba(232, 184, 74, 0.15)' }}>
-                      <Typography sx={{ fontWeight: 700, color: colors.gold, fontSize: '0.9rem', mb: 1 }}>
-                        Included Access & Facilities:
-                      </Typography>
-                      <Stack spacing={0.75}>
-                        {ticketFacilities.map((fac) => (
-                          <Typography key={fac.id} sx={{ fontSize: '0.8rem', color: registrationUi.text, display: 'flex', alignItems: 'center', gap: 1 }}>
-                            • {fac.name}
-                          </Typography>
-                        ))}
-                      </Stack>
-                    </Box>
                   )}
 
                   <Box sx={{ mt: 2.5 }}>
@@ -1162,11 +1157,11 @@ export default function EventDetail() {
                       label={
                         <Typography sx={{ fontSize: '0.88rem', color: colors.muted, lineHeight: 1.65 }}>
                           I agree to the{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => { saveFormState(); navigate('/privacy-policy') }}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }}>
                             Privacy Policy
                           </Box>{' '}
                           and{' '}
-                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }} onClick={() => { saveFormState(); navigate('/refund-policy') }}>
+                          <Box component="span" sx={{ color: colors.gold, cursor: 'pointer', textDecoration: 'underline', '&:hover': { color: colors.textLight } }}>
                             Refund Policy
                           </Box>
                         </Typography>
@@ -1180,6 +1175,11 @@ export default function EventDetail() {
                       {submitError}
                     </Typography>
                   )}
+                  {mobileMatchError && (
+                    <Typography sx={{ fontSize: '0.82rem', color: '#ef4444', mt: 1.5 }}>
+                      {mobileMatchError}
+                    </Typography>
+                  )}
 
                   <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ mt: 2.5 }}>
                     <Button
@@ -1191,7 +1191,7 @@ export default function EventDetail() {
                     </Button>
                     <Button
                       type="submit"
-                      disabled={!canSubmitForm() || submitting}
+                      disabled={submitting}
                       sx={registrationSubmitButtonSx}
                     >
                       {submitting ? 'Processing…' : 'Proceed to Payment'}
@@ -1207,6 +1207,7 @@ export default function EventDetail() {
           component="img"
           src={wowslyLogo}
           alt="Wowsly"
+          loading="lazy"
            sx={{ width: 72, height: 'auto', display: 'block', mx: 'auto', mb: 0.3 }}
         />
         <Typography sx={{ color: colors.muted, fontSize: '0.78rem' }}>

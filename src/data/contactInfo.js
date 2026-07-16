@@ -9,6 +9,9 @@ export const contactInfo = {
   venue: 'Seasons Hotel, Rajkot',
   venueHref: 'https://www.google.com/maps/search/?api=1&query=Seasons+Hotel+Rajkot+Gujarat',
   gatesOpen: 'Gates Open 7:30 PM',
+  social: {
+    instagram: 'https://www.instagram.com/mgmnavratri/',
+  },
 }
 
 export function getWhatsAppUrl(message = contactInfo.whatsappMessage) {
