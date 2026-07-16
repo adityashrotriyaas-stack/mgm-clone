@@ -9,9 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import CloseIcon from '@mui/icons-material/Close'
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded'
@@ -58,8 +56,6 @@ function EnquiryForm({ onClose }) {
       const data = new FormData(event.currentTarget)
       const name = data.get('name')
       const mobileValue = data.get('mobile')
-      const preferredDate = data.get('preferredDate')
-      const preferredTime = data.get('preferredTime')
       const message = data.get('message')
 
       const text = [
@@ -67,8 +63,6 @@ function EnquiryForm({ onClose }) {
         '',
         `Name: ${name}`,
         `Mobile: +91 ${mobileValue}`,
-        `Preferred Date: ${preferredDate}`,
-        `Preferred Time: ${preferredTime}`,
         `Message: ${message}`,
       ].join('\n')
 
@@ -76,7 +70,7 @@ function EnquiryForm({ onClose }) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, mobile: mobileValue, preferredDate, preferredTime, message }),
+        body: JSON.stringify({ name, mobile: mobileValue, message, submittedAt: new Date().toISOString() }),
       })
 
       window.open(getWhatsAppUrl(text), '_blank', 'noopener,noreferrer')
@@ -148,51 +142,6 @@ function EnquiryForm({ onClose }) {
           },
         }}
       />
-
-      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-        <TextField
-          required
-          name="preferredDate"
-          type="date"
-          fullWidth
-          slotProps={{
-            inputLabel: { shrink: true },
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CalendarMonthOutlinedIcon sx={{ fontSize: '1.1rem', color: colors.gold }} />
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{
-            ...fieldSx,
-            '& .MuiInputBase-input': { colorScheme: 'dark' },
-            '& input[type="date"]::-webkit-calendar-picker-indicator': { filter: 'invert(0.8)' },
-          }}
-        />
-        <TextField
-          required
-          name="preferredTime"
-          type="time"
-          fullWidth
-          slotProps={{
-            inputLabel: { shrink: true },
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccessTimeOutlinedIcon sx={{ fontSize: '1.1rem', color: colors.gold }} />
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{
-            ...fieldSx,
-            '& .MuiInputBase-input': { colorScheme: 'dark' },
-            '& input[type="time"]::-webkit-calendar-picker-indicator': { filter: 'invert(0.8)' },
-          }}
-        />
-      </Box>
 
       <TextField
         required
