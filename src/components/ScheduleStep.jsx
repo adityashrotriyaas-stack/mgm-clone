@@ -93,6 +93,7 @@ function SelectableCard({ selected, onClick, disabled, children, sx = {} }) {
       onClick={onClick}
       disabled={disabled}
       sx={{
+        flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         textAlign: 'left',
