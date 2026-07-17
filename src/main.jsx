@@ -15,8 +15,6 @@ import { EnquiryProvider } from './components/EnquiryModal'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import theme from './theme.js'
 
-const BookingFlow = lazy(() => import('./components/BookingFlow.jsx'))
-const EventDetail = lazy(() => import('./components/EventDetail.jsx'))
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy.jsx'))
 const RefundPolicy = lazy(() => import('./components/RefundPolicy.jsx'))
 
@@ -77,10 +75,11 @@ const router = createBrowserRouter([
         path: '/',
         element: <App />,
       },
-      {
-        path: '/book',
-        element: <BookingFlow />,
-      },
+      // Temporarily disabled - BookingFlow (Registration)
+      // {
+      //   path: '/book',
+      //   element: <BookingFlow />,
+      // },
       {
         path: '/privacy-policy',
         element: <PrivacyPolicy />,
