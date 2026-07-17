@@ -9,6 +9,9 @@ export const WOWSLY_REQUIRE_PAYMENT_VERIFY = import.meta.env.VITE_WOWSLY_REQUIRE
 
 export const FORM_ID = 122
 
+// Change this in your .env file via VITE_ACTIVE_SEASONAL_PHASE to toggle which seasonal tickets are active
+export const ACTIVE_SEASONAL_PHASE = import.meta.env.VITE_ACTIVE_SEASONAL_PHASE || 'Phase 1'
+
 // export const QUESTION_MAP = {
 //   name: '622',
 //   countryCode: '623',
@@ -22,8 +25,9 @@ export const QUESTION_MAP = {
   COUNTRY_CODE: 'Country Code',
   MOBILE: 'Mobile Number',
   EMAIL: 'Email',
-  AADHAAR: 'Aadhaar Card Number',
-  PHOTO: 'Pass Photo',
+  AADHAAR: 'Aadhar Card Number',
+  PHOTO: 'Selfie Photo',
+  GENDER: 'Gender'
 }
 
 /** Maps API fields array to semantic map of IDs */

@@ -91,10 +91,10 @@ const router = createBrowserRouter([
         element: <RefundPolicy />,
       },
       // Temporarily disabled - EventDetail route
-      // {
-      //   path: '/event/:eventId',
-      //   element: <EventDetail />,
-      // },
+      {
+        path: '/event/:eventId',
+        element: <EventDetail />,
+      },
       {
         path: '*',
         element: <NotFound />,
