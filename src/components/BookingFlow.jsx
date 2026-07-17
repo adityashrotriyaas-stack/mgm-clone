@@ -9,8 +9,6 @@ import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
-import QrCode2RoundedIcon from '@mui/icons-material/QrCode2Rounded'
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
 import { colors, gradients } from '../constants/colors'
 import { festiveCardSx } from '../constants/navratriTheme'
 import FestiveSection from './FestiveSection'
@@ -233,42 +231,18 @@ export default function BookingFlow() {
             {activeStep === 5 && (
               <Stack spacing={2} alignItems="center" textAlign="center">
                 <CheckCircleRoundedIcon sx={{ color: '#22c55e', fontSize: '3rem' }} />
-                <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: colors.ivory }}>
-                  Enquiry Sent!
+                <Typography sx={{ fontWeight: 800, fontSize: '1.3rem', color: colors.ivory, mb: 1 }}>
+                  Booking Confirmed!
                 </Typography>
-                <Box
-                  sx={{
-                    width: 180,
-                    height: 180,
-                    borderRadius: '16px',
-                    border: '2px solid rgba(234, 90, 0,0.25)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: colors.bgWarm,
-                  }}
-                >
-                  <QrCode2RoundedIcon sx={{ fontSize: '7rem', color: colors.ivory }} />
-                </Box>
-                <Typography sx={{ color: colors.muted, lineHeight: 1.7 }}>
-                  Your QR pass for MGM Cultural Navratri has been sent to WhatsApp and Email.
-                  Show this QR at the entry gate.
+                <Typography sx={{ color: colors.muted, lineHeight: 1.7, maxWidth: 400 }}>
+                  Thank you for booking with MGM Cultural Navratri. Your pass has been confirmed.
+                </Typography>
+                <Typography sx={{ color: colors.gold, fontWeight: 600, fontSize: '0.95rem', mb: 0.5 }}>
+                  Check your WhatsApp and Gmail for your ticket.
                 </Typography>
                 <Typography sx={{ fontSize: '0.82rem', color: colors.muted }}>
                   {registration.name} · {registration.mobile}
                 </Typography>
-                <Button
-                  startIcon={<DownloadRoundedIcon />}
-                  sx={{
-                    borderRadius: '12px',
-                    border: `1px solid ${colors.gold}`,
-                    color: colors.gold,
-                    fontWeight: 700,
-                    px: 3,
-                  }}
-                >
-                  Download Pass
-                </Button>
               </Stack>
             )}
 
