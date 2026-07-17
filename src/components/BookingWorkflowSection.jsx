@@ -11,7 +11,7 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
 import { patternMandala } from '../constants/navratriTheme'
-import { useEnquiryModal } from './EnquiryModal'
+// import { useEnquiryModal } from './EnquiryModal'
 
 const workflowSteps = [
   {
@@ -252,7 +252,7 @@ function WorkflowStep({ step, index, visible }) {
 }
 
 export default function BookingWorkflowSection() {
-  const openEnquiryModal = useEnquiryModal()
+  // const openEnquiryModal = useEnquiryModal()
   const { ref: timelineRef, visible } = useRevealStagger()
 
   return (
@@ -422,7 +422,7 @@ export default function BookingWorkflowSection() {
 
         <Stack alignItems="center" sx={{ width: '100%', mt: { xs: 5, md: 7 } }}>
           <Button
-            onClick={openEnquiryModal}
+            onClick={() => window.location.href = '/event/1'}
             sx={{
               width: { xs: '100%', sm: 320 },
               maxWidth: 360,
@@ -437,7 +437,7 @@ export default function BookingWorkflowSection() {
               boxShadow: '0 12px 32px rgba(255, 196, 78, 0.28)',
             }}
           >
-            Enquire Now →
+            Book Now →
           </Button>
         </Stack>
       </Container>

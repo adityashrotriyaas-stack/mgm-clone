@@ -12,34 +12,28 @@ export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
 }
 
-export const NIGHT_SLOT_MAP = { 1: 715, 2: 716, 3: 717, 4: 718, 5: 719, 6: 720, 7: 721, 8: 722, 9: 723, 10: 724 }
+export let schedule = {
+  dates: [], venues: [], shows: [], slots: []
+}
 
-export const schedule = {
-  dates: [
-    { id: 1867, date: '2026-10-10', label: 'Sat, 10 Oct', status: 'active', registration_disabled: false },
-    { id: 1868, date: '2026-10-11', label: 'Sun, 11 Oct', status: 'active', registration_disabled: false },
-    { id: 1869, date: '2026-10-12', label: 'Mon, 12 Oct', status: 'active', registration_disabled: false },
-    { id: 1870, date: '2026-10-13', label: 'Tue, 13 Oct', status: 'active', registration_disabled: false },
-    { id: 1871, date: '2026-10-14', label: 'Wed, 14 Oct', status: 'active', registration_disabled: false },
-    { id: 1872, date: '2026-10-15', label: 'Thu, 15 Oct', status: 'active', registration_disabled: false },
-    { id: 1873, date: '2026-10-16', label: 'Fri, 16 Oct', status: 'active', registration_disabled: false },
-    { id: 1874, date: '2026-10-17', label: 'Sat, 17 Oct', status: 'active', registration_disabled: false },
-    { id: 1875, date: '2026-10-18', label: 'Sun, 18 Oct', status: 'active', registration_disabled: false },
-    { id: 1876, date: '2026-10-19', label: 'Mon, 19 Oct', status: 'active', registration_disabled: false },
-  ],
-  venues: [
-    { id: 174, venue: { name: 'Seasons Hotel Rajkot, Gujarat', address: 'Seasons Hotel', city: 'Rajkot' } },
-  ],
-  shows: [
-    { id: 177, show_name: 'Evening Show', name: 'Evening Show', start_time: '21:00:00', end_time: '01:00:00', status: 'active' },
-  ],
-  slots: Object.entries(NIGHT_SLOT_MAP).map(([nightId, slotId]) => ({
-    id: slotId,
-    event_date_id: 1866 + Number(nightId),
-    event_venue_id: 174,
-    event_show_id: 177,
-    status: 'active',
-  })),
+export let NIGHT_SLOT_MAP = {}
+
+export async function fetchSchedule() {
+  try {
+    const eventId = process.env.EVENT_ID || 178
+    const res = await fetch(`https://dev-backend.wowsly.com/api/events/${eventId}/schedule/public`)
+    const data = await res.json()
+    if (data && data.data) {
+      schedule = data.data
+      NIGHT_SLOT_MAP = schedule.slots.reduce((acc, slot, idx) => {
+        acc[idx + 1] = slot.id
+        return acc
+      }, {})
+      console.log('Dynamic schedule loaded from Wowsly API')
+    }
+  } catch (err) {
+    console.error('Failed to fetch dynamic schedule:', err)
+  }
 }
 
 export const ticketTypes = [

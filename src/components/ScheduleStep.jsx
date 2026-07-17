@@ -93,6 +93,7 @@ function SelectableCard({ selected, onClick, disabled, children, sx = {} }) {
       onClick={onClick}
       disabled={disabled}
       sx={{
+        flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         textAlign: 'left',
@@ -210,13 +211,10 @@ export default function ScheduleStep({
                   selected={isSelected}
                   disabled={isDisabled}
                   onClick={() => handleDateSelect(date)}
-                  sx={{ minHeight: 74, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                  sx={{ minHeight: 54, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
                 >
                   <Typography sx={{ fontWeight: 700, fontSize: '0.82rem', color: ui.text, lineHeight: 1.3 }}>
                     {date.label}
-                  </Typography>
-                  <Typography sx={{ fontSize: '0.72rem', color: ui.muted, mt: 0.35 }}>
-                    {date.date}
                   </Typography>
                 </SelectableCard>
               </Grid>
