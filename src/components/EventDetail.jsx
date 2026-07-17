@@ -429,7 +429,7 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
       </Box>
       <Stack direction="row" spacing={1.5} sx={{ flexShrink: 0, alignItems: 'center' }}>
         <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: colors.gold, whiteSpace: 'nowrap' }}>
-          ₹1500 onwards
+          {price ? `${price} ${priceUnit || ''}`.trim() : '₹1500 onwards'}
         </Typography>
         <Box
           sx={{
