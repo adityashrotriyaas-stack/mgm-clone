@@ -687,8 +687,13 @@ export default function EventDetail() {
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
 
   const getNightPrice = () => {
-    if (!slotSelection?.eventSlotId || !category) return null
-    const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
+    if (!slotSelection?.eventSlotId || !category || !schedule?.slots) return null
+    const slot = schedule.slots.find((s) => String(s.id) === String(slotSelection.eventSlotId))
+    if (!slot) return null
+    const dateIndex = schedule.dates.findIndex((d) => d.id === slot.event_date_id)
+    if (dateIndex === -1) return null
+    const nightNum = dateIndex + 1
+    const night = navratriNights.find((n) => n.id === nightNum)
     return night ? night[category] : null
   }
   const effectiveUnitPrice = isSeasonalPass
