@@ -6,14 +6,13 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-import { Outlet, createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
 import App from './App.jsx'
 import ErrorBoundary from './components/ErrorBoundary'
 import ProgressBar from './components/ProgressBar'
 import { ToastProvider } from './components/Toast'
 import { EnquiryProvider } from './components/EnquiryModal'
 import WhatsAppFloat from './components/WhatsAppFloat'
-import NotFound from './components/NotFound'
 import theme from './theme.js'
 
 const BookingFlow = lazy(() => import('./components/BookingFlow.jsx'))
@@ -97,7 +96,7 @@ const router = createBrowserRouter([
       // },
       {
         path: '*',
-        element: <NotFound />,
+        element: <Navigate to="/" replace />,
       },
     ],
   },
