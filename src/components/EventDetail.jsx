@@ -501,19 +501,7 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange, errors }) {
         <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} error={!!errors?.name} helperText={errors?.name || ' '} fullWidth />
         <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} error={!!errors?.mobile} helperText={errors?.mobile || ' '} />
         <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} error={!!errors?.email} helperText={errors?.email || ' '} fullWidth />
-        <FormControl fullWidth error={!!errors?.gender}>
-          <Select
-            value={person.gender || ''}
-            onChange={onFieldChange('gender')}
-            displayEmpty
-            sx={selectFieldSx}
-          >
-            <MenuItem value="" disabled>Select Gender</MenuItem>
-            <MenuItem value="Male">Male</MenuItem>
-            <MenuItem value="Female">Female</MenuItem>
-          </Select>
-          {errors?.gender && <Typography sx={{ color: '#ef4444', fontSize: '0.75rem', mt: 0.5, ml: 1.5 }}>{errors.gender}</Typography>}
-        </FormControl>
+
         <Box>
           <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
           {errors?.selfiePreview && (
@@ -823,7 +811,6 @@ export default function EventDetail() {
     person.name &&
     person.mobile.length === 10 &&
     person.email &&
-    person.gender &&
     person.aadhaar.length === 12 &&
     person.selfiePreview
 
@@ -831,7 +818,6 @@ export default function EventDetail() {
     name: !person.name ? 'Full name is required' : '',
     mobile: person.mobile.length !== 10 ? 'Enter a valid 10-digit mobile number' : '',
     email: !person.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email) ? 'Valid email address is required' : '',
-    gender: !person.gender ? 'Gender is required' : '',
     aadhaar: person.aadhaar.length !== 12 ? 'Enter a valid 12-digit Aadhaar number' : '',
     selfiePreview: !person.selfiePreview ? 'Photo is required for pass verification' : '',
   })
