@@ -86,8 +86,8 @@ const router = createBrowserRouter([
         element: <PrivacyPolicy />,
       },
       {
-        path: '/event/:eventId',
-        element: <EventDetail />,
+      path: '/refund-policy',
+        element: <RefundPolicy />,
       },
       // Temporarily disabled - EventDetail route
       {
