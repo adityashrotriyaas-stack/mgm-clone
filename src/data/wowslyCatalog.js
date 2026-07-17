@@ -1,10 +1,18 @@
+let TICKET_MAP = {
+  daily: { male: null, female: null, couple: null },
+  seasonal: { male: null, female: null, couple: null },
+}
+
 export function buildTicketMap(apiTickets, activePhase = '') {
   const map = {
     daily: { male: null, female: null, couple: null },
     seasonal: { male: null, female: null, couple: null },
   }
 
-  if (!Array.isArray(apiTickets)) return map
+  if (!Array.isArray(apiTickets)) {
+    TICKET_MAP = map
+    return map
+  }
 
   const phaseFilter = String(activePhase).toLowerCase().trim()
 
@@ -56,6 +64,7 @@ export function buildTicketMap(apiTickets, activePhase = '') {
     }
   })
 
+  TICKET_MAP = map
   return map
 }
 
