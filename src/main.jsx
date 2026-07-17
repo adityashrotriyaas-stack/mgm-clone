@@ -86,10 +86,6 @@ const router = createBrowserRouter([
         element: <PrivacyPolicy />,
       },
       {
-        path: '/book',
-        element: <BookingFlow />,
-      },
-      {
         path: '/event/:eventId',
         element: <EventDetail />,
       },

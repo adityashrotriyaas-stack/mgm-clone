@@ -429,7 +429,7 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
         <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{subtitle}</Typography>
       </Box>
       <Stack direction="row" spacing={1.5} sx={{ flexShrink: 0, alignItems: 'center' }}>
-        <Tooltip title="Price will be shown at the end of all selection" arrow>
+        <Tooltip title="₹1500 onwards" arrow>
           <InfoOutlinedIcon
             onClick={(e) => e.stopPropagation()}
             sx={{ color: ui.muted, '&:hover': { color: colors.gold } }}
