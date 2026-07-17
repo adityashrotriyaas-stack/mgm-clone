@@ -20,6 +20,7 @@ import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import Tooltip from '@mui/material/Tooltip'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -428,14 +429,12 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
         <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{subtitle}</Typography>
       </Box>
       <Stack direction="row" spacing={1.5} sx={{ flexShrink: 0, alignItems: 'center' }}>
-        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
-          {price}
-          {priceUnit ? (
-            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: ui.muted, ml: 0.35 }}>
-              {priceUnit}
-            </Box>
-          ) : null}
-        </Typography>
+        <Tooltip title="Price will be shown at the end of all selection" arrow>
+          <InfoOutlinedIcon
+            onClick={(e) => e.stopPropagation()}
+            sx={{ color: ui.muted, '&:hover': { color: colors.gold } }}
+          />
+        </Tooltip>
         <Box
           sx={{
             width: 22,
