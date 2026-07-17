@@ -1,54 +1,18 @@
 import { NIGHT_SLOT_MAP } from '../config/wowsly'
 import { navratriNights } from '../data/siteData'
 
-const FALLBACK_SCHEDULE = {
-  dates: [
-    { id: 1867, date: '2026-10-10', label: 'Sat, 10 Oct', status: 'active', registration_disabled: false },
-    { id: 1868, date: '2026-10-11', label: 'Sun, 11 Oct', status: 'active', registration_disabled: false },
-    { id: 1869, date: '2026-10-12', label: 'Mon, 12 Oct', status: 'active', registration_disabled: false },
-    { id: 1870, date: '2026-10-13', label: 'Tue, 13 Oct', status: 'active', registration_disabled: false },
-    { id: 1871, date: '2026-10-14', label: 'Wed, 14 Oct', status: 'active', registration_disabled: false },
-    { id: 1872, date: '2026-10-15', label: 'Thu, 15 Oct', status: 'active', registration_disabled: false },
-    { id: 1873, date: '2026-10-16', label: 'Fri, 16 Oct', status: 'active', registration_disabled: false },
-    { id: 1874, date: '2026-10-17', label: 'Sat, 17 Oct', status: 'active', registration_disabled: false },
-    { id: 1875, date: '2026-10-18', label: 'Sun, 18 Oct', status: 'active', registration_disabled: false },
-    { id: 1876, date: '2026-10-19', label: 'Mon, 19 Oct', status: 'active', registration_disabled: false },
-  ],
-  venues: [
-    {
-      id: 174,
-      venue: {
-        name: 'Seasons Hotel Rajkot, Gujarat',
-        address: 'Seasons Hotel\nRajkot, Gujarat',
-        city: 'Rajkot',
-      },
-    },
-  ],
-  shows: [
-    { id: 177, show_name: 'Show 1', name: 'Show 1', start_time: '21:00:00', end_time: '14:00:00', status: 'active' },
-  ],
-  slots: [
-    { id: 715, event_date_id: 1867, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 716, event_date_id: 1868, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 717, event_date_id: 1869, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 718, event_date_id: 1870, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 719, event_date_id: 1871, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 720, event_date_id: 1872, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 721, event_date_id: 1873, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 722, event_date_id: 1874, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 723, event_date_id: 1875, event_venue_id: 174, event_show_id: 177, status: 'active' },
-    { id: 724, event_date_id: 1876, event_venue_id: 174, event_show_id: 177, status: 'active' },
-  ],
-}
+const FALLBACK_SCHEDULE = { dates: [], venues: [], shows: [], slots: [] }
 
 export function normalizeScheduleResponse(response) {
   const data = response?.data ?? response ?? {}
-  return {
+  const result = {
     dates: Array.isArray(data.dates) ? data.dates : [],
     venues: Array.isArray(data.venues) ? data.venues : [],
     shows: Array.isArray(data.shows) ? data.shows : [],
     slots: Array.isArray(data.slots) ? data.slots : [],
   }
+  console.log('Normalized Schedule:', result)
+  return result
 }
 
 export function buildFallbackSchedule() {

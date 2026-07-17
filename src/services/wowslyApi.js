@@ -98,7 +98,7 @@ async function getBlobFromUrl(url) {
   }
 }
 
-export async function submitRegistration({ name, countryCode, mobile, email, aadhaar, photo }, questionMap = QUESTION_MAP) {
+export async function submitRegistration({ name, countryCode, mobile, email, gender, aadhaar, photo }, questionMap = QUESTION_MAP) {
   const formData = new FormData()
   formData.append('form_id', String(FORM_ID))
   formData.append('dialing_code', DEFAULT_DIALING_CODE)
@@ -109,6 +109,8 @@ export async function submitRegistration({ name, countryCode, mobile, email, aad
     { question_id: questionMap.COUNTRY_CODE, answer: countryCode || DEFAULT_DIALING_CODE },
     { question_id: questionMap.MOBILE, answer: mobile },
     { question_id: questionMap.EMAIL, answer: email },
+    { question_id: questionMap.GENDER, answer: gender },
+
   ]
 
   if (aadhaar && questionMap.AADHAAR) {

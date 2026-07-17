@@ -3,6 +3,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { colors, gradients } from '../constants/colors'
 import { upcomingEvents } from '../data/siteData'
+// import { useEnquiryModal } from './EnquiryModal'
 
 const featuredEvent = upcomingEvents[0]
 
@@ -11,6 +12,7 @@ function cleanLabel(value = '') {
 }
 
 export default function StickyCTA() {
+  // const openEnquiryModal = useEnquiryModal()
   return (
     <Box
       sx={{
@@ -89,7 +91,7 @@ export default function StickyCTA() {
           boxShadow: '0 8px 20px rgba(234, 90, 0, 0.28)',
         }}
       >
-        Get Your Pass
+        Book Now
       </Button>
     </Box>
   )

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { isWowslyConfigured } from '../config/wowsly'
+import { isWowslyConfigured, updateNightSlotMap, ACTIVE_SEASONAL_PHASE } from '../config/wowsly'
 import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
 } from '../services/wowslyBooking'
-
+import { getPublicSchedule, getEventTickets } from '../services/wowslyApi'
+import { buildTicketMap } from '../data/wowslyCatalog'
 import { buildFallbackSchedule, getScheduleStepLabel, normalizeScheduleResponse } from '../utils/schedule'
 import ScheduleStep from './ScheduleStep'
 import { Navigate, useParams, useNavigate } from 'react-router-dom'
@@ -230,7 +231,7 @@ function PassTypeOption({ item, selected, onSelect }) {
 
 const passModes = [
   { id: 'seasonal', title: 'Seasonal Pass', subtitle: '10 Nights Garba', data: passOptions.seasonal },
-  { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
+  // { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
 
 function buildFallbackEvent(id) {
@@ -456,6 +457,7 @@ const emptyPerson = () => ({
   mobile: '',
   email: '',
   aadhaar: '',
+  gender: '',
   selfiePreview: '',
 })
 
@@ -499,6 +501,19 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange, errors }) {
         <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} error={!!errors?.name} helperText={errors?.name || ' '} fullWidth />
         <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} error={!!errors?.mobile} helperText={errors?.mobile || ' '} />
         <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} error={!!errors?.email} helperText={errors?.email || ' '} fullWidth />
+        <FormControl fullWidth error={!!errors?.gender}>
+          <Select
+            value={person.gender || ''}
+            onChange={onFieldChange('gender')}
+            displayEmpty
+            sx={selectFieldSx}
+          >
+            <MenuItem value="" disabled>Select Gender</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+          </Select>
+          {errors?.gender && <Typography sx={{ color: '#ef4444', fontSize: '0.75rem', mt: 0.5, ml: 1.5 }}>{errors.gender}</Typography>}
+        </FormControl>
         <Box>
           <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
           {errors?.selfiePreview && (
@@ -670,7 +685,14 @@ export default function EventDetail() {
   const [acceptedPolicies, setAcceptedPolicies] = useState(() => ss('ap') === 'true')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [ticketsList, setTicketsList] = useState([])
+  const [ticketMap, setTicketMap] = useState(null)
+  const [holder2Expanded, setHolder2Expanded] = useState(false)
   const [formErrors, setFormErrors] = useState({})
+
+  useEffect(() => {
+    saveFormState()
+  }, [regStep, passMode, category, slotSelection, personForm, secondPersonForm, maleForm, femaleForm, ticketCount, acceptedNonRefundable, acceptedPolicies])
 
   const changeStep = (step) => {
     setRegStep(step)
@@ -687,13 +709,34 @@ export default function EventDetail() {
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
 
   const getNightPrice = () => {
-    if (!slotSelection?.eventSlotId || !category) return null
-    const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
-    return night ? night[category] : null
+    if (!category) return null
+    
+    // 1. Try to get the dynamic daily ticket price and check for slot overrides
+    const ticketInfo = ticketMap?.daily?.[category]
+    if (ticketInfo) {
+      if (slotSelection?.eventSlotId) {
+        const mapping = ticketInfo.slotMappings?.find(
+          (m) => String(m.event_slot_id) === String(slotSelection.eventSlotId)
+        )
+        if (mapping && mapping.price_override !== null && mapping.price_override !== undefined) {
+          return Number(mapping.price_override)
+        }
+      }
+      return ticketInfo.price
+    }
+
+    // 2. Fallback to hardcoded site data if ticket isn't mapped from API
+    if (slotSelection?.eventSlotId) {
+      const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
+      if (night && night[category] !== undefined) return night[category]
+    }
+    
+    return null
   }
+
   const effectiveUnitPrice = isSeasonalPass
-    ? (category ? seasonalPhases[0][category] : 0)
-    : (getNightPrice() || getPriceAmount(selected?.price))
+    ? (ticketMap?.seasonal?.[category]?.price ?? (category ? seasonalPhases[0][category] : 0))
+    : (getNightPrice() ?? getPriceAmount(selected?.price))
   const effectiveUnitPriceStr = effectiveUnitPrice ? formatRupees(effectiveUnitPrice) : '₹0'
   const effectivePriceUnit = isSeasonalPass ? '/ person' : (selected?.priceUnit || '/ ticket')
 
@@ -706,7 +749,49 @@ export default function EventDetail() {
     : ['Pass Type', 'Category', 'Date & Time', 'Details']
 
   useEffect(() => {
-    setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+    let cancelled = false
+
+    async function loadSchedule() {
+      setScheduleLoading(true)
+      setScheduleError('')
+      try {
+        const response = isWowslyConfigured() ? await getPublicSchedule() : null
+        if (response) {
+          updateNightSlotMap(response)
+        }
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(response || buildFallbackSchedule()))
+        }
+      } catch {
+        if (!cancelled) {
+          setSchedule(normalizeScheduleResponse(buildFallbackSchedule()))
+          setScheduleError('')
+        }
+      } finally {
+        if (!cancelled) setScheduleLoading(false)
+      }
+    }
+
+    loadSchedule()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
+    async function loadTickets() {
+      try {
+        const res = isWowslyConfigured() ? await getEventTickets('') : null
+        const tickets = res?.data?.tickets || res?.tickets || res?.data || res || []
+        if (Array.isArray(tickets)) {
+          setTicketsList(tickets)
+          setTicketMap(buildTicketMap(tickets, ACTIVE_SEASONAL_PHASE))
+        }
+      } catch (err) {
+        console.warn('Failed to load tickets list:', err)
+      }
+    }
+    loadTickets()
   }, [])
 
   if (!event || !info) return <Navigate to="/" replace />
@@ -738,6 +823,7 @@ export default function EventDetail() {
     person.name &&
     person.mobile.length === 10 &&
     person.email &&
+    person.gender &&
     person.aadhaar.length === 12 &&
     person.selfiePreview
 
@@ -745,6 +831,7 @@ export default function EventDetail() {
     name: !person.name ? 'Full name is required' : '',
     mobile: person.mobile.length !== 10 ? 'Enter a valid 10-digit mobile number' : '',
     email: !person.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email) ? 'Valid email address is required' : '',
+    gender: !person.gender ? 'Gender is required' : '',
     aadhaar: person.aadhaar.length !== 12 ? 'Enter a valid 12-digit Aadhaar number' : '',
     selfiePreview: !person.selfiePreview ? 'Photo is required for pass verification' : '',
   })
@@ -774,6 +861,7 @@ export default function EventDetail() {
   const canSubmitForm = () => {
     if (!acceptedNonRefundable || !acceptedPolicies) return false
     if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
+   
     if (isCoupleCategory) {
       return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && maleForm.mobile !== femaleForm.mobile
     }
@@ -939,18 +1027,19 @@ export default function EventDetail() {
                   <Stack spacing={1.25}>
                     {categoryKeys.map((key) => {
                       const cat = registrationCategories[key]
-                      const phasePrice = isSeasonalPass ? seasonalPhases[0][key] : null
-                      const optionPrice = isSeasonalPass
-                        ? { price: formatRupees(phasePrice), priceUnit: '/ person' }
-                        : cat
+                      const dynamicPrice = ticketMap?.[passMode]?.[key]?.price
+                      const fallbackPrice = isSeasonalPass ? seasonalPhases[0][key] : null
+                      const rawPrice = dynamicPrice ?? fallbackPrice
+                      const price = rawPrice !== null && rawPrice !== undefined ? formatRupees(rawPrice) : cat.price
+                      const priceUnit = isSeasonalPass ? '/ person' : cat.priceUnit
                       return (
                         <CategoryOption
                           key={key}
                           categoryKey={key}
                           label={key}
                           subtitle={cat.title}
-                          price={optionPrice.price}
-                          priceUnit={optionPrice.priceUnit}
+                          price={price}
+                          priceUnit={priceUnit}
                           selected={category === key}
                           onSelect={() => selectCategory(key)}
                         />

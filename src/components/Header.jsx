@@ -16,6 +16,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import { navLinks } from '../data/siteData'
 import { colors, gradients } from '../constants/colors'
 import { patternNight } from '../constants/navratriTheme'
+// import { useEnquiryModal } from './EnquiryModal'
 import logoImg from '../assets/logo.webp'
 
 export default function Header() {
@@ -23,6 +24,7 @@ const navigate = useNavigate()
 const [open, setOpen] = useState(false)
 const [scrolled, setScrolled] = useState(false)
 const closeMenu = () => setOpen(false)
+// const openEnquiryModal = useEnquiryModal()
 
 useEffect(() => {
   const onScroll = () => {
@@ -176,7 +178,7 @@ useEffect(() => {
         </Stack>
 
         <Button
-          onClick={() => navigate('/event/1')}
+          onClick={() => { closeMenu(); navigate('/event/1') }}
           sx={{
             display: { xs: 'none', md: 'inline-flex' },
             background: gradients.button,
@@ -190,7 +192,7 @@ useEffect(() => {
           }}
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem !important' }} />}
         >
-          Get Your Pass
+          Book Now
         </Button>
 
         <IconButton
@@ -249,7 +251,7 @@ useEffect(() => {
             ))}
             <Box component="li" sx={{ mt: 1.25 }}>
 <Button
-                  onClick={() => window.location.href = '/event/1'}
+                  onClick={() => { closeMenu(); navigate('/event/1') }}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -264,7 +266,7 @@ useEffect(() => {
                   fullWidth
                 >
                 <ConfirmationNumberOutlinedIcon sx={{ fontSize: '1.1rem' }} />
-          Get Your Pass
+          Book Now
               </Button>
             </Box>
           </Stack>

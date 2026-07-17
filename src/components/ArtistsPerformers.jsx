@@ -17,6 +17,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import amitDhorda from '../assets/amit-dhorda.webp'
 import artistsBg from '../assets/artists-bg.webp'
 import { colors } from '../constants/colors'
+// import { useEnquiryModal } from './EnquiryModal'
 import { patternDiya, patternGarland, patternMandala, patternNight } from '../constants/navratriTheme'
 import { RevealBox, RevealGroup } from './shared'
 
@@ -245,6 +246,7 @@ function ArtistCard({ artist, active = false, offset = 0, onSelect }) {
 }
 
 export default function ArtistsPerformers() {
+  // const openEnquiryModal = useEnquiryModal()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
@@ -622,7 +624,7 @@ export default function ArtistsPerformers() {
               startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
               endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
             >
-              Get Your Pass
+              Book Now
             </Button>
             <Box
               aria-hidden

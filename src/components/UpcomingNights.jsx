@@ -4,6 +4,7 @@ import Container from '@mui/material/Container'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import { patternDiya, patternGarland, patternMandala } from '../constants/navratriTheme'
+// import { useEnquiryModal } from './EnquiryModal'
 
 const section = {
   bg: '#1A0800',
@@ -12,6 +13,7 @@ const section = {
 }
 
 export default function UpcomingNights() {
+  // const openEnquiryModal = useEnquiryModal()
   return (
   <Box
     component="section"
@@ -132,7 +134,7 @@ export default function UpcomingNights() {
           startIcon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: '1rem !important' }} />}
           endIcon={<ArrowForwardRoundedIcon sx={{ fontSize: '1rem !important' }} />}
         >
-          Get Your Pass
+          Book Now
         </Button>
       </Box>
     </Container>
