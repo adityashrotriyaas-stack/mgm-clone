@@ -21,9 +21,13 @@ app.use('/api', bookingRoutes)
 app.use(notFoundHandler)
 app.use(errorHandler)
 
+import { fetchSchedule } from './src/config/index.js'
+
 const PORT = process.env.PORT || 3001
 
-app.listen(PORT, () => {
-  console.log(`MGM Navratri Demo API v2 running at http://localhost:${PORT}`)
-  console.log(`Health check: http://localhost:${PORT}/api/health`)
+fetchSchedule().then(() => {
+  app.listen(PORT, () => {
+    console.log(`MGM Navratri Demo API v2 running at http://localhost:${PORT}`)
+    console.log(`Health check: http://localhost:${PORT}/api/health`)
+  })
 })

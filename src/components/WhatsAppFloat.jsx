@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton'
 import { keyframes } from '@mui/material/styles'
 import { useLocation } from 'react-router-dom'
 import WhatsAppIcon from './WhatsAppIcon'
-import { useEnquiryModal } from './EnquiryModal'
+// import { useEnquiryModal } from './EnquiryModal'
 
 const pulse = keyframes`
   0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
@@ -12,7 +12,7 @@ const pulse = keyframes`
 `
 
 export default function WhatsAppFloat() {
-  const openEnquiryModal = useEnquiryModal()
+  // const openEnquiryModal = useEnquiryModal()
   const { pathname } = useLocation()
   const isHome = pathname === '/'
 
@@ -32,7 +32,7 @@ export default function WhatsAppFloat() {
       }}
     >
       <IconButton
-        onClick={openEnquiryModal}
+        onClick={() => window.location.href = '/event/1'}
         aria-label="Send an enquiry"
         sx={{
           width: 52,

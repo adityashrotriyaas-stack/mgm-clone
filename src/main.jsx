@@ -85,14 +85,14 @@ const router = createBrowserRouter([
         element: <PrivacyPolicy />,
       },
       {
-        path: '/refund-policy',
+      path: '/refund-policy',
         element: <RefundPolicy />,
       },
       // Temporarily disabled - EventDetail route
-      // {
-      //   path: '/event/:eventId',
-      //   element: <EventDetail />,
-      // },
+      {
+        path: '/event/:eventId',
+        element: <EventDetail />,
+      },
       {
         path: '*',
         element: <Navigate to="/" replace />,

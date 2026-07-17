@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { isWowslyConfigured } from '../config/wowsly'
+import { isWowslyConfigured, updateNightSlotMap, ACTIVE_SEASONAL_PHASE } from '../config/wowsly'
 import {
   applyQuotedPriceToRegistration,
   prepareWowslyBooking,
@@ -88,7 +88,7 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Fanpit Zone', 'VIP Lounge', 'Food Court', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
   2: {
     dateRange: '13 Oct 2026',
@@ -127,7 +127,7 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
       mark: 'R',
     },
     layoutZones: ['Couple Zone', 'Main Stage', 'Mocktail Bar', 'Photo Booth', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
   3: {
     dateRange: '14 Oct 2026',
@@ -164,7 +164,7 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
       mark: 'R',
     },
     layoutZones: ['LED Dance Floor', 'Main Stage', 'Food Court', 'Lounge Deck', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
   4: {
     dateRange: '19 Oct 2026',
@@ -201,7 +201,7 @@ Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri be
       mark: 'R',
     },
     layoutZones: ['Maha Aarti Stage', 'Premium Deck', 'Garba Arena', 'Food Court', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
 }
 
@@ -231,7 +231,7 @@ function PassTypeOption({ item, selected, onSelect }) {
 
 const passModes = [
   { id: 'seasonal', title: 'Seasonal Pass', subtitle: '10 Nights Garba', data: passOptions.seasonal },
-  { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
+  // { id: 'daily', title: 'Daily Pass', subtitle: '1 Night Garba', data: passOptions.daily },
 ]
 
 function buildFallbackEvent(id) {
@@ -292,7 +292,7 @@ From the opening aarti to the late-night Mandli Garba session, guests can enjoy 
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Garba Arena', 'Food Court', 'Entry Gate', 'Seating Zone'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   }
 }
 
@@ -314,7 +314,7 @@ const categoryMeta = {
 
 function RegistrationStepPills({ activeStep, stepLabels }) {
   return (
-    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap', px: { xs: 0.5, sm: 0 } }}>
+    <Stack direction="row" gap={1.25} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap', px: { xs: 0.5, sm: 0 } }}>
       {stepLabels.map((label, index) => {
         const isCompleted = index < activeStep
         const isActive = index === activeStep
@@ -334,6 +334,7 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
               bgcolor: isActive ? accentFestive : ui.surfaceMuted,
               color: isActive ? colors.night : ui.muted,
               minWidth: 0,
+              whiteSpace: 'nowrap',
             }}
           >
             {isCompleted ? (
@@ -428,13 +429,8 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
         <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{subtitle}</Typography>
       </Box>
       <Stack direction="row" spacing={1.5} sx={{ flexShrink: 0, alignItems: 'center' }}>
-        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
-          {price}
-          {priceUnit ? (
-            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: ui.muted, ml: 0.35 }}>
-              {priceUnit}
-            </Box>
-          ) : null}
+        <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: colors.gold, whiteSpace: 'nowrap' }}>
+          {price ? `${price} ${priceUnit || ''}`.trim() : '₹1500 onwards'}
         </Typography>
         <Box
           sx={{
@@ -461,6 +457,7 @@ const emptyPerson = () => ({
   mobile: '',
   email: '',
   aadhaar: '',
+  gender: '',
   selfiePreview: '',
 })
 
@@ -504,6 +501,7 @@ function PersonFields({ title, person, onFieldChange, onPhotoChange, errors }) {
         <TextField required placeholder="Full Name" value={person.name} onChange={onFieldChange('name')} error={!!errors?.name} helperText={errors?.name || ' '} fullWidth />
         <MobileNumberField tone="festive" value={person.mobile} onChange={onFieldChange('mobile')} error={!!errors?.mobile} helperText={errors?.mobile || ' '} />
         <TextField required placeholder="Email Address" type="email" value={person.email} onChange={onFieldChange('email')} error={!!errors?.email} helperText={errors?.email || ' '} fullWidth />
+
         <Box>
           <PhotoCaptureField preview={person.selfiePreview} onChange={onPhotoChange} variant="festive" />
           {errors?.selfiePreview && (
@@ -678,6 +676,7 @@ export default function EventDetail() {
   const [ticketsList, setTicketsList] = useState([])
   const [ticketMap, setTicketMap] = useState(null)
   const [holder2Expanded, setHolder2Expanded] = useState(false)
+  const [formErrors, setFormErrors] = useState({})
 
   useEffect(() => {
     saveFormState()
@@ -698,13 +697,34 @@ export default function EventDetail() {
   const totalTickets = isCoupleCategory ? 2 : Number(ticketCount || 1)
 
   const getNightPrice = () => {
-    if (!slotSelection?.eventSlotId || !category) return null
-    const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
-    return night ? night[category] : null
+    if (!category) return null
+    
+    // 1. Try to get the dynamic daily ticket price and check for slot overrides
+    const ticketInfo = ticketMap?.daily?.[category]
+    if (ticketInfo) {
+      if (slotSelection?.eventSlotId) {
+        const mapping = ticketInfo.slotMappings?.find(
+          (m) => String(m.event_slot_id) === String(slotSelection.eventSlotId)
+        )
+        if (mapping && mapping.price_override !== null && mapping.price_override !== undefined) {
+          return Number(mapping.price_override)
+        }
+      }
+      return ticketInfo.price
+    }
+
+    // 2. Fallback to hardcoded site data if ticket isn't mapped from API
+    if (slotSelection?.eventSlotId) {
+      const night = navratriNights.find(n => String(n.id) === String(slotSelection.eventSlotId))
+      if (night && night[category] !== undefined) return night[category]
+    }
+    
+    return null
   }
+
   const effectiveUnitPrice = isSeasonalPass
-    ? (category ? seasonalPhases[0][category] : 0)
-    : (getNightPrice() || getPriceAmount(selected?.price))
+    ? (ticketMap?.seasonal?.[category]?.price ?? (category ? seasonalPhases[0][category] : 0))
+    : (getNightPrice() ?? getPriceAmount(selected?.price))
   const effectiveUnitPriceStr = effectiveUnitPrice ? formatRupees(effectiveUnitPrice) : '₹0'
   const effectivePriceUnit = isSeasonalPass ? '/ person' : (selected?.priceUnit || '/ ticket')
 
@@ -753,7 +773,7 @@ export default function EventDetail() {
         const tickets = res?.data?.tickets || res?.tickets || res?.data || res || []
         if (Array.isArray(tickets)) {
           setTicketsList(tickets)
-          setTicketMap(buildTicketMap(tickets))
+          setTicketMap(buildTicketMap(tickets, ACTIVE_SEASONAL_PHASE))
         }
       } catch (err) {
         console.warn('Failed to load tickets list:', err)
@@ -827,6 +847,7 @@ export default function EventDetail() {
   const canSubmitForm = () => {
     if (!acceptedNonRefundable || !acceptedPolicies) return false
     if (!isSeasonalPass && !slotSelection?.eventSlotId) return false
+   
     if (isCoupleCategory) {
       return isPersonComplete(maleForm) && isPersonComplete(femaleForm) && maleForm.mobile !== femaleForm.mobile
     }
@@ -906,7 +927,7 @@ export default function EventDetail() {
     try {
       let wowslySession = null
       if (isWowslyConfigured()) {
-        wowslySession = await prepareWowslyBooking(registration, ticketMap)
+        wowslySession = await prepareWowslyBooking(registration)
         registration = applyQuotedPriceToRegistration(registration, wowslySession)
       }
 
@@ -923,7 +944,7 @@ export default function EventDetail() {
     return (
       <Box sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
         <Typography variant="h4">Event not found</Typography>
-        <Button variant="contained">Back to Home</Button>
+        <Button variant="contained" onClick={() => navigate('/')}>Back to Home</Button>
       </Box>
     )
   }
@@ -934,6 +955,7 @@ export default function EventDetail() {
         <Container maxWidth="lg">
           <Stack direction="row" sx={{ py: 1, alignItems: 'center' }}>
             <Button
+              onClick={() => navigate('/')}
               startIcon={<ChevronLeftRoundedIcon />}
               sx={{ color: ui.text, fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
             >
@@ -991,18 +1013,19 @@ export default function EventDetail() {
                   <Stack spacing={1.25}>
                     {categoryKeys.map((key) => {
                       const cat = registrationCategories[key]
-                      const phasePrice = isSeasonalPass ? seasonalPhases[0][key] : null
-                      const optionPrice = isSeasonalPass
-                        ? { price: formatRupees(phasePrice), priceUnit: '/ person' }
-                        : cat
+                      const dynamicPrice = ticketMap?.[passMode]?.[key]?.price
+                      const fallbackPrice = isSeasonalPass ? seasonalPhases[0][key] : null
+                      const rawPrice = dynamicPrice ?? fallbackPrice
+                      const price = rawPrice !== null && rawPrice !== undefined ? formatRupees(rawPrice) : cat.price
+                      const priceUnit = isSeasonalPass ? '/ person' : cat.priceUnit
                       return (
                         <CategoryOption
                           key={key}
                           categoryKey={key}
-                          label={ticketMap?.[passMode]?.[key]?.displayName || key}
+                          label={key}
                           subtitle={cat.title}
-                          price={optionPrice.price}
-                          priceUnit={optionPrice.priceUnit}
+                          price={price}
+                          priceUnit={priceUnit}
                           selected={category === key}
                           onSelect={() => selectCategory(key)}
                         />

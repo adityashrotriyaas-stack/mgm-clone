@@ -51,6 +51,7 @@ export function extractGuestFromRegistration(registration) {
       countryCode: '91',
       aadhaar: registration.male.aadhaar,
       photo: registration.male.selfiePreview,
+      gender: registration.male.gender || 'Male',
     }
   }
 
@@ -61,14 +62,12 @@ export function extractGuestFromRegistration(registration) {
     countryCode: '91',
     aadhaar: registration.aadhaar,
     photo: registration.selfiePreview,
+    gender: registration.gender || (registration.category === 'female' ? 'Female' : 'Male'),
   }
 }
 
-export function resolveTicketSelection(registration, ticketMap) {
-  const ticket = resolveTicketFromPassMode(ticketMap, registration.passMode, registration.category)
-  if (!ticket) {
-    throw new Error('Ticket mapping is not loaded yet. Please try again.')
-  }
+export function resolveTicketSelection(registration) {
+  const ticket = resolveTicketFromPassMode(registration.passMode, registration.category)
   const isSeasonal = registration.passMode === 'seasonal'
   // A Couple ticket includes entry for 2 people. So if the category is couple, the quantity to buy is 1.
   // Otherwise, the quantity is the exact number of tickets selected (e.g. 2 Male tickets = quantity 2).
@@ -81,6 +80,8 @@ export function resolveTicketSelection(registration, ticketMap) {
       const nightId = Number(registration.selectedDay || registration.eventId)
       eventSlotId = nightId ? NIGHT_SLOT_MAP[nightId] ?? null : null
     }
+  } else {
+    eventSlotId = ticket.slotMappings?.[0]?.event_slot_id ?? null
   }
 
   return {
@@ -98,13 +99,13 @@ function formatRupees(amount) {
   return `₹${value.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`
 }
 
-export async function prepareWowslyBooking(registration, ticketMap) {
+export async function prepareWowslyBooking(registration) {
   if (!isWowslyConfigured()) {
     return null
   }
 
   const guest = extractGuestFromRegistration(registration)
-  const { ticketId, ticketTitle, quantity, eventSlotId } = resolveTicketSelection(registration, ticketMap)
+  const { ticketId, ticketTitle, quantity, eventSlotId } = resolveTicketSelection(registration)
 
   // Fetch form dynamically to resolve field mappings
   let activeQuestionMap = { ...QUESTION_MAP }
@@ -117,6 +118,7 @@ export async function prepareWowslyBooking(registration, ticketMap) {
       if (dynamicMap.COUNTRY_CODE) activeQuestionMap.COUNTRY_CODE = String(dynamicMap.COUNTRY_CODE)
       if (dynamicMap.MOBILE) activeQuestionMap.MOBILE = String(dynamicMap.MOBILE)
       if (dynamicMap.EMAIL) activeQuestionMap.EMAIL = String(dynamicMap.EMAIL)
+      if (dynamicMap.GENDER) activeQuestionMap.GENDER = String(dynamicMap.GENDER)
       if (dynamicMap.AADHAAR) activeQuestionMap.AADHAAR = String(dynamicMap.AADHAAR)
       if (dynamicMap.PHOTO) activeQuestionMap.PHOTO = String(dynamicMap.PHOTO)
     }
@@ -138,7 +140,8 @@ export async function prepareWowslyBooking(registration, ticketMap) {
   const holder1PhotoQA = regReplies.find(
     (qa) =>
       String(qa.question_id || qa.id) === String(activeQuestionMap.PHOTO) ||
-      String(qa.question || '').toLowerCase() === 'pass photo'
+      String(qa.question || '').toLowerCase() === 'pass photo' ||
+      String(qa.question || '').toLowerCase() === 'selfie photo'
   )
   const holder1PhotoUrl = holder1PhotoQA?.answer || guest.photo || ''
 
@@ -155,6 +158,7 @@ export async function prepareWowslyBooking(registration, ticketMap) {
       countryCode: '91',
       aadhaar: secondGuestRaw.aadhaar,
       photo: secondGuestRaw.selfiePreview,
+      gender: secondGuestRaw.gender || (registration.female ? 'Female' : (registration.category === 'female' ? 'Female' : 'Male')),
     }
 
     try {
@@ -163,7 +167,8 @@ export async function prepareWowslyBooking(registration, ticketMap) {
       const holder2PhotoQA = regReplies2.find(
         (qa) =>
           String(qa.question_id || qa.id) === String(activeQuestionMap.PHOTO) ||
-          String(qa.question || '').toLowerCase() === 'pass photo'
+          String(qa.question || '').toLowerCase() === 'pass photo' ||
+          String(qa.question || '').toLowerCase() === 'selfie photo'
       )
       holder2PhotoUrl = holder2PhotoQA?.answer || secondGuestFormatted.photo || ''
       holder2Data = secondGuestFormatted
@@ -187,6 +192,7 @@ export async function prepareWowslyBooking(registration, ticketMap) {
         { question_id: Number(activeQuestionMap.COUNTRY_CODE), answer: guest.countryCode || '91' },
         { question_id: Number(activeQuestionMap.MOBILE), answer: guest.mobile },
         { question_id: Number(activeQuestionMap.EMAIL), answer: guest.email },
+        { question_id: Number(activeQuestionMap.GENDER), answer: guest.gender },
       ],
     },
   ]
@@ -210,6 +216,7 @@ export async function prepareWowslyBooking(registration, ticketMap) {
         { question_id: Number(activeQuestionMap.COUNTRY_CODE), answer: holder2Data.countryCode || '91' },
         { question_id: Number(activeQuestionMap.MOBILE), answer: holder2Data.mobile },
         { question_id: Number(activeQuestionMap.EMAIL), answer: holder2Data.email },
+        { question_id: Number(activeQuestionMap.GENDER), answer: holder2Data.gender },
       ],
     }
 

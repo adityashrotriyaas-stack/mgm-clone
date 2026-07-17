@@ -35,6 +35,8 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
   const [cameraOpen, setCameraOpen] = useState(false)
   const [cameraError, setCameraError] = useState('')
   const [isStartingCamera, setIsStartingCamera] = useState(false)
+  const [showDisclaimer, setShowDisclaimer] = useState(false)
+  const [disclaimerAction, setDisclaimerAction] = useState(null) // 'camera' | 'gallery'
   const isFestive = variant === 'festive'
 
   const closeCamera = useCallback(() => {
@@ -108,6 +110,20 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
       0.9,
     )
   }
+
+  const openDisclaimer = useCallback((action) => {
+    setDisclaimerAction(action)
+    setShowDisclaimer(true)
+  }, [])
+
+  const handleDisclaimerConfirm = useCallback(() => {
+    setShowDisclaimer(false)
+    if (disclaimerAction === 'camera') {
+      startCamera()
+    } else if (disclaimerAction === 'gallery') {
+      fileInputRef.current?.click()
+    }
+  }, [disclaimerAction, startCamera])
 
   const containerSx = isFestive
     ? {
@@ -269,7 +285,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               fullWidth
               variant="contained"
               startIcon={<CameraAltOutlinedIcon />}
-              onClick={startCamera}
+              onClick={() => openDisclaimer('camera')}
               sx={{
                 ...festiveActionSx,
                 flex: 1.2,
@@ -288,7 +304,7 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               fullWidth
               variant="outlined"
               startIcon={<PhotoLibraryOutlinedIcon />}
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => openDisclaimer('gallery')}
               sx={{
                 ...festiveActionSx,
                 flex: 1,
@@ -416,6 +432,63 @@ export default function PhotoCaptureField({ preview, onChange, variant = 'festiv
               Capture Photo
             </Button>
           )}
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={showDisclaimer}
+        onClose={() => { setShowDisclaimer(false); setDisclaimerAction(null); }}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: '16px',
+            bgcolor: isFestive ? '#2A1C16' : '#fff',
+            border: isFestive ? '1px solid rgba(255, 179, 0, 0.3)' : '1px solid #E5E4E9',
+          },
+        }}
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+          <Typography sx={{ fontWeight: 800, fontSize: '1.05rem', color: isFestive ? '#FFF8F0' : '#000' }}>
+            Important Notice
+          </Typography>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 0 }}>
+          <Typography sx={{ fontSize: '0.88rem', lineHeight: 1.65, color: isFestive ? 'rgba(255,248,240,0.85)' : '#333', mb: 2 }}>
+            Blurry images, selfies with sunglasses, face-covered photos, photos of another person, or any image that does not clearly show the registrant&apos;s face will be rejected. If these requirements are not met, entry may be denied and no refund will be initiated.
+          </Typography>
+          <Box sx={{ p: 1.5, borderRadius: '10px', bgcolor: isFestive ? 'rgba(234, 90, 0, 0.12)' : '#FFF3E0', border: isFestive ? '1px solid rgba(234, 90, 0, 0.25)' : '1px solid #FFE0B2' }}>
+            <Typography sx={{ fontSize: '0.78rem', fontWeight: 700, color: isFestive ? colors.gold : '#E65100', mb: 0.5 }}>
+              Photo Requirements:
+            </Typography>
+            <Typography sx={{ fontSize: '0.75rem', color: isFestive ? 'rgba(255,248,240,0.8)' : '#666', lineHeight: 1.7 }}>
+              • Clear, front-facing selfie or passport-style photo<br />
+              • No sunglasses, hats, or face coverings<br />
+              • Good lighting, face fully visible<br />
+              • Only the registrant in the photo<br />
+              • No blurry or low-quality images
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ px: 2, pb: 2, pt: 1, gap: 1 }}>
+          <Button onClick={() => { setShowDisclaimer(false); setDisclaimerAction(null); }} sx={{ textTransform: 'none', color: isFestive ? 'rgba(255,248,240,0.6)' : '#777', fontWeight: 600 }}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDisclaimerConfirm}
+            variant="contained"
+            sx={{
+              background: isFestive ? gradients.primary : '#EA5A00',
+              color: isFestive ? '#3A1C00' : '#fff',
+              textTransform: 'none',
+              minHeight: 40,
+              px: 2.5,
+              fontWeight: 800,
+              borderRadius: '8px',
+            }}
+          >
+            I Understand, Continue
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
