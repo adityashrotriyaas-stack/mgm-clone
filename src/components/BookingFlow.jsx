@@ -9,9 +9,6 @@ import Typography from '@mui/material/Typography'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
-import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined'
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
 import QrCode2RoundedIcon from '@mui/icons-material/QrCode2Rounded'
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
 import { colors, gradients } from '../constants/colors'
@@ -32,13 +29,6 @@ const steps = [
   'Details',
   'Payment',
   'QR Pass',
-]
-
-const paymentMethods = [
-  { id: 'upi', label: 'UPI', icon: AccountBalanceWalletOutlinedIcon, note: 'GPay · PhonePe · Paytm · BHIM' },
-  { id: 'card', label: 'Cards', icon: CreditCardOutlinedIcon, note: 'Visa · Mastercard · RuPay' },
-  { id: 'netbanking', label: 'Net Banking', icon: AccountBalanceOutlinedIcon, note: 'All major banks' },
-  { id: 'wallet', label: 'Wallets', icon: AccountBalanceWalletOutlinedIcon, note: 'Paytm · Amazon Pay' },
 ]
 
 const stepShortLabels = ['Book', 'Pass', 'Category', 'Details', 'Pay', 'QR']
@@ -83,7 +73,6 @@ export default function BookingFlow() {
   }, [registration])
 
   const [activeStep, setActiveStep] = useState(isNaN(stepParam) ? 4 : Math.min(stepParam, steps.length - 1))
-  const [paymentMethod, setPaymentMethod] = useState('upi')
   const [acceptedNonRefundable, setAcceptedNonRefundable] = useState(false)
   const [paying, setPaying] = useState(false)
   const [paymentError, setPaymentError] = useState('')
@@ -173,7 +162,7 @@ export default function BookingFlow() {
                 mb: 0.5,
               }}
             >
-              Enquire Now
+              Get Your Pass
             </Typography>
             <Typography sx={{ textAlign: 'center', fontSize: '0.82rem', color: colors.muted, mb: 2 }}>
               Registration done — finish payment to get your QR pass
@@ -229,29 +218,6 @@ export default function BookingFlow() {
                     {registration.name} · {registration.mobile}
                   </Typography>
                 </Box>
-                {paymentMethods.map(({ id, label, icon: Icon, note }) => (
-                  <Button
-                    key={id}
-                    onClick={() => setPaymentMethod(id)}
-                    sx={{
-                      justifyContent: 'flex-start',
-                      gap: 1.5,
-                      px: 2,
-                      py: 1.5,
-                      borderRadius: '14px',
-                      border: paymentMethod === id ? `2px solid ${colors.gold}` : '1px solid rgba(234, 90, 0,0.18)',
-                      bgcolor: paymentMethod === id ? 'rgba(255, 179, 0, 0.12)' : colors.bgWarm,
-                      color: colors.ivory,
-                      textTransform: 'none',
-                    }}
-                  >
-                    <Icon sx={{ color: colors.gold }} />
-                    <Box sx={{ textAlign: 'left' }}>
-                      <Typography sx={{ fontWeight: 700 }}>{label}</Typography>
-                      <Typography sx={{ fontSize: '0.78rem', color: colors.muted }}>{note}</Typography>
-                    </Box>
-                  </Button>
-                ))}
                 <NonRefundableCheckbox
                   checked={acceptedNonRefundable}
                   onChange={setAcceptedNonRefundable}
@@ -330,6 +296,7 @@ export default function BookingFlow() {
               )}
               {activeStep === 5 && (
                 <Button
+                  onClick={() => navigate('/')}
                   fullWidth
                   sx={{
                     py: 1.4,

@@ -59,8 +59,7 @@ export function buildTicketMap(apiTickets, activePhase = '') {
   return map
 }
 
-export function resolveTicketFromPassMode(ticketMap, passMode, category) {
+export function resolveTicketFromPassMode(passMode, category) {
   const mode = passMode === 'seasonal' ? 'seasonal' : 'daily'
-  if (!ticketMap) return null
-  return ticketMap[mode]?.[category] || ticketMap[mode]?.male
+  return TICKET_MAP[mode]?.[category] || TICKET_MAP[mode]?.male
 }

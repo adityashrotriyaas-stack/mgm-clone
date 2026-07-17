@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { Eyebrow, RevealBox } from './shared'
 import { colors, gradients } from '../constants/colors'
-import { getWhatsAppUrl } from '../data/contactInfo'
 import { passTypeOptions, registrationCategories } from '../data/siteData'
 import MobileNumberField from './MobileNumberField'
 import AadhaarNumberField from './AadhaarNumberField'
@@ -52,7 +51,7 @@ export default function Registration() {
         }}
       >
         <Box sx={{ position: 'relative', zIndex: 1, textAlign: 'center', mb: 2.75 }}>
-          <Eyebrow>Enquire Now</Eyebrow>
+          <Eyebrow>Get Your Pass</Eyebrow>
           <Typography
             variant="h2"
             sx={{ color: colors.ivory, fontSize: '1.6rem' }}
@@ -244,7 +243,7 @@ export default function Registration() {
             />
             <Button
               type="button"
-              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              onClick={() => window.location.href = '/event/1'}
               sx={{
                 mt: 1,
                 py: 1.9,
@@ -256,7 +255,7 @@ export default function Registration() {
               }}
               fullWidth
             >
-              Proceed to Payment
+              Get Your Pass
             </Button>
           </Box>
         </Box>

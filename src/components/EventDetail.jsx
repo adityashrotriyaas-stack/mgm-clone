@@ -88,7 +88,7 @@ The venue glows with rangoli, marigold strings, and diya-lined pathways. Folk ar
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Fanpit Zone', 'VIP Lounge', 'Food Court', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
   2: {
     dateRange: '13 Oct 2026',
@@ -127,7 +127,7 @@ Couples gather for partner Dandiya workshops before the main circle begins. Lear
       mark: 'R',
     },
     layoutZones: ['Couple Zone', 'Main Stage', 'Mocktail Bar', 'Photo Booth', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
   3: {
     dateRange: '14 Oct 2026',
@@ -164,7 +164,7 @@ Night five turns up the tempo. Bollywood Beats blends the soul of folk tradition
       mark: 'R',
     },
     layoutZones: ['LED Dance Floor', 'Main Stage', 'Food Court', 'Lounge Deck', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
   4: {
     dateRange: '19 Oct 2026',
@@ -201,7 +201,7 @@ Ten nights lead to this one moment. The Grand Finale of MGM Cultural Navratri be
       mark: 'R',
     },
     layoutZones: ['Maha Aarti Stage', 'Premium Deck', 'Garba Arena', 'Food Court', 'Entry Gate'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   },
 }
 
@@ -292,7 +292,7 @@ From the opening aarti to the late-night Mandli Garba session, guests can enjoy 
       mark: 'R',
     },
     layoutZones: ['Main Stage', 'Garba Arena', 'Food Court', 'Entry Gate', 'Seating Zone'],
-    cta: 'Enquire Now',
+    cta: 'Get Your Pass',
   }
 }
 
@@ -314,7 +314,7 @@ const categoryMeta = {
 
 function RegistrationStepPills({ activeStep, stepLabels }) {
   return (
-    <Stack direction="row" spacing={0.75} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap', px: { xs: 0.5, sm: 0 } }}>
+    <Stack direction="row" gap={1.25} useFlexGap sx={{ mb: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap', px: { xs: 0.5, sm: 0 } }}>
       {stepLabels.map((label, index) => {
         const isCompleted = index < activeStep
         const isActive = index === activeStep
@@ -334,6 +334,7 @@ function RegistrationStepPills({ activeStep, stepLabels }) {
               bgcolor: isActive ? accentFestive : ui.surfaceMuted,
               color: isActive ? colors.night : ui.muted,
               minWidth: 0,
+              whiteSpace: 'nowrap',
             }}
           >
             {isCompleted ? (
@@ -428,13 +429,8 @@ function CategoryOption({ categoryKey, label, subtitle, price, priceUnit, select
         <Typography sx={{ fontSize: '0.8rem', color: ui.muted }}>{subtitle}</Typography>
       </Box>
       <Stack direction="row" spacing={1.5} sx={{ flexShrink: 0, alignItems: 'center' }}>
-        <Typography sx={{ fontWeight: 700, color: ui.text, fontSize: '0.92rem', whiteSpace: 'nowrap' }}>
-          {price}
-          {priceUnit ? (
-            <Box component="span" sx={{ fontSize: '0.75rem', fontWeight: 500, color: ui.muted, ml: 0.35 }}>
-              {priceUnit}
-            </Box>
-          ) : null}
+        <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: colors.gold, whiteSpace: 'nowrap' }}>
+          {price ? `${price} ${priceUnit || ''}`.trim() : '₹1500 onwards'}
         </Typography>
         <Box
           sx={{
@@ -945,7 +941,7 @@ export default function EventDetail() {
     try {
       let wowslySession = null
       if (isWowslyConfigured()) {
-        wowslySession = await prepareWowslyBooking(registration, ticketMap)
+        wowslySession = await prepareWowslyBooking(registration)
         registration = applyQuotedPriceToRegistration(registration, wowslySession)
       }
 
@@ -962,7 +958,7 @@ export default function EventDetail() {
     return (
       <Box sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
         <Typography variant="h4">Event not found</Typography>
-        <Button variant="contained">Back to Home</Button>
+        <Button variant="contained" onClick={() => navigate('/')}>Back to Home</Button>
       </Box>
     )
   }
@@ -973,6 +969,7 @@ export default function EventDetail() {
         <Container maxWidth="lg">
           <Stack direction="row" sx={{ py: 1, alignItems: 'center' }}>
             <Button
+              onClick={() => navigate('/')}
               startIcon={<ChevronLeftRoundedIcon />}
               sx={{ color: ui.text, fontWeight: 500, textTransform: 'none', fontSize: '0.875rem', '&:hover': { bgcolor: 'transparent' } }}
             >
@@ -1039,7 +1036,7 @@ export default function EventDetail() {
                         <CategoryOption
                           key={key}
                           categoryKey={key}
-                          label={ticketMap?.[passMode]?.[key]?.displayName || key}
+                          label={key}
                           subtitle={cat.title}
                           price={price}
                           priceUnit={priceUnit}
