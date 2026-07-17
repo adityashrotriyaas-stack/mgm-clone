@@ -15,6 +15,8 @@ import { EnquiryProvider } from './components/EnquiryModal'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import theme from './theme.js'
 
+const BookingFlow = lazy(() => import('./components/BookingFlow.jsx'))
+const EventDetail = lazy(() => import('./components/EventDetail.jsx'))
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy.jsx'))
 const RefundPolicy = lazy(() => import('./components/RefundPolicy.jsx'))
 
@@ -85,10 +87,9 @@ const router = createBrowserRouter([
         element: <PrivacyPolicy />,
       },
       {
-      path: '/refund-policy',
+        path: '/refund-policy',
         element: <RefundPolicy />,
       },
-      // Temporarily disabled - EventDetail route
       {
         path: '/event/:eventId',
         element: <EventDetail />,
